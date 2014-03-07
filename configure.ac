@@ -4,6 +4,8 @@ AC_INIT([ucc], [0.1], [b.covolato@gmail.com])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror subdir-objects color-tests])
 
 # Checks for programs.
+AC_LANG([C++])
+
 AC_PROG_CXX
 AC_PROG_YACC
 AC_PROG_LEX
