@@ -3,6 +3,8 @@
 
 # include <string>
 
+class Command;
+
 class BasicCommand
 {
     public:
@@ -14,13 +16,13 @@ class BasicCommand
         virtual void run() = 0;
 
         const std::string& long_opt_get() const;
-        const std::string& short_opt_get() const;
+        int short_opt_get() const;
         const std::string& desc_get() const;
         const std::string& dep_get() const;
 
     private:
         std::string long_opt_;
-        std::string short_opt_;
+        int short_opt_;
         std::string desc_;
         std::string dep_;
 };
