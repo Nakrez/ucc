@@ -105,9 +105,9 @@ static error_t parse_opt(int key, char* arg, struct argp_state* state)
                 if (arg)
                 {
                     if (state->arg_num)
-                        ucpp::input_file = arg;
-                    else
                         ucpp::output_file = arg;
+                    else
+                        ucpp::input_file = arg;
                 }
             }
 

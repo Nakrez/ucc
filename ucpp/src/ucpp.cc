@@ -1,5 +1,6 @@
 #include <ucpp.hh>
 
+#include <ucpp-process.hh>
 
 namespace ucpp
 {
@@ -10,6 +11,10 @@ namespace ucpp
 
     void ucpp()
     {
-        std::cout << "Default action" << std::endl;
+        UcppProcess processor(input_file, output_file);
+
+        std::cout << "In: " << input_file << ", Out: " << output_file << std::endl;
+        processor.init();
+        processor.process();
     }
 }
