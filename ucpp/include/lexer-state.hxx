@@ -44,4 +44,12 @@ inline unsigned LexerState::column_get() const
     return column_;
 }
 
+inline void LexerState::new_line()
+{
+    column_ = 1;
+    line_offset_ = 0;
+    need_newline_ = false;
+    std::getline(*in_, line_buffer_);
+}
+
 #endif /* !LEXER_STATE_HXX */

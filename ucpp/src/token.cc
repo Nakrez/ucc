@@ -18,6 +18,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <token.hh>
 
+Token::Token()
+    : type_(Type::NONE)
+{}
+
 Token::Token(Type type, const std::string& data)
     : type_(type)
     , data_(data)

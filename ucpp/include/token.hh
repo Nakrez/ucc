@@ -37,6 +37,7 @@ class Token
         };
 
     public:
+        Token();
         Token(Type type, const std::string& data);
         ~Token() = default;
 

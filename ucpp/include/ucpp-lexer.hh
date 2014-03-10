@@ -34,6 +34,8 @@ class UcppLexer
         UcppLexer(std::ostream *out);
         ~UcppLexer();
 
+        void out_set(std::ostream *out);
+
         bool push_state(const std::string& file);
         void push_state(std::istream *stream);
 

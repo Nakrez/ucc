@@ -49,27 +49,41 @@ LexerState::~LexerState()
 
 Token LexerState::next()
 {
+    buffered_data_ = "";
+
     if (eof())
         return Token(Token::Type::END_OF_FILE, "<<EOF>>");
 
-    if (need_newline_ || line_offset_ >= line_buffer_.size())
+    if (need_newline_)
+        new_line();
+    else if (line_offset_ >= line_buffer_.size())
     {
-        column_ = 1;
-        line_offset_ = 0;
-        need_newline_ = false;
-        std::getline(*in_, line_buffer_);
+        new_line();
+        return Token(Token::Type::EOL, "\n");
     }
 
     // Treat spaces / empty lines / comments
-    check_blank();
+    if (check_blank())
+        return Token(Token::Type::EOL, "\n");
 
-    // Punctuators
-    if (punctuators())
-        goto token;
+    if (eof())
+        return Token(Token::Type::END_OF_FILE, "<<EOF>>");
 
-    return Token(Token::Type::DATA, "");
+    if (!punctuators())
+    {
+        // Data
+        while (line_offset_ < line_buffer_.size() &&
+               line_buffer_.at(line_offset_) != ' ' &&
+               line_buffer_.at(line_offset_) != '\t')
+        {
+            buffered_data_ += line_buffer_.at(line_offset_);
+            ++column_;
+            ++line_offset_;
+        }
 
-token:
+        detected_type_ = Token::Type::DATA;
+    }
+
     if (preprocess_line_)
         flush_space(false);
     else
@@ -78,19 +92,16 @@ token:
     return Token(detected_type_, buffered_data_);
 }
 
-void LexerState::check_blank()
+bool LexerState::check_blank()
 {
     while (!eof())
     {
         if (line_offset_ >= line_buffer_.size())
         {
             ++line_;
-            buffered_data_ = "";
-            *out_ << std::endl;
-            column_ = 1;
-            line_offset_ = 0;
-            std::getline(*in_, line_buffer_);
-            continue;
+            new_line();
+
+            return true;
         }
 
         if (line_buffer_.at(line_offset_) == ' ')
@@ -103,6 +114,8 @@ void LexerState::check_blank()
         buffered_data_ += line_buffer_.at(line_offset_);
         ++line_offset_;
     }
+
+    return false;
 }
 
 bool LexerState::sharp()
@@ -169,7 +182,7 @@ void LexerState::flush_space(bool print)
 
     for (; buffered_data_.at(i) == ' '; ++i)
         if (print)
-            *out_ << ' ';
+            (*out_) << ' ';
 
     buffered_data_ = buffered_data_.substr(i, buffered_data_.size() - i);
 }

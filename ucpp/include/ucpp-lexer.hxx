@@ -21,6 +21,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <ucpp-lexer.hh>
 
+inline void UcppLexer::out_set(std::ostream *out)
+{
+    out_ = out;
+}
+
 inline void UcppLexer::push_state(std::istream *stream)
 {
     buffers_.push(LexerState(stream, out_));

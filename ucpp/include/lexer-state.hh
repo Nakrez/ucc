@@ -42,9 +42,10 @@ class LexerState
     private:
         bool sharp();
         bool punctuators();
-        void check_blank();
+        bool check_blank();
 
         void flush_space(bool print);
+        void new_line();
 
     private:
         std::istream *in_;

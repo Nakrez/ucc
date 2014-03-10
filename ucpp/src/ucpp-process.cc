@@ -58,6 +58,8 @@ void UcppProcess::init()
         soutput_ = out;
     }
 
+    lexer_.out_set(soutput_);
+
     if (input_ == "-")
         lexer_.push_state(&std::cin);
     else
@@ -80,8 +82,15 @@ void UcppProcess::init()
 
 void UcppProcess::process()
 {
+    Token t;
+
     while (!lexer_.eof())
     {
-        std::cout << lexer_.next().data_get() << std::endl;
+        t = lexer_.next();
+
+        if (t.type_get() == Token::Type::END_OF_FILE)
+            break;
+        else
+            std::cout << t.data_get();
     }
 }
