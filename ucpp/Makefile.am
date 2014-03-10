@@ -6,6 +6,7 @@ ucpp_SOURCES = src/main.cc \
 			   src/command.cc \
 			   src/basic-command.cc \
 			   src/callback-command.cc \
+			   src/token.cc \
 			   src/lexer-state.cc \
 			   src/ucpp-lexer.cc \
 			   src/ucpp-process.cc
