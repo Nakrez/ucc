@@ -62,6 +62,7 @@ class LexerState
         std::string buffered_data_;
 
         Token::Type detected_type_;
+        Token last_;
 };
 
 # include <lexer-state.hxx>

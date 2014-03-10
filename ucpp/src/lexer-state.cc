@@ -18,7 +18,7 @@
 
 #include <lexer-state.hh>
 
-    LexerState::LexerState(std::istream *input, std::ostream *out)
+LexerState::LexerState(std::istream *input, std::ostream *out)
     : in_(input)
     , out_(out)
     , line_offset_(0)
@@ -28,16 +28,16 @@
     , preprocess_line_(false)
     , line_buffer_()
     , buffered_data_()
-      , detected_type_(Token::Type::NONE)
+    , detected_type_(Token::Type::NONE)
 {
 
 }
 
 LexerState::~LexerState()
 {
-    if (in_ != &std::cin)
+    if (!in_ || in_ != &std::cin)
     {
-        std::ifstream *in = dynamic_cast<std::ifstream*>(in);
+        std::ifstream *in = dynamic_cast<std::ifstream*>(in_);
 
         if (in)
         {
@@ -73,8 +73,8 @@ Token LexerState::next()
     {
         // Data
         while (line_offset_ < line_buffer_.size() &&
-               line_buffer_.at(line_offset_) != ' ' &&
-               line_buffer_.at(line_offset_) != '\t')
+                line_buffer_.at(line_offset_) != ' ' &&
+                line_buffer_.at(line_offset_) != '\t')
         {
             buffered_data_ += line_buffer_.at(line_offset_);
             ++column_;
@@ -84,7 +84,9 @@ Token LexerState::next()
         detected_type_ = Token::Type::DATA;
     }
 
-    return Token(detected_type_, buffered_data_);
+    last_ = Token(detected_type_, buffered_data_);
+
+    return last_;
 }
 
 bool LexerState::check_blank()
@@ -156,9 +158,9 @@ bool LexerState::punctuators()
         return true;
 
     if (line_buffer_.at(line_offset_) == '{' ||
-        line_buffer_.at(line_offset_) == '}' ||
-        line_buffer_.at(line_offset_) == '[' ||
-        line_buffer_.at(line_offset_) == ']')
+            line_buffer_.at(line_offset_) == '}' ||
+            line_buffer_.at(line_offset_) == '[' ||
+            line_buffer_.at(line_offset_) == ']')
     {
         buffered_data_ += line_buffer_.at(line_offset_);
         ++line_offset_;

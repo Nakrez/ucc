@@ -28,8 +28,11 @@ UcppLexer::UcppLexer(std::ostream *out)
 
 UcppLexer::~UcppLexer()
 {
-    while (buffers_.empty())
+    while (!buffers_.empty())
+    {
+        delete buffers_.top();
         buffers_.pop();
+    }
 }
 
 bool UcppLexer::push_state(const std::string& file)
@@ -44,7 +47,7 @@ bool UcppLexer::push_state(const std::string& file)
         return false;
     }
 
-    buffers_.push(LexerState(stream, out_));
+    buffers_.push(new LexerState(stream, out_));
 
     return true;
 }

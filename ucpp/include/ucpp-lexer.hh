@@ -47,7 +47,7 @@ class UcppLexer
         Token next();
 
     private:
-        std::stack<LexerState> buffers_;
+        std::stack<LexerState*> buffers_;
 
         std::ostream *out_;
 };
