@@ -29,6 +29,7 @@ class Token
         NUMBER,
         STRING,
         PUNCT,
+        EOL,
         DATA
     };
 
@@ -43,5 +44,7 @@ class Token
         Type type_;
         std::string data_;
 };
+
+# include <token.hxx>
 
 #endif /* !TOKEN_HH */
