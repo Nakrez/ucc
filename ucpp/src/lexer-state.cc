@@ -1,29 +1,34 @@
 /*
-Copyright (C) 2014 Baptiste Covolato <b.covolato@gmail.com>
+   Copyright (C) 2014 Baptiste Covolato <b.covolato@gmail.com>
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License
+   as published by the Free Software Foundation; either version 2
+   of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+   */
 
 #include <lexer-state.hh>
 
-LexerState::LexerState(std::istream *input, std::ostream *out)
+    LexerState::LexerState(std::istream *input, std::ostream *out)
     : in_(input)
     , out_(out)
+    , line_offset_(0)
     , column_(1)
     , line_(1)
+    , need_newline_(true)
     , preprocess_line_(false)
+    , line_buffer_()
+    , buffered_data_()
+      , detected_type_(Token::Type::NONE)
 {
 
 }
@@ -44,5 +49,127 @@ LexerState::~LexerState()
 
 Token LexerState::next()
 {
+    if (eof())
+        return Token(Token::Type::END_OF_FILE, "<<EOF>>");
+
+    if (need_newline_ || line_offset_ >= line_buffer_.size())
+    {
+        column_ = 1;
+        line_offset_ = 0;
+        need_newline_ = false;
+        std::getline(*in_, line_buffer_);
+    }
+
+    // Treat spaces / empty lines / comments
+    check_blank();
+
+    // Punctuators
+    if (punctuators())
+        goto token;
+
     return Token(Token::Type::DATA, "");
+
+token:
+    if (preprocess_line_)
+        flush_space(false);
+    else
+        flush_space(true);
+
+    return Token(detected_type_, buffered_data_);
+}
+
+void LexerState::check_blank()
+{
+    while (!eof())
+    {
+        if (line_offset_ >= line_buffer_.size())
+        {
+            ++line_;
+            buffered_data_ = "";
+            *out_ << std::endl;
+            column_ = 1;
+            line_offset_ = 0;
+            std::getline(*in_, line_buffer_);
+            continue;
+        }
+
+        if (line_buffer_.at(line_offset_) == ' ')
+            ++column_;
+        else if (line_buffer_.at(line_offset_) == '\t')
+            column_ += 8;
+        else
+            break;
+
+        buffered_data_ += line_buffer_.at(line_offset_);
+        ++line_offset_;
+    }
+}
+
+bool LexerState::sharp()
+{
+    if (line_buffer_.at(line_offset_) == '#')
+    {
+        ++column_;
+        ++line_offset_;
+        buffered_data_ += "#";
+
+        if (line_buffer_.at(line_offset_) == '#')
+        {
+            buffered_data_ += "#";
+            ++column_;
+            ++line_offset_;
+
+            if (preprocess_line_)
+            {
+                detected_type_ = Token::Type::PUNCT;
+                return true;
+            }
+            else
+            {
+                buffered_data_ = "";
+                column_ -= 2;
+                line_offset_ -= 2;
+                return false;
+            }
+        }
+        else
+        {
+            detected_type_ = Token::Type::PUNCT;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool LexerState::punctuators()
+{
+    if (sharp())
+        return true;
+
+    if (line_buffer_.at(line_offset_) == '{' ||
+        line_buffer_.at(line_offset_) == '}' ||
+        line_buffer_.at(line_offset_) == '[' ||
+        line_buffer_.at(line_offset_) == ']')
+    {
+        buffered_data_ += line_buffer_.at(line_offset_);
+        ++line_offset_;
+        detected_type_ = Token::Type::PUNCT;
+        return true;
+    }
+
+    // TODO: Digraph
+
+    return false;
+}
+
+void LexerState::flush_space(bool print)
+{
+    short i = 0;
+
+    for (; buffered_data_.at(i) == ' '; ++i)
+        if (print)
+            *out_ << ' ';
+
+    buffered_data_ = buffered_data_.substr(i, buffered_data_.size() - i);
 }

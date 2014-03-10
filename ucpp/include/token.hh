@@ -26,11 +26,13 @@ class Token
     public:
         enum Type
         {
+            NONE,
             IDENTIFIER,
             NUMBER,
             STRING,
             PUNCT,
             EOL,
+            END_OF_FILE,
             DATA
         };
 

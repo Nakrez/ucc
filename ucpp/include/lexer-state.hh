@@ -40,15 +40,28 @@ class LexerState
         Token next();
 
     private:
+        bool sharp();
+        bool punctuators();
+        void check_blank();
+
+        void flush_space(bool print);
+
+    private:
         std::istream *in_;
         std::ostream *out_;
+
+        short line_offset_;
 
         unsigned column_;
         unsigned line_;
 
+        bool need_newline_;
         bool preprocess_line_;
 
         std::string line_buffer_;
+        std::string buffered_data_;
+
+        Token::Type detected_type_;
 };
 
 # include <lexer-state.hxx>
