@@ -81,5 +81,7 @@ void UcppProcess::init()
 void UcppProcess::process()
 {
     while (!lexer_.eof())
-        ;
+    {
+        std::cout << lexer_.next().data_get() << std::endl;
+    }
 }

@@ -22,6 +22,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <iostream>
 # include <fstream>
 
+# include <token.hh>
+
 class LexerState
 {
     public:
@@ -34,6 +36,8 @@ class LexerState
         unsigned column_get() const;
 
         void preprocess_line_set(bool b);
+
+        Token next();
 
     private:
         std::istream *in_;

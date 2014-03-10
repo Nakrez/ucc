@@ -41,4 +41,9 @@ inline void UcppLexer::preprocess_line_set(bool b)
     buffers_.top().preprocess_line_set(b);
 }
 
+inline Token UcppLexer::next()
+{
+    return buffers_.top().next();
+}
+
 #endif /* !UCPP_LEXER_HXX */

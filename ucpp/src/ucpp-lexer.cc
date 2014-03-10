@@ -45,7 +45,3 @@ bool UcppLexer::push_state(const std::string& file)
 
     return true;
 }
-
-void UcppLexer::next()
-{
-}

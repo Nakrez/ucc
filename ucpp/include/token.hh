@@ -23,15 +23,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class Token
 {
-    enum Type
-    {
-        IDENTIFIER,
-        NUMBER,
-        STRING,
-        PUNCT,
-        EOL,
-        DATA
-    };
+    public:
+        enum Type
+        {
+            IDENTIFIER,
+            NUMBER,
+            STRING,
+            PUNCT,
+            EOL,
+            DATA
+        };
 
     public:
         Token(Type type, const std::string& data);

@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <fstream>
 
 # include <lexer-state.hh>
+# include <token.hh>
 
 class UcppLexer
 {
@@ -41,7 +42,7 @@ class UcppLexer
 
         void preprocess_line_set(bool b);
 
-        void next();
+        Token next();
 
     private:
         std::stack<LexerState> buffers_;

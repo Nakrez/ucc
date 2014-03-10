@@ -41,3 +41,8 @@ LexerState::~LexerState()
         }
     }
 }
+
+Token LexerState::next()
+{
+    return Token(Token::Type::DATA, "");
+}
