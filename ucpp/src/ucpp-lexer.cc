@@ -1,24 +1,15 @@
 #include <ucpp-lexer.hh>
 
 UcppLexer::UcppLexer()
+    : out_(nullptr)
+{}
+
+UcppLexer::UcppLexer(std::ostream *out)
+    : out_(out)
 {}
 
 UcppLexer::~UcppLexer()
-{
-    while (buffers_.size() > 0)
-    {
-        if (buffers_.top() != &std::cin)
-        {
-            std::ifstream *in = dynamic_cast<std::ifstream*>(buffers_.top());
-
-            in->close();
-
-            delete in;
-        }
-
-        buffers_.pop();
-    }
-}
+{}
 
 bool UcppLexer::push_state(const std::string& file)
 {
@@ -32,29 +23,11 @@ bool UcppLexer::push_state(const std::string& file)
         return false;
     }
 
-    buffers_.push(stream);
+    buffers_.push(LexerState(stream, out_));
 
     return true;
 }
 
-void UcppLexer::push_state(std::istream *stream)
+void UcppLexer::next()
 {
-    buffers_.push(stream);
-}
-
-void UcppLexer::pop_state()
-{
-    if (buffers_.size() > 0)
-    {
-        if (buffers_.top() != &std::cin)
-        {
-            std::ifstream *in = dynamic_cast<std::ifstream*>(buffers_.top());
-
-            in->close();
-
-            delete in;
-        }
-
-        buffers_.pop();
-    }
 }

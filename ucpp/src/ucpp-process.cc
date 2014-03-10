@@ -62,5 +62,6 @@ void UcppProcess::init()
 
 void UcppProcess::process()
 {
-
+    while (!lexer_.eof())
+        ;
 }
