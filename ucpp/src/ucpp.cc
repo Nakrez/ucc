@@ -31,7 +31,6 @@ namespace ucpp
     {
         UcppProcess processor(input_file, output_file);
 
-        std::cout << "In: " << input_file << ", Out: " << output_file << std::endl;
         processor.init();
         processor.process();
     }

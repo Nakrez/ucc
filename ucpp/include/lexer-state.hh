@@ -44,7 +44,6 @@ class LexerState
         bool punctuators();
         bool check_blank();
 
-        void flush_space(bool print);
         void new_line();
 
     private:

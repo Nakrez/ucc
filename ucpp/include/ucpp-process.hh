@@ -35,12 +35,16 @@ class UcppProcess
         void process();
 
     private:
+        void print(const std::string& s);
+
+    private:
         std::string input_;
         std::string output_;
 
         std::ostream *soutput_;
 
         UcppLexer lexer_;
+        bool line_begin_;
 };
 
 #endif /* !UCPP_PROCESS_HH */

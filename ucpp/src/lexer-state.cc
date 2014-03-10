@@ -84,11 +84,6 @@ Token LexerState::next()
         detected_type_ = Token::Type::DATA;
     }
 
-    if (preprocess_line_)
-        flush_space(false);
-    else
-        flush_space(true);
-
     return Token(detected_type_, buffered_data_);
 }
 
@@ -174,15 +169,4 @@ bool LexerState::punctuators()
     // TODO: Digraph
 
     return false;
-}
-
-void LexerState::flush_space(bool print)
-{
-    short i = 0;
-
-    for (; buffered_data_.at(i) == ' '; ++i)
-        if (print)
-            (*out_) << ' ';
-
-    buffered_data_ = buffered_data_.substr(i, buffered_data_.size() - i);
 }

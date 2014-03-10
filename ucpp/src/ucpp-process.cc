@@ -22,6 +22,7 @@ UcppProcess::UcppProcess(const std::string& in, const std::string& out)
     : input_(in)
     , output_(out)
     , soutput_(nullptr)
+    , line_begin_(true)
 {}
 
 UcppProcess::~UcppProcess()
@@ -88,9 +89,37 @@ void UcppProcess::process()
     {
         t = lexer_.next();
 
-        if (t.type_get() == Token::Type::END_OF_FILE)
-            break;
+        if (t.type_get() == Token::Type::EOL)
+        {
+            line_begin_ = true;
+            *soutput_ << std::endl;
+        }
         else
-            std::cout << t.data_get();
+        {
+            if (t.type_get() == Token::Type::END_OF_FILE)
+                break;
+            else
+                print(t.data_get());
+
+            line_begin_ = false;
+        }
+    }
+}
+
+void UcppProcess::print(const std::string& p)
+{
+    if (line_begin_)
+        *soutput_ << p;
+    else
+    {
+        int i = 0;
+
+        for (; (p.at(i) == ' ' || p.at(i) == 't') && i < p.size(); ++i)
+            ;
+
+        *soutput_ << " ";
+
+        for (; i < p.size(); ++i)
+            *soutput_ << p.at(i);
     }
 }
