@@ -37,7 +37,7 @@ class UcppLexer
         void out_set(std::ostream *out);
 
         bool push_state(const std::string& file);
-        void push_state(std::istream *stream);
+        void push_state(std::istream *stream, const std::string& f);
 
         void pop_state();
         bool eof() const;
@@ -45,6 +45,9 @@ class UcppLexer
         void preprocess_line_set(bool b);
 
         Token next();
+        unsigned line_get() const;
+        unsigned column_get() const;
+        const std::string& file_name_get() const;
 
     private:
         std::stack<LexerState*> buffers_;

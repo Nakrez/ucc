@@ -18,9 +18,12 @@
 
 #include <lexer-state.hh>
 
-LexerState::LexerState(std::istream *input, std::ostream *out)
+LexerState::LexerState(std::istream *input,
+                       std::ostream *out,
+                       const std::string& file)
     : in_(input)
     , out_(out)
+    , file_(file)
     , line_offset_(0)
     , column_(1)
     , line_(1)

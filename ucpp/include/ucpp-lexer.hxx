@@ -26,9 +26,9 @@ inline void UcppLexer::out_set(std::ostream *out)
     out_ = out;
 }
 
-inline void UcppLexer::push_state(std::istream *stream)
+inline void UcppLexer::push_state(std::istream *stream, const std::string& f)
 {
-    buffers_.push(new LexerState(stream, out_));
+    buffers_.push(new LexerState(stream, out_, f));
 }
 
 inline void UcppLexer::pop_state()
@@ -51,4 +51,18 @@ inline Token UcppLexer::next()
     return buffers_.top()->next();
 }
 
+inline unsigned UcppLexer::line_get() const
+{
+    return buffers_.top()->line_get();
+}
+
+inline unsigned UcppLexer::column_get() const
+{
+    return buffers_.top()->column_get();
+}
+
+inline const std::string& UcppLexer::file_name_get() const
+{
+    return buffers_.top()->file_name_get();
+}
 #endif /* !UCPP_LEXER_HXX */

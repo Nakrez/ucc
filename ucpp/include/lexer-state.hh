@@ -27,13 +27,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class LexerState
 {
     public:
-        LexerState(std::istream *input, std::ostream *out);
+        LexerState(std::istream *input,
+                   std::ostream *out,
+                   const std::string& file);
         ~LexerState();
 
         bool eof() const;
 
         unsigned line_get() const;
         unsigned column_get() const;
+        const std::string& file_name_get() const;
 
         void preprocess_line_set(bool b);
 
@@ -49,6 +52,7 @@ class LexerState
     private:
         std::istream *in_;
         std::ostream *out_;
+        std::string file_;
 
         short line_offset_;
 

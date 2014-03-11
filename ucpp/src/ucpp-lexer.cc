@@ -47,7 +47,7 @@ bool UcppLexer::push_state(const std::string& file)
         return false;
     }
 
-    buffers_.push(new LexerState(stream, out_));
+    buffers_.push(new LexerState(stream, out_, file));
 
     return true;
 }

@@ -62,7 +62,7 @@ void UcppProcess::init()
     lexer_.out_set(soutput_);
 
     if (input_ == "-")
-        lexer_.push_state(&std::cin);
+        lexer_.push_state(&std::cin, "<stdin>");
     else
     {
         std::ifstream *in = new std::ifstream;
@@ -77,7 +77,7 @@ void UcppProcess::init()
             return;
         }
 
-        lexer_.push_state(in);
+        lexer_.push_state(in, input_);
     }
 }
 
@@ -114,7 +114,7 @@ void UcppProcess::print(const std::string& p)
     {
         int i = 0;
 
-        for (; (p.at(i) == ' ' || p.at(i) == 't') && i < p.size(); ++i)
+        for (; (p.at(i) == ' ' || p.at(i) == '\t') && i < p.size(); ++i)
             ;
 
         *soutput_ << " ";

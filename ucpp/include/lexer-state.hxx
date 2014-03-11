@@ -29,11 +29,6 @@ inline bool LexerState::eof() const
     return in_->eof();
 }
 
-inline void LexerState::preprocess_line_set(bool b)
-{
-    preprocess_line_ = b;
-}
-
 inline unsigned LexerState::line_get() const
 {
     return line_;
@@ -44,6 +39,15 @@ inline unsigned LexerState::column_get() const
     return column_;
 }
 
+inline const std::string& LexerState::file_name_get() const
+{
+    return file_;
+}
+
+inline void LexerState::preprocess_line_set(bool b)
+{
+    preprocess_line_ = b;
+}
 inline void LexerState::new_line()
 {
     column_ = 1;
