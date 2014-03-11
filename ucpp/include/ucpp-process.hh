@@ -35,6 +35,8 @@ class UcppProcess
         void process();
 
     private:
+        void directive();
+
         void print(const std::string& s);
 
     private:

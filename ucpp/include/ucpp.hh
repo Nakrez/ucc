@@ -27,6 +27,12 @@ namespace ucpp
 {
     extern std::string input_file;
     extern std::string output_file;
+    extern bool _error;
+
+    void error(unsigned line,
+               unsigned column,
+               const std::string& filename,
+               const std::string& msg);
 }
 
 #endif /* !UCPP_HH */

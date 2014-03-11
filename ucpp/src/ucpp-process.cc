@@ -16,6 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+#include <ucpp.hh>
 #include <ucpp-process.hh>
 
 UcppProcess::UcppProcess(const std::string& in, const std::string& out)

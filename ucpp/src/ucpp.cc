@@ -26,6 +26,7 @@ namespace ucpp
 
     std::string input_file = "-";
     std::string output_file = "-";
+    bool _error = false;
 
     void ucpp()
     {
@@ -33,5 +34,16 @@ namespace ucpp
 
         processor.init();
         processor.process();
+    }
+
+    void error(unsigned line,
+               unsigned column,
+               const std::string& filename,
+               const std::string& msg)
+    {
+        std::cerr << filename << ":" << line << ":" << column << ": error: "
+                  << msg << std::endl;
+
+        _error = true;
     }
 }
