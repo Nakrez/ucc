@@ -65,4 +65,10 @@ inline const std::string& UcppLexer::file_name_get() const
 {
     return buffers_.top()->file_name_get();
 }
+
+inline void UcppLexer::skip_line()
+{
+    return buffers_.top()->skip_line();
+}
+
 #endif /* !UCPP_LEXER_HXX */

@@ -26,7 +26,7 @@ LexerState::LexerState(std::istream *input,
     , file_(file)
     , line_offset_(0)
     , column_(1)
-    , line_(1)
+    , line_(0)
     , need_newline_(true)
     , preprocess_line_(false)
     , line_buffer_()
@@ -98,7 +98,6 @@ bool LexerState::check_blank()
     {
         if (line_offset_ >= line_buffer_.size())
         {
-            ++line_;
             new_line();
 
             return true;

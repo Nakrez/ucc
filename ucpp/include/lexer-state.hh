@@ -41,6 +41,7 @@ class LexerState
         void preprocess_line_set(bool b);
 
         Token next();
+        void skip_line();
 
     private:
         bool sharp();

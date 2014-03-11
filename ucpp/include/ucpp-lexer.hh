@@ -49,6 +49,8 @@ class UcppLexer
         unsigned column_get() const;
         const std::string& file_name_get() const;
 
+        void skip_line();
+
     private:
         std::stack<LexerState*> buffers_;
 

@@ -85,7 +85,7 @@ void UcppProcess::process()
 {
     Token t;
 
-    while (!lexer_.eof())
+    while (1)
     {
         t = lexer_.next();
 
@@ -94,15 +94,37 @@ void UcppProcess::process()
             line_begin_ = true;
             *soutput_ << std::endl;
         }
+        else if (t.data_get() == "#")
+            directive();
+        else if (t.type_get() == Token::Type::END_OF_FILE)
+                break;
         else
         {
-            if (t.type_get() == Token::Type::END_OF_FILE)
-                break;
-            else
-                print(t.data_get());
+            print(t.data_get());
 
             line_begin_ = false;
         }
+    }
+}
+
+void UcppProcess::directive()
+{
+    Token t(lexer_.next());
+
+    if (t.type_get() == Token::Type::IDENTIFIER)
+    {
+
+    }
+    else if (t.type_get() == Token::Type::NUMBER)
+    {
+
+    }
+    else
+    {
+        ucpp::error(lexer_.line_get(),
+                    lexer_.column_get() - t.data_get().size(),
+                    lexer_.file_name_get(),
+                    "invalid preprocessing directive: #" + t.data_get());
     }
 }
 

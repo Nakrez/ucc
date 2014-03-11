@@ -48,10 +48,17 @@ inline void LexerState::preprocess_line_set(bool b)
 {
     preprocess_line_ = b;
 }
+
+inline void LexerState::skip_line()
+{
+    need_newline_ = true;
+}
+
 inline void LexerState::new_line()
 {
     column_ = 1;
     line_offset_ = 0;
+    ++line_;
     need_newline_ = false;
     std::getline(*in_, line_buffer_);
 }
