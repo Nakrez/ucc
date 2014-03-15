@@ -17,14 +17,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <iostream>
-#include <command.hh>
+#include <command/command.hh>
 #include <ucpp.hh>
 
 int main (int argc, char *argv[])
 {
-    Command::instance().parse_cmd(argc, argv);
-    Command::instance().enable_cmd("");
-    Command::instance().run();
+    char *command[2] = { nullptr, nullptr };
+
+    command::Command::instance().extra_args_set(command);
+    command::Command::instance().description_set("ucc: Micro C Compiler");
+    command::Command::instance().option_set("infile outfile");
+
+    command::Command::instance().parse_cmd(argc, argv);
+
+    if (command[0])
+        ucpp::input_file = command[0];
+    if (command[1])
+        ucpp::output_file = command[1];
+
+    command::Command::instance().enable_cmd("");
+    command::Command::instance().run();
 
     if (ucpp::_error)
         return 1;
