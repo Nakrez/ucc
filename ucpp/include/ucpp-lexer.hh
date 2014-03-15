@@ -52,6 +52,7 @@ class UcppLexer
         void skip_line();
 
         char next_char() const;
+        void discard_next_char();
 
     private:
         std::stack<LexerState*> buffers_;

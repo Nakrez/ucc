@@ -76,4 +76,9 @@ inline char UcppLexer::next_char() const
     return buffers_.top()->next_char();
 }
 
+inline void UcppLexer::discard_next_char()
+{
+    return buffers_.top()->discard_next_char();
+}
+
 #endif /* !UCPP_LEXER_HXX */

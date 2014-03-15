@@ -73,4 +73,9 @@ inline char LexerState::next_char() const
     return line_buffer_.at(line_offset_ + 1);
 }
 
+inline void LexerState::discard_next_char()
+{
+    ++line_offset_;
+}
+
 #endif /* !LEXER_STATE_HXX */
