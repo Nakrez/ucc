@@ -2,6 +2,7 @@ AC_PREREQ([2.69])
 
 AC_INIT([ucc], [0.1], [b.covolato@gmail.com])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror subdir-objects color-tests])
+AM_SILENT_RULES([yes])
 
 # Checks for programs.
 AC_LANG([C++])
@@ -23,7 +24,7 @@ LT_INIT
 
 AC_CONFIG_HEADERS([config.h])
 
-AC_CONFIG_FILES([Makefile ucpp/Makefile tests/Makefile lib/Makefile
-                 lib/command/Makefile])
+AC_CONFIG_FILES([Makefile ucpp/Makefile lib/Makefile
+                 lib/command/Makefile ucc/Makefile tests/Makefile])
 
 AC_OUTPUT
