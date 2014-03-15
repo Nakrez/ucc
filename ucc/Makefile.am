@@ -1,0 +1,11 @@
+AM_CPPFLAGS = -Iinclude -I${top_srcdir}/lib/command/include -Isrc
+
+bin_PROGRAMS = ucc
+ucc_SOURCES = src/main.cc \
+			  src/ucc.cc \
+			  src/parse/c-parser.yy \
+			  src/parse/driver.cc \
+			  src/parse/c-lexer.ll \
+			  src/parse/command.cc
+
+ucc_LDADD = ${abs_top_builddir}/lib/command/libcommand.la
