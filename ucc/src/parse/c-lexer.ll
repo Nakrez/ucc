@@ -45,6 +45,7 @@ WS  [ \t\v\n\f]
 
 "/*"                    { comment(); }
 "//".*                  { /* consume //-comment */ }
+"#".*                   { /* ignore #line file */ }
 
 "auto"                  { return token::AUTO; }
 "break"                 { return token::BREAK; }
