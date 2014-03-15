@@ -152,14 +152,14 @@ namespace command
         {
             available_options,
             parse_opt,
-            "infile outfile",
-            "ucc : micro C Compiler",
+            options_.c_str(),
+            desc_.c_str(),
             child,
             nullptr,
             nullptr
         };
 
-        argp_parse(&argp, argc, argv, 0, 0, NULL);
+        argp_parse(&argp, argc, argv, 0, 0, extra_args_);
     }
 
     void Command::run()
@@ -176,5 +176,10 @@ namespace command
     void Command::description_set(const std::string& s)
     {
         desc_ = s;
+    }
+
+    void Command::extra_args_set(char **args)
+    {
+        extra_args_ = args;
     }
 } // namespace command
