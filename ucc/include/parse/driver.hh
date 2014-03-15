@@ -25,6 +25,8 @@ namespace ucc
 
                 void parse_file(const std::string& name);
 
+                const std::string& file_get() const;
+
             private:
                 void lexer_begin();
                 void lexer_end();

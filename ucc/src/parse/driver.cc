@@ -23,3 +23,8 @@ void Driver::parse_file(const std::string& name)
 
     lexer_end();
 }
+
+const std::string& Driver::file_get() const
+{
+    return file_;
+}
