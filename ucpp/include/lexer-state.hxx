@@ -56,6 +56,7 @@ inline void LexerState::skip_line()
 
 inline void LexerState::new_line()
 {
+    line_buffer_.clear();
     column_ = 1;
     line_offset_ = 0;
     ++line_;

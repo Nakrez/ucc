@@ -55,7 +55,7 @@ class LexerState
         std::ostream *out_;
         std::string file_;
 
-        short line_offset_;
+        unsigned line_offset_;
 
         unsigned column_;
         unsigned line_;

@@ -123,7 +123,7 @@ void UcppProcess::directive()
     else
     {
         ucpp::error(lexer_.line_get(),
-                    lexer_.column_get() - t.data_get().size(),
+                    lexer_.column_get() - 1,
                     lexer_.file_name_get(),
                     "invalid preprocessing directive: #" + t.data_get());
     }
@@ -135,7 +135,7 @@ void UcppProcess::print(const std::string& p)
         *soutput_ << p;
     else
     {
-        int i = 0;
+        unsigned i = 0;
 
         for (; (p.at(i) == ' ' || p.at(i) == '\t') && i < p.size(); ++i)
             ;
