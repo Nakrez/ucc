@@ -43,7 +43,7 @@ class LexerState
         Token next();
         void skip_line();
 
-        char next_char();
+        char next_char() const;
 
     private:
         bool sharp();

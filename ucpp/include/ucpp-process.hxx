@@ -16,38 +16,17 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCPP_PROCESS_HH
-# define UCPP_PROCESS_HH
+#ifndef UCPP_PROCESS_HXX
+# define UCPP_PROCESS_HXX
 
-# include <string>
-# include <iostream>
-# include <fstream>
+# include <ucpp-process.hh>
 
-# include <ucpp-lexer.hh>
-
-class UcppProcess
+inline void UcppProcess::print(const std::string& s)
 {
-    public:
-        UcppProcess(const std::string& in, const std::string& out);
-        ~UcppProcess();
+    *soutput_ << s;
 
-        void init();
-        void process();
+    if (lexer_.next_char() != '\n')
+        *soutput_ << " ";
+}
 
-    private:
-        void directive();
-
-        void print(const std::string& s);
-
-    private:
-        std::string input_;
-        std::string output_;
-
-        std::ostream *soutput_;
-
-        UcppLexer lexer_;
-};
-
-# include <ucpp-process.hxx>
-
-#endif /* !UCPP_PROCESS_HH */
+#endif /* !UCPP_PROCESS_HXX */

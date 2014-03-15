@@ -65,9 +65,9 @@ inline void LexerState::new_line()
     std::getline(*in_, line_buffer_);
 }
 
-inline char LexerState::next_char()
+inline char LexerState::next_char() const
 {
-    if (line_offset_ >= line_buffer_.size())
+    if (line_offset_ + 1 >= line_buffer_.size())
         return '\n';
 
     return line_buffer_.at(line_offset_ + 1);

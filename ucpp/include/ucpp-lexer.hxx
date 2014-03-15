@@ -71,4 +71,9 @@ inline void UcppLexer::skip_line()
     return buffers_.top()->skip_line();
 }
 
+inline char UcppLexer::next_char() const
+{
+    return buffers_.top()->next_char();
+}
+
 #endif /* !UCPP_LEXER_HXX */
