@@ -16,41 +16,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCPP_PROCESS_HH
-# define UCPP_PROCESS_HH
+#include <macro.hh>
 
-# include <string>
-# include <iostream>
-# include <fstream>
-# include <map>
+Macro::Macro(MacroType type)
+    : type_(type)
+{}
 
-# include <ucpp-lexer.hh>
-# include <macro.hh>
-
-class UcppProcess
-{
-    public:
-        UcppProcess(const std::string& in, const std::string& out);
-        ~UcppProcess();
-
-        void init();
-        void process();
-
-    private:
-        void directive();
-
-        void print(const std::string& s);
-
-    private:
-        std::string input_;
-        std::string output_;
-
-        std::ostream *soutput_;
-
-        UcppLexer lexer_;
-        std::map<std::string, Macro*> defined_macros_;
-};
-
-# include <ucpp-process.hxx>
-
-#endif /* !UCPP_PROCESS_HH */
+Macro::~Macro()
+{}

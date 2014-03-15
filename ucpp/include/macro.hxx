@@ -16,41 +16,19 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCPP_PROCESS_HH
-# define UCPP_PROCESS_HH
+#ifndef MACRO_HXX
+# define MACRO_HXX
 
-# include <string>
-# include <iostream>
-# include <fstream>
-# include <map>
-
-# include <ucpp-lexer.hh>
 # include <macro.hh>
 
-class UcppProcess
+inline void Macro::push_back(const Token& t)
 {
-    public:
-        UcppProcess(const std::string& in, const std::string& out);
-        ~UcppProcess();
+    tokens_.push_back(t);
+}
 
-        void init();
-        void process();
+const std::list<Token>& Macro::tokens_get() const
+{
+    return tokens_;
+}
 
-    private:
-        void directive();
-
-        void print(const std::string& s);
-
-    private:
-        std::string input_;
-        std::string output_;
-
-        std::ostream *soutput_;
-
-        UcppLexer lexer_;
-        std::map<std::string, Macro*> defined_macros_;
-};
-
-# include <ucpp-process.hxx>
-
-#endif /* !UCPP_PROCESS_HH */
+#endif /* !MACRO_HXX */

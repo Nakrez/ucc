@@ -95,6 +95,16 @@ void UcppProcess::process()
             directive();
         else if (t.type_get() == Token::Type::END_OF_FILE)
                 break;
+        else if (t.type_get() == Token::Type::IDENTIFIER)
+        {
+            if (defined_macros_[t.data_get()] != nullptr)
+            {
+
+                continue;
+            }
+
+            print(t.data_get());
+        }
         else
             print(t.data_get());
     }
