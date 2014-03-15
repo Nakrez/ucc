@@ -1,4 +1,4 @@
-AM_CXXFLAGS = -std=c++11
+AM_CXXFLAGS = -std=c++11 -Wall -Wextra
 AM_CPPFLAGS = -Iinclude
 bin_PROGRAMS = ucpp
 ucpp_SOURCES = src/main.cc \
