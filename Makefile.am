@@ -1,1 +1,1 @@
-SUBDIRS = ucpp tests
+SUBDIRS = lib ucpp tests
