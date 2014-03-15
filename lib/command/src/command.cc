@@ -152,8 +152,8 @@ namespace command
         {
             available_options,
             parse_opt,
-            "infile outfile",
-            "ucc : micro C Compiler",
+            options_.c_str(),
+            desc_.c_str(),
             child,
             nullptr,
             nullptr
