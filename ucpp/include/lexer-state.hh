@@ -43,6 +43,8 @@ class LexerState
         Token next();
         void skip_line();
 
+        char next_char();
+
     private:
         bool sharp();
         bool punctuators();
