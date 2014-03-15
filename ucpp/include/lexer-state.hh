@@ -47,6 +47,7 @@ class LexerState
         bool sharp();
         bool punctuators();
         bool check_blank();
+        bool identifier();
 
         void new_line();
 

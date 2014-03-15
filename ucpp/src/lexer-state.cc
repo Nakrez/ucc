@@ -72,7 +72,7 @@ Token LexerState::next()
     if (eof())
         return Token(Token::Type::END_OF_FILE, "<<EOF>>");
 
-    if (!punctuators())
+    if (!punctuators() && !identifier())
     {
         // Data
         while (line_offset_ < line_buffer_.size() &&
@@ -171,6 +171,35 @@ bool LexerState::punctuators()
     }
 
     // TODO: Digraph
+
+    return false;
+}
+
+bool LexerState::identifier()
+{
+    char c = line_buffer_.at(line_offset_);
+
+    if ((c >= 'a' && c < ('z' + 1)) ||
+        (c >= 'A' && c < ('Z' + 1)) ||
+        (c == '_'))
+    {
+        do
+        {
+            buffered_data_ += c;
+            ++line_offset_;
+
+            if (line_offset_ >= line_buffer_.size())
+                break;
+
+            c = line_buffer_.at(line_offset_);
+        } while ((c >= 'a' && c < ('z' + 1)) ||
+                 (c >= 'A' && c < ('Z' + 1)) ||
+                 (c == '_') || (c >= '0' && c < ('9' + 1)));
+
+        detected_type_ = Token::Type::IDENTIFIER;
+
+        return true;
+    }
 
     return false;
 }
