@@ -34,6 +34,7 @@ namespace command
 
             void option_set(const std::string& s);
             void description_set(const std::string& s);
+            void extra_args_set(char **args);
 
         private:
             Command();
@@ -45,6 +46,7 @@ namespace command
 
             std::string options_;
             std::string desc_;
+            char **extra_args_;
     };
 } // namespace command
 
