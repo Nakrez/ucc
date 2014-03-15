@@ -7,8 +7,11 @@ AM_INIT_AUTOMAKE([foreign -Wall -Werror subdir-objects color-tests])
 AC_LANG([C++])
 
 AC_PROG_CXX
+AM_PROG_AR
 AC_PROG_YACC
 AC_PROG_LEX
+
+LT_INIT
 
 # Checks for libraries.
 
@@ -20,6 +23,7 @@ AC_PROG_LEX
 
 AC_CONFIG_HEADERS([config.h])
 
-AC_CONFIG_FILES([Makefile ucpp/Makefile tests/Makefile])
+AC_CONFIG_FILES([Makefile ucpp/Makefile tests/Makefile lib/Makefile
+                 lib/command/Makefile])
 
 AC_OUTPUT
