@@ -65,6 +65,7 @@ class LexerState
 
         bool need_newline_;
         bool preprocess_line_;
+        bool line_beginning_;
 
         std::string line_buffer_;
         std::string buffered_data_;

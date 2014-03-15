@@ -29,6 +29,7 @@ LexerState::LexerState(std::istream *input,
     , line_(0)
     , need_newline_(true)
     , preprocess_line_(false)
+    , line_beginning_(true)
     , line_buffer_()
     , buffered_data_()
     , detected_type_(Token::Type::NONE)
@@ -72,6 +73,8 @@ Token LexerState::next()
     if (eof())
         return Token(Token::Type::END_OF_FILE, "<<EOF>>");
 
+    line_beginning_ = false;
+
     if (!punctuators() && !identifier())
     {
         // Data
@@ -113,6 +116,14 @@ bool LexerState::check_blank()
         buffered_data_ += line_buffer_.at(line_offset_);
         ++line_offset_;
     }
+
+    if (line_beginning_)
+    {
+        *out_ << buffered_data_;
+        buffered_data_.clear();
+    }
+    else
+        buffered_data_.clear();
 
     return false;
 }

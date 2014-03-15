@@ -114,19 +114,21 @@ void UcppProcess::directive()
 
     if (t.type_get() == Token::Type::IDENTIFIER)
     {
+        if (t.data_get() == "define")
+        {
 
+            return;
+        }
     }
     else if (t.type_get() == Token::Type::NUMBER)
     {
+        return;
+    }
 
-    }
-    else
-    {
-        ucpp::error(lexer_.line_get(),
-                    lexer_.column_get() - 1,
-                    lexer_.file_name_get(),
-                    "invalid preprocessing directive: #" + t.data_get());
-    }
+    ucpp::error(lexer_.line_get(),
+                lexer_.column_get() - 1,
+                lexer_.file_name_get(),
+                "invalid preprocessing directive: #" + t.data_get());
 }
 
 void UcppProcess::print(const std::string& p)
