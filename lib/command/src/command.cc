@@ -159,7 +159,7 @@ namespace command
             nullptr
         };
 
-        argp_parse(&argp, argc, argv, 0, 0, NULL);
+        argp_parse(&argp, argc, argv, 0, 0, extra_args_);
     }
 
     void Command::run()
@@ -176,5 +176,10 @@ namespace command
     void Command::description_set(const std::string& s)
     {
         desc_ = s;
+    }
+
+    void Command::extra_args_set(char **args)
+    {
+        extra_args_ = args;
     }
 } // namespace command
