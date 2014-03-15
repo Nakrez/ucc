@@ -16,50 +16,65 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCPP_LEXER_HH
-# define UCPP_LEXER_HH
+#ifndef LEXER_STATE_HH
+# define LEXER_STATE_HH
 
-# include <string>
-# include <stack>
 # include <iostream>
 # include <fstream>
 
-# include <lexer-state.hh>
 # include <token.hh>
 
-class UcppLexer
+class LexerState
 {
     public:
-        UcppLexer();
-        UcppLexer(std::ostream *out);
-        ~UcppLexer();
+        LexerState(std::istream *input,
+                   std::ostream *out,
+                   const std::string& file);
+        ~LexerState();
 
-        void out_set(std::ostream *out);
-
-        bool push_state(const std::string& file);
-        void push_state(std::istream *stream, const std::string& f);
-
-        void pop_state();
         bool eof() const;
 
-        void preprocess_line_set(bool b);
-
-        Token next();
         unsigned line_get() const;
         unsigned column_get() const;
         const std::string& file_name_get() const;
 
+        void preprocess_line_set(bool b);
+
+        Token next();
         void skip_line();
 
         char next_char() const;
         void discard_next_char();
 
     private:
-        std::stack<LexerState*> buffers_;
+        bool sharp();
+        bool punctuators();
+        bool check_blank();
+        bool identifier();
 
+        void new_line();
+
+    private:
+        std::istream *in_;
         std::ostream *out_;
+        std::string file_;
+
+        unsigned line_offset_;
+
+        unsigned column_;
+        unsigned line_;
+
+        bool need_newline_;
+        bool preprocess_line_;
+        bool line_beginning_;
+
+        std::string line_buffer_;
+        std::string buffered_data_;
+
+        Token::Type detected_type_;
+        Token last_;
 };
 
-# include <ucpp-lexer.hxx>
+# include <lexer-state.hxx>
 
-#endif /* !UCPP_LEXER_HH */
+#endif /* !LEXER_STATE_HH */

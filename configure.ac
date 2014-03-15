@@ -3,6 +3,8 @@ AC_PREREQ([2.69])
 AC_INIT([ucc], [0.1], [b.covolato@gmail.com])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror subdir-objects color-tests])
 
+AC_CONFIG_MACRO_DIR([m4])
+
 # Checks for programs.
 AC_LANG([C++])
 

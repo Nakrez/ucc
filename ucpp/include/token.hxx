@@ -16,21 +16,19 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCPP_HH
-# define UCPP_HH
+#ifndef TOKEN_HXX
+# define TOKEN_HXX
 
-# include <string>
+# include <token.hh>
 
-namespace ucpp
+inline Token::Type Token::type_get() const
 {
-    extern std::string input_file;
-    extern std::string output_file;
-    extern bool _error;
-
-    void error(unsigned line,
-               unsigned column,
-               const std::string& filename,
-               const std::string& msg);
+    return type_;
 }
 
-#endif /* !UCPP_HH */
+inline const std::string& Token::data_get() const
+{
+    return data_;
+}
+
+#endif /* !TOKEN_HXX */

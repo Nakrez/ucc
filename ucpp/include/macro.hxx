@@ -16,21 +16,19 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCPP_HH
-# define UCPP_HH
+#ifndef MACRO_HXX
+# define MACRO_HXX
 
-# include <string>
+# include <macro.hh>
 
-namespace ucpp
+inline void Macro::push_back(const Token& t)
 {
-    extern std::string input_file;
-    extern std::string output_file;
-    extern bool _error;
-
-    void error(unsigned line,
-               unsigned column,
-               const std::string& filename,
-               const std::string& msg);
+    tokens_.push_back(t);
 }
 
-#endif /* !UCPP_HH */
+const std::list<Token>& Macro::tokens_get() const
+{
+    return tokens_;
+}
+
+#endif /* !MACRO_HXX */

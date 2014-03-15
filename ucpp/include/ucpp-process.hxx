@@ -16,21 +16,17 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCPP_HH
-# define UCPP_HH
+#ifndef UCPP_PROCESS_HXX
+# define UCPP_PROCESS_HXX
 
-# include <string>
+# include <ucpp-process.hh>
 
-namespace ucpp
+inline void UcppProcess::print(const std::string& s)
 {
-    extern std::string input_file;
-    extern std::string output_file;
-    extern bool _error;
+    *soutput_ << s;
 
-    void error(unsigned line,
-               unsigned column,
-               const std::string& filename,
-               const std::string& msg);
+    if (lexer_.next_char() != '\n')
+        *soutput_ << " ";
 }
 
-#endif /* !UCPP_HH */
+#endif /* !UCPP_PROCESS_HXX */

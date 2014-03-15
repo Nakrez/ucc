@@ -16,21 +16,32 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCPP_HH
-# define UCPP_HH
+#ifndef MACRO_HH
+# define MACRO_HH
 
-# include <string>
+# include <list>
 
-namespace ucpp
+# include <token.hh>
+
+class Macro
 {
-    extern std::string input_file;
-    extern std::string output_file;
-    extern bool _error;
+    public:
+        enum MacroType
+        {
+            REGULAR,
+            FUNCTION
+        };
 
-    void error(unsigned line,
-               unsigned column,
-               const std::string& filename,
-               const std::string& msg);
-}
+    public:
+        Macro(MacroType type);
+        ~Macro();
 
-#endif /* !UCPP_HH */
+        void push_back(const Token& t);
+        const std::list<Token>& tokens_get() const;
+
+    private:
+        MacroType type_;
+        std::list<Token> tokens_;
+};
+
+#endif /* !MACRO_HH */
