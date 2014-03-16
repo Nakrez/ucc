@@ -9,6 +9,8 @@ namespace command
         : desc_(description)
         , dep_(dependancies)
     {
+        static int key = -1;
+
         if (opt.size() > 2)
         {
             if (opt.at(1) == '|')
@@ -17,7 +19,10 @@ namespace command
                 long_opt_ = opt.substr(2, opt.size() - 2);
             }
             else
+            {
                 long_opt_ = opt;
+                short_opt_ = key--;
+            }
         }
         else if (opt.size() == 1)
             short_opt_ = opt.at(0);

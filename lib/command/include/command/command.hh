@@ -6,11 +6,16 @@
 
 # include <command/basic-command.hh>
 # include <command/callback-command.hh>
+# include <command/boolean-command.hh>
 
 # define REGISTER_COMMAND(name, opt, description, callback, dep)            \
     extern void (callback)();                                               \
     static command::CallbackCommand callback##name(opt, description, dep,   \
-                                                   callback);
+                                                   callback)
+
+# define REGISTER_BOOLEAN(name, opt, description, boolean, dep)             \
+    static command::BooleanCommand boolean##name(opt, description, dep,     \
+                                                 boolean)
 
 namespace command
 {
