@@ -656,5 +656,6 @@ declaration_list
 void ucc::parse::Parser::error(ucc::parse::location const& l,
                                std::string const& s)
 {
-    std::cerr << driver.file_get() << ":"  << l << ": " << s << std::endl;
+    driver.error_ << ucc::misc::Error::Type::parse
+                  << driver.file_get() << ":"  << l << ": " << s << std::endl;
 }

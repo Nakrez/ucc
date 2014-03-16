@@ -157,7 +157,10 @@ WS  [ \t\v\n\f]
 "?"                     { return token::TERNARY; }
 
 {WS}                    { /* whitespace separates tokens */ }
-.                   { std::cerr << "Unexpected " << yytext << std::endl; }
+.                       { driver.error_ << ucc::misc::Error::Type::lex
+                                        << "Unexpected char "
+                                        << yytext << std::endl;
+                        }
 
 %%
 
@@ -204,8 +207,8 @@ void ucc::parse::Driver::lexer_begin()
         yyin = stdin;
     else if (!(yyin = fopen (file_.c_str(), "r")))
     {
-        std::cerr << "Cannot open file " << file_ << std::endl;
-        exit (EXIT_FAILURE);
+        error_ << ucc::misc::Error::Type::lex
+               << "Cannot open file " << file_ << std::endl;
     }
 }
 

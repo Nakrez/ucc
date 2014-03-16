@@ -3,6 +3,8 @@
 
 # include <string>
 
+# include <misc/error.hh>
+
 # include <parse/c-parser.hh>
 
 # define YY_DECL                                        \
@@ -26,6 +28,9 @@ namespace ucc
                 void parse_file(const std::string& name);
 
                 const std::string& file_get() const;
+
+            public:
+                ucc::misc::Error error_;
 
             private:
                 void lexer_begin();

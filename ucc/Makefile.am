@@ -1,4 +1,5 @@
-AM_CPPFLAGS = -Iinclude -I${top_srcdir}/lib/command/include -Isrc
+AM_CPPFLAGS = -I${top_srcdir}/ucc/include -I${top_srcdir}/lib/command/include \
+			  -I${top_srcdir}/ucc/src -I${top_srcdir}/lib
 
 bin_PROGRAMS = ucc
 ucc_SOURCES = src/main.cc \
