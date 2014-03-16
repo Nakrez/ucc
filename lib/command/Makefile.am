@@ -3,4 +3,5 @@ AM_CPPFLAGS = -Iinclude
 lib_LTLIBRARIES = libcommand.la
 libcommand_la_SOURCES = src/basic-command.cc \
 						src/callback-command.cc \
+						src/boolean-command.cc \
 						src/command.cc
