@@ -7,7 +7,7 @@ using namespace parse;
 Driver::Driver()
     : error_()
     , in_attribute_(false)
-    , trace_parser_(false)
+    , trace_parser_(ucc::parse::parse_trace)
     , trace_lexer_(false)
 {}
 

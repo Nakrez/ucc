@@ -7,6 +7,9 @@
 REGISTER_COMMAND(parse, "p|parse", "Parse the input file",
                  parse_file, "");
 
+REGISTER_BOOLEAN(parse_trace, "parse-trace", "Activate parse trace",
+                 ucc::parse::parse_trace, "");
+
 void parse_file()
 {
     ucc::parse::Driver driver;
