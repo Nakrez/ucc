@@ -1,10 +1,13 @@
 #include <parse/driver.hh>
+#include <ucc.hh>
 
 using namespace ucc;
 using namespace parse;
 
 Driver::Driver()
-    : trace_parser_(false)
+    : error_()
+    , in_attribute_(false)
+    , trace_parser_(false)
     , trace_lexer_(false)
 {}
 

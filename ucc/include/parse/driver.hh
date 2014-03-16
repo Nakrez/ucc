@@ -31,6 +31,7 @@ namespace ucc
 
             public:
                 ucc::misc::Error error_;
+                bool in_attribute_;
 
             private:
                 void lexer_begin();

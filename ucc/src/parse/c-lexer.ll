@@ -14,6 +14,14 @@ typedef ucc::parse::Parser::token token;
 static void comment(void);
 static ucc::parse::Parser::token_type check_type(void);
 
+# define ATTRIBUTE(tok)                     \
+    if (driver.in_attribute_)               \
+        return tok;                         \
+    else                                    \
+    {                                       \
+        return token::IDENTIFIER;           \
+    }
+
 %}
 
 %option noyywrap
@@ -52,6 +60,9 @@ WS  [ \t\v\n\f]
 "case"                  { return token::CASE; }
 "char"                  { return token::CHAR; }
 "const"                 { return token::CONST; }
+"__const"               { return token::CONST; }
+"const__"               { return token::CONST; }
+"__const__"             { return token::CONST; }
 "continue"              { return token::CONTINUE; }
 "default"               { return token::DEFAULT; }
 "do"                    { return token::DO; }
@@ -80,7 +91,106 @@ WS  [ \t\v\n\f]
 "unsigned"              { return token::UNSIGNED; }
 "void"                  { return token::VOID; }
 "volatile"              { return token::VOLATILE; }
+"__volatile"            { return token::VOLATILE; }
+"volatile__"            { return token::VOLATILE; }
+"__volatile__"          { return token::VOLATILE; }
 "while"                 { return token::WHILE; }
+
+"asm"                   { return token::ASM; }
+"__asm"                 { return token::ASM; }
+"asm__"                 { return token::ASM; }
+"__asm__"               { return token::ASM; }
+
+"__attribute__"         {
+                          driver.in_attribute_ = true;
+                          return token::ATTRIBUTE;
+                        }
+
+"alias"                 { ATTRIBUTE(token::ALIAS) }
+"__alias"               { ATTRIBUTE(token::ALIAS) }
+"__alias__"             { ATTRIBUTE(token::ALIAS) }
+"alias__"               { ATTRIBUTE(token::ALIAS) }
+
+"aligned"               { ATTRIBUTE(token::ALIGNED) }
+"__aligned"             { ATTRIBUTE(token::ALIGNED) }
+"__aligned__"           { ATTRIBUTE(token::ALIGNED) }
+"aligned__"             { ATTRIBUTE(token::ALIGNED) }
+
+"always_inline"         { ATTRIBUTE(token::ALWAYS_INLINE) }
+"__always_inline"       { ATTRIBUTE(token::ALWAYS_INLINE) }
+"__always_inline__"     { ATTRIBUTE(token::ALWAYS_INLINE) }
+"always_inline__"       { ATTRIBUTE(token::ALWAYS_INLINE) }
+
+"cdecl"                 { ATTRIBUTE(token::CDECL) }
+"__cdecl"               { ATTRIBUTE(token::CDECL) }
+"__cdecl__"             { ATTRIBUTE(token::CDECL) }
+"cdecl__"               { ATTRIBUTE(token::CDECL) }
+
+"cleanup"               { ATTRIBUTE(token::CLEANUP) }
+"__cleanup"             { ATTRIBUTE(token::CLEANUP) }
+"__cleanup__"           { ATTRIBUTE(token::CLEANUP) }
+"cleanup__"             { ATTRIBUTE(token::CLEANUP) }
+
+"constructor"           { ATTRIBUTE(token::CONSTRUCTOR) }
+"__constructor"         { ATTRIBUTE(token::CONSTRUCTOR) }
+"__constructor__"       { ATTRIBUTE(token::CONSTRUCTOR) }
+"constructor__"         { ATTRIBUTE(token::CONSTRUCTOR) }
+
+"deprecated"            { ATTRIBUTE(token::DEPRECATED) }
+"__deprecated"          { ATTRIBUTE(token::DEPRECATED) }
+"deprecated__"          { ATTRIBUTE(token::DEPRECATED) }
+"__deprecated__"        { ATTRIBUTE(token::DEPRECATED) }
+
+"destructor"            { ATTRIBUTE(token::DESTRUCTOR) }
+"__destructor"          { ATTRIBUTE(token::DESTRUCTOR) }
+"destructor__"          { ATTRIBUTE(token::DESTRUCTOR) }
+"__destructor__"        { ATTRIBUTE(token::DESTRUCTOR) }
+
+"dllexport"             { ATTRIBUTE(token::DLLEXPORT) }
+"__dllexport"           { ATTRIBUTE(token::DLLEXPORT) }
+"dllexport__"           { ATTRIBUTE(token::DLLEXPORT) }
+"__dllexport__"         { ATTRIBUTE(token::DLLEXPORT) }
+
+"dllimport"             { ATTRIBUTE(token::DLLIMPORT) }
+"__dllimport"           { ATTRIBUTE(token::DLLIMPORT) }
+"dllimport__"           { ATTRIBUTE(token::DLLIMPORT) }
+"__dllimport__"         { ATTRIBUTE(token::DLLIMPORT) }
+
+"format"                { ATTRIBUTE(token::FORMAT) }
+"__format"              { ATTRIBUTE(token::FORMAT) }
+"format__"              { ATTRIBUTE(token::FORMAT) }
+"__format__"            { ATTRIBUTE(token::FORMAT) }
+
+"leaf"                  { ATTRIBUTE(token::LEAF) }
+"__leaf"                { ATTRIBUTE(token::LEAF) }
+"leaf__"                { ATTRIBUTE(token::LEAF) }
+"__leaf__"              { ATTRIBUTE(token::LEAF) }
+
+"nonnull"               { ATTRIBUTE(token::NONNULL) }
+"__nonnull"             { ATTRIBUTE(token::NONNULL) }
+"nonnull__"             { ATTRIBUTE(token::NONNULL) }
+"__nonnull__"           { ATTRIBUTE(token::NONNULL) }
+
+"nothrow"               { ATTRIBUTE(token::NOTHROW) }
+"__nothrow"             { ATTRIBUTE(token::NOTHROW) }
+"nothrow__"             { ATTRIBUTE(token::NOTHROW) }
+"__nothrow__"           { ATTRIBUTE(token::NOTHROW) }
+
+"pure"                  { ATTRIBUTE(token::PURE) }
+"__pure"                { ATTRIBUTE(token::PURE) }
+"pure__"                { ATTRIBUTE(token::PURE) }
+"__pure__"              { ATTRIBUTE(token::PURE) }
+
+"printf"                { ATTRIBUTE(token::PRINTF) }
+"__print"               { ATTRIBUTE(token::PRINTF) }
+"printf__"              { ATTRIBUTE(token::PRINTF) }
+"__printf__"            { ATTRIBUTE(token::PRINTF) }
+
+"scanf"                 { ATTRIBUTE(token::SCANF) }
+"__scanf"               { ATTRIBUTE(token::SCANF) }
+"scanf__"               { ATTRIBUTE(token::SCANF) }
+"__scanf__"             { ATTRIBUTE(token::SCANF) }
+
 "_Alignas"              { return token::ALIGNAS; }
 "_Alignof"              { return token::ALIGNOF; }
 "_Atomic"               { return token::ATOMIC; }

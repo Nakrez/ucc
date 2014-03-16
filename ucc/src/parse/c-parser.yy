@@ -80,6 +80,28 @@
         VOID            "void"
         VOLATILE        "volatile"
         WHILE           "while"
+
+        ASM             "__asm__"
+        ATTRIBUTE       "__attribute__"
+
+        ALIAS           "__alias__"
+        ALIGNED         "__aligned__"
+        ALWAYS_INLINE   "__always_inline__"
+        CDECL           "__cdecl__"
+        CLEANUP         "__cleanup__"
+        CONSTRUCTOR     "__constructor__"
+        DEPRECATED      "__deprecated__"
+        DESTRUCTOR      "__destructor__"
+        DLLEXPORT       "__dllexport__"
+        DLLIMPORT       "__dllimport__"
+        FORMAT          "__format__"
+        LEAF            "__leaf__"
+        NONNULL         "__nonnull__"
+        NOTHROW         "__nothrow__"
+        PRINTF          "__printf__"
+        PURE            "__pure__"
+        SCANF           "__scanf__"
+
         ALIGNAS         "_Alignas"
         ALIGNOF         "_Alignof"
         ATOMIC          "_Atomic"
@@ -161,12 +183,12 @@ constant
     ;
 
 enumeration_constant        /* before it has been defined as such */
-    : IDENTIFIER
+    : "identifier"
     ;
 
 string
     : "string"
-    | FUNC_NAME
+    | "__func__"
     ;
 
 generic_selection
@@ -327,8 +349,10 @@ declaration_specifiers
     | storage_class_specifier
     | type_specifier declaration_specifiers
     | type_specifier
+    | type_qualifier attribute_spec declaration_specifiers
     | type_qualifier declaration_specifiers
     | type_qualifier
+    | type_qualifier attribute_spec
     | function_specifier declaration_specifiers
     | function_specifier
     | alignment_specifier declaration_specifiers
@@ -370,13 +394,17 @@ type_specifier
     | atomic_type_specifier
     | struct_or_union_specifier
     | enum_specifier
+    | enum_specifier attribute_spec
     | "typedef_name"
     ;
 
 struct_or_union_specifier
     : struct_or_union "{" struct_declaration_list "}"
-    | struct_or_union"identifier""{" struct_declaration_list "}"
-    | struct_or_union IDENTIFIER
+    | struct_or_union attribute_spec "{" struct_declaration_list "}"
+    | struct_or_union "{" struct_declaration_list "}" attribute_spec
+    | struct_or_union attribute_spec "{" struct_declaration_list "}" attribute_spec
+    | struct_or_union "identifier" "{" struct_declaration_list "}"
+    | struct_or_union attribute_spec "identifier"
     ;
 
 struct_or_union
@@ -454,11 +482,17 @@ alignment_specifier
 
 declarator
     : pointer direct_declarator
+    | attribute_spec pointer direct_declarator
+    | attribute_spec pointer direct_declarator attribute_spec
+    | pointer direct_declarator attribute_spec
     | direct_declarator
+    | attribute_spec direct_declarator
+    | attribute_spec direct_declarator attribute_spec
+    | direct_declarator attribute_spec
     ;
 
 direct_declarator
-    : IDENTIFIER
+    : "identifier"
     | "(" declarator ")"
     | direct_declarator "[" "]"
     | direct_declarator "[" "*" "]"
@@ -504,8 +538,8 @@ parameter_declaration
     ;
 
 identifier_list
-    : IDENTIFIER
-    | identifier_list "," IDENTIFIER
+    : "identifier"
+    | identifier_list "," "identifier"
     ;
 
 type_name
@@ -567,7 +601,7 @@ designator_list
 
 designator
     : "[" constant_expression "]"
-    | "." IDENTIFIER
+    | "." "identifier"
     ;
 
 static_assert_declaration
@@ -584,7 +618,8 @@ statement
     ;
 
 labeled_statement
-    :"identifier"":" statement
+    :"identifier" ":" attribute_spec statement
+    :"identifier" ":" statement
     | "case" constant_expression ":" statement
     | "default" ":" statement
     ;
@@ -649,6 +684,51 @@ function_definition
 declaration_list
     : declaration
     | declaration_list declaration
+    ;
+
+attribute_spec
+    : "__attribute__" "(" "(" attribute_list ")" ")"
+    {
+        driver.in_attribute_ = false;
+    }
+    ;
+
+attribute_list
+    : attribute_extension
+    | attribute_list "," attribute_extension
+    ;
+
+attribute_extension
+    : "__alias__" "(" "string" ")"
+    | "__aligned__"
+    | "__aligned__" "(" "i_constant" ")"
+    /* TODO: aligned "(" alignof ")" */
+    | "__always_inline__"
+    | "__cdecl__"
+    | "__cleanup__"
+    | "const"
+    | "__constructor__"
+    | "__deprecated__"
+    | "__destructor__"
+    | "__dllexport__"
+    | "__dllimport__"
+    | "__format__" "(" format_archetype "," "i_constant" "," "i_constant" ")"
+    | "__leaf__"
+    | "__pure__"
+    | "__nonnull__" "(" num_list ")"
+    | "__nothrow__"
+    ;
+
+num_list
+    : "i_constant"
+    | num_list "i_constant"
+    ;
+
+format_archetype
+    : "__printf__"
+    | "__scanf__"
+    /* | "__strftime__" */
+    /* | "__strfmon__" */
     ;
 
 %%
