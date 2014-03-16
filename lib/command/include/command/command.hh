@@ -13,9 +13,9 @@
     static command::CallbackCommand callback##name(opt, description, dep,   \
                                                    callback)
 
-# define REGISTER_BOOLEAN(name, opt, description, boolean, dep)             \
+# define REGISTER_BOOLEAN(name, opt, description, b, dep)                   \
     static command::BooleanCommand boolean##name(opt, description, dep,     \
-                                                 boolean)
+                                                 b)
 
 namespace command
 {
