@@ -27,6 +27,7 @@ LT_INIT
 AC_CONFIG_HEADERS([config.h])
 
 AC_CONFIG_FILES([Makefile ucpp/Makefile lib/Makefile
-                 lib/command/Makefile ucc/Makefile tests/Makefile])
+                 lib/command/Makefile lib/misc/Makefile ucc/Makefile
+                 tests/Makefile])
 
 AC_OUTPUT
