@@ -11,7 +11,7 @@ typedef ucc::parse::Parser::token token;
 
 #define sym_type(identifier) token::IDENTIFIER
 
-static void comment(void);
+static void comment(ucc::parse::Driver& driver, ucc::parse::location* yylloc);
 static ucc::parse::Parser::token_type check_type(void);
 
 # define ATTRIBUTE(tok)                     \
@@ -22,6 +22,10 @@ static ucc::parse::Parser::token_type check_type(void);
         return token::IDENTIFIER;           \
     }
 
+%}
+
+%{
+# define YY_USER_ACTION yylloc->columns(yyleng);
 %}
 
 %option noyywrap
@@ -47,12 +51,19 @@ IS  (((u|U)(l|L|ll|LL)?)|((l|L|ll|LL)(u|U)?))
 CP  (u|U|L)
 SP  (u8|u|U|L)
 ES  (\\(['"\?\\abfnrtv]|[0-7]{1,3}|x[a-fA-F0-9]+))
-WS  [ \t\v\n\f]
+WS  [ \t\v\f]
 
 %%
 
-"/*"                    { comment(); }
-"//".*                  { /* consume //-comment */ }
+%{
+    yylloc->step();
+%}
+
+"/*"                    { comment(driver, yylloc); }
+"//".*                  {
+                          yylloc->lines(yyleng);
+                          yylloc->step();
+                        }
 "#".*                   { /* ignore #line file */ }
 
 "auto"                  { return token::AUTO; }
@@ -266,7 +277,11 @@ WS  [ \t\v\n\f]
 "|"                     { return token::B_OR; }
 "?"                     { return token::TERNARY; }
 
-{WS}                    { /* whitespace separates tokens */ }
+[\n]+                   {
+                          yylloc->lines(yyleng);
+                          yylloc->step();
+                        }
+{WS}                    { yylloc->step(); }
 .                       { driver.error_ << ucc::misc::Error::Type::lex
                                         << "Unexpected char "
                                         << yytext << std::endl;
@@ -274,12 +289,14 @@ WS  [ \t\v\n\f]
 
 %%
 
-static void comment(void)
+static void comment(ucc::parse::Driver& driver, ucc::parse::location* yylloc)
 {
     int c;
 
     while ((c = yyinput()) != 0)
     {
+        yylloc->columns(1);
+
         if (c == '*')
         {
             while ((c = yyinput()) == '*')
@@ -291,9 +308,17 @@ static void comment(void)
             if (c == 0)
                 break;
         }
+        else if (c == '\n')
+        {
+            yylloc->lines();
+            yylloc->step();
+        }
+        else if (c == ' ' || c == '\t')
+            yylloc->step();
     }
 
-    std::cerr << "unterminated comment" << std::endl;
+    driver.error_ << ucc::misc::Error::Type::lex
+                  << "Unterminated comment" << std::endl;
 }
 
 static ucc::parse::Parser::token_type check_type(void)

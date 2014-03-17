@@ -444,9 +444,9 @@ struct_declarator
 enum_specifier
     : "enum" "{" enumerator_list "}"
     | "enum" "{" enumerator_list "," "}"
-    | "enum""identifier""{" enumerator_list "}"
-    | "enum""identifier""{" enumerator_list "," "}"
-    | "enum" IDENTIFIER
+    | "enum" "identifier" "{" enumerator_list "}"
+    | "enum" "identifier" "{" enumerator_list "," "}"
+    | "enum" "identifier"
     ;
 
 enumerator_list
