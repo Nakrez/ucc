@@ -355,8 +355,10 @@ declaration_specifiers
     | type_qualifier attribute_spec
     | function_specifier declaration_specifiers
     | function_specifier
+    /*
     | alignment_specifier declaration_specifiers
     | alignment_specifier
+    */
     ;
 
 init_declarator_list
@@ -475,10 +477,12 @@ function_specifier
     | "_Noreturn"
     ;
 
+/*
 alignment_specifier
     : "_Alignas" "(" type_name ")"
     | "_Alignas" "(" constant_expression ")"
     ;
+*/
 
 declarator
     : pointer direct_declarator
