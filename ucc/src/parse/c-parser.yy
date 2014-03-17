@@ -37,6 +37,7 @@
 %code
 {
 # include <parse/driver.hh>
+# include <ast/all.hh>
 }
 
 %token  IDENTIFIER     "identifier"

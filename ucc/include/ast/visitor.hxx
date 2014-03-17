@@ -3,6 +3,7 @@
 
 # include <ast/visitor.hh>
 
+template <template <typename> class Const>
 void ucc::ast::GenVisitor::operator()(typename Const<Ast>::type& ast)
 {
     ast.accept(*this);

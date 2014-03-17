@@ -19,8 +19,8 @@ namespace ucc
                 virtual void operator()(typename Const<Ast>::type& ast);
         };
 
-        typedef GenVisitor<misc::const_type> ConstVisitor;
-        typedef GenVisitor<misc::nonconst_type> Visitor;
+        typedef GenVisitor<ucc::misc::const_type> ConstVisitor;
+        typedef GenVisitor<ucc::misc::nonconst_type> Visitor;
     } // namespace ast
 } // namespace ucc
 

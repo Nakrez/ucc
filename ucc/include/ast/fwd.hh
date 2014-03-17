@@ -6,6 +6,8 @@ namespace ucc
     namespace ast
     {
         class Ast;
+
+        class Decl;
     } // namespace ast
 } // namespace ucc
 
