@@ -8,6 +8,7 @@ namespace ucc
         class Ast;
 
         class Decl;
+        class DeclSpecifier;
     } // namespace ast
 } // namespace ucc
 

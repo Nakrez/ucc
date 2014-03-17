@@ -17,7 +17,10 @@ namespace ucc
                 virtual ~GenVisitor() = default;
 
                 virtual void operator()(typename Const<Ast>::type& ast);
+
                 virtual void operator()(typename Const<Decl>::type& ast);
+                virtual void
+                    operator()(typename Const<DeclSpecifier>::type& ast);
         };
 
         typedef GenVisitor<ucc::misc::const_type> ConstVisitor;
