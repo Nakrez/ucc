@@ -7,6 +7,7 @@ ucc_SOURCES = src/main.cc \
 			  src/parse/c-parser.yy \
 			  src/parse/driver.cc \
 			  src/parse/c-lexer.ll \
-			  src/parse/command.cc
+			  src/parse/command.cc \
+			  src/ast/ast.cc
 
 ucc_LDADD = ${abs_top_builddir}/lib/command/libcommand.la
