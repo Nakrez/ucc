@@ -3,7 +3,7 @@
 
 # include <misc/symbol.hh>
 
-const std::string& ucc::misc::Symbol::data_get() const
+inline const std::string& ucc::misc::Symbol::data_get() const
 {
     return *data_;
 }
