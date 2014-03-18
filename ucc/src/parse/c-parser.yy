@@ -4,6 +4,7 @@
 %code requires
 {
 # include <string>
+# include <ast/all.hh>
 
     namespace ucc
     {
@@ -12,6 +13,11 @@
             class Driver;
         }
     }
+
+typedef ucc::ast::DeclSpecifier::StorageClassSpecifier StorageClassSpecifier;
+typedef ucc::ast::DeclSpecifier::FunctionSpecifier FunctionSpecifier;
+typedef ucc::ast::DeclSpecifier::TypeQualifier TypeQualifier;
+typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 }
 
 %glr-parser
@@ -29,16 +35,16 @@
 %parse-param { ucc::parse::Driver& driver }
 %lex-param { ucc::parse::Driver& driver }
 
-%union
-{
-
-}
-
 %code
 {
 # include <parse/driver.hh>
-# include <ast/all.hh>
 }
+
+%union
+{
+    ucc::ast::DeclSpecifier* declspecifier;
+}
+
 
 %token  IDENTIFIER     "identifier"
         I_CONSTANT      "i_constant"
@@ -165,6 +171,12 @@
         TERNARY         "?"
 
         END_OF_FILE 0   "eof"
+
+%type <declspecifier>   storage_class_specifier
+                        declaration_specifiers
+                        type_specifier
+                        type_qualifier
+                        function_specifier
 
 %start translation_unit
 %%
@@ -347,15 +359,50 @@ declaration
 
 declaration_specifiers
     : storage_class_specifier declaration_specifiers
+    {
+        $$ = $1;
+        $$->merge($2);
+    }
     | storage_class_specifier
+    {
+        $$ = $1;
+    }
     | type_specifier declaration_specifiers
+    {
+        $$ = $1;
+        $$->merge($2);
+    }
     | type_specifier
+    {
+        $$ = $1;
+    }
     | type_qualifier attribute_spec declaration_specifiers
+    {
+        $$ = $1;
+        $$->merge($3);
+    }
     | type_qualifier declaration_specifiers
+    {
+        $$ = $1;
+        $$->merge($2);
+    }
     | type_qualifier
+    {
+        $$ = $1;
+    }
     | type_qualifier attribute_spec
+    {
+        $$ = $1;
+    }
     | function_specifier declaration_specifiers
+    {
+        $$ = $1;
+        $$->merge($2);
+    }
     | function_specifier
+    {
+        $$ = $1;
+    }
     /*
     | alignment_specifier declaration_specifiers
     | alignment_specifier
@@ -373,32 +420,104 @@ init_declarator
     ;
 
 storage_class_specifier
-    : "typedef" /* identifiers must be flagged as TYPEDEF_NAME */
+    : "typedef"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->storage_class_set(StorageClassSpecifier::SCS_typedef);
+    }
     | "extern"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->storage_class_set(StorageClassSpecifier::SCS_extern);
+    }
     | "static"
-    | "_Thread_local"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->storage_class_set(StorageClassSpecifier::SCS_static);
+    }
+    /*| "_Thread_local"*/
     | "auto"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->storage_class_set(StorageClassSpecifier::SCS_auto);
+    }
     | "register"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->storage_class_set(StorageClassSpecifier::SCS_register);
+    }
     ;
 
 type_specifier
     : "void"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_specifier_set(TypeSpecifier::TS_void);
+    }
     | "char"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_specifier_set(TypeSpecifier::TS_char);
+    }
     | "short"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_specifier_set(TypeSpecifier::TS_short);
+    }
     | "int"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_specifier_set(TypeSpecifier::TS_int);
+    }
     | "long"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_specifier_set(TypeSpecifier::TS_long);
+    }
     | "float"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_specifier_set(TypeSpecifier::TS_float);
+    }
     | "double"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_specifier_set(TypeSpecifier::TS_double);
+    }
     | "signed"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_specifier_set(TypeSpecifier::TS_signed);
+    }
     | "unsigned"
-    | "_Bool"
-    | "_Complex"
-    | "_Imaginary"
-    | atomic_type_specifier
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_specifier_set(TypeSpecifier::TS_unsigned);
+    }
+    /*| "_Bool"*/
+    /*| "_Complex"*/
+    /*| "_Imaginary"*/
+    /*| atomic_type_specifier*/
     | struct_or_union_specifier
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_specifier_set(TypeSpecifier::TS_struct_union);
+    }
     | enum_specifier
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_specifier_set(TypeSpecifier::TS_enum);
+    }
     | enum_specifier attribute_spec
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_specifier_set(TypeSpecifier::TS_enum);
+    }
     | "typedef_name"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_specifier_set(TypeSpecifier::TS_type_name);
+    }
     ;
 
 struct_or_union_specifier
@@ -462,20 +581,38 @@ enumerator  /* identifiers must be flagged as ENUMERATION_CONSTANT */
     | enumeration_constant
     ;
 
+/*
 atomic_type_specifier
     : "_Atomic" "(" type_name ")"
     ;
+*/
 
 type_qualifier
     : "const"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_qualifier_set(TypeQualifier::TQ_const);
+    }
     | "restrict"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_qualifier_set(TypeQualifier::TQ_restrict);
+    }
     | "volatile"
-    | "_Atomic"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->type_qualifier_set(TypeQualifier::TQ_volatile);
+    }
+    /*| "_Atomic"*/
     ;
 
 function_specifier
     : "inline"
-    | "_Noreturn"
+    {
+        $$ = new ucc::ast::DeclSpecifier(@1);
+        $$->function_specifier_set(FunctionSpecifier::FS_inline);
+    }
+    /*| "_Noreturn"*/
     ;
 
 /*
