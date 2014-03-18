@@ -361,7 +361,7 @@ declaration_specifiers
     : storage_class_specifier declaration_specifiers
     {
         $$ = $1;
-        $$->merge($2);
+        $$->merge($2, driver.error_);
     }
     | storage_class_specifier
     {
@@ -370,7 +370,7 @@ declaration_specifiers
     | type_specifier declaration_specifiers
     {
         $$ = $1;
-        $$->merge($2);
+        $$->merge($2, driver.error_);
     }
     | type_specifier
     {
@@ -379,12 +379,12 @@ declaration_specifiers
     | type_qualifier attribute_spec declaration_specifiers
     {
         $$ = $1;
-        $$->merge($3);
+        $$->merge($3, driver.error_);
     }
     | type_qualifier declaration_specifiers
     {
         $$ = $1;
-        $$->merge($2);
+        $$->merge($2, driver.error_);
     }
     | type_qualifier
     {
@@ -397,7 +397,7 @@ declaration_specifiers
     | function_specifier declaration_specifiers
     {
         $$ = $1;
-        $$->merge($2);
+        $$->merge($2, driver.error_);
     }
     | function_specifier
     {
@@ -423,28 +423,32 @@ storage_class_specifier
     : "typedef"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_typedef);
+        $$->storage_class_set(StorageClassSpecifier::SCS_typedef,
+                              driver.error_);
     }
     | "extern"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_extern);
+        $$->storage_class_set(StorageClassSpecifier::SCS_extern,
+                              driver.error_);
     }
     | "static"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_static);
+        $$->storage_class_set(StorageClassSpecifier::SCS_static,
+                              driver.error_);
     }
     /*| "_Thread_local"*/
     | "auto"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_auto);
+        $$->storage_class_set(StorageClassSpecifier::SCS_auto, driver.error_);
     }
     | "register"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_register);
+        $$->storage_class_set(StorageClassSpecifier::SCS_register,
+                              driver.error_);
     }
     ;
 
@@ -452,47 +456,47 @@ type_specifier
     : "void"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_void);
+        $$->type_specifier_set(TypeSpecifier::TS_void, driver.error_);
     }
     | "char"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_char);
+        $$->type_specifier_set(TypeSpecifier::TS_char, driver.error_);
     }
     | "short"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_short);
+        $$->type_specifier_set(TypeSpecifier::TS_short, driver.error_);
     }
     | "int"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_int);
+        $$->type_specifier_set(TypeSpecifier::TS_int, driver.error_);
     }
     | "long"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_long);
+        $$->type_specifier_set(TypeSpecifier::TS_long, driver.error_);
     }
     | "float"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_float);
+        $$->type_specifier_set(TypeSpecifier::TS_float, driver.error_);
     }
     | "double"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_double);
+        $$->type_specifier_set(TypeSpecifier::TS_double, driver.error_);
     }
     | "signed"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_signed);
+        $$->type_specifier_set(TypeSpecifier::TS_signed, driver.error_);
     }
     | "unsigned"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_unsigned);
+        $$->type_specifier_set(TypeSpecifier::TS_unsigned, driver.error_);
     }
     /*| "_Bool"*/
     /*| "_Complex"*/
@@ -501,22 +505,22 @@ type_specifier
     | struct_or_union_specifier
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_struct_union);
+        $$->type_specifier_set(TypeSpecifier::TS_struct_union, driver.error_);
     }
     | enum_specifier
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_enum);
+        $$->type_specifier_set(TypeSpecifier::TS_enum, driver.error_);
     }
     | enum_specifier attribute_spec
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_enum);
+        $$->type_specifier_set(TypeSpecifier::TS_enum, driver.error_);
     }
     | "typedef_name"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_type_name);
+        $$->type_specifier_set(TypeSpecifier::TS_type_name, driver.error_);
     }
     ;
 
@@ -591,17 +595,17 @@ type_qualifier
     : "const"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_qualifier_set(TypeQualifier::TQ_const);
+        $$->type_qualifier_set(TypeQualifier::TQ_const, driver.error_);
     }
     | "restrict"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_qualifier_set(TypeQualifier::TQ_restrict);
+        $$->type_qualifier_set(TypeQualifier::TQ_restrict, driver.error_);
     }
     | "volatile"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_qualifier_set(TypeQualifier::TQ_volatile);
+        $$->type_qualifier_set(TypeQualifier::TQ_volatile, driver.error_);
     }
     /*| "_Atomic"*/
     ;
@@ -610,7 +614,7 @@ function_specifier
     : "inline"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->function_specifier_set(FunctionSpecifier::FS_inline);
+        $$->function_specifier_set(FunctionSpecifier::FS_inline, driver.error_);
     }
     /*| "_Noreturn"*/
     ;

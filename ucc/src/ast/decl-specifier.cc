@@ -24,13 +24,14 @@ void DeclSpecifier::accept(ConstVisitor& v) const
     v(*this);
 }
 
-bool DeclSpecifier::storage_class_set(const StorageClassSpecifier& spec)
+bool DeclSpecifier::storage_class_set(const StorageClassSpecifier& spec,
+                                      ucc::misc::Error& err)
 {
-    if (spec == StorageClassSpecifier::SCS_unspecified)
+    if (spec == SCS_unspecified)
         return true;
 
     if (storage_class_ != spec &&
-        storage_class_ != StorageClassSpecifier::SCS_unspecified)
+        storage_class_ != SCS_unspecified)
         return false;
 
     storage_class_ = spec;
@@ -38,13 +39,14 @@ bool DeclSpecifier::storage_class_set(const StorageClassSpecifier& spec)
     return true;
 }
 
-bool DeclSpecifier::type_qualifier_set(const TypeQualifier& qual)
+bool DeclSpecifier::type_qualifier_set(const TypeQualifier& qual,
+                                       ucc::misc::Error&)
 {
-    if (qual == TypeQualifier::TQ_unspecified)
+    if (qual == TQ_unspecified)
         return true;
 
     if ((type_specifier_ & qual) &&
-        type_specifier_ != TypeQualifier::TQ_unspecified)
+        type_specifier_ != TQ_unspecified)
         return false;
 
     type_qualifier_ |= qual;
@@ -52,9 +54,10 @@ bool DeclSpecifier::type_qualifier_set(const TypeQualifier& qual)
     return true;
 }
 
-bool DeclSpecifier::function_specifier_set(const FunctionSpecifier& spec)
+bool DeclSpecifier::function_specifier_set(const FunctionSpecifier& spec,
+                                           ucc::misc::Error&)
 {
-    if (spec == DeclSpecifier::FS_unspecified)
+    if (spec == FS_unspecified)
         return true;
 
     if (function_specifier_ != FS_unspecified)
@@ -65,9 +68,10 @@ bool DeclSpecifier::function_specifier_set(const FunctionSpecifier& spec)
     return true;
 }
 
-bool DeclSpecifier::type_specifier_set(const TypeSpecifier& spec)
+bool DeclSpecifier::type_specifier_set(const TypeSpecifier& spec,
+                                       ucc::misc::Error&)
 {
-    if (spec == TypeSpecifier::TS_unspecified)
+    if (spec == TS_unspecified)
         return true;
 
     if (type_specifier_ == TS_unspecified)
@@ -90,13 +94,28 @@ bool DeclSpecifier::type_specifier_set(const TypeSpecifier& spec)
     return true;
 }
 
-bool DeclSpecifier::merge(const DeclSpecifier* decl)
+bool DeclSpecifier::merge(const DeclSpecifier* decl, ucc::misc::Error& err)
 {
     if (!decl)
         return true;
 
-    return storage_class_set(decl->storage_class_get()) &&
-           type_qualifier_set(decl->type_qualifier_get()) &&
-           function_specifier_set(decl->function_specifier_get()) &&
-           type_specifier_set(decl->type_specifier_get());
+    if (!storage_class_set(decl->storage_class_, err) ||
+        !function_specifier_set(decl->function_specifier_, err))
+        return false;
+
+    for (unsigned tq = TQ_const; tq <= TQ_const; tq *= 2)
+    {
+        if (decl->type_qualifier_ & tq)
+           if (!type_qualifier_set(static_cast<TypeQualifier>(tq), err))
+               return false;
+    }
+
+    for (unsigned ts = TS_void; ts <= TS_long_long; ts *= 2)
+    {
+        if (decl->type_specifier_ & ts)
+           if (!type_specifier_set(static_cast<TypeSpecifier>(ts), err))
+               return false;
+    }
+
+    return true;
 }

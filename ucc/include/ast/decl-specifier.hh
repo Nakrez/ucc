@@ -2,6 +2,7 @@
 # define UCC_AST_DECL_SPECIFIER_HH
 
 # include <misc/symbol.hh>
+# include <misc/error.hh>
 
 # include <ast/decl.hh>
 
@@ -61,32 +62,16 @@ namespace ucc
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
 
-                bool storage_class_set(const StorageClassSpecifier& spec);
-                bool type_qualifier_set(const TypeQualifier& qual);
-                bool function_specifier_set(const FunctionSpecifier& spec);
-                bool type_specifier_set(const TypeSpecifier& spec);
+                bool storage_class_set(const StorageClassSpecifier& spec,
+                                       ucc::misc::Error& err);
+                bool type_qualifier_set(const TypeQualifier& qual,
+                                        ucc::misc::Error& err);
+                bool function_specifier_set(const FunctionSpecifier& spec,
+                                            ucc::misc::Error& err);
+                bool type_specifier_set(const TypeSpecifier& spec,
+                                        ucc::misc::Error& err);
 
-                bool merge(const DeclSpecifier* decl);
-
-                StorageClassSpecifier storage_class_get() const
-                {
-                    return storage_class_;
-                }
-
-                TypeQualifier type_qualifier_get() const
-                {
-                    return static_cast<TypeQualifier> (type_qualifier_);
-                }
-
-                FunctionSpecifier function_specifier_get() const
-                {
-                    return function_specifier_;
-                }
-
-                TypeSpecifier type_specifier_get() const
-                {
-                    return static_cast<TypeSpecifier> (type_specifier_);
-                }
+                bool merge(const DeclSpecifier* decl, ucc::misc::Error& err);
 
             private:
                 StorageClassSpecifier storage_class_;
