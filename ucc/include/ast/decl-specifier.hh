@@ -18,7 +18,8 @@ namespace ucc
                     SCS_typedef = 1,
                     SCS_extern = 2,
                     SCS_static = 4,
-                    SCS_register = 8,
+                    SCS_auto = 8,
+                    SCS_register = 16,
                 };
 
                 enum TypeQualifier
@@ -50,6 +51,7 @@ namespace ucc
                     TS_struct_union = 512,
                     TS_enum = 1024,
                     TS_type_name = 2048,
+                    TS_long_long = 4096,
                 };
 
             public:
@@ -57,13 +59,40 @@ namespace ucc
                 virtual ~DeclSpecifier();
 
                 virtual void accept(Visitor& v);
-                virtual void accept(ConstVisitor& v);
+                virtual void accept(ConstVisitor& v) const;
+
+                bool storage_class_set(const StorageClassSpecifier& spec);
+                bool type_qualifier_set(const TypeQualifier& qual);
+                bool function_specifier_set(const FunctionSpecifier& spec);
+                bool type_specifier_set(const TypeSpecifier& spec);
+
+                bool merge(const DeclSpecifier* decl);
+
+                StorageClassSpecifier storage_class_get() const
+                {
+                    return storage_class_;
+                }
+
+                TypeQualifier type_qualifier_get() const
+                {
+                    return static_cast<TypeQualifier> (type_qualifier_);
+                }
+
+                FunctionSpecifier function_specifier_get() const
+                {
+                    return function_specifier_;
+                }
+
+                TypeSpecifier type_specifier_get() const
+                {
+                    return static_cast<TypeSpecifier> (type_specifier_);
+                }
 
             private:
-                unsigned storage_class_ : 4;
+                StorageClassSpecifier storage_class_;
                 unsigned type_qualifier_ : 3;
-                unsigned function_specifier_ : 1;
-                unsigned type_specifier_ : 12;
+                FunctionSpecifier function_specifier_;
+                unsigned type_specifier_ : 13;
         };
     } // namespace ast
 } // namespace ucc
