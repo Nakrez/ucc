@@ -182,11 +182,11 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %%
 
 primary_expression
-    : IDENTIFIER
+    : "identifier"
     | constant
     | string
     | "(" expression ")"
-    | generic_selection
+    /*| generic_selection*/
     ;
 
 constant
@@ -201,12 +201,13 @@ enumeration_constant        /* before it has been defined as such */
 
 string
     : "string"
-    | "__func__"
+    /*| "__func__"*/
     ;
-
+/*
 generic_selection
     : "_Generic" "(" assignment_expression "," generic_assoc_list ")"
     ;
+
 
 generic_assoc_list
     : generic_association
@@ -217,6 +218,7 @@ generic_association
     : type_name ":" assignment_expression
     | "default" ":" assignment_expression
     ;
+*/
 
 postfix_expression
     : primary_expression
@@ -227,8 +229,11 @@ postfix_expression
     | postfix_expression "->" "identifier"
     | postfix_expression "++"
     | postfix_expression "--"
+
+/*
     | "(" type_name ")" "{" initializer_list "}"
     | "(" type_name ")" "{" initializer_list "," "}"
+*/
     ;
 
 argument_expression_list
@@ -243,7 +248,7 @@ unary_expression
     | unary_operator cast_expression
     | "sizeof" unary_expression
     | "sizeof" "(" type_name ")"
-    | "_Alignof" "(" type_name ")"
+    /*| "_Alignof" "(" type_name ")"*/
     ;
 
 unary_operator
@@ -354,7 +359,7 @@ constant_expression
 declaration
     : declaration_specifiers ";"
     | declaration_specifiers init_declarator_list ";"
-    | static_assert_declaration
+    /* | static_assert_declaration */
     ;
 
 declaration_specifiers
@@ -362,6 +367,7 @@ declaration_specifiers
     {
         $$ = $1;
         $$->merge($2, driver.error_);
+        delete $2;
     }
     | storage_class_specifier
     {
@@ -371,6 +377,7 @@ declaration_specifiers
     {
         $$ = $1;
         $$->merge($2, driver.error_);
+        delete $2;
     }
     | type_specifier
     {
@@ -380,11 +387,13 @@ declaration_specifiers
     {
         $$ = $1;
         $$->merge($3, driver.error_);
+        delete $3;
     }
     | type_qualifier declaration_specifiers
     {
         $$ = $1;
         $$->merge($2, driver.error_);
+        delete $2;
     }
     | type_qualifier
     {
@@ -398,6 +407,7 @@ declaration_specifiers
     {
         $$ = $1;
         $$->merge($2, driver.error_);
+        delete $2;
     }
     | function_specifier
     {
@@ -544,9 +554,11 @@ struct_declaration_list
     ;
 
 struct_declaration
-    : specifier_qualifier_list ";"  /* for anonymous struct/union */
-    | specifier_qualifier_list struct_declarator_list ";"
+    : specifier_qualifier_list struct_declarator_list ";"
+    /*
+    | specifier_qualifier_list ";"
     | static_assert_declaration
+    */
     ;
 
 specifier_qualifier_list
@@ -641,14 +653,15 @@ direct_declarator
     : "identifier"
     | "(" declarator ")"
     | direct_declarator "[" "]"
-    | direct_declarator "[" "*" "]"
-    | direct_declarator "[" "static" type_qualifier_list assignment_expression "]"
-    | direct_declarator "[" "static" assignment_expression "]"
-    | direct_declarator "[" type_qualifier_list "*" "]"
-    | direct_declarator "[" type_qualifier_list "static" assignment_expression "]"
-    | direct_declarator "[" type_qualifier_list assignment_expression "]"
-    | direct_declarator "[" type_qualifier_list "]"
-    | direct_declarator "[" assignment_expression "]"
+    /* | direct_declarator "[" "*" "]" */
+    /* | direct_declarator "[" "static" type_qualifier_list assignment_expression "]" */
+    /* | direct_declarator "[" "static" assignment_expression "]" */
+    /* | direct_declarator "[" type_qualifier_list "*" "]" */
+    /* | direct_declarator "[" type_qualifier_list "static" assignment_expression "]" */
+    /* | direct_declarator "[" type_qualifier_list assignment_expression "]" */
+    /* | direct_declarator "[" type_qualifier_list "]" */
+    /* | direct_declarator "[" assignment_expression "]" */
+    | direct_declarator "[" constant_expression "]"
     | direct_declarator "(" parameter_type_list ")"
     | direct_declarator "(" ")"
     | direct_declarator "(" identifier_list ")"
@@ -702,6 +715,10 @@ abstract_declarator
 direct_abstract_declarator
     : "(" abstract_declarator ")"
     | "[" "]"
+    | "[" constant_expression "]"
+    | direct_abstract_declarator "[" "]"
+    | direct_abstract_declarator "[" constant_expression "]"
+/*
     | "[" "*" "]"
     | "[" "static" type_qualifier_list assignment_expression "]"
     | "[" "static" assignment_expression "]"
@@ -709,7 +726,6 @@ direct_abstract_declarator
     | "[" type_qualifier_list assignment_expression "]"
     | "[" type_qualifier_list "]"
     | "[" assignment_expression "]"
-    | direct_abstract_declarator "[" "]"
     | direct_abstract_declarator "[" "*" "]"
     | direct_abstract_declarator "[" "static" type_qualifier_list assignment_expression "]"
     | direct_abstract_declarator "[" "static" assignment_expression "]"
@@ -717,6 +733,7 @@ direct_abstract_declarator
     | direct_abstract_declarator "[" type_qualifier_list "static" assignment_expression "]"
     | direct_abstract_declarator "[" type_qualifier_list "]"
     | direct_abstract_declarator "[" assignment_expression "]"
+*/
     | "(" ")"
     | "(" parameter_type_list ")"
     | direct_abstract_declarator "(" ")"
@@ -730,12 +747,13 @@ initializer
     ;
 
 initializer_list
-    : designation initializer
-    | initializer
-    | initializer_list "," designation initializer
+    : initializer
+/*  | designation initializer */
+/*  | initializer_list "," designation initializer */
     | initializer_list "," initializer
     ;
 
+/*
 designation
     : designator_list "="
     ;
@@ -753,7 +771,7 @@ designator
 static_assert_declaration
     : "_Static_assert" "(" constant_expression "," "string" ")" ";"
     ;
-
+*/
 statement
     : labeled_statement
     | compound_statement
@@ -764,17 +782,28 @@ statement
     ;
 
 labeled_statement
-    :"identifier" ":" attribute_spec statement
-    :"identifier" ":" statement
+    : "identifier" ":" attribute_spec statement
+    | "identifier" ":" statement
     | "case" constant_expression ":" statement
     | "default" ":" statement
     ;
 
 compound_statement
     : "{" "}"
+    | "{" statement_list "}"
+    | "{" declaration_list "}"
+    | "{" declaration_list statement_list "}"
+    /*
+    | "{" "}"
     | "{"  block_item_list "}"
+    */
     ;
 
+statement_list
+    : statement
+    | statement_list statement
+
+/*
 block_item_list
     : block_item
     | block_item_list block_item
@@ -784,6 +813,7 @@ block_item
     : declaration
     | statement
     ;
+*/
 
 expression_statement
     : ";"
@@ -801,8 +831,10 @@ iteration_statement
     | "do" statement WHILE "(" expression ")" ";"
     | "for" "(" expression_statement expression_statement ")" statement
     | "for" "(" expression_statement expression_statement expression ")" statement
+    /*
     | "for" "(" declaration expression_statement ")" statement
     | "for" "(" declaration expression_statement expression ")" statement
+    */
     ;
 
 jump_statement
@@ -826,6 +858,8 @@ external_declaration
 function_definition
     : declaration_specifiers declarator declaration_list compound_statement
     | declaration_specifiers declarator compound_statement
+    | declarator declaration_list compound_statement
+    | declarator compound_statement
 
 declaration_list
     : declaration
