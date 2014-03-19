@@ -214,7 +214,10 @@ WS  [ \t\v\f]
 "_Thread_local"         { return token::THREAD_LOCAL; }
 "__func__"              { return token::FUNC_NAME; }
 
-{L}{A}*                 { return check_type(); }
+{L}{A}*                 {
+                          yylval->symbol = new ucc::misc::Symbol(yytext);
+                          return check_type();
+                        }
 
 {HP}{H}+{IS}?               { return token::I_CONSTANT; }
 {NZ}{D}*{IS}?               { return token::I_CONSTANT; }

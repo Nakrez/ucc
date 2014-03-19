@@ -4,6 +4,7 @@
 %code requires
 {
 # include <string>
+# include <misc/symbol.hh>
 # include <ast/all.hh>
 
     namespace ucc
@@ -42,16 +43,18 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 
 %union
 {
+    ucc::misc::Symbol* symbol;
     ucc::ast::DeclSpecifier* declspecifier;
 }
 
 
-%token  IDENTIFIER     "identifier"
-        I_CONSTANT      "i_constant"
+%token<symbol>  IDENTIFIER      "identifier"
+                TYPEDEF_NAME    "typedef_name"
+                ENUM_CONSTANT   "enum_constant"
+
+%token  I_CONSTANT      "i_constant"
         F_CONSTANT      "f_constant"
         STRING_LITERAL  "string"
-        TYPEDEF_NAME    "typedef_name"
-        ENUM_CONSTANT   "enum_constant"
 
 %token  AUTO            "auto"
         BREAK           "break"
