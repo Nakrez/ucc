@@ -6,4 +6,6 @@
 # include <ast/decl.hh>
 # include <ast/decl-specifier.hh>
 
+# include <ast/type.hh>
+
 #endif /* !ALL_HH */

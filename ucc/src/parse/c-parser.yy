@@ -653,6 +653,10 @@ direct_declarator
     : "identifier"
     | "(" declarator ")"
     | direct_declarator "[" "]"
+    | direct_declarator "[" constant_expression "]"
+    | direct_declarator "(" parameter_type_list ")"
+    | direct_declarator "(" ")"
+    | direct_declarator "(" identifier_list ")"
     /* | direct_declarator "[" "*" "]" */
     /* | direct_declarator "[" "static" type_qualifier_list assignment_expression "]" */
     /* | direct_declarator "[" "static" assignment_expression "]" */
@@ -661,10 +665,6 @@ direct_declarator
     /* | direct_declarator "[" type_qualifier_list assignment_expression "]" */
     /* | direct_declarator "[" type_qualifier_list "]" */
     /* | direct_declarator "[" assignment_expression "]" */
-    | direct_declarator "[" constant_expression "]"
-    | direct_declarator "(" parameter_type_list ")"
-    | direct_declarator "(" ")"
-    | direct_declarator "(" identifier_list ")"
     ;
 
 pointer
