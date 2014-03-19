@@ -13,6 +13,8 @@ namespace ucc
                 Type(const ucc::parse::location& loc);
                 virtual ~Type();
 
+                virtual bool extends_type(Type *t) = 0;
+
                 virtual void accept(Visitor& v) = 0;
                 virtual void accept(ConstVisitor& v) const = 0;
         };
