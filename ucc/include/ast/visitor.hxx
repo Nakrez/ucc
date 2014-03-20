@@ -40,6 +40,9 @@ ucc::ast::Genvisitor<Const>::operator()(typename Const<ArrayType>::type& ast)
 {
     if (ast->sub_type_get())
         ast->sub_type_get()->accept(*this);
+
+    if (ast->size_get())
+        ast->size_get()->accept(*this);
 }
 
 template <template <typename> class Const>

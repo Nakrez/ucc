@@ -7,14 +7,21 @@ namespace ucc
 {
     namespace ast
     {
+        class Expr;
+
         class ArrayType : public Type
         {
             public:
                 ArrayType(const ucc::parse::location& loc);
+                ArrayType(const ucc::parse::location& loc, Expr* expr);
+
                 virtual ~ArrayType();
 
                 const Type* sub_type_get() const;
                 Type* sub_type_get();
+
+                const Expr* size_get() const;
+                Expr* size_get();
 
                 virtual bool extends_type(Type *t);
 
@@ -23,6 +30,7 @@ namespace ucc
 
             private:
                 Type* sub_type_;
+                Expr* size_;
         };
     } // namespace ast
 } // namespace ucc
