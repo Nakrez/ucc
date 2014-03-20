@@ -62,6 +62,9 @@ ucc::ast::Genvisitor<Const>::operator()(typename Const<FunctionType>::type& ast)
 {
     if (ast.return_type_get())
         ast.return_type_get()->accept(*this);
+
+    for (auto param : ast.param_get())
+        param->accept(*this);
 }
 
 template <template <typename> class Const>
