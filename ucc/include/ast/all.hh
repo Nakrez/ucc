@@ -9,6 +9,7 @@
 
 # include <ast/type.hh>
 # include <ast/array-type.hh>
+# include <ast/function-type.hh>
 
 # include <ast/stmt.hh>
 

@@ -13,6 +13,7 @@ namespace ucc
 
         class Type;
         class ArrayType;
+        class FunctionType;
 
         class Stmt;
 

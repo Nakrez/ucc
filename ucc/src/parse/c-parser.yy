@@ -680,7 +680,8 @@ direct_declarator
     | direct_declarator "[" "]"
     {
         $$ = $1;
-        $$->extends_type(new ucc::ast::ArrayType(@2));
+        if (!$$->extends_type(new ucc::ast::ArrayType(@2)))
+            yyparser.error(@2, "incompatible type used with array");
     }
     | direct_declarator "[" constant_expression "]"
     | direct_declarator "(" parameter_type_list ")"

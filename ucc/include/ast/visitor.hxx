@@ -47,6 +47,14 @@ ucc::ast::Genvisitor<Const>::operator()(typename Const<ArrayType>::type& ast)
 
 template <template <typename> class Const>
 void
+ucc::ast::Genvisitor<Const>::operator()(typename Const<FunctionType>::type& ast)
+{
+    if (ast.return_type_get())
+        ast.return_type_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
 ucc::ast::Genvisitor<Const>::operator()(typename Const<Stmt>::type& ast)
 {
     ast.accept(*this);
