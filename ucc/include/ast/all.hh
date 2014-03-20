@@ -9,6 +9,7 @@
 # include <ast/var-decl.hh>
 
 # include <ast/type.hh>
+# include <ast/named-type.hh>
 # include <ast/array-type.hh>
 # include <ast/function-type.hh>
 

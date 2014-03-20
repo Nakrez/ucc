@@ -13,6 +13,7 @@ namespace ucc
         class VarDecl;
 
         class Type;
+        class NamedType;
         class ArrayType;
         class FunctionType;
 

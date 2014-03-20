@@ -686,6 +686,11 @@ direct_declarator
     | direct_declarator "[" constant_expression "]"
     | direct_declarator "(" parameter_type_list ")"
     | direct_declarator "(" ")"
+    {
+        $$ = $1;
+        if (!$$->extends_type(new ucc::ast::FunctionType(@2)))
+            yyparser.error(@2, "incompatible type used with function");
+    }
     | direct_declarator "(" identifier_list ")"
     /* | direct_declarator "[" "*" "]" */
     /* | direct_declarator "[" "static" type_qualifier_list assignment_expression "]" */

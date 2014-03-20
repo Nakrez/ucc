@@ -47,6 +47,12 @@ void ucc::ast::Genvisitor<Const>::operator()(typename Const<Type>::type& ast)
 
 template <template <typename> class Const>
 void
+ucc::ast::Genvisitor<Const>::operator()(typename Const<NamedType>::type& ast)
+{
+}
+
+template <template <typename> class Const>
+void
 ucc::ast::Genvisitor<Const>::operator()(typename Const<ArrayType>::type& ast)
 {
     if (ast->sub_type_get())

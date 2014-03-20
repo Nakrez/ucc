@@ -14,6 +14,7 @@ ucc_SOURCES = src/main.cc \
 			  src/ast/declarator.cc \
 			  src/ast/var-decl.cc \
 			  src/ast/type.cc \
+			  src/ast/named-type.cc \
 			  src/ast/array-type.cc \
 			  src/ast/function-type.cc \
 			  src/ast/stmt.cc \
