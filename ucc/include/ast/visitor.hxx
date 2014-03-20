@@ -29,6 +29,17 @@ void ucc::ast::Genvisitor<Const>::operator()(typename Const<Declarator>::type&)
 }
 
 template <template <typename> class Const>
+void
+ucc::ast::GenVisitor<Const>::operator()(typename Const<VarDecl>::type& ast)
+{
+    if (ast.type_get())
+        ast.type_get()->accept(*this);
+
+    if (ast.init_get())
+        ast.init_get()->accept(*this);
+}
+
+template <template <typename> class Const>
 void ucc::ast::Genvisitor<Const>::operator()(typename Const<Type>::type& ast)
 {
     ast.accept(*this);

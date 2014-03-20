@@ -6,6 +6,7 @@
 # include <ast/decl.hh>
 # include <ast/decl-specifier.hh>
 # include <ast/declarator.hh>
+# include <ast/var-decl.hh>
 
 # include <ast/type.hh>
 # include <ast/array-type.hh>

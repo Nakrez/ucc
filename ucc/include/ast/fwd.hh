@@ -10,6 +10,7 @@ namespace ucc
         class Decl;
         class DeclSpecifier;
         class Declarator;
+        class VarDecl;
 
         class Type;
         class ArrayType;
