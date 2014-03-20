@@ -28,4 +28,18 @@ void ucc::ast::Genvisitor<Const>::operator()(typename Const<Declarator>::type&)
     abort(false && "Internal compiler error: should not reach Declarator");
 }
 
+template <template <typename> class Const>
+void ucc::ast::Genvisitor<Const>::operator()(typename Const<Type>::type& ast)
+{
+    ast.accept(*this);
+}
+
+template <template <typename> class Const>
+void
+ucc::ast::Genvisitor<Const>::operator()(typename Const<ArrayType>::type& ast)
+{
+    if (ast->sub_type_get())
+        ast->sub_type_get()->accept(*this);
+}
+
 #endif /* !UCC_AST_VISITOR_HXX */
