@@ -8,5 +8,6 @@
 # include <ast/declarator.hh>
 
 # include <ast/type.hh>
+# include <ast/array-type.hh>
 
 #endif /* !ALL_HH */

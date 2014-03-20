@@ -45,6 +45,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 {
     ucc::misc::Symbol* symbol;
     ucc::ast::DeclSpecifier* declspecifier;
+    ucc::ast::Declarator* declarator;
 }
 
 
@@ -180,6 +181,8 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         type_specifier
                         type_qualifier
                         function_specifier
+
+%type <declarator>      declarator direct_declarator
 
 %start translation_unit
 %%
@@ -647,15 +650,38 @@ declarator
     | attribute_spec pointer direct_declarator attribute_spec
     | pointer direct_declarator attribute_spec
     | direct_declarator
+    {
+        $$ = $1;
+    }
     | attribute_spec direct_declarator
+    {
+        $$ = $2;
+    }
     | attribute_spec direct_declarator attribute_spec
+    {
+        $$ = $2;
+    }
     | direct_declarator attribute_spec
+    {
+        $$ = $1;
+    }
     ;
 
 direct_declarator
     : "identifier"
+    {
+        $$ = new ucc::ast::Declarator(@1, *$1);
+        delete $1;
+    }
     | "(" declarator ")"
+    {
+        $$ = $2;
+    }
     | direct_declarator "[" "]"
+    {
+        $$ = $1;
+        $$->extends_type(new ucc::ast::ArrayType(@2));
+    }
     | direct_declarator "[" constant_expression "]"
     | direct_declarator "(" parameter_type_list ")"
     | direct_declarator "(" ")"

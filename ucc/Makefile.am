@@ -12,7 +12,8 @@ ucc_SOURCES = src/main.cc \
 			  src/ast/decl.cc \
 			  src/ast/decl-specifier.cc \
 			  src/ast/declarator.cc \
-			  src/ast/type.cc
+			  src/ast/type.cc \
+			  src/ast/array-type.cc
 
 ucc_LDADD = ${abs_top_builddir}/lib/command/libcommand.la \
 			${abs_top_builddir}/lib/misc/libmisc.la

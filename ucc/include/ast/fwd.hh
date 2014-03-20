@@ -12,6 +12,7 @@ namespace ucc
         class Declarator;
 
         class Type;
+        class ArrayType;
     } // namespace ast
 } // namespace ucc
 
