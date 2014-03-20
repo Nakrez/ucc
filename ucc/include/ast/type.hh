@@ -13,10 +13,23 @@ namespace ucc
                 Type(const ucc::parse::location& loc);
                 virtual ~Type();
 
+                bool is_const() const;
+                bool is_volatile() const;
+                bool is_unsigned() const;
+
+                void const_set(bool b = true);
+                void volatile_set(bool b = true);
+                void unsigned_set(bool b = true);
+
                 virtual bool extends_type(Type *t) = 0;
 
                 virtual void accept(Visitor& v) = 0;
                 virtual void accept(ConstVisitor& v) const = 0;
+
+            private:
+                bool is_const_;
+                bool is_volatile_;
+                bool is_unsigned_;
         };
     } // namespace ast
 } // namespace ucc
