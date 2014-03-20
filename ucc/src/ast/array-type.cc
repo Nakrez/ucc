@@ -11,6 +11,16 @@ ArrayType::ArrayType(const ucc::parse::location& loc)
 ArrayType::~ArrayType()
 {}
 
+const Type* ArrayType::sub_type_get() const
+{
+    return sub_type_;
+}
+
+Type* ArrayType::sub_type_get()
+{
+    return sub_type_;
+}
+
 bool ArrayType::extends_type(Type *t)
 {
     if (sub_type_ == nullptr)

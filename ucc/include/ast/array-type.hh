@@ -13,6 +13,9 @@ namespace ucc
                 ArrayType(const ucc::parse::location& loc);
                 virtual ~ArrayType();
 
+                const Type* sub_type_get() const;
+                Type* sub_type_get();
+
                 virtual bool extends_type(Type *t);
 
                 virtual void accept(Visitor& v);
