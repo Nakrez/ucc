@@ -15,6 +15,8 @@ namespace ucc
         class ArrayType;
 
         class Stmt;
+
+        class Expr;
     } // namespace ast
 } // namespace ucc
 

@@ -12,4 +12,6 @@
 
 # include <ast/stmt.hh>
 
+# include <ast/expr.hh>
+
 #endif /* !ALL_HH */

@@ -29,6 +29,8 @@ namespace ucc
                 virtual void operator()(typename Const<ArrayType>::type& ast);
 
                 virtual void operator()(typename Const<Stmt>::type& ast);
+
+                virtual void operator()(typename Const<Expr>::type& ast);
         };
 
         typedef GenVisitor<ucc::misc::const_type> ConstVisitor;
