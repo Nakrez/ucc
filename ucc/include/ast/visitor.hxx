@@ -42,4 +42,11 @@ ucc::ast::Genvisitor<Const>::operator()(typename Const<ArrayType>::type& ast)
         ast->sub_type_get()->accept(*this);
 }
 
+template <template <typename> class Const>
+void
+ucc::ast::Genvisitor<Const>::operator()(typename Const<Stmt>::type& ast)
+{
+    ast.accept(*this);
+}
+
 #endif /* !UCC_AST_VISITOR_HXX */

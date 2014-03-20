@@ -10,4 +10,6 @@
 # include <ast/type.hh>
 # include <ast/array-type.hh>
 
+# include <ast/stmt.hh>
+
 #endif /* !ALL_HH */

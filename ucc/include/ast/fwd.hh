@@ -13,6 +13,8 @@ namespace ucc
 
         class Type;
         class ArrayType;
+
+        class Stmt;
     } // namespace ast
 } // namespace ucc
 
