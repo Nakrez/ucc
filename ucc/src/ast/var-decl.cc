@@ -6,20 +6,11 @@
 using namespace ucc;
 using namespace ast;
 
-VarDecl::VarDecl(const ucc::parse::location& loc)
-    : Decl(loc)
-    , type_(nullptr)
-    , init_(nullptr)
-{}
-
-VarDecl::VarDecl(const ucc::parse::location& loc, Type* type)
-    : Decl(loc)
-    , type_(type)
-    , init_(nullptr)
-{}
-
-VarDecl::VarDecl(const ucc::parse::location& loc, Type* type, Expr* e)
-    : Decl(loc)
+VarDecl::VarDecl(const ucc::parse::location& loc,
+                 const ucc::misc::Symbol& name,
+                 Type* type,
+                 Expr* e)
+    : Decl(loc, name)
     , type_(type)
     , init_(e)
 {}

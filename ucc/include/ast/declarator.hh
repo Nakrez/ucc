@@ -18,8 +18,6 @@ namespace ucc
                            const ucc::misc::Symbol& s);
                 virtual ~Declarator();
 
-                const ucc::misc::Symbol& identifier_get() const;
-
                 const Type* type_get() const;
                 Type* type_get();
 
@@ -34,8 +32,6 @@ namespace ucc
                 virtual void accept(ConstVisitor& v) const;
 
             private:
-                ucc::misc::Symbol identifier_;
-
                 Type* type_;
                 Expr* init_;
         };

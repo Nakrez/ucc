@@ -389,7 +389,7 @@ declaration
 
             }
             else
-                $$ = new ucc::ast::VarDecl(@1,
+                $$ = new ucc::ast::VarDecl(@1, decl->name_get(),
                                            decl->type_get(), decl->init_get());
             delete decl;
         }

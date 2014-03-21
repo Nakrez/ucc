@@ -7,19 +7,13 @@ using namespace ast;
 
 Declarator::Declarator(const ucc::parse::location& loc,
                        const ucc::misc::Symbol& s)
-    : Decl(loc)
-    , identifier_(s)
+    : Decl(loc, s)
     , type_(nullptr)
 {}
 
 Declarator::~Declarator()
 {
     /* type_ and init_ is not deleted because it is transfered to a decl */
-}
-
-const ucc::misc::Symbol& Declarator::identifier_get() const
-{
-    return identifier_;
 }
 
 const Type* Declarator::type_get() const

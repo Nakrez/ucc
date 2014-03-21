@@ -13,9 +13,10 @@ namespace ucc
         class VarDecl : public Decl
         {
             public:
-                VarDecl(const ucc::parse::location& loc);
-                VarDecl(const ucc::parse::location& loc, Type* type);
-                VarDecl(const ucc::parse::location& loc, Type* type, Expr* e);
+                VarDecl(const ucc::parse::location& loc,
+                        const ucc::misc::Symbol& name,
+                        Type* type,
+                        Expr* e);
                 ~VarDecl();
 
                 const Type* type_get() const;
