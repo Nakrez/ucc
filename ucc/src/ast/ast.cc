@@ -9,3 +9,13 @@ Ast::Ast(const ucc::parse::location& loc)
 
 Ast::~Ast()
 {}
+
+const ucc::parse::location& Ast::location_get() const
+{
+    return loc_;
+}
+
+ucc::parse::location& Ast::location_get()
+{
+    return loc_;
+}
