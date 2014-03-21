@@ -7,6 +7,7 @@
 # include <ast/decl-specifier.hh>
 # include <ast/declarator.hh>
 # include <ast/var-decl.hh>
+# include <ast/function-decl.hh>
 
 # include <ast/type.hh>
 # include <ast/named-type.hh>
