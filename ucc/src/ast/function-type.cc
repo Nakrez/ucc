@@ -18,7 +18,12 @@ FunctionType::FunctionType(const ucc::parse::location& loc,
 {}
 
 FunctionType::~FunctionType()
-{}
+{
+    delete return_type_;
+
+    for (auto decl : param_)
+        delete decl;
+}
 
 const Type* FunctionType::return_type_get() const
 {
