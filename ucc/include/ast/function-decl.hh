@@ -27,8 +27,8 @@ namespace ucc
 
                 void return_type_set(Type* t);
 
-                virtual void accept(Visitor& v) = 0;
-                virtual void accept(ConstVisitor& v) const = 0;
+                virtual void accept(Visitor& v);
+                virtual void accept(ConstVisitor& v) const;
 
             protected:
                 FunctionType* type_;
