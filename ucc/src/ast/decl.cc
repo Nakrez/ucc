@@ -48,7 +48,7 @@ DeclSpecifier::StorageClassSpecifier Decl::storage_class_get() const
     return storage_;
 }
 
-void Decl::storage_class_get(DeclSpecifier::StorageClassSpecifier storage)
+void Decl::storage_class_set(DeclSpecifier::StorageClassSpecifier storage)
 {
     storage_ = storage;
 }

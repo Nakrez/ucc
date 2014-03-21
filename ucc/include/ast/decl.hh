@@ -28,7 +28,7 @@ namespace ucc
 
                 DeclSpecifier::StorageClassSpecifier storage_class_get() const;
 
-                void storage_class_get(DeclSpecifier::StorageClassSpecifier);
+                void storage_class_set(DeclSpecifier::StorageClassSpecifier);
 
                 virtual void accept(Visitor& v) = 0;
                 virtual void accept(ConstVisitor& v) const = 0;
