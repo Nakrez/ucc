@@ -9,6 +9,7 @@ Declarator::Declarator(const ucc::parse::location& loc,
                        const ucc::misc::Symbol& s)
     : Decl(loc, s)
     , type_(nullptr)
+    , init_(nullptr)
 {}
 
 Declarator::~Declarator()
