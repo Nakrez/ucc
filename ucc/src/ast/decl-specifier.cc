@@ -21,6 +21,11 @@ bool DeclSpecifier::is_typedef() const
     return storage_class_ & SCS_typedef;
 }
 
+DeclSpecifier::StorageClassSpecifier DeclSpecifier::storage_class_get() const
+{
+    return storage_class_;
+}
+
 Type* DeclSpecifier::type_get()
 {
     Type* t = nullptr;

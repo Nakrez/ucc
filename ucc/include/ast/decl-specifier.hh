@@ -64,6 +64,7 @@ namespace ucc
                 Type* type_get();
 
                 bool is_typedef() const;
+                DeclSpecifier::StorageClassSpecifier storage_class_get() const;
 
                 bool storage_class_set(const StorageClassSpecifier& spec,
                                        ucc::misc::Error& err);
