@@ -43,9 +43,11 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 
 %union
 {
+    std::list<ucc::ast::Declarator*>* decl_list;
     ucc::misc::Symbol* symbol;
     ucc::ast::DeclSpecifier* declspecifier;
     ucc::ast::Declarator* declarator;
+    ucc::ast::Expr* expr;
 }
 
 
@@ -182,7 +184,11 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         type_qualifier
                         function_specifier
 
-%type <declarator>      declarator direct_declarator
+%type <declarator>      declarator direct_declarator init_declarator
+
+%type <decl_list>       init_declarator_list
+
+%type <expr>            initializer
 
 %start translation_unit
 %%
@@ -427,12 +433,26 @@ declaration_specifiers
 
 init_declarator_list
     : init_declarator
+    {
+        $$ = new std::list<ucc::ast::Declarator*>();
+        $$->push_back($1);
+    }
     | init_declarator_list "," init_declarator
+    {
+        $$ = $1;
+        $$->push_back($3);
+    }
     ;
 
 init_declarator
     : declarator "=" initializer
+    {
+        $$ = $1;
+    }
     | declarator
+    {
+        $$ = $1;
+    }
     ;
 
 storage_class_specifier
