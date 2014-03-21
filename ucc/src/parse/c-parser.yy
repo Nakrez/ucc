@@ -47,6 +47,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::misc::Symbol* symbol;
     ucc::ast::DeclSpecifier* declspecifier;
     ucc::ast::Declarator* declarator;
+    ucc::ast::Decl* decl;
     ucc::ast::Expr* expr;
 }
 
@@ -188,6 +189,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 
 %type <decl_list>       init_declarator_list
 
+%type <decl>            declaration
 %type <expr>            initializer
 
 %start translation_unit
@@ -370,7 +372,28 @@ constant_expression
 
 declaration
     : declaration_specifiers ";"
+    {
+        yyparser.error(@1, "No name specified");
+    }
     | declaration_specifiers init_declarator_list ";"
+    {
+        for (auto decl : *$2)
+        {
+            if ($1->is_typedef())
+            {
+
+            }
+            else if (decl->type_get() &&
+                     dynamic_cast<ucc::ast::FunctionType*>(decl->type_get()))
+            {
+
+            }
+            else
+                $$ = new ucc::ast::VarDecl(@1,
+                                           decl->type_get(), decl->init_get());
+            delete decl;
+        }
+    }
     /* | static_assert_declaration */
     ;
 
@@ -448,6 +471,7 @@ init_declarator
     : declarator "=" initializer
     {
         $$ = $1;
+        $$->init_set($3);
     }
     | declarator
     {
