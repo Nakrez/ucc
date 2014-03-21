@@ -16,13 +16,6 @@ void ucc::ast::GenVisitor<Const>::operator()(typename Const<Decl>::type& ast)
 }
 
 template <template <typename> class Const>
-void
-ucc::ast::GenVistor<Const>::operator()(typename Const<DeclSpecifier>::type&)
-{
-    abort(false && "Internal compiler error: should not reach DeclSpecifier");
-}
-
-template <template <typename> class Const>
 void ucc::ast::Genvisitor<Const>::operator()(typename Const<Declarator>::type&)
 {
     abort(false && "Internal compiler error: should not reach Declarator");

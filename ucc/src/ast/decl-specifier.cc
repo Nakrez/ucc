@@ -6,7 +6,7 @@ using namespace ucc;
 using namespace ast;
 
 DeclSpecifier::DeclSpecifier(const ucc::parse::location& loc)
-    : Decl(loc)
+    : loc_(loc)
     , storage_class_(SCS_unspecified)
     , type_qualifier_(TQ_unspecified)
     , function_specifier_(FS_unspecified)
@@ -21,35 +21,25 @@ bool DeclSpecifier::is_typedef() const
     return storage_class_ & SCS_typedef;
 }
 
-void DeclSpecifier::accept(Visitor& v)
-{
-    v(*this);
-}
-
-void DeclSpecifier::accept(ConstVisitor& v) const
-{
-    v(*this);
-}
-
 Type* DeclSpecifier::type_get()
 {
     Type* t = nullptr;
 
     if (type_specifier_ & TS_void)
-        t = new NamedType(location_get(), "void");
+        t = new NamedType(loc_, "void");
     else if (type_specifier_ & TS_char)
-        t = new NamedType(location_get(), "char");
+        t = new NamedType(loc_, "char");
     else if (type_specifier_ & TS_int)
-        t = new NamedType(location_get(), "int");
+        t = new NamedType(loc_, "int");
     else if (type_specifier_ & TS_long)
-        t = new NamedType(location_get(), "long");
+        t = new NamedType(loc_, "long");
     else if (type_specifier_ & TS_float)
-        t = new NamedType(location_get(), "float");
+        t = new NamedType(loc_, "float");
     else if (type_specifier_ & TS_double)
-        t = new NamedType(location_get(), "double");
+        t = new NamedType(loc_, "double");
 
     if (!t)
-        t = new NamedType(location_get(), "int");
+        t = new NamedType(loc_, "int");
 
     if (type_qualifier_ & TQ_const)
         t->const_set();

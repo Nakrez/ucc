@@ -4,7 +4,7 @@
 # include <misc/symbol.hh>
 # include <misc/error.hh>
 
-# include <ast/decl.hh>
+# include <location.hh>
 
 namespace ucc
 {
@@ -12,7 +12,7 @@ namespace ucc
     {
         class Type;
 
-        class DeclSpecifier : public Decl
+        class DeclSpecifier
         {
             public:
                 enum StorageClassSpecifier
@@ -63,9 +63,6 @@ namespace ucc
 
                 Type* type_get();
 
-                virtual void accept(Visitor& v);
-                virtual void accept(ConstVisitor& v) const;
-
                 bool is_typedef() const;
 
                 bool storage_class_set(const StorageClassSpecifier& spec,
@@ -80,6 +77,7 @@ namespace ucc
                 bool merge(const DeclSpecifier* decl, ucc::misc::Error& err);
 
             private:
+                ucc::parse::location loc_;
                 StorageClassSpecifier storage_class_;
                 unsigned type_qualifier_ : 3;
                 FunctionSpecifier function_specifier_;
