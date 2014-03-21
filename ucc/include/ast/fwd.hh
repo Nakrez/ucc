@@ -12,6 +12,7 @@ namespace ucc
         class Declarator;
         class VarDecl;
         class FunctionDecl;
+        class TypeDecl;
 
         class Type;
         class NamedType;
