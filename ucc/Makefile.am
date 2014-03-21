@@ -20,7 +20,9 @@ ucc_SOURCES = src/main.cc \
 			  src/ast/array-type.cc \
 			  src/ast/function-type.cc \
 			  src/ast/stmt.cc \
-			  src/ast/expr.cc
+			  src/ast/expr.cc \
+			  src/ast/pretty-printer.cc \
+			  src/ast/command.cc
 
 ucc_LDADD = ${abs_top_builddir}/lib/command/libcommand.la \
 			${abs_top_builddir}/lib/misc/libmisc.la
