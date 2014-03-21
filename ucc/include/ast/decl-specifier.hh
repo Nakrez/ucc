@@ -10,6 +10,8 @@ namespace ucc
 {
     namespace ast
     {
+        class Type;
+
         class DeclSpecifier : public Decl
         {
             public:
@@ -58,6 +60,8 @@ namespace ucc
             public:
                 DeclSpecifier(const ucc::parse::location& loc);
                 virtual ~DeclSpecifier();
+
+                Type* type_get();
 
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;

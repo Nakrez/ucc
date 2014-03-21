@@ -1,4 +1,6 @@
 #include <ast/decl-specifier.hh>
+#include <ast/type.hh>
+#include <ast/named-type.hh>
 
 using namespace ucc;
 using namespace ast;
@@ -22,6 +24,36 @@ void DeclSpecifier::accept(Visitor& v)
 void DeclSpecifier::accept(ConstVisitor& v) const
 {
     v(*this);
+}
+
+Type* DeclSpecifier::type_get()
+{
+    Type* t = nullptr;
+
+    if (type_specifier_ & TS_void)
+        t = new NamedType(location_get(), "void");
+    else if (type_specifier_ & TS_char)
+        t = new NamedType(location_get(), "char");
+    else if (type_specifier_ & TS_int)
+        t = new NamedType(location_get(), "int");
+    else if (type_specifier_ & TS_long)
+        t = new NamedType(location_get(), "long");
+    else if (type_specifier_ & TS_float)
+        t = new NamedType(location_get(), "float");
+    else if (type_specifier_ & TS_double)
+        t = new NamedType(location_get(), "double");
+
+    if (!t)
+        return nullptr;
+
+    if (type_qualifier_ & TQ_const)
+        t->const_set();
+    if (type_qualifier_ & TQ_volatile)
+        t->volatile_set();
+    if (type_specifier_ & TS_signed)
+        t->unsigned_set();
+
+    return t;
 }
 
 bool DeclSpecifier::storage_class_set(const StorageClassSpecifier& spec,
