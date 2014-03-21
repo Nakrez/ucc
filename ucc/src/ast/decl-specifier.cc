@@ -16,6 +16,11 @@ DeclSpecifier::DeclSpecifier(const ucc::parse::location& loc)
 DeclSpecifier::~DeclSpecifier()
 {}
 
+bool DeclSpecifier::is_typedef() const
+{
+    return storage_class_ & SCS_typedef;
+}
+
 void DeclSpecifier::accept(Visitor& v)
 {
     v(*this);
@@ -44,7 +49,7 @@ Type* DeclSpecifier::type_get()
         t = new NamedType(location_get(), "double");
 
     if (!t)
-        return nullptr;
+        t = new NamedType(location_get(), "int");
 
     if (type_qualifier_ & TQ_const)
         t->const_set();

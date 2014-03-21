@@ -66,6 +66,8 @@ namespace ucc
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
 
+                bool is_typedef() const;
+
                 bool storage_class_set(const StorageClassSpecifier& spec,
                                        ucc::misc::Error& err);
                 bool type_qualifier_set(const TypeQualifier& qual,
