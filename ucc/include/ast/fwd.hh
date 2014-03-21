@@ -7,6 +7,9 @@ namespace ucc
     {
         class Ast;
 
+        template<class T>
+        class AnyList;
+
         class Decl;
         class DeclSpecifier;
         class Declarator;
@@ -22,6 +25,8 @@ namespace ucc
         class Stmt;
 
         class Expr;
+
+        typedef AnyList<Decl> DeclList;
     } // namespace ast
 } // namespace ucc
 

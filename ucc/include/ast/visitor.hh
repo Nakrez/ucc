@@ -18,6 +18,8 @@ namespace ucc
 
                 virtual void operator()(typename Const<Ast>::type& ast);
 
+                virtual void operator()(typename Const<DeclList>::type& ast);
+
                 virtual void operator()(typename Const<Decl>::type& ast);
 
                 virtual void operator()(typename Const<Declarator>::type& ast);

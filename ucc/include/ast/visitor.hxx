@@ -10,6 +10,13 @@ void ucc::ast::GenVisitor<Const>::operator()(typename Const<Ast>::type& ast)
 }
 
 template <template <typename> class Const>
+void ucc::ast::GenVisitor<Const>::operator()(typename Const<DeclList>::type& ast)
+{
+    for (auto elem : ast.list_get())
+        elem->accept(*this);
+}
+
+template <template <typename> class Const>
 void ucc::ast::GenVisitor<Const>::operator()(typename Const<Decl>::type& ast)
 {
     ast.accept(*this);
