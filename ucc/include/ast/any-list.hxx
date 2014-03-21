@@ -35,6 +35,18 @@ namespace ucc
         }
 
         template <class T>
+        void AnyList<T>::splice_front(AnyList<T>& list)
+        {
+            list_.splice(list_.begin(), list.list_get());
+        }
+
+        template <class T>
+        void AnyList<T>::splice_back(AnyList<T>& list)
+        {
+            list_.splice(list_.end(), list.list_get());
+        }
+
+        template <class T>
         void AnyList<T>::accept(Visitor& v)
         {
             v(*this);

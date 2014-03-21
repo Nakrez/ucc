@@ -21,6 +21,9 @@ namespace ucc
 
                 void push_back(T* elem);
 
+                void splice_front(AnyList<T>& list);
+                void splice_back(AnyList<T>& list);
+
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
 
