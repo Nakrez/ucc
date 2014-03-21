@@ -7,6 +7,8 @@
 
 # include <parse/c-parser.hh>
 
+# include <ast/fwd.hh>
+
 # define YY_DECL                                        \
     ucc::parse::Parser::token_type yylex (             \
             ucc::parse::Parser::semantic_type* yylval,  \
@@ -32,6 +34,8 @@ namespace ucc
             public:
                 ucc::misc::Error error_;
                 bool in_attribute_;
+
+                ucc::ast::DeclList* ast_;
 
             private:
                 void lexer_begin();

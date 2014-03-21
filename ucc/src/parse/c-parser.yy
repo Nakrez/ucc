@@ -43,12 +43,13 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 
 %union
 {
-    std::list<ucc::ast::Declarator*>* decl_list;
+    std::list<ucc::ast::Declarator*>* declarator_list;
     ucc::misc::Symbol* symbol;
     ucc::ast::DeclSpecifier* declspecifier;
     ucc::ast::Declarator* declarator;
     ucc::ast::Decl* decl;
     ucc::ast::Expr* expr;
+    ucc::ast::DeclList* decl_list;
 }
 
 
@@ -187,9 +188,11 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 
 %type <declarator>      declarator direct_declarator init_declarator
 
-%type <decl_list>       init_declarator_list
+%type <declarator_list> init_declarator_list
+%type <decl_list>       declaration
+                        declaration_list
+                        external_declaration
 
-%type <decl>            declaration
 %type <expr>            initializer
 
 %start translation_unit
@@ -377,21 +380,40 @@ declaration
     }
     | declaration_specifiers init_declarator_list ";"
     {
+        ucc::ast::Decl* new_decl = nullptr;
+        $$ = new ucc::ast::DeclList(@1);
+
         for (auto decl : *$2)
         {
             if ($1->is_typedef())
             {
-
+                if (decl->type_get())
+                    yyparser.error(@1, "Unsupported");
+                else
+                    new_decl = new ucc::ast::TypeDecl(@1,
+                                                      decl->name_get(),
+                                                      $1->type_get());
             }
             else if (decl->type_get() &&
-                     dynamic_cast<ucc::ast::FunctionType*>(decl->type_get()))
+                    dynamic_cast<ucc::ast::FunctionType*>(decl->type_get())) 
             {
+                ucc::ast::FunctionType* t;
+                t = dynamic_cast<ucc::ast::FunctionType*>(decl->type_get());
 
+                t->return_type_set($1->type_get());
+
+                new_decl = new ucc::ast::FunctionDecl(@1, decl->name_get(), t);
             }
             else
-                $$ = new ucc::ast::VarDecl(@1, decl->name_get(),
-                                           decl->type_get(), decl->init_get());
+                new_decl = new ucc::ast::VarDecl(@1, decl->name_get(),
+                                                 $1->type_get(),
+                                                 decl->init_get());
+
+            new_decl->storage_class_set($1->storage_class_get());
+
             delete decl;
+
+            $$->push_back(new_decl);
         }
     }
     /* | static_assert_declaration */
@@ -926,12 +948,21 @@ jump_statement
 
 translation_unit
     : external_declaration
+    {
+        driver.ast_ = $1;
+    }
     | translation_unit external_declaration
+    {
+        driver.ast_->splice_back(*$2);
+    }
     ;
 
 external_declaration
     : function_definition
     | declaration
+    {
+        $$ = $1;
+    }
     ;
 
 function_definition
@@ -942,7 +973,14 @@ function_definition
 
 declaration_list
     : declaration
+    {
+        $$ = $1;
+    }
     | declaration_list declaration
+    {
+        $$ = $1;
+        $$->splice_back(*$2);
+    }
     ;
 
 attribute_spec

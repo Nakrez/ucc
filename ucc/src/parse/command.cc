@@ -17,4 +17,7 @@ void parse_file()
     driver.parse_file(ucc::input_file);
 
     driver.error_.throw_on_error();
+
+    if (driver.ast_)
+        ucc::ast::the_ast = driver.ast_;
 }
