@@ -2,9 +2,7 @@ AM_CPPFLAGS = -I${top_srcdir}/ucc/include -I${top_srcdir}/lib/command/include \
 			  -I${top_srcdir}/ucc/src -I${top_srcdir}/lib/misc/include
 
 bin_PROGRAMS = ucc
-ucc_SOURCES = src/main.cc \
-			  src/ucc.cc \
-			  src/parse/c-parser.yy \
+ucc_SOURCES = src/parse/c-parser.yy \
 			  src/parse/driver.cc \
 			  src/parse/c-lexer.ll \
 			  src/parse/command.cc \
@@ -22,7 +20,9 @@ ucc_SOURCES = src/main.cc \
 			  src/ast/stmt.cc \
 			  src/ast/expr.cc \
 			  src/ast/pretty-printer.cc \
-			  src/ast/command.cc
+			  src/ast/command.cc \
+			  src/main.cc \
+			  src/ucc.cc
 
 ucc_LDADD = ${abs_top_builddir}/lib/command/libcommand.la \
 			${abs_top_builddir}/lib/misc/libmisc.la
