@@ -23,9 +23,9 @@ void ucc::ast::GenVisitor<Const>::operator()(typename Const<Decl>::type& ast)
 }
 
 template <template <typename> class Const>
-void ucc::ast::Genvisitor<Const>::operator()(typename Const<Declarator>::type&)
+void ucc::ast::GenVisitor<Const>::operator()(typename Const<Declarator>::type&)
 {
-    abort(false && "Internal compiler error: should not reach Declarator");
+    assert(false && "Internal compiler error: should not reach Declarator");
 }
 
 template <template <typename> class Const>
@@ -59,31 +59,31 @@ ucc::ast::GenVisitor<Const>::operator()(typename Const<TypeDecl>::type& ast)
 }
 
 template <template <typename> class Const>
-void ucc::ast::Genvisitor<Const>::operator()(typename Const<Type>::type& ast)
+void ucc::ast::GenVisitor<Const>::operator()(typename Const<Type>::type& ast)
 {
     ast.accept(*this);
 }
 
 template <template <typename> class Const>
 void
-ucc::ast::Genvisitor<Const>::operator()(typename Const<NamedType>::type& ast)
+ucc::ast::GenVisitor<Const>::operator()(typename Const<NamedType>::type&)
 {
 }
 
 template <template <typename> class Const>
 void
-ucc::ast::Genvisitor<Const>::operator()(typename Const<ArrayType>::type& ast)
+ucc::ast::GenVisitor<Const>::operator()(typename Const<ArrayType>::type& ast)
 {
-    if (ast->sub_type_get())
-        ast->sub_type_get()->accept(*this);
+    if (ast.sub_type_get())
+        ast.sub_type_get()->accept(*this);
 
-    if (ast->size_get())
-        ast->size_get()->accept(*this);
+    if (ast.size_get())
+        ast.size_get()->accept(*this);
 }
 
 template <template <typename> class Const>
 void
-ucc::ast::Genvisitor<Const>::operator()(typename Const<FunctionType>::type& ast)
+ucc::ast::GenVisitor<Const>::operator()(typename Const<FunctionType>::type& ast)
 {
     if (ast.return_type_get())
         ast.return_type_get()->accept(*this);
@@ -94,14 +94,14 @@ ucc::ast::Genvisitor<Const>::operator()(typename Const<FunctionType>::type& ast)
 
 template <template <typename> class Const>
 void
-ucc::ast::Genvisitor<Const>::operator()(typename Const<Stmt>::type& ast)
+ucc::ast::GenVisitor<Const>::operator()(typename Const<Stmt>::type& ast)
 {
     ast.accept(*this);
 }
 
 template <template <typename> class Const>
 void
-ucc::ast::Genvisitor<Const>::operator()(typename Const<Expr>::type& ast)
+ucc::ast::GenVisitor<Const>::operator()(typename Const<Expr>::type& ast)
 {
     ast.accept(*this);
 }

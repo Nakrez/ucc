@@ -1,6 +1,8 @@
 #ifndef UCC_AST_VISITOR_HH
 # define UCC_AST_VISITOR_HH
 
+# include <cassert>
+
 # include <misc/constness.hh>
 
 # include <ast/fwd.hh>
@@ -44,6 +46,6 @@ namespace ucc
     } // namespace ast
 } // namespace ucc
 
-# include <ast/visitor.hh>
+# include <ast/visitor.hxx>
 
 #endif /* !UCC_AST_VISITOR_HH */

@@ -10,6 +10,7 @@ namespace ucc
     namespace ast
     {
         class Type;
+        class Expr;
 
         class Declarator : public Decl
         {

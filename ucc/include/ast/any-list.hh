@@ -3,7 +3,7 @@
 
 # include <list>
 
-# include <ast/ast.hh>
+# include <ast/visitor.hh>
 
 namespace ucc
 {

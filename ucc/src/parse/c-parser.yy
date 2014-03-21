@@ -5,6 +5,7 @@
 {
 # include <string>
 # include <misc/symbol.hh>
+# include <ast/fwd.hh>
 # include <ast/all.hh>
 
     namespace ucc
