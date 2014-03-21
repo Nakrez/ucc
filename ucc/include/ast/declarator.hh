@@ -4,12 +4,13 @@
 # include <misc/symbol.hh>
 
 # include <ast/decl.hh>
-# include <ast/type.hh>
 
 namespace ucc
 {
     namespace ast
     {
+        class Type;
+
         class Declarator : public Decl
         {
             public:
@@ -18,7 +19,14 @@ namespace ucc
                 virtual ~Declarator();
 
                 const ucc::misc::Symbol& identifier_get() const;
+
                 const Type* type_get() const;
+                Type* type_get();
+
+                const Expr* init_get() const;
+                Expr* init_get();
+
+                void init_set(Expr* e);
 
                 bool extends_type(Type* t);
 
@@ -29,6 +37,7 @@ namespace ucc
                 ucc::misc::Symbol identifier_;
 
                 Type* type_;
+                Expr* init_;
         };
     } // namespace ast
 } // namespace ucc
