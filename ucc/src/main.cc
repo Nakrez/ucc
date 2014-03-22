@@ -23,8 +23,13 @@ int main(int argc, char *argv[])
     catch (ucc::misc::Error& e)
     {
         std::cerr << e.msg_get() << std::endl;
+
+        delete ucc::ast::the_ast;
+
         return e.error_code_get();
     }
+
+    delete ucc::ast::the_ast;
 
     return 0;
 }

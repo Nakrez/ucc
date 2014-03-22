@@ -18,6 +18,11 @@ namespace ucc
                 PrettyPrinter(std::ostream& ostr);
                 virtual ~PrettyPrinter();
 
+                virtual void operator()(const VarDecl& ast);
+                virtual void operator()(const TypeDecl& ast);
+
+                virtual void operator()(const NamedType& ast);
+
             protected:
                 std::ostream& ostr_;
         };

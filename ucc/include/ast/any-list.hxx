@@ -14,7 +14,10 @@ namespace ucc
 
         template <class T>
         AnyList<T>::~AnyList()
-        {}
+        {
+            for (auto elem : list_)
+                delete elem;
+        }
 
         template <class T>
         const std::list<T*>& AnyList<T>::list_get() const
