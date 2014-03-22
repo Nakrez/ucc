@@ -1,4 +1,5 @@
 #include <ast/pretty-printer.hh>
+#include <misc/indent.hh>
 
 using namespace ucc;
 using namespace ast;
@@ -10,6 +11,15 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
 
 PrettyPrinter::~PrettyPrinter()
 {}
+
+void PrettyPrinter::operator()(const DeclList& ast)
+{
+    for (auto elem : ast.list_get())
+    {
+        elem->accept(*this);
+        ostr_ << misc::iendl;
+    }
+}
 
 void PrettyPrinter::operator()(const VarDecl& ast)
 {
