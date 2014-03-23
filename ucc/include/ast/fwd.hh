@@ -21,6 +21,7 @@ namespace ucc
         class NamedType;
         class ArrayType;
         class FunctionType;
+        class PtrType;
 
         class Stmt;
 

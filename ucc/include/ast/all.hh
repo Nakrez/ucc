@@ -16,6 +16,7 @@
 # include <ast/named-type.hh>
 # include <ast/array-type.hh>
 # include <ast/function-type.hh>
+# include <ast/ptr-type.hh>
 
 # include <ast/stmt.hh>
 

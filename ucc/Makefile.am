@@ -17,6 +17,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/named-type.cc \
 			  src/ast/array-type.cc \
 			  src/ast/function-type.cc \
+			  src/ast/ptr-type.cc \
 			  src/ast/stmt.cc \
 			  src/ast/expr.cc \
 			  src/ast/pretty-printer.cc \
