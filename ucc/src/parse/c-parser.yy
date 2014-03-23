@@ -45,12 +45,14 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %union
 {
     std::list<ucc::ast::Declarator*>* declarator_list;
+    std::list<ucc::ast::VarDecl*>* vardecl_list;
     ucc::misc::Symbol* symbol;
     ucc::ast::DeclSpecifier* declspecifier;
     ucc::ast::Declarator* declarator;
     ucc::ast::Decl* decl;
     ucc::ast::Expr* expr;
     ucc::ast::DeclList* decl_list;
+    ucc::ast::VarDecl* vardecl;
 }
 
 
@@ -193,6 +195,9 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %type <decl_list>       declaration
                         declaration_list
                         external_declaration
+%type <vardecl>         parameter_declaration
+%type <vardecl_list>    parameter_type_list
+                        parameter_list
 
 %type <expr>            initializer
 
@@ -752,6 +757,13 @@ direct_declarator
     }
     | direct_declarator "[" constant_expression "]"
     | direct_declarator "(" parameter_type_list ")"
+    {
+        $$ = $1;
+        if (!$$->extends_type(new ucc::ast::FunctionType(@2, *$3)))
+            yyparser.error(@2, "incompatible type used with function");
+
+        delete $3;
+    }
     | direct_declarator "(" ")"
     {
         $$ = $1;
@@ -784,18 +796,44 @@ type_qualifier_list
 
 parameter_type_list
     : parameter_list "," "..."
+    {
+        $$ = $1;
+    }
     | parameter_list
+    {
+        $$ = $1;
+    }
     ;
 
 parameter_list
     : parameter_declaration
+    {
+        $$ = new std::list<ucc::ast::VarDecl*>();
+        $$->push_back($1);
+    }
     | parameter_list "," parameter_declaration
+    {
+        $$ = $1;
+        $$->push_back($3);
+    }
     ;
 
 parameter_declaration
     : declaration_specifiers declarator
+    {
+        if ($1->storage_class_get() !=
+            ucc::ast::DeclSpecifier::StorageClassSpecifier::SCS_unspecified)
+            yyparser.error(@1, "parameter can not have storage class");
+    }
     | declaration_specifiers abstract_declarator
     | declaration_specifiers
+    {
+        if ($1->storage_class_get() !=
+            ucc::ast::DeclSpecifier::StorageClassSpecifier::SCS_unspecified)
+            yyparser.error(@1, "parameter can not have storage class");
+        else
+            $$ = new ucc::ast::VarDecl(@1, "", $1->type_get(), nullptr);
+    }
     ;
 
 identifier_list
