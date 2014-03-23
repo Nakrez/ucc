@@ -52,6 +52,39 @@ void PrettyPrinter::operator()(const TypeDecl& ast)
     ostr_ << " " << ast.name_get() << ";";
 }
 
+void PrettyPrinter::operator()(const FunctionDecl& ast)
+{
+    auto it = ast.param_get().cbegin();
+    auto begin = it;
+    auto end = ast.param_get().cend();
+
+    if (ast.return_type_get())
+    {
+        ast.return_type_get()->accept(*this);
+        ostr_ << " ";
+    }
+
+    ostr_ << ast.name_get();
+
+    ostr_ << "(";
+
+    for (; it != end; ++it)
+    {
+        if (it != begin)
+            ostr_ << ", ";
+
+        if ((*it)->type_get())
+            (*it)->type_get()->accept(*this);
+        else
+            ostr_ << "int";
+
+        if ((*it)->name_get().data_get() != "")
+            ostr_ << (*it)->name_get();
+    }
+
+    ostr_ << ");";
+}
+
 void PrettyPrinter::operator()(const NamedType& ast)
 {
     ostr_ << ast.name_get();
