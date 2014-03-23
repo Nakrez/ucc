@@ -78,6 +78,10 @@ namespace ucc
                 bool merge(const DeclSpecifier* decl, ucc::misc::Error& err);
 
             private:
+                std::string
+                storage_class_to_str(StorageClassSpecifier spec) const;
+
+            private:
                 ucc::parse::location loc_;
                 StorageClassSpecifier storage_class_;
                 unsigned type_qualifier_ : 3;

@@ -64,7 +64,12 @@ bool DeclSpecifier::storage_class_set(const StorageClassSpecifier& spec,
 
     if (storage_class_ != spec &&
         storage_class_ != SCS_unspecified)
+    {
+        err << misc::Error::Type::parse
+            << loc_ << ": error: cannot combine with previous '"
+            << storage_class_to_str(storage_class_) << "' declaration";
         return false;
+    }
 
     storage_class_ = spec;
 
@@ -150,4 +155,24 @@ bool DeclSpecifier::merge(const DeclSpecifier* decl, ucc::misc::Error& err)
     }
 
     return true;
+}
+
+std::string
+DeclSpecifier::storage_class_to_str(StorageClassSpecifier spec) const
+{
+    switch (spec)
+    {
+        case SCS_typedef:
+            return "typedef";
+        case SCS_extern:
+            return "extern";
+        case SCS_static:
+            return "static";
+        case SCS_auto:
+            return "auto";
+        case SCS_register:
+            return "register";
+        default:
+            return "unknown";
+    }
 }
