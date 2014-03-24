@@ -789,7 +789,24 @@ direct_declarator
 
 pointer
     : "*" type_qualifier_list pointer
+    {
+        $$ = new ucc::ast::PtrType(@1);
+        $$->const_set($2->is_const());
+        $$->restrict_set($2->is_restrict());
+        $$->volatile_set($2->is_volatile());
+        $$->extends_type($3);
+
+        delete $2;
+    }
     | "*" type_qualifier_list
+    {
+        $$ = new ucc::ast::PtrType(@1);
+        $$->const_set($2->is_const());
+        $$->restrict_set($2->is_restrict());
+        $$->volatile_set($2->is_volatile());
+
+        delete $2;
+    }
     | "*" pointer
     {
         $$ = new ucc::ast::PtrType(@1);
@@ -807,6 +824,18 @@ type_qualifier_list
         $$ = $1;
     }
     | type_qualifier_list type_qualifier
+    {
+        $$ = $1;
+
+        if ($2->is_const())
+            $$->type_qualifier_set(TypeQualifier::TQ_const, driver.error_);
+        if ($2->is_restrict())
+            $$->type_qualifier_set(TypeQualifier::TQ_restrict, driver.error_);
+        if ($2->is_restrict())
+            $$->type_qualifier_set(TypeQualifier::TQ_volatile, driver.error_);
+
+        delete $2;
+    }
     ;
 
 
