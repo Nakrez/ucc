@@ -7,6 +7,7 @@ Type::Type(const ucc::parse::location& loc)
     : Ast(loc)
     , is_const_(false)
     , is_volatile_(false)
+    , is_restrict_(false)
     , is_unsigned_(false)
 {}
 
@@ -23,6 +24,11 @@ bool Type::is_volatile() const
     return is_volatile_;
 }
 
+bool Type::is_restrict() const
+{
+    return is_restrict_;
+}
+
 bool Type::is_unsigned() const
 {
     return is_unsigned_;
@@ -36,6 +42,11 @@ void Type::const_set(bool b)
 void Type::volatile_set(bool b)
 {
     is_volatile_ = b;
+}
+
+void Type::restrict_set(bool b)
+{
+    is_restrict_ = b;
 }
 
 void Type::unsigned_set(bool b)
