@@ -64,6 +64,10 @@ namespace ucc
                 Type* type_get();
 
                 bool is_typedef() const;
+                bool is_const() const;
+                bool is_restrict() const;
+                bool is_volatile() const;
+
                 DeclSpecifier::StorageClassSpecifier storage_class_get() const;
 
                 bool storage_class_set(const StorageClassSpecifier& spec,

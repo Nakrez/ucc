@@ -21,6 +21,21 @@ bool DeclSpecifier::is_typedef() const
     return storage_class_ & SCS_typedef;
 }
 
+bool DeclSpecifier::is_const() const
+{
+    return type_qualifier_ & TQ_const;
+}
+
+bool DeclSpecifier::is_restrict() const
+{
+    return type_qualifier_ & TQ_restrict;
+}
+
+bool DeclSpecifier::is_volatile() const
+{
+    return type_qualifier_ & TQ_volatile;
+}
+
 DeclSpecifier::StorageClassSpecifier DeclSpecifier::storage_class_get() const
 {
     return storage_class_;
