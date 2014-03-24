@@ -5,7 +5,7 @@ using namespace ucc;
 using namespace ast;
 
 PrettyPrinter::PrettyPrinter(std::ostream& ostr)
-    : ConstVisitor()
+    : DefaultConstVisitor()
     , ostr_(ostr)
 {}
 

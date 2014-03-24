@@ -1,8 +1,6 @@
 #ifndef UCC_AST_VISITOR_HH
 # define UCC_AST_VISITOR_HH
 
-# include <cassert>
-
 # include <misc/constness.hh>
 
 # include <ast/fwd.hh>
@@ -20,25 +18,25 @@ namespace ucc
 
                 virtual void operator()(typename Const<Ast>::type& ast);
 
-                virtual void operator()(typename Const<DeclList>::type& ast);
+                virtual void operator()(typename Const<DeclList>::type& ast) = 0;
 
-                virtual void operator()(typename Const<Decl>::type& ast);
+                virtual void operator()(typename Const<Decl>::type& ast) = 0;
 
-                virtual void operator()(typename Const<Declarator>::type& ast);
-                virtual void operator()(typename Const<VarDecl>::type& ast);
-                virtual void operator()(typename Const<FunctionDecl>::type& ast);
-                virtual void operator()(typename Const<TypeDecl>::type& ast);
+                virtual void operator()(typename Const<Declarator>::type& ast) = 0;
+                virtual void operator()(typename Const<VarDecl>::type& ast) = 0;
+                virtual void operator()(typename Const<FunctionDecl>::type& ast) = 0;
+                virtual void operator()(typename Const<TypeDecl>::type& ast) = 0;
 
-                virtual void operator()(typename Const<Type>::type& ast);
+                virtual void operator()(typename Const<Type>::type& ast) = 0;
 
-                virtual void operator()(typename Const<NamedType>::type& ast);
-                virtual void operator()(typename Const<ArrayType>::type& ast);
+                virtual void operator()(typename Const<NamedType>::type& ast) = 0;
+                virtual void operator()(typename Const<ArrayType>::type& ast) = 0;
                 virtual void
-                operator()(typename Const<FunctionType>::type& ast);
+                operator()(typename Const<FunctionType>::type& ast) = 0;
 
-                virtual void operator()(typename Const<Stmt>::type& ast);
+                virtual void operator()(typename Const<Stmt>::type& ast) = 0;
 
-                virtual void operator()(typename Const<Expr>::type& ast);
+                virtual void operator()(typename Const<Expr>::type& ast) = 0;
         };
 
         typedef GenVisitor<ucc::misc::const_type> ConstVisitor;

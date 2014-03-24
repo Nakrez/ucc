@@ -4,16 +4,16 @@
 # include <ostream>
 
 # include <ast/all.hh>
-# include <ast/visitor.hh>
+# include <ast/default-visitor.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class PrettyPrinter : public ConstVisitor
+        class PrettyPrinter : public DefaultConstVisitor
         {
             public:
-                using ConstVisitor::operator();
+                using DefaultConstVisitor::operator();
 
                 PrettyPrinter(std::ostream& ostr);
                 virtual ~PrettyPrinter();
