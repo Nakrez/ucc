@@ -722,11 +722,24 @@ alignment_specifier
 declarator
     : pointer direct_declarator
     {
-
+        $2->extends_type($1);
+        $$ = $2;
     }
     | attribute_spec pointer direct_declarator
+    {
+        $3->extends_type($2);
+        $$ = $3;
+    }
     | attribute_spec pointer direct_declarator attribute_spec
+    {
+        $3->extends_type($2);
+        $$ = $3;
+    }
     | pointer direct_declarator attribute_spec
+    {
+        $2->extends_type($1);
+        $$ = $2;
+    }
     | direct_declarator
     {
         $$ = $1;

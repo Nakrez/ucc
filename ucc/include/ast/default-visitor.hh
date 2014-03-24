@@ -36,6 +36,7 @@ namespace ucc
                 virtual void operator()(typename Const<ArrayType>::type& ast);
                 virtual void
                 operator()(typename Const<FunctionType>::type& ast);
+                virtual void operator()(typename Const<PtrType>::type& ast);
 
                 virtual void operator()(typename Const<Stmt>::type& ast);
 

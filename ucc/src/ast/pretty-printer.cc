@@ -89,3 +89,11 @@ void PrettyPrinter::operator()(const NamedType& ast)
 {
     ostr_ << ast.name_get();
 }
+
+void PrettyPrinter::operator()(const PtrType& ast)
+{
+    if (ast.pointed_type_get())
+        ast.pointed_type_get()->accept(*this);
+
+    ostr_ << " *";
+}

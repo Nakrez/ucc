@@ -25,6 +25,7 @@ namespace ucc
                 virtual void operator()(const FunctionDecl& ast);
 
                 virtual void operator()(const NamedType& ast);
+                virtual void operator()(const PtrType& ast);
 
             protected:
                 std::ostream& ostr_;

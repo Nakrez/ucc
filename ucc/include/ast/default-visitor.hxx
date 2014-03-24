@@ -88,6 +88,14 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<FunctionType>::typ
 
 template <template <typename> class Const>
 void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<PtrType>::type& ast)
+{
+    if (ast.pointed_type_get())
+        ast.pointed_type_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Stmt>::type& ast)
 {
     ast.accept(*this);
