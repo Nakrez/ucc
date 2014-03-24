@@ -1,6 +1,5 @@
 #include <ast/declarator.hh>
-#include <ast/type.hh>
-#include <ast/expr.hh>
+#include <ast/all.hh>
 
 using namespace ucc;
 using namespace ast;
@@ -49,6 +48,17 @@ bool Declarator::extends_type(Type* t)
         type_ = t;
 
         return true;
+    }
+
+    PtrType* ptr_t = dynamic_cast<PtrType*> (t);
+
+    if (ptr_t)
+    {
+        bool ret = ptr_t->extends_type(type_);
+
+        type_ = ptr_t;
+
+        return ret;
     }
 
     return type_->extends_type(t);

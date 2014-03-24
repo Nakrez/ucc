@@ -53,6 +53,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::Expr* expr;
     ucc::ast::DeclList* decl_list;
     ucc::ast::VarDecl* vardecl;
+    ucc::ast::PtrType* ptr_type;
 }
 
 
@@ -188,6 +189,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         type_specifier
                         type_qualifier
                         function_specifier
+                        type_qualifier_list
 
 %type <declarator>      declarator direct_declarator init_declarator
 
@@ -198,6 +200,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %type <vardecl>         parameter_declaration
 %type <vardecl_list>    parameter_type_list
                         parameter_list
+%type <ptr_type>        pointer
 
 %type <expr>            initializer
 
@@ -718,6 +721,9 @@ alignment_specifier
 
 declarator
     : pointer direct_declarator
+    {
+
+    }
     | attribute_spec pointer direct_declarator
     | attribute_spec pointer direct_declarator attribute_spec
     | pointer direct_declarator attribute_spec
@@ -785,11 +791,21 @@ pointer
     : "*" type_qualifier_list pointer
     | "*" type_qualifier_list
     | "*" pointer
+    {
+        $$ = new ucc::ast::PtrType(@1);
+        $$->extends_type($2);
+    }
     | "*"
+    {
+        $$ = new ucc::ast::PtrType(@1);
+    }
     ;
 
 type_qualifier_list
     : type_qualifier
+    {
+        $$ = $1;
+    }
     | type_qualifier_list type_qualifier
     ;
 
