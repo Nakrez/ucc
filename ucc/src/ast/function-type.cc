@@ -50,9 +50,16 @@ std::list<VarDecl*>& FunctionType::param_get()
     return param_;
 }
 
-bool FunctionType::extends_type(Type *)
+bool FunctionType::extends_type(Type *t)
 {
-    return false;
+    if (!return_type_)
+    {
+        return_type_ = t;
+
+        return true;
+    }
+
+    return return_type_->extends_type(t);
 }
 
 void FunctionType::accept(Visitor& v)

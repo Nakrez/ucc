@@ -13,7 +13,7 @@ Declarator::Declarator(const ucc::parse::location& loc,
 
 Declarator::~Declarator()
 {
-    /* type_ and init_ is not deleted because it is transfered to a decl */
+    /* type_ and init_ are not deleted because it is transfered to a decl */
 }
 
 const Type* Declarator::type_get() const
@@ -51,15 +51,6 @@ bool Declarator::extends_type(Type* t)
     }
 
     PtrType* ptr_t = dynamic_cast<PtrType*> (t);
-
-    if (ptr_t)
-    {
-        bool ret = ptr_t->extends_type(type_);
-
-        type_ = ptr_t;
-
-        return ret;
-    }
 
     return type_->extends_type(t);
 }

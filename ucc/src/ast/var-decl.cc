@@ -16,7 +16,10 @@ VarDecl::VarDecl(const ucc::parse::location& loc,
 {}
 
 VarDecl::~VarDecl()
-{}
+{
+    delete type_;
+    delete init_;
+}
 
 const Type* VarDecl::type_get() const
 {

@@ -191,7 +191,12 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         function_specifier
                         type_qualifier_list
 
-%type <declarator>      declarator direct_declarator init_declarator
+%type <declarator>      declarator
+                        direct_declarator
+                        init_declarator
+                        abstract_declarator
+                        direct_abstract_declarator
+
 
 %type <declarator_list> init_declarator_list
 %type <decl_list>       declaration
@@ -391,32 +396,29 @@ declaration
     {
         ucc::ast::Decl* new_decl = nullptr;
         $$ = new ucc::ast::DeclList(@1);
+        ucc::ast::Type* type;
 
         for (auto decl : *$2)
         {
+            type = decl->type_get();
+
+            if (!type)
+                type = $1->type_get();
+            else
+                type->extends_type($1->type_get());
+
             if ($1->is_typedef())
-            {
-                if (decl->type_get())
-                    yyparser.error(@1, "Unsupported");
-                else
-                    new_decl = new ucc::ast::TypeDecl(@1,
-                                                      decl->name_get(),
-                                                      $1->type_get());
-            }
-            else if (decl->type_get() &&
-                    dynamic_cast<ucc::ast::FunctionType*>(decl->type_get())) 
+                new_decl = new ucc::ast::TypeDecl(@1, decl->name_get(), type);
+            else if (type && dynamic_cast<ucc::ast::FunctionType*>(type))
             {
                 ucc::ast::FunctionType* t;
-                t = dynamic_cast<ucc::ast::FunctionType*>(decl->type_get());
-
-                t->return_type_set($1->type_get());
+                t = dynamic_cast<ucc::ast::FunctionType*>(type);
 
                 new_decl = new ucc::ast::FunctionDecl(@1, decl->name_get(), t);
             }
             else
                 new_decl = new ucc::ast::VarDecl(@1, decl->name_get(),
-                                                 $1->type_get(),
-                                                 decl->init_get());
+                                                 type, decl->init_get());
 
             new_decl->storage_class_set($1->storage_class_get());
 
@@ -807,7 +809,9 @@ pointer
         $$->const_set($2->is_const());
         $$->restrict_set($2->is_restrict());
         $$->volatile_set($2->is_volatile());
-        $$->extends_type($3);
+        $3->extends_type($$);
+
+        $$ = $3;
 
         delete $2;
     }
@@ -823,7 +827,9 @@ pointer
     | "*" pointer
     {
         $$ = new ucc::ast::PtrType(@1);
-        $$->extends_type($2);
+        $2->extends_type($$);
+
+        $$ = $2;
     }
     | "*"
     {
@@ -882,8 +888,37 @@ parameter_declaration
         if ($1->storage_class_get() !=
             ucc::ast::DeclSpecifier::StorageClassSpecifier::SCS_unspecified)
             yyparser.error(@1, "parameter can not have storage class");
+
+        ucc::ast::Type* t = $2->type_get();
+
+        if (!t)
+            t = $1->type_get();
+        else
+            t->extends_type($1->type_get());
+
+        $$ = new ucc::ast::VarDecl(@1, $2->name_get(), t, nullptr);
+
+        delete $1;
+        delete $2;
     }
     | declaration_specifiers abstract_declarator
+    {
+        if ($1->storage_class_get() !=
+            ucc::ast::DeclSpecifier::StorageClassSpecifier::SCS_unspecified)
+            yyparser.error(@1, "parameter can not have storage class");
+
+        ucc::ast::Type* t = $2->type_get();
+
+        if (!t)
+            t = $1->type_get();
+        else
+            t->extends_type($1->type_get());
+
+        $$ = new ucc::ast::VarDecl(@1, $2->name_get(), t, nullptr);
+
+        delete $1;
+        delete $2;
+    }
     | declaration_specifiers
     {
         if ($1->storage_class_get() !=
@@ -891,6 +926,8 @@ parameter_declaration
             yyparser.error(@1, "parameter can not have storage class");
         else
             $$ = new ucc::ast::VarDecl(@1, "", $1->type_get(), nullptr);
+
+        delete $1;
     }
     ;
 
@@ -906,15 +943,41 @@ type_name
 
 abstract_declarator
     : pointer direct_abstract_declarator
+    {
+        $2->extends_type($1);
+        $$ = $2;
+    }
     | pointer
+    {
+        $$ = new ucc::ast::Declarator(@1, "");
+        $$->extends_type($1);
+    }
     | direct_abstract_declarator
+    {
+        $$ = $1;
+    }
     ;
 
 direct_abstract_declarator
     : "(" abstract_declarator ")"
+    {
+        $$ = $2;
+    }
     | "[" "]"
+    {
+        $$ = new ucc::ast::Declarator(@1, "");
+
+        if (!$$->extends_type(new ucc::ast::ArrayType(@2)))
+            yyparser.error(@2, "incompatible type used with array");
+    }
     | "[" constant_expression "]"
     | direct_abstract_declarator "[" "]"
+    {
+        $$ = $1;
+
+        if (!$$->extends_type(new ucc::ast::ArrayType(@2)))
+            yyparser.error(@2, "incompatible type used with array");
+    }
     | direct_abstract_declarator "[" constant_expression "]"
 /*
     | "[" "*" "]"
@@ -933,9 +996,35 @@ direct_abstract_declarator
     | direct_abstract_declarator "[" assignment_expression "]"
 */
     | "(" ")"
+    {
+        $$ = new ucc::ast::Declarator(@1, "");
+        if (!$$->extends_type(new ucc::ast::FunctionType(@2)))
+            yyparser.error(@2, "incompatible type used with function");
+    }
     | "(" parameter_type_list ")"
+    {
+        $$ = new ucc::ast::Declarator(@1, "");
+
+        if (!$$->extends_type(new ucc::ast::FunctionType(@2, *$2)))
+            yyparser.error(@2, "incompatible type used with function");
+
+        delete $2;
+    }
     | direct_abstract_declarator "(" ")"
+    {
+        $$ = $1;
+        if (!$$->extends_type(new ucc::ast::FunctionType(@2)))
+            yyparser.error(@2, "incompatible type used with function");
+    }
     | direct_abstract_declarator "(" parameter_type_list ")"
+    {
+        $$ = $1;
+
+        if (!$$->extends_type(new ucc::ast::FunctionType(@2, *$3)))
+            yyparser.error(@2, "incompatible type used with function");
+
+        delete $3;
+    }
     ;
 
 initializer
