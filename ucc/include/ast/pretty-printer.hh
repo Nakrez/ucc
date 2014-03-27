@@ -28,6 +28,10 @@ namespace ucc
                 virtual void operator()(const PtrType& ast);
 
             protected:
+                bool print_fun_ptr(const Type* ast,
+                                   const ucc::misc::Symbol& sym);
+
+            protected:
                 std::ostream& ostr_;
         };
     } // namespace ast

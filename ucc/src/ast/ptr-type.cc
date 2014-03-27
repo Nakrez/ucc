@@ -22,6 +22,7 @@ const Type* PtrType::pointed_type_get() const
 {
     return pointed_type_;
 }
+
 Type* PtrType::pointed_type_get()
 {
     return pointed_type_;
