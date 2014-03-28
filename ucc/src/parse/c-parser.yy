@@ -435,7 +435,7 @@ declaration
 
             delete decl;
 
-            $$->push_back(new_decl);
+            $$->push_back(std::shared_ptr<ucc::ast::Decl>(new_decl));
         }
 
         delete $1;
@@ -1101,6 +1101,7 @@ compound_statement
     | "{" declaration_list "}"
     {
         $$ = $2->convert<ucc::ast::Ast>();
+        delete $2;
     }
     | "{" declaration_list statement_list "}"
     /*
@@ -1163,6 +1164,7 @@ translation_unit
     | translation_unit external_declaration
     {
         driver.ast_->splice_back(*$2);
+        delete $2;
     }
     ;
 
@@ -1170,7 +1172,7 @@ external_declaration
     : function_definition
     {
         $$ = new ucc::ast::DeclList(@1);
-        $$->push_back($1);
+        $$->push_back(std::shared_ptr<ucc::ast::Decl>($1));
     }
     | declaration
     {
@@ -1222,6 +1224,8 @@ declaration_list
     {
         $$ = $1;
         $$->splice_back(*$2);
+
+        delete $2;
     }
     ;
 

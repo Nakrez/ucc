@@ -1,5 +1,4 @@
-#include <ast/function-decl.hh>
-#include <ast/function-type.hh>
+#include <ast/all.hh>
 
 using namespace ucc;
 using namespace ast;
@@ -24,6 +23,7 @@ FunctionDecl::FunctionDecl(const ucc::parse::location& loc,
 FunctionDecl::~FunctionDecl()
 {
     delete type_;
+    delete compound_;
 }
 
 const AstList* FunctionDecl::compound_get() const

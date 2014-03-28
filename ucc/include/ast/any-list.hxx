@@ -14,25 +14,22 @@ namespace ucc
 
         template <class T>
         AnyList<T>::~AnyList()
-        {
-            for (auto elem : list_)
-                delete elem;
-        }
+        {}
 
         template <class T>
-        const std::list<T*>& AnyList<T>::list_get() const
+        const std::list<std::shared_ptr<T>>& AnyList<T>::list_get() const
         {
             return list_;
         }
 
         template <class T>
-        std::list<T*>& AnyList<T>::list_get()
+        std::list<std::shared_ptr<T>>& AnyList<T>::list_get()
         {
             return list_;
         }
 
         template <class T>
-        void AnyList<T>::push_back(T* elem)
+        void AnyList<T>::push_back(std::shared_ptr<T> elem)
         {
             list_.push_back(elem);
         }
@@ -56,7 +53,7 @@ namespace ucc
             AnyList<U>* list = new AnyList<U>(loc_);
 
             for (auto elem : list_)
-                list->push_back(dynamic_cast<U*> (elem));
+                list->push_back(elem);
 
             return list;
         }

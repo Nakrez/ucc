@@ -2,6 +2,7 @@
 # define UCC_AST_ANY_LIST_HH
 
 # include <list>
+# include <memory>
 
 # include <ast/visitor.hh>
 
@@ -16,10 +17,10 @@ namespace ucc
                 AnyList(const ucc::parse::location& loc);
                 virtual ~AnyList();
 
-                const std::list<T*>& list_get() const;
-                std::list<T*>& list_get();
+                const std::list<std::shared_ptr<T>>& list_get() const;
+                std::list<std::shared_ptr<T>>& list_get();
 
-                void push_back(T* elem);
+                void push_back(std::shared_ptr<T> elem);
 
                 void splice_front(AnyList<T>& list);
                 void splice_back(AnyList<T>& list);
@@ -31,7 +32,7 @@ namespace ucc
                 AnyList<U>* convert();
 
             protected:
-                std::list<T*> list_;
+                std::list<std::shared_ptr<T>> list_;
         };
     } // namespace ast
 } // namespace ucc
