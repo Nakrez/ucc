@@ -59,9 +59,7 @@ Type* DeclSpecifier::type_get()
     else if (type_specifier_ & TS_double)
         t = new NamedType(loc_, "double");
     else if (type_specifier_ & TS_type_name)
-    {
         t = new NamedType(loc_, type_name_);
-    }
 
     if (!t)
         t = new NamedType(loc_, "int");
@@ -178,6 +176,8 @@ bool DeclSpecifier::merge(const DeclSpecifier* decl, ucc::misc::Error& err)
            if (!type_specifier_set(static_cast<TypeSpecifier>(ts), err))
                return false;
     }
+
+    type_name_ = decl->type_name_;
 
     return true;
 }

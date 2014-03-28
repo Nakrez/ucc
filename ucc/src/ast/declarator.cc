@@ -50,8 +50,6 @@ bool Declarator::extends_type(Type* t)
         return true;
     }
 
-    PtrType* ptr_t = dynamic_cast<PtrType*> (t);
-
     return type_->extends_type(t);
 }
 
