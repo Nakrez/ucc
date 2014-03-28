@@ -21,6 +21,7 @@ namespace ucc
                 GenDefaultVisitor() = default;
                 virtual ~GenDefaultVisitor() = default;
 
+                virtual void operator()(typename Const<AstList>::type& ast);
                 virtual void operator()(typename Const<DeclList>::type& ast);
 
                 virtual void operator()(typename Const<Decl>::type& ast);

@@ -14,4 +14,5 @@ void pretty_print()
     assert(ucc::ast::the_ast &&
            "Internal error: No ast retrieved by the parser");
     printer(*ucc::ast::the_ast);
+    std::cout << std::endl;
 }

@@ -6,18 +6,38 @@ using namespace ast;
 
 PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     : DefaultConstVisitor()
+    , formals_(false)
     , ostr_(ostr)
 {}
 
 PrettyPrinter::~PrettyPrinter()
 {}
 
+void PrettyPrinter::operator()(const AstList& ast)
+{
+    auto it = ast.list_get().cbegin();
+    auto begin = it;
+    auto end = ast.list_get().cend();
+
+    for (; it != end; ++it)
+    {
+        if (it != begin)
+            ostr_ << ucc::misc::iendl;
+        (*it)->accept(*this);
+    }
+}
+
 void PrettyPrinter::operator()(const DeclList& ast)
 {
-    for (auto elem : ast.list_get())
+    auto it = ast.list_get().cbegin();
+    auto begin = it;
+    auto end = ast.list_get().cend();
+
+    for (; it != end; ++it)
     {
-        elem->accept(*this);
-        ostr_ << ";" << misc::iendl;
+        if (it != begin)
+            ostr_ << ucc::misc::iendl;
+        (*it)->accept(*this);
     }
 }
 
@@ -31,7 +51,11 @@ void PrettyPrinter::operator()(const VarDecl& ast)
     if (ast.type_get())
     {
         if (print_fun_ptr(ast.type_get(), ast.name_get()))
+        {
+            if (!formals_)
+                ostr_ << ";";
             return;
+        }
 
         ast.type_get()->accept(*this);
     }
@@ -47,6 +71,9 @@ void PrettyPrinter::operator()(const VarDecl& ast)
         ostr_ << " = ";
         ast.init_get()->accept(*this);
     }
+
+    if (!formals_)
+        ostr_ << ";";
 }
 
 void PrettyPrinter::operator()(const TypeDecl& ast)
@@ -56,12 +83,15 @@ void PrettyPrinter::operator()(const TypeDecl& ast)
     if (ast.type_get())
     {
         if (print_fun_ptr(ast.type_get(), ast.name_get()))
+        {
+            ostr_ << ";";
             return;
+        }
 
         ast.type_get()->accept(*this);
     }
 
-    ostr_ << " " << ast.name_get();
+    ostr_ << " " << ast.name_get() << ";";
 }
 
 void PrettyPrinter::operator()(const FunctionDecl& ast)
@@ -82,6 +112,10 @@ void PrettyPrinter::operator()(const FunctionDecl& ast)
 
     ostr_ << "(";
 
+    bool old = formals_;
+
+    formals_ = true;
+
     for (; it != end; ++it)
     {
         if (it != begin)
@@ -90,7 +124,20 @@ void PrettyPrinter::operator()(const FunctionDecl& ast)
         (*it)->accept(*this);
     }
 
+    formals_ = old;
+
     ostr_ << ")";
+
+    if (ast.compound_get())
+    {
+        ostr_ << ucc::misc::iendl;
+        ostr_ << "{" << ucc::misc::incendl;
+        ast.compound_get()->accept(*this);
+        ostr_ << ucc::misc::decendl << "}";
+
+    }
+    else
+        ostr_ << ";";
 }
 
 void PrettyPrinter::operator()(const NamedType& ast)
@@ -158,9 +205,12 @@ bool PrettyPrinter::print_fun_ptr(const Type* ast,
 
         ostr_ << sym << ")(";
 
+        bool old = formals_;
         auto it = fn->param_get().cbegin();
         auto begin = it;
         auto end = fn->param_get().cend();
+
+        formals_ = true;
 
         for (; it != end; ++it)
         {
@@ -169,6 +219,8 @@ bool PrettyPrinter::print_fun_ptr(const Type* ast,
 
             (*it)->accept(*this);
         }
+
+        formals_ = old;
 
         ostr_ << ")";
 

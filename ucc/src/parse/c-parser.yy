@@ -52,6 +52,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::Decl* decl;
     ucc::ast::Expr* expr;
     ucc::ast::DeclList* decl_list;
+    ucc::ast::StmtList* stmt_list;
     ucc::ast::VarDecl* vardecl;
     ucc::ast::PtrType* ptr_type;
     ucc::ast::FunctionDecl* fun_decl;
@@ -211,6 +212,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %type <ptr_type>        pointer
 
 %type <ast_list>        compound_statement
+%type <stmt_list>       statement_list
 
 %type <expr>            initializer
 
@@ -1089,8 +1091,14 @@ labeled_statement
 
 compound_statement
     : "{" "}"
+    {
+        $$ = new ucc::ast::AstList(@1);
+    }
     | "{" statement_list "}"
     | "{" declaration_list "}"
+    {
+        $$ = $2->convert<ucc::ast::Ast>();
+    }
     | "{" declaration_list statement_list "}"
     /*
     | "{" "}"
@@ -1157,6 +1165,10 @@ translation_unit
 
 external_declaration
     : function_definition
+    {
+        $$ = new ucc::ast::DeclList(@1);
+        $$->push_back($1);
+    }
     | declaration
     {
         $$ = $1;

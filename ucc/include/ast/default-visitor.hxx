@@ -4,6 +4,13 @@
 # include <ast/visitor.hh>
 
 template <template <typename> class Const>
+void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<AstList>::type& ast)
+{
+    for (auto elem : ast.list_get())
+        elem->accept(*this);
+}
+
+template <template <typename> class Const>
 void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<DeclList>::type& ast)
 {
     for (auto elem : ast.list_get())

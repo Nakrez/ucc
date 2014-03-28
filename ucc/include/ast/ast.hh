@@ -21,7 +21,7 @@ namespace ucc
                 virtual void accept(Visitor& v) = 0;
                 virtual void accept(ConstVisitor& v) const = 0;
 
-            private:
+            protected:
                 ucc::parse::location loc_;
         };
     } // namespace ast

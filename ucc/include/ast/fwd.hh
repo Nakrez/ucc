@@ -29,6 +29,7 @@ namespace ucc
 
         typedef AnyList<Ast> AstList;
         typedef AnyList<Decl> DeclList;
+        typedef AnyList<Stmt> StmtList;
     } // namespace ast
 } // namespace ucc
 

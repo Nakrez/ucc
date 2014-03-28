@@ -50,6 +50,18 @@ namespace ucc
         }
 
         template <class T>
+        template <class U>
+        AnyList<U>* AnyList<T>::convert()
+        {
+            AnyList<U>* list = new AnyList<U>(loc_);
+
+            for (auto elem : list_)
+                list->push_back(dynamic_cast<U*> (elem));
+
+            return list;
+        }
+
+        template <class T>
         void AnyList<T>::accept(Visitor& v)
         {
             v(*this);

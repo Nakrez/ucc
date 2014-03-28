@@ -27,6 +27,9 @@ namespace ucc
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
 
+                template <class U>
+                AnyList<U>* convert();
+
             protected:
                 std::list<T*> list_;
         };
