@@ -9,10 +9,8 @@ typedef ucc::parse::Parser::token token;
 # define yywrap() 1
 # define yyterminate() return token::END_OF_FILE
 
-#define sym_type(identifier) token::IDENTIFIER
-
 static void comment(ucc::parse::Driver& driver, ucc::parse::location* yylloc);
-static ucc::parse::Parser::token_type check_type(void);
+static ucc::parse::Parser::token_type check_type(ucc::parse::Driver& driver);
 
 # define ATTRIBUTE(tok)                     \
     if (driver.in_attribute_)               \
@@ -216,7 +214,7 @@ WS  [ \t\v\f]
 
 {L}{A}*                 {
                           yylval->symbol = new ucc::misc::Symbol(yytext);
-                          return check_type();
+                          return check_type(driver);
                         }
 
 {HP}{H}+{IS}?               { return token::I_CONSTANT; }
@@ -324,9 +322,9 @@ static void comment(ucc::parse::Driver& driver, ucc::parse::location* yylloc)
                   << "Unterminated comment" << std::endl;
 }
 
-static ucc::parse::Parser::token_type check_type(void)
+static ucc::parse::Parser::token_type check_type(ucc::parse::Driver& driver)
 {
-    switch (sym_type(yytext))
+    switch (driver.sym_[yytext])
     {
         case token::TYPEDEF_NAME:
             return token::TYPEDEF_NAME;

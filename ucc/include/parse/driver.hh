@@ -1,6 +1,7 @@
 #ifndef UCC_PARSE_DRIVER_HH
 # define UCC_PARSE_DRIVER_HH
 
+# include <map>
 # include <string>
 
 # include <misc/error.hh>
@@ -36,6 +37,8 @@ namespace ucc
                 bool in_attribute_;
 
                 ucc::ast::DeclList* ast_;
+
+                std::map<std::string, ucc::parse::Parser::token_type> sym_;
 
             private:
                 void lexer_begin();

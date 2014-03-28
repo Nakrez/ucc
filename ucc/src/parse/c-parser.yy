@@ -408,7 +408,11 @@ declaration
                 type->extends_type($1->type_get());
 
             if ($1->is_typedef())
+            {
                 new_decl = new ucc::ast::TypeDecl(@1, decl->name_get(), type);
+                driver.sym_[decl->name_get().data_get()] =
+                    ucc::parse::Parser::token::TYPEDEF_NAME;
+            }
             else if (type && dynamic_cast<ucc::ast::FunctionType*>(type))
             {
                 ucc::ast::FunctionType* t;
@@ -614,6 +618,9 @@ type_specifier
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
         $$->type_specifier_set(TypeSpecifier::TS_type_name, driver.error_);
+        $$->type_name_set(*$1);
+
+        delete $1;
     }
     ;
 

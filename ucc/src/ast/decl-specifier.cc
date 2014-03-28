@@ -11,6 +11,7 @@ DeclSpecifier::DeclSpecifier(const ucc::parse::location& loc)
     , type_qualifier_(TQ_unspecified)
     , function_specifier_(FS_unspecified)
     , type_specifier_(TS_unspecified)
+    , type_name_("")
 {}
 
 DeclSpecifier::~DeclSpecifier()
@@ -57,6 +58,10 @@ Type* DeclSpecifier::type_get()
         t = new NamedType(loc_, "float");
     else if (type_specifier_ & TS_double)
         t = new NamedType(loc_, "double");
+    else if (type_specifier_ & TS_type_name)
+    {
+        t = new NamedType(loc_, type_name_);
+    }
 
     if (!t)
         t = new NamedType(loc_, "int");
@@ -144,6 +149,11 @@ bool DeclSpecifier::type_specifier_set(const TypeSpecifier& spec,
     type_specifier_ |= spec;
 
     return true;
+}
+
+void DeclSpecifier::type_name_set(const ucc::misc::Symbol& s)
+{
+    type_name_ = s;
 }
 
 bool DeclSpecifier::merge(const DeclSpecifier* decl, ucc::misc::Error& err)

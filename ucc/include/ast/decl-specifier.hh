@@ -79,6 +79,8 @@ namespace ucc
                 bool type_specifier_set(const TypeSpecifier& spec,
                                         ucc::misc::Error& err);
 
+                void type_name_set(const ucc::misc::Symbol& s);
+
                 bool merge(const DeclSpecifier* decl, ucc::misc::Error& err);
 
             private:
@@ -91,6 +93,7 @@ namespace ucc
                 unsigned type_qualifier_ : 3;
                 FunctionSpecifier function_specifier_;
                 unsigned type_specifier_ : 13;
+                ucc::misc::Symbol type_name_;
         };
     } // namespace ast
 } // namespace ucc
