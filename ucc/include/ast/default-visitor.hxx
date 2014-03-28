@@ -42,6 +42,9 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<FunctionDecl>::typ
 
     for (auto param : ast.param_get())
         param->accept(*this);
+
+    if (ast.compound_get())
+        ast.compound_get()->accept(*this);
 }
 
 template <template <typename> class Const>

@@ -54,6 +54,8 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::DeclList* decl_list;
     ucc::ast::VarDecl* vardecl;
     ucc::ast::PtrType* ptr_type;
+    ucc::ast::FunctionDecl* fun_decl;
+    ucc::ast::AstList* ast_list;
 }
 
 
@@ -205,7 +207,10 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %type <vardecl>         parameter_declaration
 %type <vardecl_list>    parameter_type_list
                         parameter_list
+%type <fun_decl>        function_definition
 %type <ptr_type>        pointer
+
+%type <ast_list>        compound_statement
 
 %type <expr>            initializer
 
@@ -1161,6 +1166,32 @@ external_declaration
 function_definition
     : declaration_specifiers declarator declaration_list compound_statement
     | declaration_specifiers declarator compound_statement
+    {
+        ucc::ast::Type* type;
+
+        type = $2->type_get();
+
+        if (!type)
+            type = $1->type_get();
+        else
+            type->extends_type($1->type_get());
+
+        if ($1->is_typedef())
+            yyparser.error(@1,
+                           "Cannot define function with typedef specifier");
+
+        else if (type && dynamic_cast<ucc::ast::FunctionType*>(type))
+        {
+            ucc::ast::FunctionType* t;
+            t = dynamic_cast<ucc::ast::FunctionType*>(type);
+
+            $$ = new ucc::ast::FunctionDecl(@1, $2->name_get(), t, $3);
+            $$->storage_class_set($1->storage_class_get());
+        }
+        else
+            yyparser.error(@1, "Wrong combination of types for function"
+                           " declaration");
+    }
     | declarator declaration_list compound_statement
     | declarator compound_statement
 

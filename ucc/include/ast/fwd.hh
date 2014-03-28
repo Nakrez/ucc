@@ -27,6 +27,7 @@ namespace ucc
 
         class Expr;
 
+        typedef AnyList<Ast> AstList;
         typedef AnyList<Decl> DeclList;
     } // namespace ast
 } // namespace ucc
