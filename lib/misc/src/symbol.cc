@@ -14,6 +14,14 @@ Symbol::Symbol(const char* s)
 Symbol::~Symbol()
 {}
 
+Symbol& Symbol::operator=(const Symbol& s)
+{
+    if (this != &s)
+        data_ = s.data_;
+
+    return *this;
+}
+
 std::set<std::string>& Symbol::symbol_set_get()
 {
     static std::set<std::string> set;

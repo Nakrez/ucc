@@ -15,6 +15,8 @@ namespace ucc
                 Symbol(const char* s);
                 ~Symbol();
 
+                Symbol& operator=(const Symbol& s);
+
                 const std::string& data_get() const;
 
             private:
