@@ -437,6 +437,9 @@ declaration
 
             $$->push_back(new_decl);
         }
+
+        delete $1;
+        delete $2;
     }
     /* | static_assert_declaration */
     ;
@@ -1203,6 +1206,9 @@ function_definition
         else
             yyparser.error(@1, "Wrong combination of types for function"
                            " declaration");
+
+        delete $1;
+        delete $2;
     }
     | declarator declaration_list compound_statement
     | declarator compound_statement
