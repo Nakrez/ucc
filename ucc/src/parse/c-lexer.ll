@@ -217,19 +217,60 @@ WS  [ \t\v\f]
                           return check_type(driver);
                         }
 
-{HP}{H}+{IS}?               { return token::I_CONSTANT; }
-{NZ}{D}*{IS}?               { return token::I_CONSTANT; }
-"0"{O}*{IS}?                { return token::I_CONSTANT; }
-{CP}?"'"([^'\\\n]|{ES})+"'" { return token::I_CONSTANT; }
+{HP}{H}+{IS}?               {
+                                yylval->int_ = atoi(yytext);
+                                return token::I_CONSTANT;
+                            }
+{NZ}{D}*{IS}?               {
+                                yylval->int_ = atoi(yytext);
+                                return token::I_CONSTANT;
+                            }
+"0"{O}*{IS}?                {
+                                yylval->int_ = atoi(yytext);
+                                return token::I_CONSTANT;
+                            }
+{CP}?"'"([^'\\\n]|{ES})+"'" {
+                                yylval->int_ = atoi(yytext);
+                                return token::I_CONSTANT;
+                            }
 
-{D}+{E}{FS}?                { return token::F_CONSTANT; }
-{D}*"."{D}+{E}?{FS}?        { return token::F_CONSTANT; }
-{D}+"."{E}?{FS}?            { return token::F_CONSTANT; }
-{HP}{H}+{P}{FS}?            { return token::F_CONSTANT; }
-{HP}{H}*"."{H}+{P}{FS}?     { return token::F_CONSTANT; }
-{HP}{H}+"."{P}{FS}?         { return token::F_CONSTANT; }
+{D}+{E}{FS}?                {
+                                char *endptr;
+                                yylval->float_ = strtold(yytext, &endptr);
+                                return token::F_CONSTANT;
+                            }
+{D}*"."{D}+{E}?{FS}?        {
+                                char *endptr;
+                                yylval->float_ = strtold(yytext, &endptr);
+                                return token::F_CONSTANT;
+                            }
+{D}+"."{E}?{FS}?            {
+                                char *endptr;
+                                yylval->float_ = strtold(yytext, &endptr);
+                                return token::F_CONSTANT;
+                            }
+{HP}{H}+{P}{FS}?            {
+                                char *endptr;
+                                yylval->float_ = strtold(yytext, &endptr);
+                                return token::F_CONSTANT;
+                            }
+{HP}{H}*"."{H}+{P}{FS}?     {
+                                char *endptr;
+                                yylval->float_ = strtold(yytext, &endptr);
+                                return token::F_CONSTANT;
+                            }
+{HP}{H}+"."{P}{FS}?         {
+                                char *endptr;
+                                yylval->float_ = strtold(yytext, &endptr);
+                                return token::F_CONSTANT;
+                            }
 
-({SP}?\"([^"\\\n]|{ES})*\"{WS}*)+   { return token::STRING_LITERAL; }
+({SP}?\"([^"\\\n]|{ES})*\"{WS}*)+   {
+                                        std::string* str;
+                                        str = new std::string(yytext);
+                                        yylval->string_ = str;
+                                        return token::STRING_LITERAL;
+                                    }
 
 "..."                   { return token::ELLIPSIS; }
 ">>="                   { return token::RIGHT_ASSIGN; }

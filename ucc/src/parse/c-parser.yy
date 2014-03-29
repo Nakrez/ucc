@@ -47,6 +47,9 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     std::list<ucc::ast::Declarator*>* declarator_list;
     std::list<ucc::ast::VarDecl*>* vardecl_list;
     ucc::misc::Symbol* symbol;
+    int int_;
+    long double float_;
+    std::string* string_;
     ucc::ast::DeclSpecifier* declspecifier;
     ucc::ast::Declarator* declarator;
     ucc::ast::Decl* decl;
@@ -57,6 +60,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::PtrType* ptr_type;
     ucc::ast::FunctionDecl* fun_decl;
     ucc::ast::AstList* ast_list;
+    ucc::ast::Ast* ast;
 }
 
 
@@ -212,9 +216,14 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %type <ptr_type>        pointer
 
 %type <ast_list>        compound_statement
-%type <stmt_list>       statement_list
+                        statement_list
 
+%type <ast>             statement
 %type <expr>            initializer
+                        expression_statement
+                        expression
+                        assignment_expression
+                        primary_expression
 
 %start translation_unit
 %%
@@ -224,6 +233,9 @@ primary_expression
     | constant
     | string
     | "(" expression ")"
+    {
+        $$ = $2;
+    }
     /*| generic_selection*/
     ;
 
@@ -387,6 +399,9 @@ assignment_operator
 
 expression
     : assignment_expression
+    {
+        $$ = $1;
+    }
     | expression "," assignment_expression
     ;
 
@@ -1079,6 +1094,9 @@ static_assert_declaration
 statement
     : labeled_statement
     | compound_statement
+    {
+        $$ = $1;
+    }
     | expression_statement
     | selection_statement
     | iteration_statement
@@ -1098,12 +1116,22 @@ compound_statement
         $$ = new ucc::ast::AstList(@1);
     }
     | "{" statement_list "}"
+    {
+        $$ = $2;
+    }
     | "{" declaration_list "}"
     {
         $$ = $2->convert<ucc::ast::Ast>();
         delete $2;
     }
     | "{" declaration_list statement_list "}"
+    {
+        $$ = $2->convert<ucc::ast::Ast>();
+        $$->splice_back(*$3);
+
+        delete $3;
+        delete $2;
+    }
     /*
     | "{" "}"
     | "{"  block_item_list "}"
@@ -1112,7 +1140,18 @@ compound_statement
 
 statement_list
     : statement
+    {
+        $$ = new ucc::ast::AstList(@1);
+
+        if ($1)
+            $$->push_back(std::shared_ptr<ucc::ast::Ast>($1));
+    }
     | statement_list statement
+    {
+        $$ = $1;
+        if ($2)
+            $$->push_back(std::shared_ptr<ucc::ast::Ast>($2));
+    }
 
 /*
 block_item_list
@@ -1128,7 +1167,13 @@ block_item
 
 expression_statement
     : ";"
+    {
+        $$ = nullptr;
+    }
     | expression ";"
+    {
+        $$ = $1;
+    }
     ;
 
 selection_statement
