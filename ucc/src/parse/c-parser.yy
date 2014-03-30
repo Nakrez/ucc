@@ -442,6 +442,9 @@ declaration
 
             if ($1->is_typedef())
             {
+                if (decl->init_get())
+                    yyparser.error(decl->location_get(), "illegal initializer"
+                                   " (only variables can be initialized)");
                 new_decl = new ucc::ast::TypeDecl(@1, decl->name_get(), type);
                 driver.sym_[decl->name_get().data_get()] =
                     ucc::parse::Parser::token::TYPEDEF_NAME;
@@ -1345,5 +1348,6 @@ void ucc::parse::Parser::error(ucc::parse::location const& l,
                                std::string const& s)
 {
     driver.error_ << ucc::misc::Error::Type::parse
-                  << driver.file_get() << ":"  << l << ": " << s << std::endl;
+                  << driver.file_get() << ":"  << l << ": error: "
+                  << s << std::endl;
 }
