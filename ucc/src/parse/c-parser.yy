@@ -237,6 +237,11 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 
 primary_expression
     : "identifier"
+    {
+        $$ = new ucc::ast::VarExpr(@1, *$1);
+
+        delete $1;
+    }
     | constant
     {
         $$ = $1;

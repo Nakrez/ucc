@@ -193,6 +193,11 @@ void PrettyPrinter::operator()(const StringExpr& ast)
     ostr_ << *ast.str_get();
 }
 
+void PrettyPrinter::operator()(const VarExpr& ast)
+{
+    ostr_ << ast.name_get();
+}
+
 bool PrettyPrinter::print_fun_ptr(const Type* ast,
                                   const ucc::misc::Symbol& sym)
 {
