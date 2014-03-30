@@ -31,6 +31,7 @@ namespace ucc
         class FloatExpr;
         class StringExpr;
         class VarExpr;
+        class SubscriptExpr;
 
         typedef AnyList<Ast> AstList;
         typedef AnyList<Decl> DeclList;

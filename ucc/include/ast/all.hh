@@ -26,5 +26,6 @@
 # include <ast/float-expr.hh>
 # include <ast/string-expr.hh>
 # include <ast/var-expr.hh>
+# include <ast/subscript-expr.hh>
 
 #endif /* !ALL_HH */

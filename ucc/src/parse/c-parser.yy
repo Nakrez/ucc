@@ -303,6 +303,9 @@ postfix_expression
         $$ = $1;
     }
     | postfix_expression "[" expression "]"
+    {
+        $$ = new ucc::ast::SubscriptExpr(@1, $1, $3);
+    }
     | postfix_expression "(" ")"
     | postfix_expression "(" argument_expression_list ")"
     | postfix_expression "." "identifier"

@@ -147,4 +147,15 @@ void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<VarExpr>::type&)
 {}
 
+template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<SubscriptExpr>::type& ast)
+{
+    if (ast.var_get())
+        ast.var_get()->accept(*this);
+
+    if (ast.expr_get())
+        ast.expr_get()->accept(*this);
+}
+
 #endif /* !UCC_AST_DEFAULT_VISITOR_HXX */

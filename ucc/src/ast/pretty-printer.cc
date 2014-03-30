@@ -203,6 +203,19 @@ void PrettyPrinter::operator()(const VarExpr& ast)
     ostr_ << ast.name_get();
 }
 
+void PrettyPrinter::operator()(const SubscriptExpr& ast)
+{
+    if (ast.var_get())
+        ast.var_get()->accept(*this);
+
+    ostr_ << "[";
+
+    if (ast.expr_get())
+        ast.expr_get()->accept(*this);
+
+    ostr_ << "]";
+}
+
 bool PrettyPrinter::print_fun_ptr(const Type* ast,
                                   const ucc::misc::Symbol& sym)
 {
