@@ -22,6 +22,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/return-stmt.cc \
 			  src/ast/expr.cc \
 			  src/ast/int-expr.cc \
+			  src/ast/string-expr.cc \
 			  src/ast/pretty-printer.cc \
 			  src/ast/command.cc \
 			  src/main.cc \

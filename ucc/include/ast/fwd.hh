@@ -28,6 +28,7 @@ namespace ucc
 
         class Expr;
         class IntExpr;
+        class StringExpr;
 
         typedef AnyList<Ast> AstList;
         typedef AnyList<Decl> DeclList;

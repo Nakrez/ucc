@@ -23,5 +23,6 @@
 
 # include <ast/expr.hh>
 # include <ast/int-expr.hh>
+# include <ast/string-expr.hh>
 
 #endif /* !ALL_HH */

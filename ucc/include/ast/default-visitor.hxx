@@ -134,4 +134,11 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<IntExpr>::type&)
 
 }
 
+template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<StringExpr>::type&)
+{
+
+}
+
 #endif /* !UCC_AST_DEFAULT_VISITOR_HXX */

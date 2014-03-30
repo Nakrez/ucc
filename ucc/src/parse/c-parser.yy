@@ -192,6 +192,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 
         END_OF_FILE 0   "eof"
 
+%type <string_>         string
 
 %type <declspecifier>   storage_class_specifier
                         declaration_specifiers
@@ -227,6 +228,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         assignment_expression
                         primary_expression
                         constant
+                        postfix_expression
 
 %type <stmt>            jump_statement
 
@@ -240,6 +242,9 @@ primary_expression
         $$ = $1;
     }
     | string
+    {
+        $$ = new ucc::ast::StringExpr(@1, $1);
+    }
     | "(" expression ")"
     {
         $$ = $2;
@@ -262,6 +267,9 @@ enumeration_constant        /* before it has been defined as such */
 
 string
     : "string"
+    {
+        $$ = $1;
+    }
     /*| "__func__"*/
     ;
 /*
@@ -283,6 +291,9 @@ generic_association
 
 postfix_expression
     : primary_expression
+    {
+        $$ = $1;
+    }
     | postfix_expression "[" expression "]"
     | postfix_expression "(" ")"
     | postfix_expression "(" argument_expression_list ")"
