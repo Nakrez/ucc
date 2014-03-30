@@ -23,6 +23,7 @@
 
 # include <ast/expr.hh>
 # include <ast/int-expr.hh>
+# include <ast/float-expr.hh>
 # include <ast/string-expr.hh>
 # include <ast/var-expr.hh>
 

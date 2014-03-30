@@ -188,6 +188,11 @@ void PrettyPrinter::operator()(const IntExpr& ast)
     ostr_ << ast.value_get();
 }
 
+void PrettyPrinter::operator()(const FloatExpr& ast)
+{
+    ostr_ << ast.value_get();
+}
+
 void PrettyPrinter::operator()(const StringExpr& ast)
 {
     ostr_ << *ast.str_get();

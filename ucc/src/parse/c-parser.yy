@@ -263,6 +263,9 @@ constant
         $$ = new ucc::ast::IntExpr(@1, $1);
     }
     | "f_constant"
+    {
+        $$ = new ucc::ast::FloatExpr(@1, $1);
+    }
     | "enum_constant"
     ;
 

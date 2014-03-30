@@ -28,6 +28,7 @@ namespace ucc
 
         class Expr;
         class IntExpr;
+        class FloatExpr;
         class StringExpr;
         class VarExpr;
 
