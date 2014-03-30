@@ -61,6 +61,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::FunctionDecl* fun_decl;
     ucc::ast::AstList* ast_list;
     ucc::ast::Ast* ast;
+    ucc::ast::Stmt* stmt;
 }
 
 
@@ -68,9 +69,9 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                 TYPEDEF_NAME    "typedef_name"
                 ENUM_CONSTANT   "enum_constant"
 
-%token  I_CONSTANT      "i_constant"
-        F_CONSTANT      "f_constant"
-        STRING_LITERAL  "string"
+%token<int_>    I_CONSTANT      "i_constant"
+%token<float_>  F_CONSTANT      "f_constant"
+%token<string_> STRING_LITERAL  "string"
 
 %token  AUTO            "auto"
         BREAK           "break"
@@ -191,6 +192,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 
         END_OF_FILE 0   "eof"
 
+
 %type <declspecifier>   storage_class_specifier
                         declaration_specifiers
                         type_specifier
@@ -224,6 +226,9 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         expression
                         assignment_expression
                         primary_expression
+                        constant
+
+%type <stmt>            jump_statement
 
 %start translation_unit
 %%
@@ -231,6 +236,9 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 primary_expression
     : "identifier"
     | constant
+    {
+        $$ = $1;
+    }
     | string
     | "(" expression ")"
     {
@@ -241,6 +249,9 @@ primary_expression
 
 constant
     : "i_constant"
+    {
+        $$ = new ucc::ast::IntExpr(@1, $1);
+    }
     | "f_constant"
     | "enum_constant"
     ;
@@ -1101,6 +1112,9 @@ statement
     | selection_statement
     | iteration_statement
     | jump_statement
+    {
+        $$ = $1;
+    }
     ;
 
 labeled_statement
@@ -1194,11 +1208,17 @@ iteration_statement
     ;
 
 jump_statement
-    : "goto""identifier"";"
+    : "goto" "identifier" ";"
     | "continue" ";"
     | "break" ";"
     | "return" ";"
+    {
+        $$ = new ucc::ast::ReturnStmt(@1);
+    }
     | "return" expression ";"
+    {
+        $$ = new ucc::ast::ReturnStmt(@1, $2);
+    }
     ;
 
 translation_unit

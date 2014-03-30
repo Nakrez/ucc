@@ -113,9 +113,25 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Stmt>::type& ast)
 
 template <template <typename> class Const>
 void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<ReturnStmt>::type& ast)
+{
+    if (ast.expr_get())
+        ast.expr_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Expr>::type& ast)
 {
     ast.accept(*this);
+}
+
+
+template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<IntExpr>::type&)
+{
+
 }
 
 #endif /* !UCC_AST_DEFAULT_VISITOR_HXX */

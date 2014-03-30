@@ -24,8 +24,10 @@ namespace ucc
         class PtrType;
 
         class Stmt;
+        class ReturnStmt;
 
         class Expr;
+        class IntExpr;
 
         typedef AnyList<Ast> AstList;
         typedef AnyList<Decl> DeclList;

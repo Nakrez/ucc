@@ -22,8 +22,14 @@ void PrettyPrinter::operator()(const AstList& ast)
     for (; it != end; ++it)
     {
         if (it != begin)
+        {
             ostr_ << ucc::misc::iendl;
+        }
+
         (*it)->accept(*this);
+
+        if (!dynamic_cast<const Decl*> (it->get()))
+            ostr_ << ";";
     }
 }
 
@@ -164,6 +170,22 @@ void PrettyPrinter::operator()(const PtrType& ast)
         ostr_ << "const ";
     if (ast.is_restrict())
         ostr_ << "restrict ";
+}
+
+void PrettyPrinter::operator()(const ReturnStmt& ast)
+{
+    ostr_ << "return";
+
+    if (ast.expr_get())
+    {
+        ostr_ << " ";
+        ast.expr_get()->accept(*this);
+    }
+}
+
+void PrettyPrinter::operator()(const IntExpr& ast)
+{
+    ostr_ << ast.value_get();
 }
 
 bool PrettyPrinter::print_fun_ptr(const Type* ast,

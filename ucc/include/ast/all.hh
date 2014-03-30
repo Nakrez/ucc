@@ -19,7 +19,9 @@
 # include <ast/ptr-type.hh>
 
 # include <ast/stmt.hh>
+# include <ast/return-stmt.hh>
 
 # include <ast/expr.hh>
+# include <ast/int-expr.hh>
 
 #endif /* !ALL_HH */

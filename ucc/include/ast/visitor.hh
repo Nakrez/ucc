@@ -37,8 +37,10 @@ namespace ucc
                 virtual void operator()(typename Const<PtrType>::type& ast) = 0;
 
                 virtual void operator()(typename Const<Stmt>::type& ast) = 0;
+                virtual void operator()(typename Const<ReturnStmt>::type& ast) = 0;
 
                 virtual void operator()(typename Const<Expr>::type& ast) = 0;
+                virtual void operator()(typename Const<IntExpr>::type& ast) = 0;
         };
 
         typedef GenVisitor<ucc::misc::const_type> ConstVisitor;
