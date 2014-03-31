@@ -33,6 +33,7 @@ namespace ucc
         class VarExpr;
         class SubscriptExpr;
         class CallExpr;
+        class AssignExpr;
 
         typedef AnyList<Ast> AstList;
         typedef AnyList<Decl> DeclList;

@@ -27,6 +27,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/var-expr.cc \
 			  src/ast/subscript-expr.cc \
 			  src/ast/call-expr.cc \
+			  src/ast/assign-expr.cc \
 			  src/ast/pretty-printer.cc \
 			  src/ast/command.cc \
 			  src/main.cc \

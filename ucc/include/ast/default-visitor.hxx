@@ -176,4 +176,15 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<CallExpr>::type& a
         ast.param_get()->accept(*this);
 }
 
+template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<AssignExpr>::type& ast)
+{
+    if (ast.lvalue_get())
+        ast.lvalue_get()->accept(*this);
+
+    if (ast.rvalue_get())
+        ast.rvalue_get()->accept(*this);
+}
+
 #endif /* !UCC_AST_DEFAULT_VISITOR_HXX */

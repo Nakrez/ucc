@@ -37,6 +37,7 @@ namespace ucc
                 virtual void operator()(const VarExpr& ast);
                 virtual void operator()(const SubscriptExpr& ast);
                 virtual void operator()(const CallExpr& ast);
+                virtual void operator()(const AssignExpr& ast);
 
             protected:
                 bool print_fun_ptr(const Type* ast,

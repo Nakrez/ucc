@@ -243,6 +243,19 @@ void PrettyPrinter::operator()(const CallExpr& ast)
     ostr_ << ")";
 }
 
+void PrettyPrinter::operator()(const AssignExpr& ast)
+{
+    if (ast.lvalue_get())
+        ast.lvalue_get()->accept(*this);
+
+    ostr_ << " ";
+    ostr_ << ast.op_to_str();
+    ostr_ << " ";
+
+    if (ast.rvalue_get())
+        ast.rvalue_get()->accept(*this);
+}
+
 bool PrettyPrinter::print_fun_ptr(const Type* ast,
                                   const ucc::misc::Symbol& sym)
 {

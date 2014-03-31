@@ -63,6 +63,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::Ast* ast;
     ucc::ast::Stmt* stmt;
     ucc::ast::ExprList* expr_list;
+    ucc::ast::AssignExpr::AssignOp assign_op;
 }
 
 
@@ -230,10 +231,13 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         primary_expression
                         constant
                         postfix_expression
+                        unary_expression
+                        conditional_expression
 
 %type <stmt>            jump_statement
 
 %type <expr_list>       argument_expression_list
+%type <assign_op>       assignment_operator
 
 %start translation_unit
 %%
@@ -430,21 +434,60 @@ conditional_expression
 
 assignment_expression
     : conditional_expression
+    {
+        $$ = $1;
+    }
     | unary_expression assignment_operator assignment_expression
+    {
+        $$ = new ucc::ast::AssignExpr(@1, $1, $2, $3);
+    }
     ;
 
 assignment_operator
     : "="
+    {
+        $$ = ucc::ast::AssignExpr::AssignOp::ASSIGN;
+    }
     | "*="
+    {
+        $$ = ucc::ast::AssignExpr::AssignOp::MUL_ASSIGN;
+    }
     | "/="
+    {
+        $$ = ucc::ast::AssignExpr::AssignOp::DIV_ASSIGN;
+    }
     | "%="
+    {
+        $$ = ucc::ast::AssignExpr::AssignOp::MOD_ASSIGN;
+    }
     | "+="
+    {
+        $$ = ucc::ast::AssignExpr::AssignOp::PLUS_ASSIGN;
+    }
     | "-="
+    {
+        $$ = ucc::ast::AssignExpr::AssignOp::MINUS_ASSIGN;
+    }
     | "<<="
+    {
+        $$ = ucc::ast::AssignExpr::AssignOp::LSHIFT_ASSIGN;
+    }
     | ">>="
+    {
+        $$ = ucc::ast::AssignExpr::AssignOp::RSHIFT_ASSIGN;
+    }
     | "&="
+    {
+        $$ = ucc::ast::AssignExpr::AssignOp::BAND_ASSIGN;
+    }
     | "^="
+    {
+        $$ = ucc::ast::AssignExpr::AssignOp::BXOR_ASSIGN;
+    }
     | "|="
+    {
+        $$ = ucc::ast::AssignExpr::AssignOp::BOR_ASSIGN;
+    }
     ;
 
 expression
