@@ -20,6 +20,7 @@ namespace ucc
 
                 virtual void operator()(const AstList& ast);
                 virtual void operator()(const DeclList& ast);
+                virtual void operator()(const ExprList& ast);
 
                 virtual void operator()(const VarDecl& ast);
                 virtual void operator()(const TypeDecl& ast);
@@ -35,6 +36,7 @@ namespace ucc
                 virtual void operator()(const StringExpr& ast);
                 virtual void operator()(const VarExpr& ast);
                 virtual void operator()(const SubscriptExpr& ast);
+                virtual void operator()(const CallExpr& ast);
 
             protected:
                 bool print_fun_ptr(const Type* ast,

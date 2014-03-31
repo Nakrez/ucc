@@ -18,6 +18,13 @@ void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<DeclList>::ty
 }
 
 template <template <typename> class Const>
+void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<ExprList>::type& ast)
+{
+    for (auto elem : ast.list_get())
+        elem->accept(*this);
+}
+
+template <template <typename> class Const>
 void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Decl>::type& ast)
 {
     ast.accept(*this);
@@ -156,6 +163,17 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<SubscriptExpr>::ty
 
     if (ast.expr_get())
         ast.expr_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<CallExpr>::type& ast)
+{
+    if (ast.var_get())
+        ast.var_get()->accept(*this);
+
+    if (ast.param_get())
+        ast.param_get()->accept(*this);
 }
 
 #endif /* !UCC_AST_DEFAULT_VISITOR_HXX */

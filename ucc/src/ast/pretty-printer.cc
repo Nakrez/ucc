@@ -47,6 +47,20 @@ void PrettyPrinter::operator()(const DeclList& ast)
     }
 }
 
+void PrettyPrinter::operator()(const ExprList& ast)
+{
+    auto it = ast.list_get().cbegin();
+    auto begin = it;
+    auto end = ast.list_get().cend();
+
+    for (; it != end; ++it)
+    {
+        if (it != begin)
+            ostr_ << ", ";
+        (*it)->accept(*this);
+    }
+}
+
 void PrettyPrinter::operator()(const VarDecl& ast)
 {
     if (ast.is_static())
@@ -214,6 +228,19 @@ void PrettyPrinter::operator()(const SubscriptExpr& ast)
         ast.expr_get()->accept(*this);
 
     ostr_ << "]";
+}
+
+void PrettyPrinter::operator()(const CallExpr& ast)
+{
+    if (ast.var_get())
+        ast.var_get()->accept(*this);
+
+    ostr_ << "(";
+
+    if (ast.param_get())
+        ast.param_get()->accept(*this);
+
+    ostr_ << ")";
 }
 
 bool PrettyPrinter::print_fun_ptr(const Type* ast,

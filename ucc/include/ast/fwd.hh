@@ -32,10 +32,12 @@ namespace ucc
         class StringExpr;
         class VarExpr;
         class SubscriptExpr;
+        class CallExpr;
 
         typedef AnyList<Ast> AstList;
         typedef AnyList<Decl> DeclList;
         typedef AnyList<Stmt> StmtList;
+        typedef AnyList<Expr> ExprList;
     } // namespace ast
 } // namespace ucc
 

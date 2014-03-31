@@ -62,6 +62,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::AstList* ast_list;
     ucc::ast::Ast* ast;
     ucc::ast::Stmt* stmt;
+    ucc::ast::ExprList* expr_list;
 }
 
 
@@ -232,6 +233,8 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 
 %type <stmt>            jump_statement
 
+%type <expr_list>       argument_expression_list
+
 %start translation_unit
 %%
 
@@ -307,7 +310,13 @@ postfix_expression
         $$ = new ucc::ast::SubscriptExpr(@1, $1, $3);
     }
     | postfix_expression "(" ")"
+    {
+        $$ = new ucc::ast::CallExpr(@1, $1, nullptr);
+    }
     | postfix_expression "(" argument_expression_list ")"
+    {
+        $$ = new ucc::ast::CallExpr(@1, $1, $3);
+    }
     | postfix_expression "." "identifier"
     | postfix_expression "->" "identifier"
     | postfix_expression "++"
@@ -321,7 +330,15 @@ postfix_expression
 
 argument_expression_list
     : assignment_expression
+    {
+        $$ = new ucc::ast::ExprList(@1);
+        $$->push_back(std::shared_ptr<ucc::ast::Expr>($1));
+    }
     | argument_expression_list "," assignment_expression
+    {
+        $$ = $1;
+        $$->push_back(std::shared_ptr<ucc::ast::Expr>($3));
+    }
     ;
 
 unary_expression
