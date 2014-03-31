@@ -14,7 +14,7 @@ FunctionDecl::FunctionDecl(const ucc::parse::location& loc,
 FunctionDecl::FunctionDecl(const ucc::parse::location& loc,
                            const ucc::misc::Symbol& name,
                            FunctionType* type,
-                           AstList* compound)
+                           CompoundStmt* compound)
     : Decl(loc, name)
     , type_(type)
     , compound_(compound)
@@ -26,12 +26,12 @@ FunctionDecl::~FunctionDecl()
     delete compound_;
 }
 
-const AstList* FunctionDecl::compound_get() const
+const CompoundStmt* FunctionDecl::compound_get() const
 {
     return compound_;
 }
 
-AstList* FunctionDecl::compound_get()
+CompoundStmt* FunctionDecl::compound_get()
 {
     return compound_;
 }

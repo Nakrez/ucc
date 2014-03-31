@@ -24,6 +24,7 @@ namespace ucc
         class PtrType;
 
         class Stmt;
+        class CompoundStmt;
         class ReturnStmt;
 
         class Expr;

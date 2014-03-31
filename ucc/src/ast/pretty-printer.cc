@@ -149,13 +149,7 @@ void PrettyPrinter::operator()(const FunctionDecl& ast)
     ostr_ << ")";
 
     if (ast.compound_get())
-    {
-        ostr_ << ucc::misc::iendl;
-        ostr_ << "{" << ucc::misc::incendl;
         ast.compound_get()->accept(*this);
-        ostr_ << ucc::misc::decendl << "}";
-
-    }
     else
         ostr_ << ";";
 }
@@ -184,6 +178,17 @@ void PrettyPrinter::operator()(const PtrType& ast)
         ostr_ << "const ";
     if (ast.is_restrict())
         ostr_ << "restrict ";
+}
+
+void PrettyPrinter::operator()(const CompoundStmt& ast)
+{
+    ostr_ << ucc::misc::iendl;
+    ostr_ << "{" << ucc::misc::incendl;
+
+    if (ast.compound_get())
+        ast.compound_get()->accept(*this);
+
+    ostr_ << ucc::misc::decendl << "}";
 }
 
 void PrettyPrinter::operator()(const ReturnStmt& ast)

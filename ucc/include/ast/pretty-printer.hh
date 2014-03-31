@@ -29,6 +29,7 @@ namespace ucc
                 virtual void operator()(const NamedType& ast);
                 virtual void operator()(const PtrType& ast);
 
+                virtual void operator()(const CompoundStmt& ast);
                 virtual void operator()(const ReturnStmt& ast);
 
                 virtual void operator()(const IntExpr& ast);

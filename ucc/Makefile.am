@@ -19,6 +19,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/function-type.cc \
 			  src/ast/ptr-type.cc \
 			  src/ast/stmt.cc \
+			  src/ast/compound-stmt.cc \
 			  src/ast/return-stmt.cc \
 			  src/ast/expr.cc \
 			  src/ast/int-expr.cc \

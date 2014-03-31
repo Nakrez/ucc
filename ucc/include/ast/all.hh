@@ -19,6 +19,7 @@
 # include <ast/ptr-type.hh>
 
 # include <ast/stmt.hh>
+# include <ast/compound-stmt.hh>
 # include <ast/return-stmt.hh>
 
 # include <ast/expr.hh>

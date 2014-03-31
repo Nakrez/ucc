@@ -120,6 +120,14 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Stmt>::type& ast)
 
 template <template <typename> class Const>
 void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<CompoundStmt>::type& ast)
+{
+    if (ast.compound_get())
+        ast.compound_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<ReturnStmt>::type& ast)
 {
     if (ast.expr_get())

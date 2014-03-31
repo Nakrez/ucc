@@ -20,11 +20,11 @@ namespace ucc
                 FunctionDecl(const ucc::parse::location& loc,
                              const ucc::misc::Symbol& name,
                              FunctionType* type,
-                             AstList* compound);
+                             CompoundStmt* compound);
                 virtual ~FunctionDecl();
 
-                const AstList* compound_get() const;
-                AstList* compound_get();
+                const CompoundStmt* compound_get() const;
+                CompoundStmt* compound_get();
 
                 const Type* return_type_get() const;
                 Type* return_type_get();
@@ -39,7 +39,7 @@ namespace ucc
 
             protected:
                 FunctionType* type_;
-                AstList* compound_;
+                CompoundStmt* compound_;
         };
     } // namespace ast
 } // namespace ucc

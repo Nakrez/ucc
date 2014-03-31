@@ -65,6 +65,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::ExprList* expr_list;
     ucc::ast::AssignExpr::AssignOp assign_op;
     ucc::ast::UnaryExpr::UnaryOp unary_op;
+    ucc::ast::CompoundStmt* compound_stmt;
 }
 
 
@@ -220,9 +221,8 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         parameter_list
 %type <fun_decl>        function_definition
 %type <ptr_type>        pointer
-
-%type <ast_list>        compound_statement
-                        statement_list
+%type <compound_stmt>   compound_statement
+%type <ast_list>        statement_list
 
 %type <ast>             statement
 %type <expr>            initializer
@@ -234,6 +234,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         postfix_expression
                         unary_expression
                         conditional_expression
+                        constant_expression
                         logical_or_expression
                         logical_and_expression
                         inclusive_or_expression
@@ -643,6 +644,9 @@ expression
 
 constant_expression
     : conditional_expression    /* with constraints */
+    {
+        $$ = $1;
+    }
     ;
 
 declaration
@@ -1337,6 +1341,9 @@ statement
         $$ = $1;
     }
     | expression_statement
+    {
+        $$ = $1;
+    }
     | selection_statement
     | iteration_statement
     | jump_statement
@@ -1355,21 +1362,25 @@ labeled_statement
 compound_statement
     : "{" "}"
     {
-        $$ = new ucc::ast::AstList(@1);
+        $$ = new ucc::ast::CompoundStmt(@1, nullptr);
     }
     | "{" statement_list "}"
     {
-        $$ = $2;
+        $$ = new ucc::ast::CompoundStmt(@1, $2);
     }
     | "{" declaration_list "}"
     {
-        $$ = $2->convert<ucc::ast::Ast>();
+        ucc::ast::AstList* l = $2->convert<ucc::ast::Ast>();
         delete $2;
+
+        $$ = new ucc::ast::CompoundStmt(@1, l);
     }
     | "{" declaration_list statement_list "}"
     {
-        $$ = $2->convert<ucc::ast::Ast>();
-        $$->splice_back(*$3);
+        ucc::ast::AstList* l = $2->convert<ucc::ast::Ast>();
+        l->splice_back(*$3);
+
+        $$ = new ucc::ast::CompoundStmt(@1, l);
 
         delete $3;
         delete $2;
