@@ -27,6 +27,7 @@ namespace ucc
         class CompoundStmt;
         class ReturnStmt;
         class WhileStmt;
+        class DoWhileStmt;
 
         class Expr;
         class IntExpr;

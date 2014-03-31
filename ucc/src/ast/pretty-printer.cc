@@ -211,6 +211,29 @@ void PrettyPrinter::operator()(const WhileStmt& ast)
         ostr_ << ";" << misc::decendl;
 }
 
+void PrettyPrinter::operator()(const DoWhileStmt& ast)
+{
+    ostr_ << "do";
+
+    if (!dynamic_cast<const CompoundStmt*>(ast.body_get()))
+        ostr_ << misc::incendl;
+
+    if (ast.body_get())
+        ast.body_get()->accept(*this);
+
+    if (!dynamic_cast<const CompoundStmt*>(ast.body_get()))
+        ostr_ << ";" << misc::decendl;
+    else
+        ostr_ << " ";
+
+    ostr_ << "while (";
+
+    if (ast.cond_get())
+        ast.cond_get()->accept(*this);
+
+    ostr_ << ");";
+}
+
 void PrettyPrinter::operator()(const ReturnStmt& ast)
 {
     ostr_ << "return";

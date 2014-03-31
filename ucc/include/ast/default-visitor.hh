@@ -44,6 +44,7 @@ namespace ucc
                 virtual void operator()(typename Const<CompoundStmt>::type& ast);
                 virtual void operator()(typename Const<ReturnStmt>::type& ast);
                 virtual void operator()(typename Const<WhileStmt>::type& ast);
+                virtual void operator()(typename Const<DoWhileStmt>::type& ast);
 
                 virtual void operator()(typename Const<Expr>::type& ast);
                 virtual void operator()(typename Const<IntExpr>::type& ast);

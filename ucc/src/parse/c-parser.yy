@@ -1445,6 +1445,9 @@ iteration_statement
         $$ = new ucc::ast::WhileStmt(@1, $3, $5);
     }
     | "do" statement WHILE "(" expression ")" ";"
+    {
+        $$ = new ucc::ast::DoWhileStmt(@1, $5, $2);
+    }
     | "for" "(" expression_statement expression_statement ")" statement
     | "for" "(" expression_statement expression_statement expression ")" statement
     /*

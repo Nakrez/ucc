@@ -22,6 +22,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/compound-stmt.cc \
 			  src/ast/return-stmt.cc \
 			  src/ast/while-stmt.cc \
+			  src/ast/do-while-stmt.cc \
 			  src/ast/expr.cc \
 			  src/ast/int-expr.cc \
 			  src/ast/float-expr.cc \
