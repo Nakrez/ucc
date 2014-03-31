@@ -256,6 +256,22 @@ void PrettyPrinter::operator()(const AssignExpr& ast)
         ast.rvalue_get()->accept(*this);
 }
 
+void PrettyPrinter::operator()(const ConditionalExpr& ast)
+{
+    if (ast.cond_get())
+        ast.cond_get()->accept(*this);
+
+    ostr_ << " ? ";
+
+    if (ast.true_expr_get())
+        ast.true_expr_get()->accept(*this);
+
+    ostr_ << " : ";
+
+    if (ast.false_expr_get())
+        ast.false_expr_get()->accept(*this);
+}
+
 bool PrettyPrinter::print_fun_ptr(const Type* ast,
                                   const ucc::misc::Symbol& sym)
 {

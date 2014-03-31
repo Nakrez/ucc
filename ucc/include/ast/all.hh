@@ -29,5 +29,6 @@
 # include <ast/subscript-expr.hh>
 # include <ast/call-expr.hh>
 # include <ast/assign-expr.hh>
+# include <ast/conditional-expr.hh>
 
 #endif /* !ALL_HH */

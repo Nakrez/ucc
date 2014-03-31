@@ -233,6 +233,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         postfix_expression
                         unary_expression
                         conditional_expression
+                        logical_or_expression
 
 %type <stmt>            jump_statement
 
@@ -429,7 +430,13 @@ logical_or_expression
 
 conditional_expression
     : logical_or_expression
+    {
+        $$ = $1;
+    }
     | logical_or_expression "?" expression ":" conditional_expression
+    {
+        $$ = new ucc::ast::ConditionalExpr(@1, $1, $3, $5);
+    }
     ;
 
 assignment_expression

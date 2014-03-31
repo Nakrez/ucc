@@ -34,6 +34,7 @@ namespace ucc
         class SubscriptExpr;
         class CallExpr;
         class AssignExpr;
+        class ConditionalExpr;
 
         typedef AnyList<Ast> AstList;
         typedef AnyList<Decl> DeclList;
