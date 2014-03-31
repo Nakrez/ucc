@@ -30,5 +30,6 @@
 # include <ast/call-expr.hh>
 # include <ast/assign-expr.hh>
 # include <ast/conditional-expr.hh>
+# include <ast/op-expr.hh>
 
 #endif /* !ALL_HH */

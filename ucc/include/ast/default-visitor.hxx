@@ -201,4 +201,15 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<ConditionalExpr>::
         ast.false_expr_get()->accept(*this);
 }
 
+template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<OpExpr>::type& ast)
+{
+    if (ast.lexpr_get())
+        ast.lexpr_get()->accept(*this);
+
+    if (ast.rexpr_get())
+        ast.rexpr_get()->accept(*this);
+}
+
 #endif /* !UCC_AST_DEFAULT_VISITOR_HXX */

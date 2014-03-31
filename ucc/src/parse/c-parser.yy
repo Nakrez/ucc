@@ -234,6 +234,16 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         unary_expression
                         conditional_expression
                         logical_or_expression
+                        logical_and_expression
+                        inclusive_or_expression
+                        exclusive_or_expression
+                        and_expression
+                        equality_expression
+                        relational_expression
+                        shift_expression
+                        additive_expression
+                        multiplicative_expression
+                        cast_expression
 
 %type <stmt>            jump_statement
 
@@ -367,65 +377,152 @@ unary_operator
 
 cast_expression
     : unary_expression
+    {
+        $$ = $1;
+    }
     | "(" type_name ")" cast_expression
     ;
 
 multiplicative_expression
     : cast_expression
+    {
+        $$ = $1;
+    }
     | multiplicative_expression "*" cast_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_MUL, $3);
+    }
     | multiplicative_expression "/" cast_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_DIV, $3);
+    }
     | multiplicative_expression "%" cast_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_MOD, $3);
+    }
     ;
 
 additive_expression
     : multiplicative_expression
+    {
+        $$ = $1;
+    }
     | additive_expression "+" multiplicative_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_PLUS, $3);
+    }
     | additive_expression "-" multiplicative_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_MINUS, $3);
+    }
     ;
 
 shift_expression
     : additive_expression
+    {
+        $$ = $1;
+    }
     | shift_expression "<<" additive_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_LSHIFT, $3);
+    }
     | shift_expression ">>" additive_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_RSHIFT, $3);
+    }
     ;
 
 relational_expression
     : shift_expression
+    {
+        $$ = $1;
+    }
     | relational_expression "<" shift_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_LT, $3);
+    }
     | relational_expression ">" shift_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_GT, $3);
+    }
     | relational_expression "<=" shift_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_LE, $3);
+    }
     | relational_expression ">=" shift_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_GE, $3);
+    }
     ;
 
 equality_expression
     : relational_expression
+    {
+        $$ = $1;
+    }
     | equality_expression "==" relational_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_EQ, $3);
+    }
     | equality_expression "!=" relational_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_DIFF, $3);
+    }
     ;
 
 and_expression
     : equality_expression
+    {
+        $$ = $1;
+    }
     | and_expression "&" equality_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_BAND, $3);
+    }
     ;
 
 exclusive_or_expression
     : and_expression
+    {
+        $$ = $1;
+    }
     | exclusive_or_expression "^" and_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_XOR, $3);
+    }
     ;
 
 inclusive_or_expression
     : exclusive_or_expression
+    {
+        $$ = $1;
+    }
     | inclusive_or_expression "|" exclusive_or_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_BOR, $3);
+    }
     ;
 
 logical_and_expression
     : inclusive_or_expression
+    {
+        $$ = $1;
+    }
     | logical_and_expression "&&" inclusive_or_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_AND, $3);
+    }
     ;
 
 logical_or_expression
     : logical_and_expression
+    {
+        $$ = $1;
+    }
     | logical_or_expression "||" logical_and_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_OR, $3);
+    }
     ;
 
 conditional_expression
@@ -503,6 +600,9 @@ expression
         $$ = $1;
     }
     | expression "," assignment_expression
+    {
+        $$ = new ucc::ast::OpExpr(@1, $1, ucc::ast::OpExpr::Op::OP_COMA, $3);
+    }
     ;
 
 constant_expression
