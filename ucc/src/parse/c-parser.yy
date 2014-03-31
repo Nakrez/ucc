@@ -248,6 +248,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         cast_expression
 
 %type <stmt>            jump_statement
+                        iteration_statement
 
 %type <expr_list>       argument_expression_list
 %type <assign_op>       assignment_operator
@@ -1346,6 +1347,9 @@ statement
     }
     | selection_statement
     | iteration_statement
+    {
+        $$ = $1;
+    }
     | jump_statement
     {
         $$ = $1;
@@ -1437,6 +1441,9 @@ selection_statement
 
 iteration_statement
     : WHILE "(" expression ")" statement
+    {
+        $$ = new ucc::ast::WhileStmt(@1, $3, $5);
+    }
     | "do" statement WHILE "(" expression ")" ";"
     | "for" "(" expression_statement expression_statement ")" statement
     | "for" "(" expression_statement expression_statement expression ")" statement

@@ -136,11 +136,21 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<ReturnStmt>::type&
 
 template <template <typename> class Const>
 void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<WhileStmt>::type& ast)
+{
+    if (ast.cond_get())
+        ast.cond_get()->accept(*this);
+
+    if (ast.body_get())
+        ast.body_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Expr>::type& ast)
 {
     ast.accept(*this);
 }
-
 
 template <template <typename> class Const>
 void
