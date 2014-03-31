@@ -31,5 +31,6 @@
 # include <ast/assign-expr.hh>
 # include <ast/conditional-expr.hh>
 # include <ast/op-expr.hh>
+# include <ast/unary-expr.hh>
 
 #endif /* !ALL_HH */

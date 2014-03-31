@@ -289,6 +289,14 @@ void PrettyPrinter::operator()(const OpExpr& ast)
     ostr_ << ")";
 }
 
+void PrettyPrinter::operator()(const UnaryExpr& ast)
+{
+    ostr_ << ast.op_to_str();
+
+    if (ast.expr_get())
+        ast.expr_get()->accept(*this);
+}
+
 bool PrettyPrinter::print_fun_ptr(const Type* ast,
                                   const ucc::misc::Symbol& sym)
 {

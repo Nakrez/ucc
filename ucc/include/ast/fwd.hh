@@ -36,6 +36,7 @@ namespace ucc
         class AssignExpr;
         class ConditionalExpr;
         class OpExpr;
+        class UnaryExpr;
 
         typedef AnyList<Ast> AstList;
         typedef AnyList<Decl> DeclList;

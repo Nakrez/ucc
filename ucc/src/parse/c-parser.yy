@@ -64,6 +64,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::Stmt* stmt;
     ucc::ast::ExprList* expr_list;
     ucc::ast::AssignExpr::AssignOp assign_op;
+    ucc::ast::UnaryExpr::UnaryOp unary_op;
 }
 
 
@@ -249,6 +250,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 
 %type <expr_list>       argument_expression_list
 %type <assign_op>       assignment_operator
+%type <unary_op>        unary_operator
 
 %start translation_unit
 %%
@@ -358,9 +360,25 @@ argument_expression_list
 
 unary_expression
     : postfix_expression
+    {
+        $$ = $1;
+    }
     | "++" unary_expression
+    {
+        $$ = new ucc::ast::UnaryExpr(@1,
+                                     ucc::ast::UnaryExpr::UnaryOp::PRE_INCR,
+                                     $2);
+    }
     | "--" unary_expression
+    {
+        $$ = new ucc::ast::UnaryExpr(@1,
+                                     ucc::ast::UnaryExpr::UnaryOp::PRE_DECR,
+                                     $2);
+    }
     | unary_operator cast_expression
+    {
+        $$ = new ucc::ast::UnaryExpr(@1, $1, $2);
+    }
     | "sizeof" unary_expression
     | "sizeof" "(" type_name ")"
     /*| "_Alignof" "(" type_name ")"*/
@@ -368,11 +386,29 @@ unary_expression
 
 unary_operator
     : "&"
+    {
+        $$ = ucc::ast::UnaryExpr::UnaryOp::BAND;
+    }
     | "*"
+    {
+        $$ = ucc::ast::UnaryExpr::UnaryOp::DEREF;
+    }
     | "+"
+    {
+        $$ = ucc::ast::UnaryExpr::UnaryOp::PLUS;
+    }
     | "-"
+    {
+        $$ = ucc::ast::UnaryExpr::UnaryOp::MINUS;
+    }
     | "~"
+    {
+        $$ = ucc::ast::UnaryExpr::UnaryOp::TILDE;
+    }
     | "!"
+    {
+        $$ = ucc::ast::UnaryExpr::UnaryOp::BANG;
+    }
     ;
 
 cast_expression

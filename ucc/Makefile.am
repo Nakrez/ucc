@@ -30,6 +30,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/assign-expr.cc \
 			  src/ast/conditional-expr.cc \
 			  src/ast/op-expr.cc \
+			  src/ast/unary-expr.cc \
 			  src/ast/pretty-printer.cc \
 			  src/ast/command.cc \
 			  src/main.cc \

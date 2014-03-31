@@ -40,6 +40,7 @@ namespace ucc
                 virtual void operator()(const AssignExpr& ast);
                 virtual void operator()(const ConditionalExpr& ast);
                 virtual void operator()(const OpExpr& ast);
+                virtual void operator()(const UnaryExpr& ast);
 
             protected:
                 bool print_fun_ptr(const Type* ast,
