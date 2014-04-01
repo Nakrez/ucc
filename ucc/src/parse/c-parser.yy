@@ -250,6 +250,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         iteration_statement
                         labeled_statement
                         statement
+                        selection_statement
 
 %type <expr_list>       argument_expression_list
 %type <assign_op>       assignment_operator
@@ -1350,6 +1351,9 @@ statement
         $$ = $1;
     }
     | selection_statement
+    {
+        $$ = $1;
+    }
     | iteration_statement
     {
         $$ = $1;
@@ -1423,7 +1427,7 @@ statement_list
         if ($2)
             $$->push_back(std::shared_ptr<ucc::ast::Ast>($2));
     }
-
+    ;
 /*
 block_item_list
     : block_item
@@ -1449,7 +1453,13 @@ expression_statement
 
 selection_statement
     : "if" "(" expression ")" statement "else" statement
+    {
+        $$ = new ucc::ast::IfStmt(@1, $3, $5, $7);
+    }
     | "if" "(" expression ")" statement
+    {
+        $$ = new ucc::ast::IfStmt(@1, $3, $5, nullptr);
+    }
     | "switch" "(" expression ")" statement
     ;
 

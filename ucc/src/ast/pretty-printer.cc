@@ -29,6 +29,7 @@ void PrettyPrinter::operator()(const AstList& ast)
         (*it)->accept(*this);
 
         if (!dynamic_cast<const Decl*> (it->get()) &&
+            !dynamic_cast<const IfStmt*> (it->get()) &&
             !dynamic_cast<const WhileStmt*> (it->get()))
             ostr_ << ";";
     }
@@ -257,6 +258,45 @@ void PrettyPrinter::operator()(const ContinueStmt&)
     ostr_ << "continue";
 }
 
+void PrettyPrinter::operator()(const IfStmt& ast)
+{
+    ostr_ << "if (";
+
+    if (ast.cond_get())
+        ast.cond_get()->accept(*this);
+
+    ostr_ << ")";
+
+    if (!dynamic_cast<const CompoundStmt*>(ast.if_body_get()))
+        ostr_ << misc::incendl;
+
+    if (ast.if_body_get())
+        ast.if_body_get()->accept(*this);
+
+    if (!dynamic_cast<const CompoundStmt*>(ast.if_body_get()))
+        ostr_ << ";" << misc::decendl;
+    else
+        ostr_ << misc::iendl;
+
+    if (ast.else_body_get())
+    {
+        ostr_ << "else";
+
+        if (!dynamic_cast<const CompoundStmt*>(ast.else_body_get()))
+            ostr_ << misc::incendl;
+
+        ast.else_body_get()->accept(*this);
+
+        if (!dynamic_cast<const CompoundStmt*>(ast.else_body_get()))
+        {
+            if (!dynamic_cast<const IfStmt*>(ast.else_body_get()))
+            ostr_ << ";";
+
+            ostr_ << misc::decendl;
+        }
+    }
+}
+
 void PrettyPrinter::operator()(const ReturnStmt& ast)
 {
     ostr_ << "return";
@@ -369,7 +409,7 @@ void PrettyPrinter::operator()(const UnaryExpr& ast)
 }
 
 bool PrettyPrinter::print_fun_ptr(const Type* ast,
-                                  const ucc::misc::Symbol& sym)
+        const ucc::misc::Symbol& sym)
 {
     const PtrType* ptr = dynamic_cast<const PtrType*> (ast);
     const PtrType* tmp = nullptr;

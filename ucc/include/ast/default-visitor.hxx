@@ -181,6 +181,20 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<ContinueStmt>::typ
 
 template <template <typename> class Const>
 void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<IfStmt>::type& ast)
+{
+    if (ast.cond_get())
+        ast.cond_get()->accept(*this);
+
+    if (ast.if_body_get())
+        ast.if_body_get()->accept(*this);
+
+    if (ast.else_body_get())
+        ast.else_body_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Expr>::type& ast)
 {
     ast.accept(*this);

@@ -27,6 +27,7 @@
 # include <ast/goto-stmt.hh>
 # include <ast/break-stmt.hh>
 # include <ast/continue-stmt.hh>
+# include <ast/if-stmt.hh>
 
 # include <ast/expr.hh>
 # include <ast/int-expr.hh>
