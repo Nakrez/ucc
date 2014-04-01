@@ -36,6 +36,7 @@ namespace ucc
                 virtual void operator()(const LabelStmt& ast);
                 virtual void operator()(const GotoStmt& ast);
                 virtual void operator()(const BreakStmt& ast);
+                virtual void operator()(const ContinueStmt& ast);
 
                 virtual void operator()(const IntExpr& ast);
                 virtual void operator()(const FloatExpr& ast);

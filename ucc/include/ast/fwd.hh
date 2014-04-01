@@ -31,6 +31,7 @@ namespace ucc
         class LabelStmt;
         class GotoStmt;
         class BreakStmt;
+        class ContinueStmt;
 
         class Expr;
         class IntExpr;

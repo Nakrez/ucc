@@ -1478,6 +1478,9 @@ jump_statement
         delete $2;
     }
     | "continue" ";"
+    {
+        $$ = new ucc::ast::ContinueStmt(@1);
+    }
     | "break" ";"
     {
         $$ = new ucc::ast::BreakStmt(@1);

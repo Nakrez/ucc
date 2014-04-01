@@ -26,6 +26,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/label-stmt.cc \
 			  src/ast/goto-stmt.cc \
 			  src/ast/break-stmt.cc \
+			  src/ast/continue-stmt.cc \
 			  src/ast/expr.cc \
 			  src/ast/int-expr.cc \
 			  src/ast/float-expr.cc \

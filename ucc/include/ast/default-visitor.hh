@@ -48,6 +48,7 @@ namespace ucc
                 virtual void operator()(typename Const<LabelStmt>::type& ast);
                 virtual void operator()(typename Const<GotoStmt>::type& ast);
                 virtual void operator()(typename Const<BreakStmt>::type& ast);
+                virtual void operator()(typename Const<ContinueStmt>::type& ast);
 
                 virtual void operator()(typename Const<Expr>::type& ast);
                 virtual void operator()(typename Const<IntExpr>::type& ast);

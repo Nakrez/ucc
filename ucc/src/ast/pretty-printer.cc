@@ -252,6 +252,11 @@ void PrettyPrinter::operator()(const BreakStmt&)
     ostr_ << "break";
 }
 
+void PrettyPrinter::operator()(const ContinueStmt&)
+{
+    ostr_ << "continue";
+}
+
 void PrettyPrinter::operator()(const ReturnStmt& ast)
 {
     ostr_ << "return";
