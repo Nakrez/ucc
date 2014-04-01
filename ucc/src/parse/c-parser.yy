@@ -1479,6 +1479,9 @@ jump_statement
     }
     | "continue" ";"
     | "break" ";"
+    {
+        $$ = new ucc::ast::BreakStmt(@1);
+    }
     | "return" ";"
     {
         $$ = new ucc::ast::ReturnStmt(@1);

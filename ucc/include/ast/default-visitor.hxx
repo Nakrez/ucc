@@ -171,6 +171,11 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<GotoStmt>::type&)
 
 template <template <typename> class Const>
 void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<BreakStmt>::type&)
+{}
+
+template <template <typename> class Const>
+void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Expr>::type& ast)
 {
     ast.accept(*this);

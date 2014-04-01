@@ -247,6 +247,11 @@ void PrettyPrinter::operator()(const GotoStmt& ast)
     ostr_ << "goto " << ast.name_get();
 }
 
+void PrettyPrinter::operator()(const BreakStmt&)
+{
+    ostr_ << "break";
+}
+
 void PrettyPrinter::operator()(const ReturnStmt& ast)
 {
     ostr_ << "return";
