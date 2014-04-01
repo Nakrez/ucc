@@ -24,6 +24,7 @@
 # include <ast/while-stmt.hh>
 # include <ast/do-while-stmt.hh>
 # include <ast/label-stmt.hh>
+# include <ast/goto-stmt.hh>
 
 # include <ast/expr.hh>
 # include <ast/int-expr.hh>

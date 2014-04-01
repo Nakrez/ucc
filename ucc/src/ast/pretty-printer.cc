@@ -242,6 +242,11 @@ void PrettyPrinter::operator()(const LabelStmt& ast)
         ast.stmt_get()->accept(*this);
 }
 
+void PrettyPrinter::operator()(const GotoStmt& ast)
+{
+    ostr_ << "goto " << ast.name_get();
+}
+
 void PrettyPrinter::operator()(const ReturnStmt& ast)
 {
     ostr_ << "return";

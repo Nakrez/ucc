@@ -29,6 +29,7 @@ namespace ucc
         class WhileStmt;
         class DoWhileStmt;
         class LabelStmt;
+        class GotoStmt;
 
         class Expr;
         class IntExpr;

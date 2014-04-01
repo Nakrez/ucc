@@ -1472,6 +1472,11 @@ iteration_statement
 
 jump_statement
     : "goto" "identifier" ";"
+    {
+        $$ = new ucc::ast::GotoStmt(@1, *$2);
+
+        delete $2;
+    }
     | "continue" ";"
     | "break" ";"
     | "return" ";"
