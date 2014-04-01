@@ -234,6 +234,14 @@ void PrettyPrinter::operator()(const DoWhileStmt& ast)
     ostr_ << ");";
 }
 
+void PrettyPrinter::operator()(const LabelStmt& ast)
+{
+    ostr_ << ast.name_get() << ":" << misc::iendl;
+
+    if (ast.stmt_get())
+        ast.stmt_get()->accept(*this);
+}
+
 void PrettyPrinter::operator()(const ReturnStmt& ast)
 {
     ostr_ << "return";

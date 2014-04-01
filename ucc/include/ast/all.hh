@@ -23,6 +23,7 @@
 # include <ast/return-stmt.hh>
 # include <ast/while-stmt.hh>
 # include <ast/do-while-stmt.hh>
+# include <ast/label-stmt.hh>
 
 # include <ast/expr.hh>
 # include <ast/int-expr.hh>

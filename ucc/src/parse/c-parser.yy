@@ -224,7 +224,6 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %type <compound_stmt>   compound_statement
 %type <ast_list>        statement_list
 
-%type <ast>             statement
 %type <expr>            initializer
                         expression_statement
                         expression
@@ -249,6 +248,8 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 
 %type <stmt>            jump_statement
                         iteration_statement
+                        labeled_statement
+                        statement
 
 %type <expr_list>       argument_expression_list
 %type <assign_op>       assignment_operator
@@ -1337,6 +1338,9 @@ static_assert_declaration
 */
 statement
     : labeled_statement
+    {
+        $$ = $1;
+    }
     | compound_statement
     {
         $$ = $1;
@@ -1358,7 +1362,17 @@ statement
 
 labeled_statement
     : "identifier" ":" attribute_spec statement
+    {
+        $$ = new ucc::ast::LabelStmt(@1, *$1, $4);
+
+        delete $1;
+    }
     | "identifier" ":" statement
+    {
+        $$ = new ucc::ast::LabelStmt(@1, *$1, $3);
+
+        delete $1;
+    }
     | "case" constant_expression ":" statement
     | "default" ":" statement
     ;
@@ -1440,7 +1454,7 @@ selection_statement
     ;
 
 iteration_statement
-    : WHILE "(" expression ")" statement
+    : "while" "(" expression ")" statement
     {
         $$ = new ucc::ast::WhileStmt(@1, $3, $5);
     }

@@ -158,6 +158,14 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<DoWhileStmt>::type
 
 template <template <typename> class Const>
 void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<LabelStmt>::type& ast)
+{
+    if (ast.stmt_get())
+        ast.stmt_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Expr>::type& ast)
 {
     ast.accept(*this);
