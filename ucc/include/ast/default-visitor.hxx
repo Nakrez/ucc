@@ -217,6 +217,14 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<CaseStmt>::type& a
 
 template <template <typename> class Const>
 void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<DefaultStmt>::type& ast)
+{
+    if (ast.body_get())
+        ast.body_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Expr>::type& ast)
 {
     ast.accept(*this);

@@ -35,6 +35,7 @@ namespace ucc
         class IfStmt;
         class SwitchStmt;
         class CaseStmt;
+        class DefaultStmt;
 
         class Expr;
         class IntExpr;

@@ -30,6 +30,7 @@
 # include <ast/if-stmt.hh>
 # include <ast/switch-stmt.hh>
 # include <ast/case-stmt.hh>
+# include <ast/default-stmt.hh>
 
 # include <ast/expr.hh>
 # include <ast/int-expr.hh>

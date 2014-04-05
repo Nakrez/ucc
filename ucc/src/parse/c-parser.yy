@@ -1382,6 +1382,9 @@ labeled_statement
         $$ = new ucc::ast::CaseStmt(@1, $2, $4);
     }
     | "default" ":" statement
+    {
+        $$ = new ucc::ast::DefaultStmt(@1, $3);
+    }
     ;
 
 compound_statement
