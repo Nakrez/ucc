@@ -1461,6 +1461,9 @@ selection_statement
         $$ = new ucc::ast::IfStmt(@1, $3, $5, nullptr);
     }
     | "switch" "(" expression ")" statement
+    {
+        $$ = new ucc::ast::SwitchStmt(@1, $3, $5);
+    }
     ;
 
 iteration_statement

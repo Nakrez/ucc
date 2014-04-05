@@ -50,6 +50,7 @@ namespace ucc
                 virtual void operator()(typename Const<BreakStmt>::type& ast);
                 virtual void operator()(typename Const<ContinueStmt>::type& ast);
                 virtual void operator()(typename Const<IfStmt>::type& ast);
+                virtual void operator()(typename Const<SwitchStmt>::type& ast);
 
                 virtual void operator()(typename Const<Expr>::type& ast);
                 virtual void operator()(typename Const<IntExpr>::type& ast);

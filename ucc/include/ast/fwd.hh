@@ -33,6 +33,7 @@ namespace ucc
         class BreakStmt;
         class ContinueStmt;
         class IfStmt;
+        class SwitchStmt;
 
         class Expr;
         class IntExpr;

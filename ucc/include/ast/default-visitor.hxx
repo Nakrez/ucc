@@ -195,6 +195,17 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<IfStmt>::type& ast
 
 template <template <typename> class Const>
 void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<SwitchStmt>::type& ast)
+{
+    if (ast.cond_get())
+        ast.cond_get()->accept(*this);
+
+    if (ast.body_get())
+        ast.body_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Expr>::type& ast)
 {
     ast.accept(*this);

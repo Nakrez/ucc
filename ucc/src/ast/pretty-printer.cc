@@ -297,6 +297,24 @@ void PrettyPrinter::operator()(const IfStmt& ast)
     }
 }
 
+void PrettyPrinter::operator()(const SwitchStmt& ast)
+{
+    ostr_ << "switch (";
+
+    if (ast.cond_get())
+        ast.cond_get()->accept(*this);
+
+    ostr_ << ")";
+
+    if (!dynamic_cast<const CompoundStmt*> (ast.body_get()))
+        ostr_ << misc::incendl;
+
+    ast.body_get()->accept(*this);
+
+    if (!dynamic_cast<const CompoundStmt*> (ast.body_get()))
+        ostr_ << misc::decendl;
+}
+
 void PrettyPrinter::operator()(const ReturnStmt& ast)
 {
     ostr_ << "return";
