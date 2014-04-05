@@ -30,6 +30,8 @@ void PrettyPrinter::operator()(const AstList& ast)
 
         if (!dynamic_cast<const Decl*> (it->get()) &&
             !dynamic_cast<const IfStmt*> (it->get()) &&
+            !dynamic_cast<const SwitchStmt*> (it->get()) &&
+            !dynamic_cast<const CaseStmt*> (it->get()) &&
             !dynamic_cast<const WhileStmt*> (it->get()))
             ostr_ << ";";
     }
@@ -313,6 +315,24 @@ void PrettyPrinter::operator()(const SwitchStmt& ast)
 
     if (!dynamic_cast<const CompoundStmt*> (ast.body_get()))
         ostr_ << misc::decendl;
+}
+
+void PrettyPrinter::operator()(const CaseStmt& ast)
+{
+    ostr_ << "case ";
+
+    if (ast.expr_get())
+        ast.expr_get()->accept(*this);
+
+    ostr_ << ":";
+
+    if (!dynamic_cast<const CompoundStmt*> (ast.body_get()))
+        ostr_ << misc::incendl;
+
+    ast.body_get()->accept(*this);
+
+    if (!dynamic_cast<const CompoundStmt*> (ast.body_get()))
+        ostr_ << ";" << misc::decendl;
 }
 
 void PrettyPrinter::operator()(const ReturnStmt& ast)

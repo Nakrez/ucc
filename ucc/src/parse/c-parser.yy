@@ -1378,6 +1378,9 @@ labeled_statement
         delete $1;
     }
     | "case" constant_expression ":" statement
+    {
+        $$ = new ucc::ast::CaseStmt(@1, $2, $4);
+    }
     | "default" ":" statement
     ;
 

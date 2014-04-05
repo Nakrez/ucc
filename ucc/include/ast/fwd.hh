@@ -34,6 +34,7 @@ namespace ucc
         class ContinueStmt;
         class IfStmt;
         class SwitchStmt;
+        class CaseStmt;
 
         class Expr;
         class IntExpr;
