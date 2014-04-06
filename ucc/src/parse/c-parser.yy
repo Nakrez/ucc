@@ -1540,6 +1540,9 @@ external_declaration
 
 function_definition
     : declaration_specifiers declarator declaration_list compound_statement
+    {
+        yyparser.error(@1, "unsupported declaration list after function");
+    }
     | declaration_specifiers declarator compound_statement
     {
         ucc::ast::Type* type;
@@ -1571,6 +1574,9 @@ function_definition
         delete $2;
     }
     | declarator declaration_list compound_statement
+    {
+        yyparser.error(@1, "unsupported declaration list after function");
+    }
     | declarator compound_statement
     {
         ucc::ast::Type* type = $1->type_get();
