@@ -1255,6 +1255,12 @@ direct_abstract_declarator
             yyparser.error(@2, "incompatible type used with array");
     }
     | "[" constant_expression "]"
+    {
+        $$ = new ucc::ast::Declarator(@1, "");
+
+        if (!$$->extends_type(new ucc::ast::ArrayType(@2, $2)))
+            yyparser.error(@2, "incompatible type used with array");
+    }
     | direct_abstract_declarator "[" "]"
     {
         $$ = $1;
@@ -1263,6 +1269,12 @@ direct_abstract_declarator
             yyparser.error(@2, "incompatible type used with array");
     }
     | direct_abstract_declarator "[" constant_expression "]"
+    {
+        $$ = $1;
+
+        if (!$$->extends_type(new ucc::ast::ArrayType(@2, $3)))
+            yyparser.error(@2, "incompatible type used with array");
+    }
 /*
     | "[" "*" "]"
     | "[" "static" type_qualifier_list assignment_expression "]"
@@ -1315,6 +1327,9 @@ initializer
     : "{" initializer_list "}"
     | "{" initializer_list "," "}"
     | assignment_expression
+    {
+        $$ = $1;
+    }
     ;
 
 initializer_list
@@ -1343,6 +1358,7 @@ static_assert_declaration
     : "_Static_assert" "(" constant_expression "," "string" ")" ";"
     ;
 */
+
 statement
     : labeled_statement
     {
@@ -1488,7 +1504,13 @@ iteration_statement
         $$ = new ucc::ast::DoWhileStmt(@1, $5, $2);
     }
     | "for" "(" expression_statement expression_statement ")" statement
+    {
+        $$ = new ucc::ast::ForStmt(@1, $3, $4, nullptr, $6);
+    }
     | "for" "(" expression_statement expression_statement expression ")" statement
+    {
+        $$ = new ucc::ast::ForStmt(@1, $3, $4, $5, $7);
+    }
     /*
     | "for" "(" declaration expression_statement ")" statement
     | "for" "(" declaration expression_statement expression ")" statement

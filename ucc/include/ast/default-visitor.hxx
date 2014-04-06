@@ -225,6 +225,23 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<DefaultStmt>::type
 
 template <template <typename> class Const>
 void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<ForStmt>::type& ast)
+{
+    if (ast.init_get())
+        ast.init_get()->accept(*this);
+
+    if (ast.cond_get())
+        ast.cond_get()->accept(*this);
+
+    if (ast.inc_get())
+        ast.inc_get()->accept(*this);
+
+    if (ast.body_get())
+        ast.body_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Expr>::type& ast)
 {
     ast.accept(*this);

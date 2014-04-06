@@ -53,6 +53,7 @@ namespace ucc
                 virtual void operator()(typename Const<SwitchStmt>::type& ast);
                 virtual void operator()(typename Const<CaseStmt>::type& ast);
                 virtual void operator()(typename Const<DefaultStmt>::type& ast);
+                virtual void operator()(typename Const<ForStmt>::type& ast);
 
                 virtual void operator()(typename Const<Expr>::type& ast);
                 virtual void operator()(typename Const<IntExpr>::type& ast);
