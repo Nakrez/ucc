@@ -75,7 +75,8 @@ void PrettyPrinter::operator()(const VarDecl& ast)
 
     if (ast.type_get())
     {
-        if (print_fun_ptr(ast.type_get(), ast.name_get()))
+        if (print_fun_ptr(ast.type_get(), ast.name_get()) ||
+            print_array_ty(ast.type_get(), ast.name_get()))
         {
             if (!formals_)
                 ostr_ << ";";
@@ -107,7 +108,8 @@ void PrettyPrinter::operator()(const TypeDecl& ast)
 
     if (ast.type_get())
     {
-        if (print_fun_ptr(ast.type_get(), ast.name_get()))
+        if (print_fun_ptr(ast.type_get(), ast.name_get()) ||
+            print_array_ty(ast.type_get(), ast.name_get()))
         {
             ostr_ << ";";
             return;
@@ -157,6 +159,19 @@ void PrettyPrinter::operator()(const FunctionDecl& ast)
         ast.compound_get()->accept(*this);
     else
         ostr_ << ";";
+}
+
+void PrettyPrinter::operator()(const ArrayType& ast)
+{
+    if (ast.sub_type_get())
+        ast.sub_type_get()->accept(*this);
+
+    ostr_ << "[";
+
+    if (ast.size_get())
+        ast.size_get()->accept(*this);
+
+    ostr_ << "]";
 }
 
 void PrettyPrinter::operator()(const NamedType& ast)
@@ -522,4 +537,25 @@ bool PrettyPrinter::print_fun_ptr(const Type* ast,
     }
 
     return false;
+}
+
+bool PrettyPrinter::print_array_ty(const Type* ast,
+                                   const ucc::misc::Symbol& sym)
+{
+    const ArrayType *t = dynamic_cast<const ArrayType*> (ast);
+
+    if (!t)
+        return false;
+
+    if (t->sub_type_get())
+        t->sub_type_get()->accept(*this);
+
+    ostr_ << " " << sym << "[";
+
+    if (t->size_get())
+        t->size_get()->accept(*this);
+
+    ostr_ << "]";
+
+    return true;
 }

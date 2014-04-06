@@ -42,15 +42,9 @@ bool ArrayType::extends_type(Type *t)
 {
     if (sub_type_ == nullptr)
     {
-        /*
-        if (dynamic_cast<FunctionType*> (t))
-        {
-            sub_type_ = t;
-            return true;
-        }
-        */
+        sub_type_ = t;
 
-        return false;
+        return t;
     }
 
     return sub_type_->extends_type(t);

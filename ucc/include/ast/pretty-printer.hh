@@ -26,6 +26,7 @@ namespace ucc
                 virtual void operator()(const TypeDecl& ast);
                 virtual void operator()(const FunctionDecl& ast);
 
+                virtual void operator()(const ArrayType& ast);
                 virtual void operator()(const NamedType& ast);
                 virtual void operator()(const PtrType& ast);
 
@@ -56,6 +57,8 @@ namespace ucc
             protected:
                 bool print_fun_ptr(const Type* ast,
                                    const ucc::misc::Symbol& sym);
+                bool print_array_ty(const Type* ast,
+                                    const ucc::misc::Symbol& sym);
 
             protected:
                 bool formals_;

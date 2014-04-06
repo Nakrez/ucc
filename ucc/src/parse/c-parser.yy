@@ -901,6 +901,7 @@ struct_or_union_specifier
     | struct_or_union "{" struct_declaration_list "}" attribute_spec
     | struct_or_union attribute_spec "{" struct_declaration_list "}" attribute_spec
     | struct_or_union "identifier" "{" struct_declaration_list "}"
+    | struct_or_union "identifier"
     | struct_or_union attribute_spec "identifier"
     ;
 
@@ -1055,6 +1056,11 @@ direct_declarator
             yyparser.error(@2, "incompatible type used with array");
     }
     | direct_declarator "[" constant_expression "]"
+    {
+        $$ = $1;
+        if (!$$->extends_type(new ucc::ast::ArrayType(@2, $3)))
+            yyparser.error(@2, "incompatible type used with array");
+    }
     | direct_declarator "(" parameter_type_list ")"
     {
         $$ = $1;
