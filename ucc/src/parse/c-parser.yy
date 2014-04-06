@@ -1572,6 +1572,25 @@ function_definition
     }
     | declarator declaration_list compound_statement
     | declarator compound_statement
+    {
+        ucc::ast::Type* type = $1->type_get();
+
+        type->extends_type(new ucc::ast::NamedType(@1, "int"));
+
+        if (type && dynamic_cast<ucc::ast::FunctionType*>(type))
+        {
+            ucc::ast::FunctionType* t;
+            t = dynamic_cast<ucc::ast::FunctionType*>(type);
+
+            $$ = new ucc::ast::FunctionDecl(@1, $1->name_get(), t, $2);
+            $$->storage_class_set($1->storage_class_get());
+        }
+        else
+            yyparser.error(@1, "Wrong combination of types for function"
+                           " declaration");
+
+        delete $1;
+    }
 
 declaration_list
     : declaration
