@@ -512,6 +512,18 @@ void PrettyPrinter::operator()(const UnaryExpr& ast)
     }
 }
 
+void PrettyPrinter::operator()(const MemberExpr& ast)
+{
+    ast.lexpr_get()->accept(*this);
+
+    if (ast.is_arrow())
+        ostr_ << "->";
+    else
+        ostr_ << ".";
+
+    ostr_ << ast.name_get();
+}
+
 bool PrettyPrinter::print_fun_ptr(const Type* ast,
         const ucc::misc::Symbol& sym)
 {

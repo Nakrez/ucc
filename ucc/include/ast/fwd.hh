@@ -49,6 +49,7 @@ namespace ucc
         class ConditionalExpr;
         class OpExpr;
         class UnaryExpr;
+        class MemberExpr;
 
         typedef AnyList<Ast> AstList;
         typedef AnyList<Decl> DeclList;

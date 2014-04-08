@@ -44,5 +44,6 @@
 # include <ast/conditional-expr.hh>
 # include <ast/op-expr.hh>
 # include <ast/unary-expr.hh>
+# include <ast/member-expr.hh>
 
 #endif /* !ALL_HH */

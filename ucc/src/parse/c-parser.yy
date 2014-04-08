@@ -339,7 +339,17 @@ postfix_expression
         $$ = new ucc::ast::CallExpr(@1, $1, $3);
     }
     | postfix_expression "." "identifier"
+    {
+        $$ = new ucc::ast::MemberExpr(@1, $1, *$3, false);
+
+        delete $3;
+    }
     | postfix_expression "->" "identifier"
+    {
+        $$ = new ucc::ast::MemberExpr(@1, $1, *$3, true);
+
+        delete $3;
+    }
     | postfix_expression "++"
     {
         $$ = new ucc::ast::UnaryExpr(@1,
