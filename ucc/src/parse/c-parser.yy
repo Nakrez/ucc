@@ -341,7 +341,17 @@ postfix_expression
     | postfix_expression "." "identifier"
     | postfix_expression "->" "identifier"
     | postfix_expression "++"
+    {
+        $$ = new ucc::ast::UnaryExpr(@1,
+                                     ucc::ast::UnaryExpr::UnaryOp::POST_INCR,
+                                     $1);
+    }
     | postfix_expression "--"
+    {
+        $$ = new ucc::ast::UnaryExpr(@1,
+                                     ucc::ast::UnaryExpr::UnaryOp::POST_DECR,
+                                     $1);
+    }
 
 /*
     | "(" type_name ")" "{" initializer_list "}"

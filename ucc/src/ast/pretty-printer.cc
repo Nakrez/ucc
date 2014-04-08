@@ -499,10 +499,17 @@ void PrettyPrinter::operator()(const OpExpr& ast)
 
 void PrettyPrinter::operator()(const UnaryExpr& ast)
 {
-    ostr_ << ast.op_to_str();
-
-    if (ast.expr_get())
+    if (ast.op_get() != UnaryExpr::UnaryOp::POST_INCR &&
+        ast.op_get() != UnaryExpr::UnaryOp::POST_DECR)
+    {
+        ostr_ << ast.op_to_str();
         ast.expr_get()->accept(*this);
+    }
+    else
+    {
+        ast.expr_get()->accept(*this);
+        ostr_ << ast.op_to_str();
+    }
 }
 
 bool PrettyPrinter::print_fun_ptr(const Type* ast,

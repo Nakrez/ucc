@@ -22,6 +22,8 @@ namespace ucc
                     BANG,
                     PRE_INCR,
                     PRE_DECR,
+                    POST_INCR,
+                    POST_DECR,
                 };
 
                 UnaryExpr(const ucc::parse::location& loc,

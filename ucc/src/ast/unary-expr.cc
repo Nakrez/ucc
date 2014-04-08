@@ -41,6 +41,10 @@ std::string UnaryExpr::op_to_str() const
             return "++";
         case PRE_DECR:
             return "--";
+        case POST_INCR:
+            return "++";
+        case POST_DECR:
+            return "--";
     }
 }
 
