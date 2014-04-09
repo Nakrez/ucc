@@ -31,6 +31,7 @@ namespace ucc
                 virtual void operator()(typename Const<VarDecl>::type& ast);
                 virtual void operator()(typename Const<FunctionDecl>::type& ast);
                 virtual void operator()(typename Const<TypeDecl>::type& ast);
+                virtual void operator()(typename Const<FieldDecl>::type& ast) = 0;
 
                 virtual void operator()(typename Const<Type>::type& ast);
 

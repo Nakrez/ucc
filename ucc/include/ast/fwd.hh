@@ -16,6 +16,7 @@ namespace ucc
         class VarDecl;
         class FunctionDecl;
         class TypeDecl;
+        class FieldDecl;
 
         class Type;
         class NamedType;
@@ -55,6 +56,7 @@ namespace ucc
         typedef AnyList<Decl> DeclList;
         typedef AnyList<Stmt> StmtList;
         typedef AnyList<Expr> ExprList;
+        typedef AnyList<FieldDecl> FieldList;
     } // namespace ast
 } // namespace ucc
 

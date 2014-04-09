@@ -70,6 +70,17 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<TypeDecl>::type& a
 }
 
 template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<FieldDecl>::type& ast)
+{
+    if (ast.type_get())
+        ast.type_get()->accept(*this);
+
+    if (ast.bit_field_get())
+        ast.bit_field_get()->accept(*this);
+}
+
+template <template <typename> class Const>
 void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Type>::type& ast)
 {
     ast.accept(*this);

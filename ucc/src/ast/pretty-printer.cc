@@ -162,6 +162,20 @@ void PrettyPrinter::operator()(const FunctionDecl& ast)
         ostr_ << ";";
 }
 
+void PrettyPrinter::operator()(const FieldDecl& ast)
+{
+    if (ast.type_get())
+        ast.type_get()->accept(*this);
+
+    ostr_ << " " << ast.name_get();
+
+    if (ast.bit_field_get())
+    {
+        ostr_ << " : ";
+        ast.bit_field_get()->accept(*this);
+    }
+}
+
 void PrettyPrinter::operator()(const ArrayType& ast)
 {
     if (ast.sub_type_get())

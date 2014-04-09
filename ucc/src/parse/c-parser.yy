@@ -66,6 +66,8 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::AssignExpr::AssignOp assign_op;
     ucc::ast::UnaryExpr::UnaryOp unary_op;
     ucc::ast::CompoundStmt* compound_stmt;
+    ucc::ast::FieldDecl* field;
+    ucc::ast::FieldList* field_list;
 }
 
 
@@ -204,6 +206,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         type_qualifier
                         function_specifier
                         type_qualifier_list
+                        specifier_qualifier_list
 
 %type <declarator>      declarator
                         direct_declarator
@@ -255,6 +258,11 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %type <expr_list>       argument_expression_list
 %type <assign_op>       assignment_operator
 %type <unary_op>        unary_operator
+
+%type <field>           struct_declarator
+%type <field_list>      struct_declarator_list
+                        struct_declaration
+                        struct_declaration_list
 
 %start translation_unit
 %%
@@ -932,11 +940,39 @@ struct_or_union
 
 struct_declaration_list
     : struct_declaration
+    {
+        $$ = $1;
+    }
     | struct_declaration_list struct_declaration
+    {
+        $$ = $1;
+        $$->splice_back(*$2);
+
+        delete $2;
+    }
     ;
 
 struct_declaration
     : specifier_qualifier_list struct_declarator_list ";"
+    {
+        ucc::ast::Type* type;
+
+        for (auto decl : $2->list_get())
+        {
+            type = decl->type_get();
+
+            if (!type)
+                type = $1->type_get();
+            else
+                type->extends_type($1->type_get());
+
+            decl->type_set(type);
+
+            decl->storage_class_set($1->storage_class_get());
+        }
+
+        $$ = $2;
+    }
     /*
     | specifier_qualifier_list ";"
     | static_assert_declaration
@@ -945,20 +981,53 @@ struct_declaration
 
 specifier_qualifier_list
     : type_specifier specifier_qualifier_list
+    {
+        $$ = $1;
+        $$->merge($2, driver.error_);
+        delete $2;
+    }
     | type_specifier
+    {
+        $$ = $1;
+    }
     | type_qualifier specifier_qualifier_list
+    {
+        $$ = $1;
+        $$->merge($2, driver.error_);
+        delete $2;
+    }
     | type_qualifier
+    {
+        $$ = $1;
+    }
     ;
 
 struct_declarator_list
     : struct_declarator
+    {
+        $$ = new ucc::ast::FieldList(@1);
+        $$->push_back(std::shared_ptr<ucc::ast::FieldDecl>($1));
+    }
     | struct_declarator_list "," struct_declarator
+    {
+        $$ = $1;
+        $$->push_back(std::shared_ptr<ucc::ast::FieldDecl>($3));
+    }
     ;
 
 struct_declarator
     : ":" constant_expression
+    {
+        $$ = new ucc::ast::FieldDecl(@1, "", nullptr, $2);
+    }
     | declarator ":" constant_expression
+    {
+        $$ = new ucc::ast::FieldDecl(@1, $1->name_get(), $1->type_get(), $3);
+    }
     | declarator
+    {
+        $$ = new ucc::ast::FieldDecl(@1, $1->name_get(), $1->type_get(), nullptr);
+    }
     ;
 
 enum_specifier
