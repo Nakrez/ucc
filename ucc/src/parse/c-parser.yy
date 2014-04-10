@@ -263,6 +263,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         selection_statement
 
 %type <expr_list>       argument_expression_list
+                        initializer_list
 %type <assign_op>       assignment_operator
 %type <unary_op>        unary_operator
 
@@ -1610,7 +1611,13 @@ direct_abstract_declarator
 
 initializer
     : "{" initializer_list "}"
+    {
+        $$ = new ucc::ast::InitListExpr(@1, $2);
+    }
     | "{" initializer_list "," "}"
+    {
+        $$ = new ucc::ast::InitListExpr(@1, $2);
+    }
     | assignment_expression
     {
         $$ = $1;
@@ -1619,9 +1626,17 @@ initializer
 
 initializer_list
     : initializer
+    {
+        $$ = new ucc::ast::ExprList(@1);
+        $$->push_back(std::shared_ptr<ucc::ast::Expr>($1));
+    }
 /*  | designation initializer */
 /*  | initializer_list "," designation initializer */
     | initializer_list "," initializer
+    {
+        $$ = $1;
+        $$->push_back(std::shared_ptr<ucc::ast::Expr>($3));
+    }
     ;
 
 /*

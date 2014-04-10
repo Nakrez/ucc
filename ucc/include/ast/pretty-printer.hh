@@ -66,6 +66,7 @@ namespace ucc
                 virtual void operator()(const EnumExpr& ast);
                 virtual void operator()(const CastExpr& ast);
                 virtual void operator()(const SizeofExpr& ast);
+                virtual void operator()(const InitListExpr& ast);
 
             protected:
                 bool print_fun_ptr(const Type* ast,

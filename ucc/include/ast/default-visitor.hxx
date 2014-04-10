@@ -429,4 +429,12 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<SizeofExpr>::type&
         ast.type_get()->accept(*this);
 }
 
+template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<InitListExpr>::type& ast)
+{
+    if (ast.list_get())
+        ast.list_get()->accept(*this);
+}
+
 #endif /* !UCC_AST_DEFAULT_VISITOR_HXX */

@@ -53,6 +53,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/enum-expr.cc \
 			  src/ast/cast-expr.cc \
 			  src/ast/sizeof-expr.cc \
+			  src/ast/init-list-expr.cc \
 			  src/ast/pretty-printer.cc \
 			  src/ast/command.cc \
 			  src/main.cc \

@@ -704,6 +704,16 @@ void PrettyPrinter::operator()(const SizeofExpr& ast)
     ostr_ << ")";
 }
 
+void PrettyPrinter::operator()(const InitListExpr& ast)
+{
+    ostr_ << "{ ";
+
+    if (ast.list_get())
+        ast.list_get()->accept(*this);
+
+    ostr_ << " }";
+}
+
 bool PrettyPrinter::print_fun_ptr(const Type* ast,
         const ucc::misc::Symbol& sym)
 {
