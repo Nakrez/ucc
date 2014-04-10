@@ -188,13 +188,15 @@ void PrettyPrinter::operator()(const FieldDecl& ast)
 
 void PrettyPrinter::operator()(const RecordDecl& ast)
 {
+    if (ast.name_get().data_get() == "")
+        return;
+
     if (ast.type_get() == RecordDecl::RecordType::STRUCT)
         ostr_ << "struct";
     else
         ostr_ << "union";
 
-    if (ast.name_get().data_get() != "")
-        ostr_ << " " << ast.name_get();
+    ostr_ << " " << ast.name_get();
 
     ostr_ << misc::iendl;
     ostr_ << "{";
@@ -204,7 +206,7 @@ void PrettyPrinter::operator()(const RecordDecl& ast)
         ast.fields_get()->accept(*this);
 
     ostr_ << misc::decendl;
-    ostr_ << "}";
+    ostr_ << "};";
 }
 
 void PrettyPrinter::operator()(const ArrayType& ast)
@@ -253,7 +255,22 @@ void PrettyPrinter::operator()(const RecordType& ast)
     else
         ostr_ << "union";
 
-    ostr_ << " " << ast.name_get();
+    if (ast.name_get().data_get() == "")
+    {
+        const RecordDecl* d = ast.def_get();
+
+        ostr_ << misc::iendl;
+        ostr_ << "{";
+        ostr_ << misc::incendl;
+
+        if (d->fields_get())
+            d->fields_get()->accept(*this);
+
+        ostr_ << misc::decendl;
+        ostr_ << "}";
+    }
+    else
+        ostr_ << " " << ast.name_get();
 }
 
 void PrettyPrinter::operator()(const CompoundStmt& ast)

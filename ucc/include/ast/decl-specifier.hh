@@ -6,6 +6,8 @@
 
 # include <location.hh>
 
+# include <ast/fwd.hh>
+
 namespace ucc
 {
     namespace ast
@@ -51,10 +53,11 @@ namespace ucc
                     TS_double = 64,
                     TS_signed = 128,
                     TS_unsigned = 256,
-                    TS_struct_union = 512,
-                    TS_enum = 1024,
-                    TS_type_name = 2048,
-                    TS_long_long = 4096,
+                    TS_struct = 512,
+                    TS_union = 1024,
+                    TS_enum = 2048,
+                    TS_type_name = 4096,
+                    TS_long_long = 8192,
                 };
 
             public:
@@ -67,6 +70,8 @@ namespace ucc
                 bool is_const() const;
                 bool is_restrict() const;
                 bool is_volatile() const;
+
+                bool is_struct_or_union() const;
 
                 DeclSpecifier::StorageClassSpecifier storage_class_get() const;
 
@@ -83,6 +88,9 @@ namespace ucc
 
                 bool merge(const DeclSpecifier* decl, ucc::misc::Error& err);
 
+                RecordDecl* record_decl_get() const;
+                void record_decl_set(RecordDecl* rec);
+
             private:
                 std::string
                 storage_class_to_str(StorageClassSpecifier spec) const;
@@ -94,6 +102,7 @@ namespace ucc
                 FunctionSpecifier function_specifier_;
                 unsigned type_specifier_ : 13;
                 ucc::misc::Symbol type_name_;
+                RecordDecl* rec_decl_;
         };
     } // namespace ast
 } // namespace ucc

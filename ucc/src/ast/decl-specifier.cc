@@ -1,6 +1,8 @@
 #include <ast/decl-specifier.hh>
 #include <ast/type.hh>
 #include <ast/named-type.hh>
+#include <ast/record-decl.hh>
+#include <ast/record-type.hh>
 
 using namespace ucc;
 using namespace ast;
@@ -12,6 +14,7 @@ DeclSpecifier::DeclSpecifier(const ucc::parse::location& loc)
     , function_specifier_(FS_unspecified)
     , type_specifier_(TS_unspecified)
     , type_name_("")
+    , rec_decl_(nullptr)
 {}
 
 DeclSpecifier::~DeclSpecifier()
@@ -37,6 +40,12 @@ bool DeclSpecifier::is_volatile() const
     return type_qualifier_ & TQ_volatile;
 }
 
+bool DeclSpecifier::is_struct_or_union() const
+{
+    return (type_specifier_ & TS_union) ||
+           (type_specifier_ & TS_struct);
+}
+
 DeclSpecifier::StorageClassSpecifier DeclSpecifier::storage_class_get() const
 {
     return storage_class_;
@@ -60,6 +69,24 @@ Type* DeclSpecifier::type_get()
         t = new NamedType(loc_, "double");
     else if (type_specifier_ & TS_type_name)
         t = new NamedType(loc_, type_name_);
+    else if (type_specifier_ & TS_struct)
+    {
+        RecordType* rec = new RecordType(loc_, RecordDecl::RecordType::STRUCT,
+                                         type_name_);
+
+        rec->def_set(rec_decl_);
+
+        t = rec;
+    }
+    else if (type_specifier_ & TS_union)
+    {
+        RecordType* rec = new RecordType(loc_, RecordDecl::RecordType::UNION,
+                                         type_name_);
+
+        rec->def_set(rec_decl_);
+
+        t = rec;
+    }
 
     if (!t)
         t = new NamedType(loc_, "int");
@@ -178,8 +205,19 @@ bool DeclSpecifier::merge(const DeclSpecifier* decl, ucc::misc::Error& err)
     }
 
     type_name_ = decl->type_name_;
+    rec_decl_ = decl->rec_decl_;
 
     return true;
+}
+
+RecordDecl* DeclSpecifier::record_decl_get() const
+{
+    return rec_decl_;
+}
+
+void DeclSpecifier::record_decl_set(RecordDecl* rec)
+{
+    rec_decl_ = rec;
 }
 
 std::string

@@ -686,13 +686,21 @@ constant_expression
 declaration
     : declaration_specifiers ";"
     {
-        yyparser.error(@1, "No name specified");
+        $$ = new ucc::ast::DeclList(@1);
+
+        if ($1->record_decl_get())
+            $$->push_back(std::shared_ptr<ucc::ast::Decl>($1->record_decl_get()));
+        else
+            yyparser.error(@1, "No name specified");
     }
     | declaration_specifiers init_declarator_list ";"
     {
         ucc::ast::Decl* new_decl = nullptr;
         $$ = new ucc::ast::DeclList(@1);
         ucc::ast::Type* type;
+
+        if ($1->record_decl_get())
+            $$->push_back(std::shared_ptr<ucc::ast::Decl>($1->record_decl_get()));
 
         for (auto decl : *$2)
         {
@@ -903,8 +911,33 @@ type_specifier
     /*| atomic_type_specifier*/
     | struct_or_union_specifier
     {
+        ucc::ast::RecordType* ty = dynamic_cast<ucc::ast::RecordType*>($1);
+        ucc::ast::RecordDecl* decl = dynamic_cast<ucc::ast::RecordDecl*>($1);
+
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_struct_union, driver.error_);
+
+
+        if (ty)
+        {
+            $$->type_name_set(ty->name_get());
+
+            if (ty->type_get() == ucc::ast::RecordDecl::RecordType::STRUCT)
+                $$->type_specifier_set(TypeSpecifier::TS_struct, driver.error_);
+            else
+                $$->type_specifier_set(TypeSpecifier::TS_union, driver.error_);
+
+            delete ty;
+        }
+        else
+        {
+            $$->type_name_set(decl->name_get());
+            $$->record_decl_set(decl);
+
+            if (decl->type_get() == ucc::ast::RecordDecl::RecordType::STRUCT)
+                $$->type_specifier_set(TypeSpecifier::TS_struct, driver.error_);
+            else
+                $$->type_specifier_set(TypeSpecifier::TS_union, driver.error_);
+        }
     }
     | enum_specifier
     {

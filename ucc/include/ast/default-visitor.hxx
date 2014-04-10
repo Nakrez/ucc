@@ -138,7 +138,7 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<PtrType>::type& as
 
 template <template <typename> class Const>
 void
-ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<RecordType>::type& ast)
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<RecordType>::type&)
 {}
 
 template <template <typename> class Const>
