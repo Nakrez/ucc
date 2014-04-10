@@ -100,6 +100,7 @@ namespace ucc
                 std::string
                 storage_class_to_str(StorageClassSpecifier spec) const;
 
+                std::string type_to_string() const;
             private:
                 ucc::parse::location loc_;
                 StorageClassSpecifier storage_class_;

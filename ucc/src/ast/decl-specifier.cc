@@ -77,21 +77,7 @@ Type* DeclSpecifier::type_get()
 {
     Type* t = nullptr;
 
-    if (type_specifier_ & TS_void)
-        t = new NamedType(loc_, "void");
-    else if (type_specifier_ & TS_char)
-        t = new NamedType(loc_, "char");
-    else if (type_specifier_ & TS_int)
-        t = new NamedType(loc_, "int");
-    else if (type_specifier_ & TS_long)
-        t = new NamedType(loc_, "long");
-    else if (type_specifier_ & TS_long_long)
-        t = new NamedType(loc_, "long long");
-    else if (type_specifier_ & TS_float)
-        t = new NamedType(loc_, "float");
-    else if (type_specifier_ & TS_double)
-        t = new NamedType(loc_, "double");
-    else if (type_specifier_ & TS_type_name)
+    if (type_specifier_ & TS_type_name)
         t = new NamedType(loc_, type_name_);
     else if (type_specifier_ & TS_struct)
     {
@@ -119,9 +105,8 @@ Type* DeclSpecifier::type_get()
 
         t = e;
     }
-
-    if (!t)
-        t = new NamedType(loc_, "int");
+    else
+        t = new NamedType(loc_, type_to_string());
 
     if (type_qualifier_ & TQ_const)
         t->const_set();
@@ -183,7 +168,7 @@ bool DeclSpecifier::function_specifier_set(const FunctionSpecifier& spec,
 }
 
 bool DeclSpecifier::type_specifier_set(const TypeSpecifier& spec,
-                                       ucc::misc::Error&)
+                                       ucc::misc::Error& err)
 {
     if (spec == TS_unspecified)
         return true;
@@ -195,13 +180,44 @@ bool DeclSpecifier::type_specifier_set(const TypeSpecifier& spec,
         return true;
     }
 
-    if (spec == TS_unsigned && (type_specifier_ & TS_signed))
-        return false;
+    /* Combination of signed and unsigned */
+    if (spec & TS_unsigned && (type_specifier_ & TS_signed))
+    {
+        err << ucc::misc::Error::Type::parse
+            << loc_ << ": error type cannot be signed and unsigned"
+            << std::endl;
 
-    if (spec == TS_signed && (type_specifier_ & TS_unsigned))
         return false;
+    }
 
-    /* XXX: Handle other cases */
+    if (spec & TS_signed && (type_specifier_ & TS_unsigned))
+    {
+        err << ucc::misc::Error::Type::parse
+            << loc_ << ": error type cannot be signed and unsigned"
+            << std::endl;
+
+        return false;
+    }
+
+    /* Float/double cannot be unsigned */
+    if ((type_specifier_ & TS_signed || type_specifier_ & TS_unsigned) &&
+        (spec == TS_double || spec == TS_float))
+    {
+        err << ucc::misc::Error::Type::parse
+            << loc_ << ": error " << "float and double cannot be signed "
+            << "or unsigned" << std::endl;
+
+        return false;
+    }
+
+    /* Multiple types */
+    if (type_specifier_ & ~TS_signed & ~TS_unsigned != TS_unspecified)
+    {
+        err << ucc::misc::Error::Type::parse
+            << loc_ << ": error wrong type combination" << std::endl;;
+
+        return false;
+    }
 
     if (spec == TS_long && (type_specifier_ & TS_long))
         type_specifier_ = TS_long_long;
@@ -273,4 +289,33 @@ DeclSpecifier::storage_class_to_str(StorageClassSpecifier spec) const
         default:
             return "unknown";
     }
+}
+
+std::string DeclSpecifier::type_to_string() const
+{
+    std::string ret = "";
+
+    if (type_specifier_ & TS_unsigned)
+        ret = "unsigned ";
+    else if (type_specifier_ & TS_signed)
+        ret = "signed ";
+
+    if (type_specifier_ == TS_void)
+        ret += "void";
+    else if (type_specifier_ & TS_char)
+        ret += "char";
+    else if (type_specifier_ & TS_short)
+        ret += "short";
+    else if (type_specifier_ & TS_long)
+        ret += "long";
+    else if (type_specifier_ & TS_float)
+        ret += "float";
+    else if (type_specifier_ & TS_double)
+        ret += "double";
+    else if (type_specifier_ & TS_long_long)
+        ret += "long long";
+    else
+        ret += "int";
+
+    return ret;
 }
