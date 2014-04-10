@@ -105,7 +105,7 @@ namespace ucc
                 StorageClassSpecifier storage_class_;
                 unsigned type_qualifier_ : 3;
                 FunctionSpecifier function_specifier_;
-                unsigned type_specifier_ : 13;
+                unsigned type_specifier_ : 14;
                 ucc::misc::Symbol type_name_;
                 Decl* decl_;
         };

@@ -85,6 +85,8 @@ Type* DeclSpecifier::type_get()
         t = new NamedType(loc_, "int");
     else if (type_specifier_ & TS_long)
         t = new NamedType(loc_, "long");
+    else if (type_specifier_ & TS_long_long)
+        t = new NamedType(loc_, "long long");
     else if (type_specifier_ & TS_float)
         t = new NamedType(loc_, "float");
     else if (type_specifier_ & TS_double)
@@ -201,7 +203,10 @@ bool DeclSpecifier::type_specifier_set(const TypeSpecifier& spec,
 
     /* XXX: Handle other cases */
 
-    type_specifier_ |= spec;
+    if (spec == TS_long && (type_specifier_ & TS_long))
+        type_specifier_ = TS_long_long;
+    else
+        type_specifier_ |= spec;
 
     return true;
 }
