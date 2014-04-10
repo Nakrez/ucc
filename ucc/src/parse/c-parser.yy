@@ -739,6 +739,8 @@ declaration
                                 nullptr);
             $$->push_back(std::shared_ptr<ucc::ast::Decl>(d));
         }
+
+        delete $1;
     }
     | declaration_specifiers init_declarator_list ";"
     {
@@ -796,6 +798,7 @@ declaration_specifiers
     {
         $$ = $1;
         $$->merge($2, driver.error_);
+
         delete $2;
     }
     | storage_class_specifier
@@ -806,6 +809,7 @@ declaration_specifiers
     {
         $$ = $1;
         $$->merge($2, driver.error_);
+
         delete $2;
     }
     | type_specifier
@@ -816,6 +820,7 @@ declaration_specifiers
     {
         $$ = $1;
         $$->merge($3, driver.error_);
+
         delete $3;
     }
     | type_qualifier declaration_specifiers
@@ -1098,6 +1103,8 @@ struct_declaration
         }
 
         $$ = $2;
+
+        delete $1;
     }
     /*
     | specifier_qualifier_list ";"
@@ -1110,6 +1117,7 @@ specifier_qualifier_list
     {
         $$ = $1;
         $$->merge($2, driver.error_);
+
         delete $2;
     }
     | type_specifier
@@ -1120,6 +1128,7 @@ specifier_qualifier_list
     {
         $$ = $1;
         $$->merge($2, driver.error_);
+
         delete $2;
     }
     | type_qualifier
@@ -1149,10 +1158,14 @@ struct_declarator
     | declarator ":" constant_expression
     {
         $$ = new ucc::ast::FieldDecl(@1, $1->name_get(), $1->type_get(), $3);
+
+        delete $1;
     }
     | declarator
     {
         $$ = new ucc::ast::FieldDecl(@1, $1->name_get(), $1->type_get(), nullptr);
+
+        delete $1;
     }
     ;
 

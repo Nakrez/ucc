@@ -1,4 +1,5 @@
 #include <ast/array-type.hh>
+#include <ast/expr.hh>
 
 using namespace ucc;
 using namespace ast;
@@ -16,7 +17,10 @@ ArrayType::ArrayType(const ucc::parse::location& loc, Expr* expr)
 {}
 
 ArrayType::~ArrayType()
-{}
+{
+    delete sub_type_;
+    delete size_;
+}
 
 const Type* ArrayType::sub_type_get() const
 {

@@ -1,4 +1,5 @@
 #include <ast/type-decl.hh>
+#include <ast/type.hh>
 
 using namespace ucc;
 using namespace ast;
@@ -11,7 +12,9 @@ TypeDecl::TypeDecl(const ucc::parse::location& loc,
 {}
 
 TypeDecl::~TypeDecl()
-{}
+{
+    delete type_;
+}
 
 const Type* TypeDecl::type_get() const
 {
