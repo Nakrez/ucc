@@ -1,10 +1,16 @@
+#include <ucc.hh>
+
 #include <parse/driver.hh>
+#include <ast/all.hh>
 
 using namespace ucc;
 using namespace parse;
 
 Driver::Driver()
-    : trace_parser_(false)
+    : error_()
+    , in_attribute_(false)
+    , ast_(nullptr)
+    , trace_parser_(ucc::parse::parse_trace)
     , trace_lexer_(false)
 {}
 
@@ -22,4 +28,9 @@ void Driver::parse_file(const std::string& name)
     parser.parse();
 
     lexer_end();
+}
+
+const std::string& Driver::file_get() const
+{
+    return file_;
 }

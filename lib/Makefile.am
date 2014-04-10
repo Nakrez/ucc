@@ -1,1 +1,1 @@
-SUBDIRS = command
+SUBDIRS = command misc

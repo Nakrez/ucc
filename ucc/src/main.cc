@@ -1,3 +1,5 @@
+#include <misc/error.hh>
+
 #include <command/command.hh>
 
 #include <ucc.hh>
@@ -14,7 +16,20 @@ int main(int argc, char *argv[])
 
     ucc::input_file = input_files[0];
 
-    command::Command::instance().run();
+    try
+    {
+        command::Command::instance().run();
+    }
+    catch (ucc::misc::Error& e)
+    {
+        std::cerr << e.msg_get() << std::endl;
+
+        delete ucc::ast::the_ast;
+
+        return e.error_code_get();
+    }
+
+    delete ucc::ast::the_ast;
 
     return 0;
 }
