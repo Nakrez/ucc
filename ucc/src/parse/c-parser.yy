@@ -134,6 +134,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
         FORMAT          "__format__"
         LEAF            "__leaf__"
         NONNULL         "__nonnull__"
+        NORETURN        "__noreturn__"
         NOTHROW         "__nothrow__"
         PRINTF          "__printf__"
         PURE            "__pure__"
@@ -1396,6 +1397,7 @@ parameter_type_list
     : parameter_list "," "..."
     {
         $$ = $1;
+        $$->push_back(new ucc::ast::VarDecl(@3));
     }
     | parameter_list
     {
@@ -1909,6 +1911,10 @@ attribute_spec
     {
         driver.in_attribute_ = false;
     }
+    | attribute_spec "__attribute__" "(" "(" attribute_list ")" ")"
+    {
+        driver.in_attribute_ = false;
+    }
     ;
 
 attribute_list
@@ -1935,6 +1941,7 @@ attribute_extension
     | "__pure__"
     | "__nonnull__" "(" num_list ")"
     | "__nothrow__"
+    | "__noreturn__"
     ;
 
 num_list

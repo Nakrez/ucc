@@ -17,6 +17,7 @@ namespace ucc
                         const ucc::misc::Symbol& name,
                         Type* type,
                         Expr* e);
+                VarDecl(const ucc::parse::location& loc);
                 ~VarDecl();
 
                 const Type* type_get() const;
@@ -25,12 +26,15 @@ namespace ucc
                 const Expr* init_get() const;
                 Expr* init_get();
 
+                bool is_elipsis() const;
+
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
 
             private:
                 Type* type_;
                 Expr* init_;
+                bool is_elipsis_;
         };
     } // namespace ast
 } // namespace ucc

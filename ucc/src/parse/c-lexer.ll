@@ -89,6 +89,9 @@ WS  [ \t\v\f]
 "long"                  { return token::LONG; }
 "register"              { return token::REGISTER; }
 "restrict"              { return token::RESTRICT; }
+"__restrict"            { return token::RESTRICT; }
+"restrict__"            { return token::RESTRICT; }
+"__restrict__"          { return token::RESTRICT; }
 "return"                { return token::RETURN; }
 "short"                 { return token::SHORT; }
 "signed"                { return token::SIGNED; }
@@ -180,6 +183,11 @@ WS  [ \t\v\f]
 "__nonnull"             { ATTRIBUTE(token::NONNULL) }
 "nonnull__"             { ATTRIBUTE(token::NONNULL) }
 "__nonnull__"           { ATTRIBUTE(token::NONNULL) }
+
+"noreturn"              { ATTRIBUTE(token::NORETURN) }
+"__noreturn"            { ATTRIBUTE(token::NORETURN) }
+"noreturn__"            { ATTRIBUTE(token::NORETURN) }
+"__noreturn__"          { ATTRIBUTE(token::NORETURN) }
 
 "nothrow"               { ATTRIBUTE(token::NOTHROW) }
 "__nothrow"             { ATTRIBUTE(token::NOTHROW) }

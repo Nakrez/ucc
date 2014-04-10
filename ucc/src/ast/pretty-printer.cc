@@ -89,6 +89,12 @@ void PrettyPrinter::operator()(const EnumExprList& ast)
 
 void PrettyPrinter::operator()(const VarDecl& ast)
 {
+    if (ast.is_elipsis())
+    {
+        ostr_ << "...";
+        return;
+    }
+
     if (ast.is_static())
         ostr_ << "static ";
     else if (ast.is_extern())
