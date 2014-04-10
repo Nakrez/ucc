@@ -1,0 +1,51 @@
+*****************************
+UCC : Micro C Compiler
+*****************************
+
+* Informations
+
+Ucc is a C compiler that aims at compiling C89 compliant programms (for now).
+Ucc is written in C++ 11.
+Ucc is in early stage development. Indeed it is only able to parse and build
+AST from input files.
+
+* Compilation
+
+To compile UCC you only need to have a C++ 11 compliant compiler.
+You just have to do these 3 commands to build it:
+
+./bootstrap
+./configure
+make
+
+* Usage
+
+The default option if none is given is "--parse".
+
+Usage: ucc [OPTION...] file...
+ucc: Micro C compiler
+
+      --ast-print            Pretty print the input file (debug purpose)
+  -p, --parse                Parse the input file
+      --parse-trace          Activate parse trace
+  -?, --help                 Give this help list
+      --usage                Give a short usage message
+
+* Status
+
+- PARSER (C89, with gcc extension) : 90%
+- AST : 90% (cannot embed "__asm__" statements and "gcc __attribute__")
+- PRETTY-PRINTER : 90% (print the generated AST from the code)
+- BINDER : 0%
+- TYPE CHECKER : 0%
+- MIDDLE END : 0%
+- BACK END : 0%
+
+* License
+
+UCC is under GPL2. See COPYING file for more informations.
+
+* Bug & Contact
+
+If you find bugs, or you have any questions, ... Feel free to can contact me
+at b.covolatoATgmail.com
