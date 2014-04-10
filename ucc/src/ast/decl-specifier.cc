@@ -3,6 +3,8 @@
 #include <ast/named-type.hh>
 #include <ast/record-decl.hh>
 #include <ast/record-type.hh>
+#include <ast/enum-decl.hh>
+#include <ast/enum-type.hh>
 
 using namespace ucc;
 using namespace ast;
@@ -14,7 +16,7 @@ DeclSpecifier::DeclSpecifier(const ucc::parse::location& loc)
     , function_specifier_(FS_unspecified)
     , type_specifier_(TS_unspecified)
     , type_name_("")
-    , rec_decl_(nullptr)
+    , decl_(nullptr)
 {}
 
 DeclSpecifier::~DeclSpecifier()
@@ -74,7 +76,7 @@ Type* DeclSpecifier::type_get()
         RecordType* rec = new RecordType(loc_, RecordDecl::RecordType::STRUCT,
                                          type_name_);
 
-        rec->def_set(rec_decl_);
+        rec->def_set(dynamic_cast<RecordDecl*> (decl_));
 
         t = rec;
     }
@@ -83,9 +85,17 @@ Type* DeclSpecifier::type_get()
         RecordType* rec = new RecordType(loc_, RecordDecl::RecordType::UNION,
                                          type_name_);
 
-        rec->def_set(rec_decl_);
+        rec->def_set(dynamic_cast<RecordDecl*> (decl_));
 
         t = rec;
+    }
+    else if (type_specifier_ & TS_enum)
+    {
+        EnumType* e = new EnumType(loc_, type_name_);
+
+        e->def_set(dynamic_cast<EnumDecl*> (decl_));
+
+        t = e;
     }
 
     if (!t)
@@ -205,19 +215,19 @@ bool DeclSpecifier::merge(const DeclSpecifier* decl, ucc::misc::Error& err)
     }
 
     type_name_ = decl->type_name_;
-    rec_decl_ = decl->rec_decl_;
+    decl_ = decl->decl_;
 
     return true;
 }
 
-RecordDecl* DeclSpecifier::record_decl_get() const
+Decl* DeclSpecifier::decl_get() const
 {
-    return rec_decl_;
+    return decl_;
 }
 
-void DeclSpecifier::record_decl_set(RecordDecl* rec)
+void DeclSpecifier::decl_set(Decl* rec)
 {
-    rec_decl_ = rec;
+    decl_ = rec;
 }
 
 std::string

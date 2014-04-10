@@ -232,10 +232,12 @@ void PrettyPrinter::operator()(const EnumExprDecl& ast)
 
 void PrettyPrinter::operator()(const EnumDecl& ast)
 {
+    if (ast.name_get().data_get() == "")
+        return;
+
     ostr_ << "enum";
 
-    if (ast.name_get().data_get() != "")
-        ostr_ << " " << ast.name_get().data_get();
+    ostr_ << " " << ast.name_get().data_get();
 
     ostr_ << misc::iendl;
     ostr_ << "{";
@@ -304,6 +306,28 @@ void PrettyPrinter::operator()(const RecordType& ast)
 
         if (d->fields_get())
             d->fields_get()->accept(*this);
+
+        ostr_ << misc::decendl;
+        ostr_ << "}";
+    }
+    else
+        ostr_ << " " << ast.name_get();
+}
+
+void PrettyPrinter::operator()(const EnumType& ast)
+{
+    ostr_ << "enum";
+
+    if (ast.name_get().data_get() == "")
+    {
+        const EnumDecl* d = ast.def_get();
+
+        ostr_ << misc::iendl;
+        ostr_ << "{";
+        ostr_ << misc::incendl;
+
+        if (d->body_get())
+            d->body_get()->accept(*this);
 
         ostr_ << misc::decendl;
         ostr_ << "}";

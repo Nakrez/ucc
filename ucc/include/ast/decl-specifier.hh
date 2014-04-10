@@ -88,8 +88,8 @@ namespace ucc
 
                 bool merge(const DeclSpecifier* decl, ucc::misc::Error& err);
 
-                RecordDecl* record_decl_get() const;
-                void record_decl_set(RecordDecl* rec);
+                Decl* decl_get() const;
+                void decl_set(Decl* rec);
 
             private:
                 std::string
@@ -102,7 +102,7 @@ namespace ucc
                 FunctionSpecifier function_specifier_;
                 unsigned type_specifier_ : 13;
                 ucc::misc::Symbol type_name_;
-                RecordDecl* rec_decl_;
+                Decl* decl_;
         };
     } // namespace ast
 } // namespace ucc

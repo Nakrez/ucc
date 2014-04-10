@@ -46,6 +46,7 @@ namespace ucc
                 operator()(typename Const<FunctionType>::type& ast);
                 virtual void operator()(typename Const<PtrType>::type& ast);
                 virtual void operator()(typename Const<RecordType>::type& ast);
+                virtual void operator()(typename Const<EnumType>::type& ast);
 
                 virtual void operator()(typename Const<Stmt>::type& ast);
                 virtual void operator()(typename Const<CompoundStmt>::type& ast);

@@ -166,6 +166,11 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<RecordType>::type&
 
 template <template <typename> class Const>
 void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<EnumType>::type&)
+{}
+
+template <template <typename> class Const>
+void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Stmt>::type& ast)
 {
     ast.accept(*this);

@@ -27,6 +27,7 @@ namespace ucc
         class FunctionType;
         class PtrType;
         class RecordType;
+        class EnumType;
 
         class Stmt;
         class CompoundStmt;
