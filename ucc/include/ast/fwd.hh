@@ -19,6 +19,7 @@ namespace ucc
         class FieldDecl;
         class RecordDecl;
         class EnumExprDecl;
+        class EnumDecl;
 
         class Type;
         class NamedType;

@@ -16,6 +16,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/field-decl.cc \
 			  src/ast/record-decl.cc \
 			  src/ast/enum-expr-decl.cc \
+			  src/ast/enum-decl.cc \
 			  src/ast/type.cc \
 			  src/ast/named-type.cc \
 			  src/ast/array-type.cc \

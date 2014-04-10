@@ -230,6 +230,24 @@ void PrettyPrinter::operator()(const EnumExprDecl& ast)
     }
 }
 
+void PrettyPrinter::operator()(const EnumDecl& ast)
+{
+    ostr_ << "enum";
+
+    if (ast.name_get().data_get() != "")
+        ostr_ << " " << ast.name_get().data_get();
+
+    ostr_ << misc::iendl;
+    ostr_ << "{";
+    ostr_ << misc::incendl;
+
+    if (ast.body_get())
+        ast.body_get()->accept(*this);
+
+    ostr_ << misc::decendl;
+    ostr_ << "};";
+}
+
 void PrettyPrinter::operator()(const ArrayType& ast)
 {
     if (ast.sub_type_get())

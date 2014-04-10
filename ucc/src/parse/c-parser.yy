@@ -71,6 +71,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::RecordDecl::RecordType rec_type;
     ucc::ast::EnumExprDecl* enum_expr_decl;
     ucc::ast::EnumExprList* enum_expr_list;
+    ucc::ast::Type* type;
 }
 
 
@@ -230,6 +231,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %type <compound_stmt>   compound_statement
 %type <ast_list>        statement_list
 %type <ast>             struct_or_union_specifier
+                        enum_specifier
 
 %type <expr>            initializer
                         expression_statement
@@ -272,6 +274,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         enumerator
 
 %type <enum_expr_list>  enumerator_list
+%type <type>            type_name
 
 %start translation_unit
 %%
@@ -936,7 +939,6 @@ type_specifier
 
         $$ = new ucc::ast::DeclSpecifier(@1);
 
-
         if (ty)
         {
             $$->type_name_set(ty->name_get());
@@ -1121,9 +1123,25 @@ struct_declarator
 
 enum_specifier
     : "enum" "{" enumerator_list "}"
+    {
+        $$ = new ucc::ast::EnumDecl(@1, "", $3);
+    }
     | "enum" "{" enumerator_list "," "}"
+    {
+        $$ = new ucc::ast::EnumDecl(@1, "", $3);
+    }
     | "enum" "identifier" "{" enumerator_list "}"
+    {
+        $$ = new ucc::ast::EnumDecl(@1, *$2, $4);
+
+        delete $2;
+    }
     | "enum" "identifier" "{" enumerator_list "," "}"
+    {
+        $$ = new ucc::ast::EnumDecl(@1, *$2, $4);
+
+        delete $2;
+    }
     | "enum" "identifier"
     ;
 
@@ -1415,7 +1433,21 @@ identifier_list
 
 type_name
     : specifier_qualifier_list abstract_declarator
+    {
+        $$ = $2->type_get();
+
+        if (!$$->extends_type($1->type_get()))
+            yyparser.error(@1, "incompatible type combinaison");
+
+        delete $1;
+        delete $2;
+    }
     | specifier_qualifier_list
+    {
+        $$ = $1->type_get();
+
+        delete $1;
+    }
     ;
 
 abstract_declarator

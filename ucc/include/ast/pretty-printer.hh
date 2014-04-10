@@ -30,6 +30,7 @@ namespace ucc
                 virtual void operator()(const FieldDecl& ast);
                 virtual void operator()(const RecordDecl& ast);
                 virtual void operator()(const EnumExprDecl& ast);
+                virtual void operator()(const EnumDecl& ast);
 
                 virtual void operator()(const ArrayType& ast);
                 virtual void operator()(const NamedType& ast);

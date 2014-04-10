@@ -111,6 +111,14 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<EnumExprDecl>::typ
 }
 
 template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<EnumDecl>::type& ast)
+{
+    if (ast.body_get())
+        ast.body_get()->accept(*this);
+}
+
+template <template <typename> class Const>
 void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Type>::type& ast)
 {
     ast.accept(*this);
