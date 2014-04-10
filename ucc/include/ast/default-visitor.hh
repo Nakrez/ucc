@@ -76,6 +76,7 @@ namespace ucc
                 virtual void operator()(typename Const<UnaryExpr>::type& ast);
                 virtual void operator()(typename Const<MemberExpr>::type& ast);
                 virtual void operator()(typename Const<EnumExpr>::type& ast);
+                virtual void operator()(typename Const<CastExpr>::type& ast);
         };
 
         typedef GenDefaultVisitor<ucc::misc::const_type> DefaultConstVisitor;

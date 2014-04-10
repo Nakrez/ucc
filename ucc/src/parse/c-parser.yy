@@ -475,6 +475,9 @@ cast_expression
         $$ = $1;
     }
     | "(" type_name ")" cast_expression
+    {
+        $$ = new ucc::ast::CastExpr(@1, $2, $4);
+    }
     ;
 
 multiplicative_expression

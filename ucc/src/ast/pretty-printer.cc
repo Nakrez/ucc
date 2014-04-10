@@ -664,6 +664,19 @@ void PrettyPrinter::operator()(const EnumExpr& ast)
     ostr_ << ast.name_get();
 }
 
+void PrettyPrinter::operator()(const CastExpr& ast)
+{
+    ostr_ << "(";
+
+    if (ast.type_get())
+        ast.type_get()->accept(*this);
+
+    ostr_ << ")";
+
+    if (ast.expr_get())
+        ast.expr_get()->accept(*this);
+}
+
 bool PrettyPrinter::print_fun_ptr(const Type* ast,
         const ucc::misc::Symbol& sym)
 {

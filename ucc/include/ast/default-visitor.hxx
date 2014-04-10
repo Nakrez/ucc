@@ -404,4 +404,15 @@ void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<EnumExpr>::type&)
 {}
 
+template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<CastExpr>::type& ast)
+{
+    if (ast.type_get())
+        ast.type_get()->accept(*this);
+
+    if (ast.expr_get())
+        ast.expr_get()->accept(*this);
+}
+
 #endif /* !UCC_AST_DEFAULT_VISITOR_HXX */
