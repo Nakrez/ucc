@@ -104,8 +104,7 @@ void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Type>::type& 
 template <template <typename> class Const>
 void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<NamedType>::type&)
-{
-}
+{}
 
 template <template <typename> class Const>
 void
@@ -136,6 +135,11 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<PtrType>::type& as
     if (ast.pointed_type_get())
         ast.pointed_type_get()->accept(*this);
 }
+
+template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<RecordType>::type& ast)
+{}
 
 template <template <typename> class Const>
 void

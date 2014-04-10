@@ -246,6 +246,16 @@ void PrettyPrinter::operator()(const PtrType& ast)
         ostr_ << "restrict ";
 }
 
+void PrettyPrinter::operator()(const RecordType& ast)
+{
+    if (ast.type_get() == RecordDecl::RecordType::STRUCT)
+        ostr_ << "struct";
+    else
+        ostr_ << "union";
+
+    ostr_ << " " << ast.name_get();
+}
+
 void PrettyPrinter::operator()(const CompoundStmt& ast)
 {
     ostr_ << ucc::misc::iendl;

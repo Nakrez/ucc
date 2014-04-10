@@ -950,7 +950,17 @@ struct_or_union_specifier
         delete $2;
     }
     | struct_or_union "identifier"
+    {
+        $$ = new ucc::ast::RecordType(@1, $1, *$2);
+
+        delete $2;
+    }
     | struct_or_union attribute_spec "identifier"
+    {
+        $$ = new ucc::ast::RecordType(@1, $1, *$3);
+
+        delete $3;
+    }
     ;
 
 struct_or_union

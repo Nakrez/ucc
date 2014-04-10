@@ -19,6 +19,7 @@
 # include <ast/array-type.hh>
 # include <ast/function-type.hh>
 # include <ast/ptr-type.hh>
+# include <ast/record-type.hh>
 
 # include <ast/stmt.hh>
 # include <ast/compound-stmt.hh>

@@ -24,6 +24,7 @@ namespace ucc
         class ArrayType;
         class FunctionType;
         class PtrType;
+        class RecordType;
 
         class Stmt;
         class CompoundStmt;

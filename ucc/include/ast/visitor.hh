@@ -39,6 +39,7 @@ namespace ucc
                 virtual void
                 operator()(typename Const<FunctionType>::type& ast) = 0;
                 virtual void operator()(typename Const<PtrType>::type& ast) = 0;
+                virtual void operator()(typename Const<RecordType>::type& ast) = 0;
 
                 virtual void operator()(typename Const<Stmt>::type& ast) = 0;
                 virtual void operator()(typename Const<CompoundStmt>::type& ast) = 0;
