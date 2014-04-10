@@ -371,4 +371,9 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<MemberExpr>::type&
         ast.lexpr_get()->accept(*this);
 }
 
+template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<EnumExpr>::type&)
+{}
+
 #endif /* !UCC_AST_DEFAULT_VISITOR_HXX */

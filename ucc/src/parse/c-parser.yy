@@ -302,6 +302,14 @@ constant
         $$ = new ucc::ast::FloatExpr(@1, $1);
     }
     | "enum_constant"
+    {
+        driver.sym_[$1->data_get()] =
+                    ucc::parse::Parser::token::ENUM_CONSTANT;
+
+        $$ = new ucc::ast::EnumExpr(@1, *$1);
+
+        delete $1;
+    }
     ;
 
 enumeration_constant        /* before it has been defined as such */

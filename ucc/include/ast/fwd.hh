@@ -53,6 +53,7 @@ namespace ucc
         class OpExpr;
         class UnaryExpr;
         class MemberExpr;
+        class EnumExpr;
 
         typedef AnyList<Ast> AstList;
         typedef AnyList<Decl> DeclList;
