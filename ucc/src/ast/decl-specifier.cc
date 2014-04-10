@@ -48,6 +48,26 @@ bool DeclSpecifier::is_struct_or_union() const
            (type_specifier_ & TS_struct);
 }
 
+bool DeclSpecifier::is_struct() const
+{
+    return type_specifier_ & TS_struct;
+}
+
+bool DeclSpecifier::is_union() const
+{
+    return type_specifier_ & TS_union;
+}
+
+bool DeclSpecifier::is_enum() const
+{
+    return type_specifier_ & TS_enum;
+}
+
+ucc::misc::Symbol& DeclSpecifier::name_get()
+{
+    return type_name_;
+}
+
 DeclSpecifier::StorageClassSpecifier DeclSpecifier::storage_class_get() const
 {
     return storage_class_;

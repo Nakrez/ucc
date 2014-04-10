@@ -208,15 +208,20 @@ void PrettyPrinter::operator()(const RecordDecl& ast)
 
     ostr_ << " " << ast.name_get();
 
-    ostr_ << misc::iendl;
-    ostr_ << "{";
-    ostr_ << misc::incendl;
-
     if (ast.fields_get())
-        ast.fields_get()->accept(*this);
+    {
+        ostr_ << misc::iendl;
+        ostr_ << "{";
+        ostr_ << misc::incendl;
 
-    ostr_ << misc::decendl;
-    ostr_ << "};";
+        if (ast.fields_get())
+            ast.fields_get()->accept(*this);
+
+        ostr_ << misc::decendl;
+        ostr_ << "}";
+    }
+
+    ostr_ << ";";
 }
 
 void PrettyPrinter::operator()(const EnumExprDecl& ast)
@@ -239,15 +244,19 @@ void PrettyPrinter::operator()(const EnumDecl& ast)
 
     ostr_ << " " << ast.name_get().data_get();
 
-    ostr_ << misc::iendl;
-    ostr_ << "{";
-    ostr_ << misc::incendl;
-
     if (ast.body_get())
+    {
+        ostr_ << misc::iendl;
+        ostr_ << "{";
+        ostr_ << misc::incendl;
+
         ast.body_get()->accept(*this);
 
-    ostr_ << misc::decendl;
-    ostr_ << "};";
+        ostr_ << misc::decendl;
+        ostr_ << "}";
+    }
+
+    ostr_ << ";";
 }
 
 void PrettyPrinter::operator()(const ArrayType& ast)
@@ -444,7 +453,7 @@ void PrettyPrinter::operator()(const IfStmt& ast)
         if (!dynamic_cast<const CompoundStmt*>(ast.else_body_get()))
         {
             if (!dynamic_cast<const IfStmt*>(ast.else_body_get()))
-            ostr_ << ";";
+                ostr_ << ";";
 
             ostr_ << misc::decendl;
         }
@@ -635,7 +644,7 @@ void PrettyPrinter::operator()(const OpExpr& ast)
 void PrettyPrinter::operator()(const UnaryExpr& ast)
 {
     if (ast.op_get() != UnaryExpr::UnaryOp::POST_INCR &&
-        ast.op_get() != UnaryExpr::UnaryOp::POST_DECR)
+            ast.op_get() != UnaryExpr::UnaryOp::POST_DECR)
     {
         ostr_ << ast.op_to_str();
         ast.expr_get()->accept(*this);
@@ -742,7 +751,7 @@ bool PrettyPrinter::print_fun_ptr(const Type* ast,
 }
 
 bool PrettyPrinter::print_array_ty(const Type* ast,
-                                   const ucc::misc::Symbol& sym)
+        const ucc::misc::Symbol& sym)
 {
     const ArrayType *t = dynamic_cast<const ArrayType*> (ast);
 

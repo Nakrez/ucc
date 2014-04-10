@@ -72,6 +72,11 @@ namespace ucc
                 bool is_volatile() const;
 
                 bool is_struct_or_union() const;
+                bool is_struct() const;
+                bool is_union() const;
+                bool is_enum() const;
+
+                ucc::misc::Symbol& name_get();
 
                 DeclSpecifier::StorageClassSpecifier storage_class_get() const;
 

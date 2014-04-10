@@ -716,8 +716,28 @@ declaration
 
         if ($1->decl_get())
             $$->push_back(std::shared_ptr<ucc::ast::Decl>($1->decl_get()));
-        else
-            yyparser.error(@1, "No name specified");
+        else if ($1->is_struct())
+        {
+            ucc::ast::RecordDecl* d = new ucc::ast::RecordDecl(@1,
+                                $1->name_get(),
+                                ucc::ast::RecordDecl::RecordType::STRUCT,
+                                nullptr);
+            $$->push_back(std::shared_ptr<ucc::ast::Decl>(d));
+        }
+        else if ($1->is_enum())
+        {
+            ucc::ast::EnumDecl* d = new ucc::ast::EnumDecl(@1, $1->name_get(),
+                                                           nullptr);
+            $$->push_back(std::shared_ptr<ucc::ast::Decl>(d));
+        }
+        else if ($1->is_union())
+        {
+            ucc::ast::RecordDecl* d = new ucc::ast::RecordDecl(@1,
+                                $1->name_get(),
+                                ucc::ast::RecordDecl::RecordType::UNION,
+                                nullptr);
+            $$->push_back(std::shared_ptr<ucc::ast::Decl>(d));
+        }
     }
     | declaration_specifiers init_declarator_list ";"
     {
@@ -1225,7 +1245,7 @@ function_specifier
 
 /*
 alignment_specifier
-    : "_Alignas" "(" type_name ")"
+    : "_Alignas" "(" Type_name ")"
     | "_Alignas" "(" constant_expression ")"
     ;
 */

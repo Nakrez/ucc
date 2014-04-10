@@ -12,12 +12,13 @@ typedef ucc::parse::Parser::token token;
 static void comment(ucc::parse::Driver& driver, ucc::parse::location* yylloc);
 static ucc::parse::Parser::token_type check_type(ucc::parse::Driver& driver);
 
-# define ATTRIBUTE(tok)                     \
-    if (driver.in_attribute_)               \
-        return tok;                         \
-    else                                    \
-    {                                       \
-        return token::IDENTIFIER;           \
+# define ATTRIBUTE(tok)                                 \
+    if (driver.in_attribute_)                           \
+        return tok;                                     \
+    else                                                \
+    {                                                   \
+        yylval->symbol = new ucc::misc::Symbol(yytext); \
+        return token::IDENTIFIER;                       \
     }
 
 %}
