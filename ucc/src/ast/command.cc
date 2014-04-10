@@ -4,7 +4,7 @@
 
 #include <ast/pretty-printer.hh>
 
-REGISTER_COMMAND(pretty, "pretty-print", "Pretty print the input file (debug "
+REGISTER_COMMAND(pretty, "ast-print", "Pretty print the input file (debug "
                  "purpose)", pretty_print, "parse");
 
 void pretty_print()
