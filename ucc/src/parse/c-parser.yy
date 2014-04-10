@@ -68,6 +68,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::CompoundStmt* compound_stmt;
     ucc::ast::FieldDecl* field;
     ucc::ast::FieldList* field_list;
+    ucc::ast::RecordDecl::RecordType rec_type;
 }
 
 
@@ -226,6 +227,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %type <ptr_type>        pointer
 %type <compound_stmt>   compound_statement
 %type <ast_list>        statement_list
+%type <ast>             struct_or_union_specifier
 
 %type <expr>            initializer
                         expression_statement
@@ -263,6 +265,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %type <field_list>      struct_declarator_list
                         struct_declaration
                         struct_declaration_list
+%type <rec_type>        struct_or_union
 
 %start translation_unit
 %%
@@ -925,17 +928,40 @@ type_specifier
 
 struct_or_union_specifier
     : struct_or_union "{" struct_declaration_list "}"
+    {
+        $$ = new ucc::ast::RecordDecl(@1, "", $1, $3);
+    }
     | struct_or_union attribute_spec "{" struct_declaration_list "}"
+    {
+        $$ = new ucc::ast::RecordDecl(@1, "", $1, $4);
+    }
     | struct_or_union "{" struct_declaration_list "}" attribute_spec
+    {
+        $$ = new ucc::ast::RecordDecl(@1, "", $1, $3);
+    }
     | struct_or_union attribute_spec "{" struct_declaration_list "}" attribute_spec
+    {
+        $$ = new ucc::ast::RecordDecl(@1, "", $1, $4);
+    }
     | struct_or_union "identifier" "{" struct_declaration_list "}"
+    {
+        $$ = new ucc::ast::RecordDecl(@1, *$2, $1, $4);
+
+        delete $2;
+    }
     | struct_or_union "identifier"
     | struct_or_union attribute_spec "identifier"
     ;
 
 struct_or_union
     : "struct"
+    {
+        $$ = ucc::ast::RecordDecl::RecordType::STRUCT;
+    }
     | "union"
+    {
+        $$ = ucc::ast::RecordDecl::RecordType::UNION;
+    }
     ;
 
 struct_declaration_list

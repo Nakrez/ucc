@@ -14,6 +14,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/function-decl.cc \
 			  src/ast/type-decl.cc \
 			  src/ast/field-decl.cc \
+			  src/ast/record-decl.cc \
 			  src/ast/type.cc \
 			  src/ast/named-type.cc \
 			  src/ast/array-type.cc \

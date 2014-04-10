@@ -67,6 +67,16 @@ void PrettyPrinter::operator()(const ExprList& ast)
     }
 }
 
+void PrettyPrinter::operator()(const FieldList& ast)
+{
+    for (auto field : ast.list_get())
+    {
+        field->accept(*this);
+
+        ostr_ << ";" << ucc::misc::iendl;
+    }
+}
+
 void PrettyPrinter::operator()(const VarDecl& ast)
 {
     if (ast.is_static())
@@ -174,6 +184,27 @@ void PrettyPrinter::operator()(const FieldDecl& ast)
         ostr_ << " : ";
         ast.bit_field_get()->accept(*this);
     }
+}
+
+void PrettyPrinter::operator()(const RecordDecl& ast)
+{
+    if (ast.type_get() == RecordDecl::RecordType::STRUCT)
+        ostr_ << "struct";
+    else
+        ostr_ << "union";
+
+    if (ast.name_get().data_get() != "")
+        ostr_ << " " << ast.name_get();
+
+    ostr_ << misc::iendl;
+    ostr_ << "{";
+    ostr_ << misc::incendl;
+
+    if (ast.fields_get())
+        ast.fields_get()->accept(*this);
+
+    ostr_ << misc::decendl;
+    ostr_ << "}";
 }
 
 void PrettyPrinter::operator()(const ArrayType& ast)

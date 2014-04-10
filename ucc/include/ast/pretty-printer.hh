@@ -21,11 +21,13 @@ namespace ucc
                 virtual void operator()(const AstList& ast);
                 virtual void operator()(const DeclList& ast);
                 virtual void operator()(const ExprList& ast);
+                virtual void operator()(const FieldList& ast);
 
                 virtual void operator()(const VarDecl& ast);
                 virtual void operator()(const TypeDecl& ast);
                 virtual void operator()(const FunctionDecl& ast);
                 virtual void operator()(const FieldDecl& ast);
+                virtual void operator()(const RecordDecl& ast);
 
                 virtual void operator()(const ArrayType& ast);
                 virtual void operator()(const NamedType& ast);

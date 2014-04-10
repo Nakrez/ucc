@@ -25,6 +25,13 @@ void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<ExprList>::ty
 }
 
 template <template <typename> class Const>
+void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<FieldList>::type& ast)
+{
+    for (auto elem : ast.list_get())
+        elem->accept(*this);
+}
+
+template <template <typename> class Const>
 void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Decl>::type& ast)
 {
     ast.accept(*this);
@@ -78,6 +85,14 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<FieldDecl>::type& 
 
     if (ast.bit_field_get())
         ast.bit_field_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<RecordDecl>::type& ast)
+{
+    if (ast.fields_get())
+        ast.fields_get()->accept(*this);
 }
 
 template <template <typename> class Const>

@@ -17,6 +17,7 @@ namespace ucc
         class FunctionDecl;
         class TypeDecl;
         class FieldDecl;
+        class RecordDecl;
 
         class Type;
         class NamedType;
