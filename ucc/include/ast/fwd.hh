@@ -18,6 +18,7 @@ namespace ucc
         class TypeDecl;
         class FieldDecl;
         class RecordDecl;
+        class EnumExprDecl;
 
         class Type;
         class NamedType;
@@ -60,6 +61,7 @@ namespace ucc
         typedef AnyList<Stmt> StmtList;
         typedef AnyList<Expr> ExprList;
         typedef AnyList<FieldDecl> FieldList;
+        typedef AnyList<EnumExprDecl> EnumExprList;
     } // namespace ast
 } // namespace ucc
 

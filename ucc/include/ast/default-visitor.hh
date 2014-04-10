@@ -25,6 +25,7 @@ namespace ucc
                 virtual void operator()(typename Const<DeclList>::type& ast);
                 virtual void operator()(typename Const<ExprList>::type& ast);
                 virtual void operator()(typename Const<FieldList>::type& ast);
+                virtual void operator()(typename Const<EnumExprList>::type& ast);
 
                 virtual void operator()(typename Const<Decl>::type& ast);
 
@@ -34,6 +35,7 @@ namespace ucc
                 virtual void operator()(typename Const<TypeDecl>::type& ast);
                 virtual void operator()(typename Const<FieldDecl>::type& ast);
                 virtual void operator()(typename Const<RecordDecl>::type& ast);
+                virtual void operator()(typename Const<EnumExprDecl>::type& ast);
 
                 virtual void operator()(typename Const<Type>::type& ast);
 

@@ -77,6 +77,16 @@ void PrettyPrinter::operator()(const FieldList& ast)
     }
 }
 
+void PrettyPrinter::operator()(const EnumExprList& ast)
+{
+    for (auto field : ast.list_get())
+    {
+        field->accept(*this);
+
+        ostr_ << "," << ucc::misc::iendl;
+    }
+}
+
 void PrettyPrinter::operator()(const VarDecl& ast)
 {
     if (ast.is_static())
@@ -207,6 +217,17 @@ void PrettyPrinter::operator()(const RecordDecl& ast)
 
     ostr_ << misc::decendl;
     ostr_ << "};";
+}
+
+void PrettyPrinter::operator()(const EnumExprDecl& ast)
+{
+    ostr_ << ast.name_get();
+
+    if (ast.value_get())
+    {
+        ostr_ << " = ";
+        ast.value_get()->accept(*this);
+    }
 }
 
 void PrettyPrinter::operator()(const ArrayType& ast)

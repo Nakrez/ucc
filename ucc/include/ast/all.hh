@@ -13,6 +13,7 @@
 # include <ast/type-decl.hh>
 # include <ast/field-decl.hh>
 # include <ast/record-decl.hh>
+# include <ast/enum-expr-decl.hh>
 
 # include <ast/type.hh>
 # include <ast/named-type.hh>

@@ -69,6 +69,8 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::FieldDecl* field;
     ucc::ast::FieldList* field_list;
     ucc::ast::RecordDecl::RecordType rec_type;
+    ucc::ast::EnumExprDecl* enum_expr_decl;
+    ucc::ast::EnumExprList* enum_expr_list;
 }
 
 
@@ -266,6 +268,10 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
                         struct_declaration
                         struct_declaration_list
 %type <rec_type>        struct_or_union
+%type <enum_expr_decl>  enumeration_constant
+                        enumerator
+
+%type <enum_expr_list>  enumerator_list
 
 %start translation_unit
 %%
@@ -303,8 +309,6 @@ constant
     }
     | "enum_constant"
     {
-        driver.sym_[$1->data_get()] =
-                    ucc::parse::Parser::token::ENUM_CONSTANT;
 
         $$ = new ucc::ast::EnumExpr(@1, *$1);
 
@@ -314,6 +318,14 @@ constant
 
 enumeration_constant        /* before it has been defined as such */
     : "identifier"
+    {
+        driver.sym_[$1->data_get()] =
+                    ucc::parse::Parser::token::ENUM_CONSTANT;
+
+        $$ = new ucc::ast::EnumExprDecl(@1, *$1, nullptr);
+
+        delete $1;
+    }
     ;
 
 string
@@ -1117,12 +1129,27 @@ enum_specifier
 
 enumerator_list
     : enumerator
+    {
+        $$ = new ucc::ast::EnumExprList(@1);
+        $$->push_back(std::shared_ptr<ucc::ast::EnumExprDecl>($1));
+    }
     | enumerator_list "," enumerator
+    {
+        $$ = $1;
+        $$->push_back(std::shared_ptr<ucc::ast::EnumExprDecl>($3));
+    }
     ;
 
-enumerator  /* identifiers must be flagged as ENUMERATION_CONSTANT */
+enumerator
     : enumeration_constant "=" constant_expression
+    {
+        $$ = $1;
+        $$->value_set($3);
+    }
     | enumeration_constant
+    {
+        $$ = $1;
+    }
     ;
 
 /*

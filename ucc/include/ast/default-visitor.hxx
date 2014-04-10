@@ -32,6 +32,13 @@ void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<FieldList>::t
 }
 
 template <template <typename> class Const>
+void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<EnumExprList>::type& ast)
+{
+    for (auto elem : ast.list_get())
+        elem->accept(*this);
+}
+
+template <template <typename> class Const>
 void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Decl>::type& ast)
 {
     ast.accept(*this);
@@ -93,6 +100,14 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<RecordDecl>::type&
 {
     if (ast.fields_get())
         ast.fields_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<EnumExprDecl>::type& ast)
+{
+    if (ast.value_get())
+        ast.value_get()->accept(*this);
 }
 
 template <template <typename> class Const>
