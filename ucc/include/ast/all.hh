@@ -53,5 +53,6 @@
 # include <ast/member-expr.hh>
 # include <ast/enum-expr.hh>
 # include <ast/cast-expr.hh>
+# include <ast/sizeof-expr.hh>
 
 #endif /* !ALL_HH */

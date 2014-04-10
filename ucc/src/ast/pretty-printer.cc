@@ -692,6 +692,18 @@ void PrettyPrinter::operator()(const CastExpr& ast)
         ast.expr_get()->accept(*this);
 }
 
+void PrettyPrinter::operator()(const SizeofExpr& ast)
+{
+    ostr_ << "sizeof (";
+
+    if (ast.type_get())
+        ast.type_get()->accept(*this);
+    else if (ast.expr_get())
+        ast.expr_get()->accept(*this);
+
+    ostr_ << ")";
+}
+
 bool PrettyPrinter::print_fun_ptr(const Type* ast,
         const ucc::misc::Symbol& sym)
 {

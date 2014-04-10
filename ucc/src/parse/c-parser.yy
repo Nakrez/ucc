@@ -439,7 +439,13 @@ unary_expression
         $$ = new ucc::ast::UnaryExpr(@1, $1, $2);
     }
     | "sizeof" unary_expression
+    {
+        $$ = new ucc::ast::SizeofExpr(@1, $2);
+    }
     | "sizeof" "(" type_name ")"
+    {
+        $$ = new ucc::ast::SizeofExpr(@1, $3);
+    }
     /*| "_Alignof" "(" type_name ")"*/
     ;
 

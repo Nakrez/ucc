@@ -227,7 +227,7 @@ WS  [ \t\v\f]
                         }
 
 {HP}{H}+{IS}?               {
-                                yylval->int_ = atoi(yytext);
+                                yylval->int_ = strtol(yytext, NULL, 16);
                                 return token::I_CONSTANT;
                             }
 {NZ}{D}*{IS}?               {
@@ -239,7 +239,56 @@ WS  [ \t\v\f]
                                 return token::I_CONSTANT;
                             }
 {CP}?"'"([^'\\\n]|{ES})+"'" {
-                                yylval->int_ = atoi(yytext);
+                                std::string s(yytext, 1, strlen(yytext) - 2);
+
+                                if (s.size() == 1)
+                                    yylval->int_ = s[0];
+                                else if (s[0] == '\\')
+                                {
+                                    switch (s[1])
+                                    {
+                                        case 'a':
+                                            yylval->int_ = '\a';
+                                            break;
+                                        case 'b':
+                                            yylval->int_ = '\b';
+                                            break;
+                                        case 'f':
+                                            yylval->int_ = '\f';
+                                            break;
+                                        case 'n':
+                                            yylval->int_ = '\n';
+                                            break;
+                                        case 'r':
+                                            yylval->int_ = '\r';
+                                            break;
+                                        case 't':
+                                            yylval->int_ = '\t';
+                                            break;
+                                        case 'v':
+                                            yylval->int_ = '\v';
+                                            break;
+                                        case '\\':
+                                            yylval->int_ = '\\';
+                                            break;
+                                        case '"':
+                                            yylval->int_ = '\"';
+                                            break;
+                                        case '0':
+                                            yylval->int_ = '\0';
+                                            break;
+                                        default:
+                                            driver.error_
+                                                << ucc::misc::Error::Type::lex
+                                                << "Unexpected escape char"
+                                                << yytext << std::endl;
+                                            yylval->int_ = '\0';
+                                            break;
+                                    }
+                                }
+                                else
+                                    yylval->int_ = '\0';
+
                                 return token::I_CONSTANT;
                             }
 

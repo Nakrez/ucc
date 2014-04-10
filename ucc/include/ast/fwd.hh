@@ -58,6 +58,7 @@ namespace ucc
         class MemberExpr;
         class EnumExpr;
         class CastExpr;
+        class SizeofExpr;
 
         typedef AnyList<Ast> AstList;
         typedef AnyList<Decl> DeclList;
