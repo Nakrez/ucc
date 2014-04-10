@@ -1,0 +1,33 @@
+-- PARSE --
+
+- Add C99 features
+- Check strings/char/floats
+
+-- AST --
+
+- --ast-dump
+
+-- BIND --
+
+- Implement binder
+- Implement scope-map
+
+-- TYPE CHECKER --
+
+- Implement type checker
+- Implement type classes
+
+-- IR CONVERTER --
+
+- Design IR
+
+-- OPTIMISATION --
+
+- ...
+
+-- BACKEND --
+
+- Add Target x86 32bits
+- Add Target x86 64bits
+- Add Target arm
+- ...
