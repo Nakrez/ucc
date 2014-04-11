@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <misc/symbol.hh>
 
 # include <ast/expr.hh>
+# include <ast/var-decl.hh>
 
 namespace ucc
 {
@@ -37,11 +38,17 @@ namespace ucc
                 const misc::Symbol& name_get() const;
                 misc::Symbol& name_get();
 
+                const VarDecl* def_get() const;
+                VarDecl* def_get();
+
+                void def_set(VarDecl* def);
+
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
 
             protected:
                 ucc::misc::Symbol name_;
+                VarDecl* def_;
         };
     } // namespace ast
 } // namespace ucc
