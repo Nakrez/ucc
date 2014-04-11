@@ -30,6 +30,34 @@ Binder::Binder()
 Binder::~Binder()
 {}
 
+void Binder::error(const ucc::ast::Ast& ast, std::string msg)
+{
+    error_ << ucc::misc::Error::Type::bind
+           << ast.location_get() << ": error: " << msg << std::endl;
+}
+
+void Binder::operator()(ucc::ast::VarDecl& ast)
+{
+    ast::Decl* d;
+    ast::VarDecl* vd;
+
+    d = scope_.get(ast.name_get());
+
+    vd = dynamic_cast<ast::VarDecl*> (d);
+
+    if (d && !vd)
+        error(ast, "Redefinition of " + ast.name_get().data_get());
+    else if (vd && vd->init_get() && ast.init_get())
+        error(ast, "Redefinition of " + ast.name_get().data_get());
+    else
+        scope_.put(ast.name_get(), &ast);
+}
+
+void Binder::operator()(ucc::ast::VarExpr& ast)
+{
+
+}
+
 ucc::misc::Error& Binder::error_get()
 {
     return error_;

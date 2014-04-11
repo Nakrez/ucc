@@ -38,7 +38,14 @@ namespace ucc
                 Binder();
                 virtual ~Binder();
 
+                virtual void operator()(ucc::ast::VarDecl& ast);
+
+                virtual void operator()(ucc::ast::VarExpr& ast);
+
                 ucc::misc::Error& error_get();
+
+            protected:
+                void error(const ucc::ast::Ast& ast, std::string msg);
 
             protected:
                 ucc::misc::Error error_;
