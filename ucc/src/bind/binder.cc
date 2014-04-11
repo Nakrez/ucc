@@ -50,12 +50,17 @@ void Binder::operator()(ucc::ast::VarDecl& ast)
     else if (vd && vd->init_get() && ast.init_get())
         error(ast, "Redefinition of " + ast.name_get().data_get());
     else
+    {
+        if (vd)
+            ast.prev_set(vd);
+
         scope_.put(ast.name_get(), &ast);
+    }
 }
 
 void Binder::operator()(ucc::ast::VarExpr& ast)
 {
-
+    check_use<ast::VarExpr, ast::VarDecl>(ast);
 }
 
 ucc::misc::Error& Binder::error_get()

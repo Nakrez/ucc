@@ -46,6 +46,25 @@ namespace ucc
 
             protected:
                 void error(const ucc::ast::Ast& ast, std::string msg);
+                template <class AstType, class DeclType>
+                void check_use(AstType& ast)
+                {
+                    ast::Decl* d;
+                    DeclType* vd;
+
+                    d = scope_.get(ast.name_get());
+
+                    vd = dynamic_cast<DeclType*> (d);
+
+                    if (!d)
+                        error(ast, "Undeclared identifier " +
+                                   ast.name_get().data_get());
+                    else if (!vd)
+                        error(ast, "Usage and definition of "
+                                   + ast.name_get().data_get() + " differ");
+                    else
+                        ast.def_set(vd);
+                }
 
             protected:
                 ucc::misc::Error error_;

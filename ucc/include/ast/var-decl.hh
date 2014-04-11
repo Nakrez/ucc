@@ -44,6 +44,11 @@ namespace ucc
                 const Expr* init_get() const;
                 Expr* init_get();
 
+                const VarDecl* prev_get() const;
+                VarDecl* prev_get();
+
+                void prev_set(VarDecl* d);
+
                 bool is_elipsis() const;
 
                 virtual void accept(Visitor& v);
@@ -53,6 +58,7 @@ namespace ucc
                 Type* type_;
                 Expr* init_;
                 bool is_elipsis_;
+                VarDecl* prev_;
         };
     } // namespace ast
 } // namespace ucc

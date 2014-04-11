@@ -32,6 +32,7 @@ VarDecl::VarDecl(const ucc::parse::location& loc,
     , type_(type)
     , init_(e)
     , is_elipsis_(false)
+    , prev_(nullptr)
 {}
 
 VarDecl::VarDecl(const ucc::parse::location& loc)
@@ -39,6 +40,7 @@ VarDecl::VarDecl(const ucc::parse::location& loc)
     , type_(nullptr)
     , init_(nullptr)
     , is_elipsis_(true)
+    , prev_(nullptr)
 {}
 
 VarDecl::~VarDecl()
@@ -65,6 +67,21 @@ const Expr* VarDecl::init_get() const
 Expr* VarDecl::init_get()
 {
     return init_;
+}
+
+const VarDecl* VarDecl::prev_get() const
+{
+    return prev_;
+}
+
+VarDecl* VarDecl::prev_get()
+{
+    return prev_;
+}
+
+void VarDecl::prev_set(VarDecl* d)
+{
+    prev_ = d;
 }
 
 bool VarDecl::is_elipsis() const
