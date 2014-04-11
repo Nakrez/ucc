@@ -56,6 +56,8 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/init-list-expr.cc \
 			  src/ast/pretty-printer.cc \
 			  src/ast/command.cc \
+			  src/bind/binder.cc \
+			  src/bind/command.cc \
 			  src/main.cc \
 			  src/ucc.cc
 
