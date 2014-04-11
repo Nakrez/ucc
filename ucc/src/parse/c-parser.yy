@@ -784,7 +784,7 @@ declaration
                 new_decl = new ucc::ast::FunctionDecl(@1, decl->name_get(), t);
             }
             else
-                new_decl = new ucc::ast::VarDecl(@1, decl->name_get(),
+                new_decl = new ucc::ast::VarDecl(@$, decl->name_get(),
                                                  type, decl->init_get());
 
             new_decl->storage_class_set($1->storage_class_get());
