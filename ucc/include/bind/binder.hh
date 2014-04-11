@@ -43,6 +43,8 @@ namespace ucc
 
                 virtual void operator()(ucc::ast::VarExpr& ast);
 
+                virtual void operator()(ucc::ast::CompoundStmt& ast);
+
                 ucc::misc::Error& error_get();
 
             protected:

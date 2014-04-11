@@ -72,8 +72,8 @@ void Binder::operator()(ucc::ast::FunctionDecl& ast)
     for (auto param : ast.param_get())
         param->accept(*this);
 
-    if (ast.compound_get())
-        ast.compound_get()->accept(*this);
+    if (ast.compound_get() && ast.compound_get()->compound_get())
+        ast.compound_get()->compound_get()->accept(*this);
 
     scope_.scope_end();
 }
@@ -95,6 +95,16 @@ void Binder::operator()(ucc::ast::VarExpr& ast)
                    ast.name_get().data_get() + " differ");
     else
         ast.def_set(vd);
+}
+
+void Binder::operator()(ucc::ast::CompoundStmt& ast)
+{
+    scope_.scope_begin();
+
+    if (ast.compound_get())
+        ast.compound_get()->accept(*this);
+
+    scope_.scope_end();
 }
 
 ucc::misc::Error& Binder::error_get()
