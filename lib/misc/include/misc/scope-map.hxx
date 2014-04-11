@@ -60,7 +60,7 @@ namespace ucc
                 if (it == map.cend())
                     continue;
                 else
-                    return it->second();
+                    return it->second;
             }
 
             return nullptr;
