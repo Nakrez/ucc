@@ -40,6 +40,11 @@ Symbol& Symbol::operator=(const Symbol& s)
     return *this;
 }
 
+bool Symbol::operator<(const ucc::misc::Symbol& s) const
+{
+    return *data_ < *(s.data_);
+}
+
 std::set<std::string>& Symbol::symbol_set_get()
 {
     static std::set<std::string> set;
