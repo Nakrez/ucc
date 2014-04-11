@@ -73,6 +73,19 @@ namespace ucc
         }
 
         template <class Key, class Data>
+        Data* ScopeMap<Key, Data>::get_scope(const Key& key) const
+        {
+            typename std::map<Key, Data*>::const_iterator it;
+
+            it = map_.back().find(key);
+
+            if (it == map_.back().cend())
+                return nullptr;
+            else
+                return it->second;
+        }
+
+        template <class Key, class Data>
         void ScopeMap<Key, Data>::put(const Key& key, Data* data)
         {
             if (map_.size() == 0)

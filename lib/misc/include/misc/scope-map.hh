@@ -39,6 +39,7 @@ namespace ucc
                 void scope_end();
 
                 Data* get(const Key& key) const;
+                Data* get_scope(const Key& key) const;
                 void put(const Key& key, Data* data);
 
             private:
