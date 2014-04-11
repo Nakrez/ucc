@@ -33,6 +33,8 @@ namespace ucc
                 ScopeMap();
                 ~ScopeMap();
 
+                int size() const;
+
                 void scope_begin();
                 void scope_end();
 

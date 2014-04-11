@@ -37,6 +37,12 @@ namespace ucc
         {}
 
         template <class Key, class Data>
+        int ScopeMap<Key, Data>::size() const
+        {
+            return map_.size();
+        }
+
+        template <class Key, class Data>
         void ScopeMap<Key, Data>::scope_begin()
         {
             map_.push_back(std::map<Key, Data*>());
