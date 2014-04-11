@@ -40,18 +40,12 @@ namespace ucc
                 const ExprList* param_get() const;
                 ExprList* param_get();
 
-                const FunctionDecl* def_get() const;
-                FunctionDecl* def_get();
-
-                void def_set(FunctionDecl* d);
-
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
 
             protected:
                 Expr* var_;
                 ExprList* param_;
-                FunctionDecl* def_;
         };
     } // namespace ast
 } // namespace ucc

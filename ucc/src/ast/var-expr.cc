@@ -41,17 +41,17 @@ misc::Symbol& VarExpr::name_get()
     return name_;
 }
 
-const VarDecl* VarExpr::def_get() const
+const Decl* VarExpr::def_get() const
 {
     return def_;
 }
 
-VarDecl* VarExpr::def_get()
+Decl* VarExpr::def_get()
 {
     return def_;
 }
 
-void VarExpr::def_set(VarDecl* def)
+void VarExpr::def_set(Decl* def)
 {
     def_ = def;
 }

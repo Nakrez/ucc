@@ -197,6 +197,15 @@ void PrettyPrinter::operator()(const FunctionDecl& ast)
 
     ostr_ << ast.name_get();
 
+    if (with_bindings_)
+    {
+        ostr_ << "/* " << &ast;
+
+        if (ast.prev_get())
+            ostr_ << ", prev " << ast.prev_get();
+
+        ostr_ << " */";
+    }
     ostr_ << "(";
 
     bool old = formals_;

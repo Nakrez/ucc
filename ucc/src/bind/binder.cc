@@ -46,8 +46,8 @@ void Binder::operator()(ucc::ast::VarDecl& ast)
     vd = dynamic_cast<ast::VarDecl*> (d);
 
     if (d && !vd)
-        error(ast, "Redefinition of " + ast.name_get().data_get() +
-                   "as different kind of symbol");
+        error(ast, "Redefinition of '" + ast.name_get().data_get() +
+                   "' as different kind of symbol");
     else if (vd && vd->init_get() && ast.init_get())
         error(ast, "Redefinition of " + ast.name_get().data_get());
     else if (scope_.size() > 1 && vd)
@@ -64,6 +64,26 @@ void Binder::operator()(ucc::ast::VarDecl& ast)
 
 void Binder::operator()(ucc::ast::FunctionDecl& ast)
 {
+    ast::Decl* d;
+    ast::FunctionDecl* vd;
+
+    d = scope_.get_scope(ast.name_get());
+
+    vd = dynamic_cast<ast::FunctionDecl*> (d);
+
+    if (d && !vd)
+        error(ast, "Redefinition of '" + ast.name_get().data_get() +
+                   "' as different kind of symbol");
+    else if (vd && vd->compound_get() && ast.compound_get())
+        error(ast, "Redefinition of " + ast.name_get().data_get());
+    else
+    {
+        if (vd)
+            ast.prev_set(vd);
+
+        scope_.put(ast.name_get(), &ast);
+    }
+
     if (ast.return_type_get())
         ast.return_type_get()->accept(*this);
 
@@ -81,20 +101,14 @@ void Binder::operator()(ucc::ast::FunctionDecl& ast)
 void Binder::operator()(ucc::ast::VarExpr& ast)
 {
     ast::Decl* d;
-    ast::VarDecl* vd;
 
     d = scope_.get(ast.name_get());
-
-    vd = dynamic_cast<ast::VarDecl*> (d);
 
     if (!d)
         error(ast, "Undeclared identifier " +
                    ast.name_get().data_get());
-    else if (!vd)
-        error(ast, "Usage and definition of " +
-                   ast.name_get().data_get() + " differ");
     else
-        ast.def_set(vd);
+        ast.def_set(d);
 }
 
 void Binder::operator()(ucc::ast::CompoundStmt& ast)

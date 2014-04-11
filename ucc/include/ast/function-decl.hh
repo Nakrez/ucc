@@ -50,6 +50,11 @@ namespace ucc
                 const std::list<VarDecl*>& param_get() const;
                 std::list<VarDecl*>& param_get();
 
+                const FunctionDecl* prev_get() const;
+                FunctionDecl* prev_get();
+
+                void prev_set(FunctionDecl* d);
+
                 void return_type_set(Type* t);
 
                 virtual void accept(Visitor& v);
@@ -58,6 +63,7 @@ namespace ucc
             protected:
                 FunctionType* type_;
                 CompoundStmt* compound_;
+                FunctionDecl* prev_;
         };
     } // namespace ast
 } // namespace ucc

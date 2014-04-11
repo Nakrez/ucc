@@ -27,7 +27,6 @@ CallExpr::CallExpr(const ucc::parse::location& loc,
     : Expr(loc)
     , var_(var)
     , param_(param)
-    , def_(nullptr)
 {}
 
 CallExpr::~CallExpr()
@@ -54,21 +53,6 @@ const ExprList* CallExpr::param_get() const
 ExprList* CallExpr::param_get()
 {
     return param_;
-}
-
-const FunctionDecl* CallExpr::def_get() const
-{
-    return def_;
-}
-
-FunctionDecl* CallExpr::def_get()
-{
-    return def_;
-}
-
-void CallExpr::def_set(FunctionDecl* d)
-{
-    def_ = d;
 }
 
 void CallExpr::accept(Visitor& v)
