@@ -26,7 +26,8 @@ REGISTER_COMMAND(pretty, "ast-print", "Pretty print the input file (debug "
                  "purpose)", pretty_print, "parse");
 
 REGISTER_COMMAND(pretty_bind, "ast-print-bindings", "Pretty print the input"
-                 "file and the bindings associated (debug purpose)",
+                 " file compute and print the bindings associated "
+                 "(debug purpose)",
                  pretty_print_bind, "compute-bindings");
 
 void pretty_print()

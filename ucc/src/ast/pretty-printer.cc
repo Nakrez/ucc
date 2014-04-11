@@ -154,6 +154,7 @@ end:
     if (with_bindings_ && ast.name_get().data_get() != "")
     {
         ostr_ << " /* " << &ast;
+
         if (ast.prev_get())
             ostr_ << ", prev: " << ast.prev_get();
 

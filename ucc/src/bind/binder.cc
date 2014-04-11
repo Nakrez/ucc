@@ -41,13 +41,16 @@ void Binder::operator()(ucc::ast::VarDecl& ast)
     ast::Decl* d;
     ast::VarDecl* vd;
 
-    d = scope_.get(ast.name_get());
+    d = scope_.get_scope(ast.name_get());
 
     vd = dynamic_cast<ast::VarDecl*> (d);
 
     if (d && !vd)
-        error(ast, "Redefinition of " + ast.name_get().data_get());
+        error(ast, "Redefinition of " + ast.name_get().data_get() +
+                   "as different kind of symbol");
     else if (vd && vd->init_get() && ast.init_get())
+        error(ast, "Redefinition of " + ast.name_get().data_get());
+    else if (scope_.size() > 1 && vd)
         error(ast, "Redefinition of " + ast.name_get().data_get());
     else
     {
@@ -59,9 +62,39 @@ void Binder::operator()(ucc::ast::VarDecl& ast)
     }
 }
 
+void Binder::operator()(ucc::ast::FunctionDecl& ast)
+{
+    if (ast.return_type_get())
+        ast.return_type_get()->accept(*this);
+
+    scope_.scope_begin();
+
+    for (auto param : ast.param_get())
+        param->accept(*this);
+
+    if (ast.compound_get())
+        ast.compound_get()->accept(*this);
+
+    scope_.scope_end();
+}
+
 void Binder::operator()(ucc::ast::VarExpr& ast)
 {
-    check_use<ast::VarExpr, ast::VarDecl>(ast);
+    ast::Decl* d;
+    ast::VarDecl* vd;
+
+    d = scope_.get(ast.name_get());
+
+    vd = dynamic_cast<ast::VarDecl*> (d);
+
+    if (!d)
+        error(ast, "Undeclared identifier " +
+                   ast.name_get().data_get());
+    else if (!vd)
+        error(ast, "Usage and definition of " +
+                   ast.name_get().data_get() + " differ");
+    else
+        ast.def_set(vd);
 }
 
 ucc::misc::Error& Binder::error_get()
