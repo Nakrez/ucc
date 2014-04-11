@@ -20,8 +20,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_BIND_BINDER_HH
 
 # include <misc/error.hh>
+# include <misc/scope-map.hh>
+# include <misc/symbol.hh>
 
 # include <ast/default-visitor.hh>
+# include <ast/decl.hh>
 
 namespace ucc
 {
@@ -39,6 +42,7 @@ namespace ucc
 
             protected:
                 ucc::misc::Error error_;
+                ucc::misc::ScopeMap<ucc::misc::Symbol, ucc::ast::Decl> scope_;
         };
     } // namespace bind
 } // namespace ucc

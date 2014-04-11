@@ -17,12 +17,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <bind/binder.hh>
+#include <ast/all.hh>
 
 using namespace ucc;
 using namespace bind;
 
 Binder::Binder()
     : error_()
+    , scope_()
 {}
 
 Binder::~Binder()
