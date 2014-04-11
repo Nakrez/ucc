@@ -46,6 +46,7 @@ namespace ucc
 
             protected:
                 void error(const ucc::ast::Ast& ast, std::string msg);
+
                 template <class AstType, class DeclType>
                 void check_use(AstType& ast)
                 {

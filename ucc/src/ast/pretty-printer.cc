@@ -25,11 +25,17 @@ using namespace ast;
 PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     : DefaultConstVisitor()
     , formals_(false)
+    , with_bindings_(false)
     , ostr_(ostr)
 {}
 
 PrettyPrinter::~PrettyPrinter()
 {}
+
+void PrettyPrinter::activate_bindings()
+{
+    with_bindings_ = true;
+}
 
 void PrettyPrinter::operator()(const AstList& ast)
 {
@@ -122,11 +128,8 @@ void PrettyPrinter::operator()(const VarDecl& ast)
     {
         if (print_fun_ptr(ast.type_get(), ast.name_get()) ||
             print_array_ty(ast.type_get(), ast.name_get()))
-        {
-            if (!formals_)
-                ostr_ << ";";
-            return;
-        }
+
+            goto end;
 
         ast.type_get()->accept(*this);
     }
@@ -143,8 +146,19 @@ void PrettyPrinter::operator()(const VarDecl& ast)
         ast.init_get()->accept(*this);
     }
 
+end:
+
     if (!formals_)
         ostr_ << ";";
+
+    if (with_bindings_ && ast.name_get().data_get() != "")
+    {
+        ostr_ << " /* " << &ast;
+        if (ast.prev_get())
+            ostr_ << ", prev: " << ast.prev_get();
+
+        ostr_<< " */";
+    }
 }
 
 void PrettyPrinter::operator()(const TypeDecl& ast)
@@ -591,6 +605,9 @@ void PrettyPrinter::operator()(const StringExpr& ast)
 void PrettyPrinter::operator()(const VarExpr& ast)
 {
     ostr_ << ast.name_get();
+
+    if (with_bindings_)
+        ostr_ << " /* " << ast.def_get() << " */";
 }
 
 void PrettyPrinter::operator()(const SubscriptExpr& ast)

@@ -54,7 +54,8 @@ void Binder::operator()(ucc::ast::VarDecl& ast)
         if (vd)
             ast.prev_set(vd);
 
-        scope_.put(ast.name_get(), &ast);
+        if (ast.name_get().data_get() != "")
+            scope_.put(ast.name_get(), &ast);
     }
 }
 
