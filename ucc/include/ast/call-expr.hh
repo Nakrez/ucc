@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_AST_CALL_EXPR_HH
 
 # include <ast/expr.hh>
+# include <ast/function-decl.hh>
 
 namespace ucc
 {
@@ -39,12 +40,18 @@ namespace ucc
                 const ExprList* param_get() const;
                 ExprList* param_get();
 
+                const FunctionDecl* def_get() const;
+                FunctionDecl* def_get();
+
+                void def_set(FunctionDecl* d);
+
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
 
             protected:
                 Expr* var_;
                 ExprList* param_;
+                FunctionDecl* def_;
         };
     } // namespace ast
 } // namespace ucc

@@ -39,6 +39,8 @@ namespace ucc
 
                 bool operator<(const ucc::misc::Symbol& s) const;
 
+                Symbol fresh() const;
+
             private:
                 static std::set<std::string>& symbol_set_get();
 

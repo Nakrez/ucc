@@ -1945,10 +1945,6 @@ attribute_spec
     {
         driver.in_attribute_ = false;
     }
-    | attribute_spec "__attribute__" "(" "(" attribute_list ")" ")"
-    {
-        driver.in_attribute_ = false;
-    }
     ;
 
 attribute_list
