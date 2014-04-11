@@ -58,12 +58,13 @@ namespace ucc
         Data* ScopeMap<Key, Data>::get(const Key& key) const
         {
             typename std::map<Key, Data*>::const_iterator it;
+            auto lit = map_.crbegin();
 
-            for (auto map : map_)
+            for (; lit != map_.crend(); ++lit)
             {
-                it = map.find(key);
+                it = (*lit).find(key);
 
-                if (it == map.cend())
+                if (it == (*lit).cend())
                     continue;
                 else
                     return it->second;
