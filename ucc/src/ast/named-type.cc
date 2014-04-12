@@ -25,6 +25,7 @@ NamedType::NamedType(const ucc::parse::location& loc,
                      const ucc::misc::Symbol& name)
     : Type(loc)
     , name_(name)
+    , def_(nullptr)
 {}
 
 NamedType::~NamedType()
@@ -39,6 +40,21 @@ const ucc::misc::Symbol& NamedType::name_get() const
 ucc::misc::Symbol& NamedType::name_get()
 {
     return name_;
+}
+
+const TypeDecl* NamedType::def_get() const
+{
+    return def_;
+}
+
+TypeDecl* NamedType::def_get()
+{
+    return def_;
+}
+
+void NamedType::def_set(TypeDecl* d)
+{
+    def_ = d;
 }
 
 bool NamedType::extends_type(Type *)

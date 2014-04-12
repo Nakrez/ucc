@@ -40,6 +40,9 @@ namespace ucc
 
                 virtual void operator()(ucc::ast::VarDecl& ast);
                 virtual void operator()(ucc::ast::FunctionDecl& ast);
+                virtual void operator()(ucc::ast::TypeDecl& ast);
+
+                virtual void operator()(ucc::ast::NamedType& ast);
 
                 virtual void operator()(ucc::ast::VarExpr& ast);
 
@@ -49,6 +52,7 @@ namespace ucc
 
             protected:
                 void error(const ucc::ast::Ast& ast, std::string msg);
+                bool is_builtin_type(const ucc::misc::Symbol& s);
 
             protected:
                 ucc::misc::Error error_;

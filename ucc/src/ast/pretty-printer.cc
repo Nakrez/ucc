@@ -170,15 +170,18 @@ void PrettyPrinter::operator()(const TypeDecl& ast)
     {
         if (print_fun_ptr(ast.type_get(), ast.name_get()) ||
             print_array_ty(ast.type_get(), ast.name_get()))
-        {
-            ostr_ << ";";
-            return;
-        }
+            goto end;
 
         ast.type_get()->accept(*this);
     }
 
-    ostr_ << " " << ast.name_get() << ";";
+    ostr_ << " " << ast.name_get();
+
+end:
+    ostr_ << ";";
+
+    if (with_bindings_)
+        ostr_ << "/* " << &ast << " */";
 }
 
 void PrettyPrinter::operator()(const FunctionDecl& ast)
@@ -328,6 +331,9 @@ void PrettyPrinter::operator()(const NamedType& ast)
         ostr_ << "restrict ";
 
     ostr_ << ast.name_get();
+
+    if (with_bindings_)
+        ostr_ << " /* " << ast.def_get() << " */";
 }
 
 void PrettyPrinter::operator()(const PtrType& ast)

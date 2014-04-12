@@ -38,6 +38,9 @@ void Binder::error(const ucc::ast::Ast& ast, std::string msg)
 
 void Binder::operator()(ucc::ast::VarDecl& ast)
 {
+    if (ast.type_get())
+        ast.type_get()->accept(*this);
+
     ast::Decl* d;
     ast::VarDecl* vd;
 
@@ -60,6 +63,9 @@ void Binder::operator()(ucc::ast::VarDecl& ast)
         if (ast.name_get().data_get() != "")
             scope_.put(ast.name_get(), &ast);
     }
+
+    if (ast.init_get())
+        ast.init_get()->accept(*this);
 }
 
 void Binder::operator()(ucc::ast::FunctionDecl& ast)
@@ -98,6 +104,43 @@ void Binder::operator()(ucc::ast::FunctionDecl& ast)
     scope_.scope_end();
 }
 
+void Binder::operator()(ucc::ast::TypeDecl& ast)
+{
+    if (ast.type_get())
+        ast.type_get()->accept(*this);
+
+    ast::Decl* d;
+
+    d = scope_.get_scope(ast.name_get());
+
+    if (d)
+        error(ast, "Redefinition of '" + ast.name_get().data_get() + "'");
+    else
+        scope_.put(ast.name_get(), &ast);
+}
+
+void Binder::operator()(ucc::ast::NamedType& ast)
+{
+    ast::Decl* d;
+
+    ast::TypeDecl* td;
+
+    d = scope_.get(ast.name_get());
+
+    td = dynamic_cast<ast::TypeDecl*> (d);
+
+    if (!td)
+    {
+        if (is_builtin_type(ast.name_get()))
+            return;
+
+        error(ast, "Undeclared type " +
+                   ast.name_get().data_get());
+    }
+    else
+        ast.def_set(td);
+}
+
 void Binder::operator()(ucc::ast::VarExpr& ast)
 {
     ast::Decl* d;
@@ -124,4 +167,18 @@ void Binder::operator()(ucc::ast::CompoundStmt& ast)
 ucc::misc::Error& Binder::error_get()
 {
     return error_;
+}
+
+bool Binder::is_builtin_type(const ucc::misc::Symbol& s)
+{
+    const std::string *str = &s.data_get();
+
+    return *str == "int" || *str == "void" || *str == "char" ||
+           *str == "long" || *str == "short" || *str == "double" ||
+           *str == "float" || *str == "long long" || *str == "unsigned int" ||
+           *str == "signed int" || *str == "unsigned char" ||
+           *str == "signed char" || *str == "signed long" ||
+           *str == "unsigned long" || *str == "signed short" ||
+           *str == "unsigned short" || *str == "signed long long" ||
+           *str == "unsigned long long";
 }
