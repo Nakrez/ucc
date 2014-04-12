@@ -311,5 +311,5 @@ bool Binder::is_builtin_type(const ucc::misc::Symbol& s)
            *str == "signed char" || *str == "signed long" ||
            *str == "unsigned long" || *str == "signed short" ||
            *str == "unsigned short" || *str == "signed long long" ||
-           *str == "unsigned long long";
+           *str == "unsigned long long" || *str == "long double";
 }

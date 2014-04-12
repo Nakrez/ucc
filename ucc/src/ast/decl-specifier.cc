@@ -229,16 +229,24 @@ bool DeclSpecifier::type_specifier_set(const TypeSpecifier& spec,
     }
 
     /* Multiple types */
-    if (type_specifier_ & ~TS_signed & ~TS_unsigned != TS_unspecified)
+    if (spec == TS_long && (type_specifier_ & TS_long))
+        type_specifier_ = TS_long_long;
+    else if (spec == TS_double && (type_specifier_ & TS_long))
+        type_specifier_ |= TS_double;
+    else if (spec == TS_int && (type_specifier_ & TS_long))
     {
+        type_specifier_ &= TS_int;
+        type_specifier_ |= TS_long;
+    }
+    else if (spec != TS_signed && spec != TS_unsigned &&
+        (type_specifier_ & ~(TS_signed + TS_unsigned)) != TS_unspecified)
+    {
+    std::cout << spec << std::endl;
         err << ucc::misc::Error::Type::parse
-            << loc_ << ": error wrong type combination" << std::endl;;
+            << loc_ << ": error: wrong type combination" << std::endl;;
 
         return false;
     }
-
-    if (spec == TS_long && (type_specifier_ & TS_long))
-        type_specifier_ = TS_long_long;
     else
         type_specifier_ |= spec;
 
@@ -320,6 +328,8 @@ std::string DeclSpecifier::type_to_string() const
 
     if (type_specifier_ == TS_void)
         ret += "void";
+    else if ((type_specifier_ & TS_long) && (type_specifier_ & TS_double))
+        ret += "long double";
     else if (type_specifier_ & TS_char)
         ret += "char";
     else if (type_specifier_ & TS_short)

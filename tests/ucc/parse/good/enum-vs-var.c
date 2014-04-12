@@ -1,7 +1,7 @@
 enum t
 {
 a,
-}
+};
 
 int main(void)
 {
