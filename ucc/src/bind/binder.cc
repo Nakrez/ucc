@@ -25,6 +25,8 @@ using namespace bind;
 Binder::Binder()
     : error_()
     , scope_()
+    , record_()
+    , enum_()
 {}
 
 Binder::~Binder()
@@ -93,7 +95,7 @@ void Binder::operator()(ucc::ast::FunctionDecl& ast)
     if (ast.return_type_get())
         ast.return_type_get()->accept(*this);
 
-    scope_.scope_begin();
+    scope_begin();
 
     for (auto param : ast.param_get())
         param->accept(*this);
@@ -101,7 +103,7 @@ void Binder::operator()(ucc::ast::FunctionDecl& ast)
     if (ast.compound_get() && ast.compound_get()->compound_get())
         ast.compound_get()->compound_get()->accept(*this);
 
-    scope_.scope_end();
+    scope_end();
 }
 
 void Binder::operator()(ucc::ast::TypeDecl& ast)
@@ -119,6 +121,43 @@ void Binder::operator()(ucc::ast::TypeDecl& ast)
         scope_.put(ast.name_get(), &ast);
 }
 
+void Binder::operator()(ucc::ast::RecordDecl& ast)
+{
+    if (ast.name_get().data_get() == "")
+        return;
+
+    if (ast.fields_get())
+    {
+        scope_begin();
+
+        ast.fields_get()->accept(*this);
+
+        scope_end();
+    }
+
+    ast::Decl* d;
+    ast::RecordDecl* rd;
+
+    d = record_.get_scope(ast.name_get());
+
+    rd = dynamic_cast<ast::RecordDecl*> (d);
+
+    if (d && !rd)
+        error(ast, "Redefinition of '" + ast.name_get().data_get() + "'");
+    else if (rd && rd->type_get() != ast.type_get())
+        error(ast, "Redefinition of '" + ast.name_get().data_get() + "' as "
+                   "different kind of symbol");
+    else if (rd && rd->fields_get() && ast.fields_get())
+        error(ast, "Redefinition of '" + ast.name_get().data_get() + "'");
+    else
+    {
+        if (rd)
+            ast.prev_set(rd);
+
+        record_.put(ast.name_get(), &ast);
+    }
+}
+
 void Binder::operator()(ucc::ast::NamedType& ast)
 {
     ast::Decl* d;
@@ -134,11 +173,28 @@ void Binder::operator()(ucc::ast::NamedType& ast)
         if (is_builtin_type(ast.name_get()))
             return;
 
-        error(ast, "Undeclared type " +
-                   ast.name_get().data_get());
+        error(ast, "Undeclared type '" + ast.name_get().data_get() + "'");
     }
     else
         ast.def_set(td);
+}
+
+void Binder::operator()(ucc::ast::RecordType& ast)
+{
+    if (ast.name_get().data_get() == "")
+        return;
+
+    ast::RecordDecl* rd;
+
+    rd = record_.get(ast.name_get());
+
+    if (!rd)
+        error(ast, "Undeclared record " + ast.name_get().data_get());
+    else if (rd && rd->type_get() != ast.type_get())
+        error(ast, "'" + ast.name_get().data_get() + "' used "
+                   " with wrong declaration type");
+    else
+        ast.def_set(rd);
 }
 
 void Binder::operator()(ucc::ast::VarExpr& ast)
@@ -156,12 +212,12 @@ void Binder::operator()(ucc::ast::VarExpr& ast)
 
 void Binder::operator()(ucc::ast::CompoundStmt& ast)
 {
-    scope_.scope_begin();
+    scope_begin();
 
     if (ast.compound_get())
         ast.compound_get()->accept(*this);
 
-    scope_.scope_end();
+    scope_end();
 }
 
 ucc::misc::Error& Binder::error_get()

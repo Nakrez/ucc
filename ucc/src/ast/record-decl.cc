@@ -50,6 +50,21 @@ FieldList* RecordDecl::fields_get()
     return fields_;
 }
 
+const RecordDecl* RecordDecl::prev_get() const
+{
+    return prev_;
+}
+
+RecordDecl* RecordDecl::prev_get()
+{
+    return prev_;
+}
+
+void RecordDecl::prev_set(RecordDecl* d)
+{
+    prev_ = d;
+}
+
 void RecordDecl::accept(Visitor& v)
 {
     v(*this);

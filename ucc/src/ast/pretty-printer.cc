@@ -202,12 +202,12 @@ void PrettyPrinter::operator()(const FunctionDecl& ast)
 
     if (with_bindings_)
     {
-        ostr_ << "/* " << &ast;
+        ostr_ << " /* " << &ast;
 
         if (ast.prev_get())
             ostr_ << ", prev " << ast.prev_get();
 
-        ostr_ << " */";
+        ostr_ << " */ ";
     }
     ostr_ << "(";
 
@@ -258,6 +258,16 @@ void PrettyPrinter::operator()(const RecordDecl& ast)
         ostr_ << "union";
 
     ostr_ << " " << ast.name_get();
+
+    if (with_bindings_)
+    {
+        ostr_ << " /* " << &ast;
+
+        if (ast.prev_get())
+            ostr_ << ", prev : " << ast.prev_get();
+
+        ostr_ << " */ ";
+    }
 
     if (ast.fields_get())
     {
@@ -374,7 +384,12 @@ void PrettyPrinter::operator()(const RecordType& ast)
         ostr_ << "}";
     }
     else
+    {
         ostr_ << " " << ast.name_get();
+
+        if (with_bindings_)
+            ostr_ << " /* " << ast.def_get() << " */ ";
+    }
 }
 
 void PrettyPrinter::operator()(const EnumType& ast)

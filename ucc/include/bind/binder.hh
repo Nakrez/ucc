@@ -25,6 +25,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <ast/default-visitor.hh>
 # include <ast/decl.hh>
+# include <ast/enum-decl.hh>
+# include <ast/record-decl.hh>
 
 namespace ucc
 {
@@ -38,11 +40,27 @@ namespace ucc
                 Binder();
                 virtual ~Binder();
 
+                void scope_begin()
+                {
+                    scope_.scope_begin();
+                    record_.scope_begin();
+                    enum_.scope_begin();
+                }
+
+                void scope_end()
+                {
+                    scope_.scope_end();
+                    record_.scope_end();
+                    enum_.scope_end();
+                }
+
                 virtual void operator()(ucc::ast::VarDecl& ast);
                 virtual void operator()(ucc::ast::FunctionDecl& ast);
                 virtual void operator()(ucc::ast::TypeDecl& ast);
+                virtual void operator()(ucc::ast::RecordDecl& ast);
 
                 virtual void operator()(ucc::ast::NamedType& ast);
+                virtual void operator()(ucc::ast::RecordType& ast);
 
                 virtual void operator()(ucc::ast::VarExpr& ast);
 
@@ -58,6 +76,10 @@ namespace ucc
                 ucc::misc::Error error_;
 
                 ucc::misc::ScopeMap<ucc::misc::Symbol, ucc::ast::Decl*> scope_;
+                ucc::misc::ScopeMap<ucc::misc::Symbol,
+                                    ucc::ast::RecordDecl*> record_;
+                ucc::misc::ScopeMap<ucc::misc::Symbol,
+                                    ucc::ast::EnumDecl*> enum_;
         };
     } // namespace bind
 } // namespace ucc
