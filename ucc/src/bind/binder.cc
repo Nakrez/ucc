@@ -25,8 +25,7 @@ using namespace bind;
 Binder::Binder()
     : error_()
     , scope_()
-    , record_()
-    , enum_()
+    , record_enum_()
 {}
 
 Binder::~Binder()
@@ -135,16 +134,14 @@ void Binder::operator()(ucc::ast::RecordDecl& ast)
         scope_end();
     }
 
-    ast::Decl* d;
     ast::RecordDecl* rd;
+    ast::Decl* d;
 
-    d = record_.get_scope(ast.name_get());
+    d = record_enum_.get_scope(ast.name_get());
 
     rd = dynamic_cast<ast::RecordDecl*> (d);
 
-    if (d && !rd)
-        error(ast, "Redefinition of '" + ast.name_get().data_get() + "'");
-    else if (rd && rd->type_get() != ast.type_get())
+    if ((d && !rd) || (rd && rd->type_get() != ast.type_get()))
         error(ast, "Redefinition of '" + ast.name_get().data_get() + "' as "
                    "different kind of symbol");
     else if (rd && rd->fields_get() && ast.fields_get())
@@ -154,8 +151,49 @@ void Binder::operator()(ucc::ast::RecordDecl& ast)
         if (rd)
             ast.prev_set(rd);
 
-        record_.put(ast.name_get(), &ast);
+        record_enum_.put(ast.name_get(), &ast);
     }
+}
+
+void Binder::operator()(ucc::ast::EnumDecl& ast)
+{
+    if (ast.name_get().data_get() == "")
+        return;
+
+    if (ast.body_get())
+        ast.body_get()->accept(*this);
+
+    ast::EnumDecl* ed;
+    ast::Decl* d;
+
+    d = record_enum_.get_scope(ast.name_get());
+
+    ed = dynamic_cast<ast::EnumDecl*> (d);
+
+    if (d && !ed)
+        error(ast, "Redefinition of '" + ast.name_get().data_get() + "' as "
+                   "different kind of symbol");
+    else if (ed && ed->body_get() && ast.body_get())
+        error(ast, "Redefinition of '" + ast.name_get().data_get() + "'");
+    else
+    {
+        if (ed)
+            ast.prev_set(ed);
+
+        record_enum_.put(ast.name_get(), &ast);
+    }
+}
+
+void Binder::operator()(ucc::ast::EnumExprDecl& ast)
+{
+    ast::Decl* d;
+
+    d = scope_.get_scope(ast.name_get());
+
+    if (d)
+        error(ast, "Redefinition of '" + ast.name_get().data_get() + "'");
+    else
+        scope_.put(ast.name_get(), &ast);
 }
 
 void Binder::operator()(ucc::ast::NamedType& ast)
@@ -184,17 +222,41 @@ void Binder::operator()(ucc::ast::RecordType& ast)
     if (ast.name_get().data_get() == "")
         return;
 
+    ast::Decl* d;
     ast::RecordDecl* rd;
 
-    rd = record_.get(ast.name_get());
+    d = record_enum_.get(ast.name_get());
 
-    if (!rd)
-        error(ast, "Undeclared record " + ast.name_get().data_get());
-    else if (rd && rd->type_get() != ast.type_get())
+    rd = dynamic_cast<ast::RecordDecl*> (d);
+
+    if ((d && !rd) || (rd && rd->type_get() != ast.type_get()))
         error(ast, "'" + ast.name_get().data_get() + "' used "
                    " with wrong declaration type");
+    else if (!rd)
+        error(ast, "Undeclared record '" + ast.name_get().data_get() + "'");
     else
         ast.def_set(rd);
+}
+
+void Binder::operator()(ucc::ast::EnumType& ast)
+{
+    if (ast.name_get().data_get() == "")
+        return;
+
+    ast::Decl* d;
+    ast::EnumDecl* ed;
+
+    d = record_enum_.get(ast.name_get());
+
+    ed = dynamic_cast<ast::EnumDecl*> (d);
+
+    if (d && !ed)
+        error(ast, "'" + ast.name_get().data_get() + "' used "
+                   " with wrong declaration type");
+    else if (!ed)
+        error(ast, "Undeclared enum '" + ast.name_get().data_get() + "'");
+    else
+        ast.def_set(ed);
 }
 
 void Binder::operator()(ucc::ast::VarExpr& ast)
@@ -204,8 +266,21 @@ void Binder::operator()(ucc::ast::VarExpr& ast)
     d = scope_.get(ast.name_get());
 
     if (!d)
-        error(ast, "Undeclared identifier " +
-                   ast.name_get().data_get());
+        error(ast, "Undeclared identifier '" + ast.name_get().data_get() +
+                   "'");
+    else
+        ast.def_set(d);
+}
+
+void Binder::operator()(ucc::ast::EnumExpr& ast)
+{
+    ast::Decl* d;
+
+    d = scope_.get(ast.name_get());
+
+    if (!d)
+        error(ast, "Undeclared identifier '" + ast.name_get().data_get() +
+                   "'");
     else
         ast.def_set(d);
 }

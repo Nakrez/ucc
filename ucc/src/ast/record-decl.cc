@@ -28,6 +28,7 @@ RecordDecl::RecordDecl(const ucc::parse::location& loc,
     : Decl(loc, name)
     , type_(type)
     , fields_(fields)
+    , prev_(nullptr)
 {}
 
 RecordDecl::~RecordDecl()

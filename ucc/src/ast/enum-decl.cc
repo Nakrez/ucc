@@ -27,6 +27,7 @@ EnumDecl::EnumDecl(const ucc::parse::location& loc,
                    EnumExprList* body)
     : Decl(loc, name)
     , body_(body)
+    , prev_(nullptr)
 {}
 
 EnumDecl::~EnumDecl()
@@ -42,6 +43,21 @@ const EnumExprList* EnumDecl::body_get() const
 EnumExprList* EnumDecl::body_get()
 {
     return body_;
+}
+
+const EnumDecl* EnumDecl::prev_get() const
+{
+    return prev_;
+}
+
+EnumDecl* EnumDecl::prev_get()
+{
+    return prev_;
+}
+
+void EnumDecl::prev_set(EnumDecl* prev)
+{
+    prev_ = prev;
 }
 
 void EnumDecl::accept(Visitor& v)

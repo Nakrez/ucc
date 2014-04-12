@@ -43,26 +43,28 @@ namespace ucc
                 void scope_begin()
                 {
                     scope_.scope_begin();
-                    record_.scope_begin();
-                    enum_.scope_begin();
+                    record_enum_.scope_begin();
                 }
 
                 void scope_end()
                 {
                     scope_.scope_end();
-                    record_.scope_end();
-                    enum_.scope_end();
+                    record_enum_.scope_end();
                 }
 
                 virtual void operator()(ucc::ast::VarDecl& ast);
                 virtual void operator()(ucc::ast::FunctionDecl& ast);
                 virtual void operator()(ucc::ast::TypeDecl& ast);
                 virtual void operator()(ucc::ast::RecordDecl& ast);
+                virtual void operator()(ucc::ast::EnumDecl& ast);
+                virtual void operator()(ucc::ast::EnumExprDecl& ast);
 
                 virtual void operator()(ucc::ast::NamedType& ast);
                 virtual void operator()(ucc::ast::RecordType& ast);
+                virtual void operator()(ucc::ast::EnumType& ast);
 
                 virtual void operator()(ucc::ast::VarExpr& ast);
+                virtual void operator()(ucc::ast::EnumExpr& ast);
 
                 virtual void operator()(ucc::ast::CompoundStmt& ast);
 
@@ -77,9 +79,7 @@ namespace ucc
 
                 ucc::misc::ScopeMap<ucc::misc::Symbol, ucc::ast::Decl*> scope_;
                 ucc::misc::ScopeMap<ucc::misc::Symbol,
-                                    ucc::ast::RecordDecl*> record_;
-                ucc::misc::ScopeMap<ucc::misc::Symbol,
-                                    ucc::ast::EnumDecl*> enum_;
+                                    ucc::ast::Decl*> record_enum_;
         };
     } // namespace bind
 } // namespace ucc

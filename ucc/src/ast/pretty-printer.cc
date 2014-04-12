@@ -289,6 +289,9 @@ void PrettyPrinter::operator()(const EnumExprDecl& ast)
 {
     ostr_ << ast.name_get();
 
+    if (with_bindings_)
+        ostr_ << " /* " << &ast << " */ ";
+
     if (ast.value_get())
     {
         ostr_ << " = ";
@@ -304,6 +307,16 @@ void PrettyPrinter::operator()(const EnumDecl& ast)
     ostr_ << "enum";
 
     ostr_ << " " << ast.name_get().data_get();
+
+    if (with_bindings_)
+    {
+        ostr_ << " /* " << &ast;
+
+        if (ast.prev_get())
+            ostr_ << ", prev: " << ast.prev_get();
+
+        ostr_ << " */ ";
+    }
 
     if (ast.body_get())
     {
@@ -411,7 +424,11 @@ void PrettyPrinter::operator()(const EnumType& ast)
         ostr_ << "}";
     }
     else
+    {
         ostr_ << " " << ast.name_get();
+        if (with_bindings_)
+            ostr_ << " /* " << ast.def_get() << " */ ";
+    }
 }
 
 void PrettyPrinter::operator()(const CompoundStmt& ast)
