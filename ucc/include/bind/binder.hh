@@ -57,7 +57,7 @@ namespace ucc
             protected:
                 ucc::misc::Error error_;
 
-                ucc::misc::ScopeMap<ucc::misc::Symbol, ucc::ast::Decl> scope_;
+                ucc::misc::ScopeMap<ucc::misc::Symbol, ucc::ast::Decl*> scope_;
         };
     } // namespace bind
 } // namespace ucc

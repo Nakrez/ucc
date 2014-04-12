@@ -45,7 +45,7 @@ namespace ucc
         template <class Key, class Data>
         void ScopeMap<Key, Data>::scope_begin()
         {
-            map_.push_back(std::map<Key, Data*>());
+            map_.push_back(std::map<Key, Data>());
         }
 
         template <class Key, class Data>
@@ -55,9 +55,9 @@ namespace ucc
         }
 
         template <class Key, class Data>
-        Data* ScopeMap<Key, Data>::get(const Key& key) const
+        Data ScopeMap<Key, Data>::get(const Key& key) const
         {
-            typename std::map<Key, Data*>::const_iterator it;
+            typename std::map<Key, Data>::const_iterator it;
             auto lit = map_.crbegin();
 
             for (; lit != map_.crend(); ++lit)
@@ -70,24 +70,24 @@ namespace ucc
                     return it->second;
             }
 
-            return nullptr;
+            return (Data) 0;
         }
 
         template <class Key, class Data>
-        Data* ScopeMap<Key, Data>::get_scope(const Key& key) const
+        Data ScopeMap<Key, Data>::get_scope(const Key& key) const
         {
-            typename std::map<Key, Data*>::const_iterator it;
+            typename std::map<Key, Data>::const_iterator it;
 
             it = map_.back().find(key);
 
             if (it == map_.back().cend())
-                return nullptr;
+                return (Data) 0;
             else
                 return it->second;
         }
 
         template <class Key, class Data>
-        void ScopeMap<Key, Data>::put(const Key& key, Data* data)
+        void ScopeMap<Key, Data>::put(const Key& key, Data data)
         {
             if (map_.size() == 0)
                 return;

@@ -38,12 +38,12 @@ namespace ucc
                 void scope_begin();
                 void scope_end();
 
-                Data* get(const Key& key) const;
-                Data* get_scope(const Key& key) const;
-                void put(const Key& key, Data* data);
+                Data get(const Key& key) const;
+                Data get_scope(const Key& key) const;
+                void put(const Key& key, Data data);
 
             private:
-                std::list<std::map<Key, Data*>> map_;
+                std::list<std::map<Key, Data>> map_;
         };
     } // namespace misc
 } // namespace ucc

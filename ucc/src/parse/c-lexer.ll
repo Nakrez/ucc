@@ -353,8 +353,8 @@ WS  [ \t\v\f]
 "=="                    { return token::EQ_OP; }
 "!="                    { return token::NE_OP; }
 ";"                     { return token::SEMI_COLON; }
-("{"|"<%")              { return token::LBRACE; }
-("}"|"%>")              { return token::RBRACE; }
+("{"|"<%")              { driver.sym_.scope_begin(); return token::LBRACE; }
+("}"|"%>")              { driver.sym_.scope_end(); return token::RBRACE; }
 ","                     { return token::COMA; }
 ":"                     { return token::COLON; }
 "="                     { return token::ASSIGN; }
@@ -423,7 +423,7 @@ static void comment(ucc::parse::Driver& driver, ucc::parse::location* yylloc)
 
 static ucc::parse::Parser::token_type check_type(ucc::parse::Driver& driver)
 {
-    switch (driver.sym_[yytext])
+    switch (driver.sym_.get(yytext))
     {
         case token::TYPEDEF_NAME:
             return token::TYPEDEF_NAME;
