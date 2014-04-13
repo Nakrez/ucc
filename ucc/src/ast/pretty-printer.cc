@@ -444,7 +444,12 @@ void PrettyPrinter::operator()(const CompoundStmt& ast)
 
 void PrettyPrinter::operator()(const WhileStmt& ast)
 {
-    ostr_ << "while (";
+    ostr_ << "while ";
+
+    if (with_bindings_)
+        ostr_ << "/* " << &ast << " */ ";
+
+    ostr_ << "(";
 
     if (ast.cond_get())
         ast.cond_get()->accept(*this);
@@ -476,7 +481,12 @@ void PrettyPrinter::operator()(const DoWhileStmt& ast)
     else
         ostr_ << " ";
 
-    ostr_ << "while (";
+    ostr_ << "while ";
+
+    if (with_bindings_)
+        ostr_ << "/* " << &ast << " */ ";
+
+    ostr_ << "(";
 
     if (ast.cond_get())
         ast.cond_get()->accept(*this);
@@ -497,14 +507,20 @@ void PrettyPrinter::operator()(const GotoStmt& ast)
     ostr_ << "goto " << ast.name_get();
 }
 
-void PrettyPrinter::operator()(const BreakStmt&)
+void PrettyPrinter::operator()(const BreakStmt& ast)
 {
     ostr_ << "break";
+
+    if (with_bindings_)
+        ostr_ << " /* " << ast.def_get() << " */ ";
 }
 
-void PrettyPrinter::operator()(const ContinueStmt&)
+void PrettyPrinter::operator()(const ContinueStmt& ast)
 {
     ostr_ << "continue";
+
+    if (with_bindings_)
+        ostr_ << " /* " << ast.def_get() << " */ ";
 }
 
 void PrettyPrinter::operator()(const IfStmt& ast)
@@ -548,7 +564,12 @@ void PrettyPrinter::operator()(const IfStmt& ast)
 
 void PrettyPrinter::operator()(const SwitchStmt& ast)
 {
-    ostr_ << "switch (";
+    ostr_ << "switch ";
+
+    if (with_bindings_)
+        ostr_ << "/* " << &ast << " */ ";
+
+    ostr_ << "(";
 
     if (ast.cond_get())
         ast.cond_get()->accept(*this);
@@ -608,7 +629,12 @@ void PrettyPrinter::operator()(const ReturnStmt& ast)
 
 void PrettyPrinter::operator()(const ForStmt& ast)
 {
-    ostr_ << "for (";
+    ostr_ << "for ";
+
+    if (with_bindings_)
+        ostr_ << "/* " << &ast << " */ ";
+
+    ostr_ << "(";
 
     if (ast.init_get())
         ast.init_get()->accept(*this);

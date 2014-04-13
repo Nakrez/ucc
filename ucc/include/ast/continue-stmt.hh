@@ -31,8 +31,16 @@ namespace ucc
                 ContinueStmt(const ucc::parse::location& loc);
                 virtual ~ContinueStmt();
 
+                const Stmt* def_get() const;
+                Stmt* def_get();
+
+                void def_set(Stmt* def);
+
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
+
+            protected:
+                Stmt* def_;
         };
     } // namespace ast
 } // namespace ucc

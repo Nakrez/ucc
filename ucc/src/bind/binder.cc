@@ -26,6 +26,7 @@ Binder::Binder()
     : error_()
     , scope_()
     , record_enum_()
+    , loop_switch_()
 {}
 
 Binder::~Binder()
@@ -293,6 +294,89 @@ void Binder::operator()(ucc::ast::CompoundStmt& ast)
         ast.compound_get()->accept(*this);
 
     scope_end();
+}
+
+void Binder::operator()(ucc::ast::DoWhileStmt& ast)
+{
+    if (ast.cond_get())
+        ast.cond_get()->accept(*this);
+
+    loop_switch_.push_back(&ast);
+
+    if (ast.body_get())
+        ast.body_get()->accept(*this);
+
+    loop_switch_.pop_back();
+}
+
+void Binder::operator()(ucc::ast::WhileStmt& ast)
+{
+    if (ast.cond_get())
+        ast.cond_get()->accept(*this);
+
+    loop_switch_.push_back(&ast);
+
+    if (ast.body_get())
+        ast.body_get()->accept(*this);
+
+    loop_switch_.pop_back();
+}
+
+void Binder::operator()(ucc::ast::ForStmt& ast)
+{
+    if (ast.init_get())
+        ast.init_get()->accept(*this);
+
+    if (ast.cond_get())
+        ast.cond_get()->accept(*this);
+
+    if (ast.inc_get())
+        ast.inc_get()->accept(*this);
+
+    loop_switch_.push_back(&ast);
+
+    if (ast.body_get())
+        ast.body_get()->accept(*this);
+
+    loop_switch_.pop_back();
+}
+
+void Binder::operator()(ucc::ast::SwitchStmt& ast)
+{
+    if (ast.cond_get())
+        ast.cond_get()->accept(*this);
+
+    loop_switch_.push_back(&ast);
+
+    if (ast.body_get())
+        ast.body_get()->accept(*this);
+
+    loop_switch_.pop_back();
+}
+
+void Binder::operator()(ucc::ast::BreakStmt& ast)
+{
+    if (loop_switch_.size() == 0)
+        error(ast, "'break' statement outside any loop or switch statement");
+    else
+        ast.def_set(loop_switch_.back());
+}
+
+void Binder::operator()(ucc::ast::ContinueStmt& ast)
+{
+    typename std::list<ast::Stmt*>::iterator it = loop_switch_.begin();
+    typename std::list<ast::Stmt*>::iterator end = loop_switch_.end();
+
+    for (; it != end; ++it)
+    {
+        if (!dynamic_cast<ast::SwitchStmt*> (*it))
+            break;
+    }
+
+    if (it == end)
+        error(ast, "'continue' statement outside any loop statement");
+    else
+        ast.def_set(*it);
 }
 
 ucc::misc::Error& Binder::error_get()

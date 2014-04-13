@@ -67,6 +67,12 @@ namespace ucc
                 virtual void operator()(ucc::ast::EnumExpr& ast);
 
                 virtual void operator()(ucc::ast::CompoundStmt& ast);
+                virtual void operator()(ucc::ast::DoWhileStmt& ast);
+                virtual void operator()(ucc::ast::WhileStmt& ast);
+                virtual void operator()(ucc::ast::ForStmt& ast);
+                virtual void operator()(ucc::ast::SwitchStmt& ast);
+                virtual void operator()(ucc::ast::BreakStmt& ast);
+                virtual void operator()(ucc::ast::ContinueStmt& ast);
 
                 ucc::misc::Error& error_get();
 
@@ -80,6 +86,7 @@ namespace ucc
                 ucc::misc::ScopeMap<ucc::misc::Symbol, ucc::ast::Decl*> scope_;
                 ucc::misc::ScopeMap<ucc::misc::Symbol,
                                     ucc::ast::Decl*> record_enum_;
+                std::list<ucc::ast::Stmt*> loop_switch_;
         };
     } // namespace bind
 } // namespace ucc
