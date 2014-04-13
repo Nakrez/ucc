@@ -36,6 +36,8 @@ namespace ucc
                 PrettyPrinter(std::ostream& ostr);
                 virtual ~PrettyPrinter();
 
+                void activate_bindings();
+
                 virtual void operator()(const AstList& ast);
                 virtual void operator()(const DeclList& ast);
                 virtual void operator()(const ExprList& ast);
@@ -94,6 +96,7 @@ namespace ucc
 
             protected:
                 bool formals_;
+                bool with_bindings_;
                 std::ostream& ostr_;
         };
     } // namespace ast

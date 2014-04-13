@@ -25,6 +25,7 @@ EnumExpr::EnumExpr(const ucc::parse::location& loc,
                    const ucc::misc::Symbol& name)
     : Expr(loc)
     , name_(name)
+    , def_(nullptr)
 {}
 
 EnumExpr::~EnumExpr()
@@ -38,6 +39,21 @@ const ucc::misc::Symbol& EnumExpr::name_get() const
 ucc::misc::Symbol& EnumExpr::name_get()
 {
     return name_;
+}
+
+const Decl* EnumExpr::def_get() const
+{
+    return def_;
+}
+
+Decl* EnumExpr::def_get()
+{
+    return def_;
+}
+
+void EnumExpr::def_set(Decl* def)
+{
+    def_ = def;
 }
 
 void EnumExpr::accept(Visitor& v)

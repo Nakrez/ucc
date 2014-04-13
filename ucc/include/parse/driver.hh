@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <string>
 
 # include <misc/error.hh>
+# include <misc/scope-map.hh>
 
 # include <parse/c-parser.hh>
 
@@ -56,7 +57,8 @@ namespace ucc
 
                 ucc::ast::DeclList* ast_;
 
-                std::map<std::string, ucc::parse::Parser::token_type> sym_;
+                ucc::misc::ScopeMap<std::string,
+                                    ucc::parse::Parser::token_type> sym_;
 
             private:
                 void lexer_begin();

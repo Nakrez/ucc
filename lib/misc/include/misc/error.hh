@@ -36,6 +36,7 @@ namespace ucc
                     compiler = 1,
                     lex = 2,
                     parse = 3,
+                    bind = 4,
                 };
 
             public:

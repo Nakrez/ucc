@@ -28,6 +28,7 @@ RecordDecl::RecordDecl(const ucc::parse::location& loc,
     : Decl(loc, name)
     , type_(type)
     , fields_(fields)
+    , prev_(nullptr)
 {}
 
 RecordDecl::~RecordDecl()
@@ -48,6 +49,21 @@ const FieldList* RecordDecl::fields_get() const
 FieldList* RecordDecl::fields_get()
 {
     return fields_;
+}
+
+const RecordDecl* RecordDecl::prev_get() const
+{
+    return prev_;
+}
+
+RecordDecl* RecordDecl::prev_get()
+{
+    return prev_;
+}
+
+void RecordDecl::prev_set(RecordDecl* d)
+{
+    prev_ = d;
 }
 
 void RecordDecl::accept(Visitor& v)

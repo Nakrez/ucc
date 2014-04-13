@@ -38,11 +38,17 @@ namespace ucc
                 const EnumExprList* body_get() const;
                 EnumExprList* body_get();
 
+                const EnumDecl* prev_get() const;
+                EnumDecl* prev_get();
+
+                void prev_set(EnumDecl* prev);
+
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
 
             protected:
                 EnumExprList* body_;
+                EnumDecl* prev_;
         };
     } // namespace ast
 } // namespace ucc

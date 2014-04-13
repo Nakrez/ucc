@@ -74,6 +74,21 @@ std::list<VarDecl*>& FunctionDecl::param_get()
     return type_->param_get();
 }
 
+const FunctionDecl* FunctionDecl::prev_get() const
+{
+    return prev_;
+}
+
+FunctionDecl* FunctionDecl::prev_get()
+{
+    return prev_;
+}
+
+void FunctionDecl::prev_set(FunctionDecl* d)
+{
+    prev_ = d;
+}
+
 void FunctionDecl::return_type_set(Type* t)
 {
     type_->return_type_set(t);

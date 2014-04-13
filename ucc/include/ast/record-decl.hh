@@ -48,12 +48,18 @@ namespace ucc
                 const FieldList* fields_get() const;
                 FieldList* fields_get();
 
+                const RecordDecl* prev_get() const;
+                RecordDecl* prev_get();
+
+                void prev_set(RecordDecl* d);
+
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
 
             protected:
                 RecordType type_;
                 FieldList* fields_;
+                RecordDecl* prev_;
         };
     } // namespace ast
 } // namespace ucc

@@ -23,10 +23,26 @@ using namespace ast;
 
 ContinueStmt::ContinueStmt(const ucc::parse::location& loc)
     : Stmt(loc)
+    , def_(nullptr)
 {}
 
 ContinueStmt::~ContinueStmt()
 {}
+
+const Stmt* ContinueStmt::def_get() const
+{
+    return def_;
+}
+
+Stmt* ContinueStmt::def_get()
+{
+    return def_;
+}
+
+void ContinueStmt::def_set(Stmt* def)
+{
+    def_ = def;
+}
 
 void ContinueStmt::accept(Visitor& v)
 {

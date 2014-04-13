@@ -25,11 +25,17 @@ using namespace ast;
 PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     : DefaultConstVisitor()
     , formals_(false)
+    , with_bindings_(false)
     , ostr_(ostr)
 {}
 
 PrettyPrinter::~PrettyPrinter()
 {}
+
+void PrettyPrinter::activate_bindings()
+{
+    with_bindings_ = true;
+}
 
 void PrettyPrinter::operator()(const AstList& ast)
 {
@@ -122,11 +128,8 @@ void PrettyPrinter::operator()(const VarDecl& ast)
     {
         if (print_fun_ptr(ast.type_get(), ast.name_get()) ||
             print_array_ty(ast.type_get(), ast.name_get()))
-        {
-            if (!formals_)
-                ostr_ << ";";
-            return;
-        }
+
+            goto end;
 
         ast.type_get()->accept(*this);
     }
@@ -143,8 +146,20 @@ void PrettyPrinter::operator()(const VarDecl& ast)
         ast.init_get()->accept(*this);
     }
 
+end:
+
     if (!formals_)
         ostr_ << ";";
+
+    if (with_bindings_ && ast.name_get().data_get() != "")
+    {
+        ostr_ << " /* " << &ast;
+
+        if (ast.prev_get())
+            ostr_ << ", prev: " << ast.prev_get();
+
+        ostr_<< " */";
+    }
 }
 
 void PrettyPrinter::operator()(const TypeDecl& ast)
@@ -155,15 +170,18 @@ void PrettyPrinter::operator()(const TypeDecl& ast)
     {
         if (print_fun_ptr(ast.type_get(), ast.name_get()) ||
             print_array_ty(ast.type_get(), ast.name_get()))
-        {
-            ostr_ << ";";
-            return;
-        }
+            goto end;
 
         ast.type_get()->accept(*this);
     }
 
-    ostr_ << " " << ast.name_get() << ";";
+    ostr_ << " " << ast.name_get();
+
+end:
+    ostr_ << ";";
+
+    if (with_bindings_)
+        ostr_ << "/* " << &ast << " */";
 }
 
 void PrettyPrinter::operator()(const FunctionDecl& ast)
@@ -182,6 +200,15 @@ void PrettyPrinter::operator()(const FunctionDecl& ast)
 
     ostr_ << ast.name_get();
 
+    if (with_bindings_)
+    {
+        ostr_ << " /* " << &ast;
+
+        if (ast.prev_get())
+            ostr_ << ", prev " << ast.prev_get();
+
+        ostr_ << " */ ";
+    }
     ostr_ << "(";
 
     bool old = formals_;
@@ -232,6 +259,16 @@ void PrettyPrinter::operator()(const RecordDecl& ast)
 
     ostr_ << " " << ast.name_get();
 
+    if (with_bindings_)
+    {
+        ostr_ << " /* " << &ast;
+
+        if (ast.prev_get())
+            ostr_ << ", prev : " << ast.prev_get();
+
+        ostr_ << " */ ";
+    }
+
     if (ast.fields_get())
     {
         ostr_ << misc::iendl;
@@ -252,6 +289,9 @@ void PrettyPrinter::operator()(const EnumExprDecl& ast)
 {
     ostr_ << ast.name_get();
 
+    if (with_bindings_)
+        ostr_ << " /* " << &ast << " */ ";
+
     if (ast.value_get())
     {
         ostr_ << " = ";
@@ -267,6 +307,16 @@ void PrettyPrinter::operator()(const EnumDecl& ast)
     ostr_ << "enum";
 
     ostr_ << " " << ast.name_get().data_get();
+
+    if (with_bindings_)
+    {
+        ostr_ << " /* " << &ast;
+
+        if (ast.prev_get())
+            ostr_ << ", prev: " << ast.prev_get();
+
+        ostr_ << " */ ";
+    }
 
     if (ast.body_get())
     {
@@ -304,6 +354,9 @@ void PrettyPrinter::operator()(const NamedType& ast)
         ostr_ << "restrict ";
 
     ostr_ << ast.name_get();
+
+    if (with_bindings_)
+        ostr_ << " /* " << ast.def_get() << " */";
 }
 
 void PrettyPrinter::operator()(const PtrType& ast)
@@ -344,7 +397,12 @@ void PrettyPrinter::operator()(const RecordType& ast)
         ostr_ << "}";
     }
     else
+    {
         ostr_ << " " << ast.name_get();
+
+        if (with_bindings_)
+            ostr_ << " /* " << ast.def_get() << " */ ";
+    }
 }
 
 void PrettyPrinter::operator()(const EnumType& ast)
@@ -366,7 +424,11 @@ void PrettyPrinter::operator()(const EnumType& ast)
         ostr_ << "}";
     }
     else
+    {
         ostr_ << " " << ast.name_get();
+        if (with_bindings_)
+            ostr_ << " /* " << ast.def_get() << " */ ";
+    }
 }
 
 void PrettyPrinter::operator()(const CompoundStmt& ast)
@@ -382,7 +444,12 @@ void PrettyPrinter::operator()(const CompoundStmt& ast)
 
 void PrettyPrinter::operator()(const WhileStmt& ast)
 {
-    ostr_ << "while (";
+    ostr_ << "while ";
+
+    if (with_bindings_)
+        ostr_ << "/* " << &ast << " */ ";
+
+    ostr_ << "(";
 
     if (ast.cond_get())
         ast.cond_get()->accept(*this);
@@ -414,7 +481,12 @@ void PrettyPrinter::operator()(const DoWhileStmt& ast)
     else
         ostr_ << " ";
 
-    ostr_ << "while (";
+    ostr_ << "while ";
+
+    if (with_bindings_)
+        ostr_ << "/* " << &ast << " */ ";
+
+    ostr_ << "(";
 
     if (ast.cond_get())
         ast.cond_get()->accept(*this);
@@ -435,14 +507,20 @@ void PrettyPrinter::operator()(const GotoStmt& ast)
     ostr_ << "goto " << ast.name_get();
 }
 
-void PrettyPrinter::operator()(const BreakStmt&)
+void PrettyPrinter::operator()(const BreakStmt& ast)
 {
     ostr_ << "break";
+
+    if (with_bindings_)
+        ostr_ << " /* " << ast.def_get() << " */ ";
 }
 
-void PrettyPrinter::operator()(const ContinueStmt&)
+void PrettyPrinter::operator()(const ContinueStmt& ast)
 {
     ostr_ << "continue";
+
+    if (with_bindings_)
+        ostr_ << " /* " << ast.def_get() << " */ ";
 }
 
 void PrettyPrinter::operator()(const IfStmt& ast)
@@ -486,7 +564,12 @@ void PrettyPrinter::operator()(const IfStmt& ast)
 
 void PrettyPrinter::operator()(const SwitchStmt& ast)
 {
-    ostr_ << "switch (";
+    ostr_ << "switch ";
+
+    if (with_bindings_)
+        ostr_ << "/* " << &ast << " */ ";
+
+    ostr_ << "(";
 
     if (ast.cond_get())
         ast.cond_get()->accept(*this);
@@ -546,7 +629,12 @@ void PrettyPrinter::operator()(const ReturnStmt& ast)
 
 void PrettyPrinter::operator()(const ForStmt& ast)
 {
-    ostr_ << "for (";
+    ostr_ << "for ";
+
+    if (with_bindings_)
+        ostr_ << "/* " << &ast << " */ ";
+
+    ostr_ << "(";
 
     if (ast.init_get())
         ast.init_get()->accept(*this);
@@ -591,6 +679,9 @@ void PrettyPrinter::operator()(const StringExpr& ast)
 void PrettyPrinter::operator()(const VarExpr& ast)
 {
     ostr_ << ast.name_get();
+
+    if (with_bindings_)
+        ostr_ << " /* " << ast.def_get() << " */";
 }
 
 void PrettyPrinter::operator()(const SubscriptExpr& ast)

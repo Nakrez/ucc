@@ -25,10 +25,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 REGISTER_COMMAND(pretty, "ast-print", "Pretty print the input file (debug "
                  "purpose)", pretty_print, "parse");
 
+REGISTER_COMMAND(pretty_bind, "ast-print-bindings", "Pretty print the input"
+                 " file compute and print the bindings associated "
+                 "(debug purpose)",
+                 pretty_print_bind, "compute-bindings");
+
 void pretty_print()
 {
     ucc::ast::PrettyPrinter printer(std::cout);
 
+    assert(ucc::ast::the_ast &&
+           "Internal error: No ast retrieved by the parser");
+    printer(*ucc::ast::the_ast);
+    std::cout << std::endl;
+}
+
+void pretty_print_bind()
+{
+    ucc::ast::PrettyPrinter printer(std::cout);
+
+    printer.activate_bindings();
     assert(ucc::ast::the_ast &&
            "Internal error: No ast retrieved by the parser");
     printer(*ucc::ast::the_ast);

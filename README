@@ -20,12 +20,13 @@ make
 
 * Usage
 
-The default option if none is given is "--parse".
-
 Usage: ucc [OPTION...] file...
 ucc: Micro C compiler
 
       --ast-print            Pretty print the input file (debug purpose)
+      --ast-print-bindings   Pretty print the input file compute and print the
+                             bindings associated (debug purpose)
+  -b, --compute-bindings     Compute bindings on the AST
   -p, --parse                Parse the input file
       --parse-trace          Activate parse trace
   -?, --help                 Give this help list
@@ -36,7 +37,7 @@ ucc: Micro C compiler
 - PARSER (C89, with gcc extension) : 90%
 - AST : 90% (cannot embed "__asm__" statements and "gcc __attribute__")
 - PRETTY-PRINTER : 90% (print the generated AST from the code)
-- BINDER : 0%
+- BINDER : 90% (link usage of variables, types, ... To their definitions)
 - TYPE CHECKER : 0%
 - MIDDLE END : 0%
 - BACK END : 0%
@@ -45,7 +46,13 @@ ucc: Micro C compiler
 
 UCC is under GPL2. See COPYING file for more informations.
 
-* Bug & Contact
+* Known bugs
+
+- The parser as some problem with type definitions. Once a typedef defines an
+identifier this identifier is flagged as type no matter redefinition in
+different scopes
+
+* Contact
 
 If you find bugs, or you have any questions, ... Feel free to can contact me
 at b.covolatoATgmail.com

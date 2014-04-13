@@ -314,7 +314,6 @@ constant
     }
     | "enum_constant"
     {
-
         $$ = new ucc::ast::EnumExpr(@1, *$1);
 
         delete $1;
@@ -324,8 +323,8 @@ constant
 enumeration_constant        /* before it has been defined as such */
     : "identifier"
     {
-        driver.sym_[$1->data_get()] =
-                    ucc::parse::Parser::token::ENUM_CONSTANT;
+        driver.sym_.put($1->data_get(),
+                        ucc::parse::Parser::token::ENUM_CONSTANT);
 
         $$ = new ucc::ast::EnumExprDecl(@1, *$1, nullptr);
 
@@ -757,6 +756,30 @@ declaration
 
         if ($1->decl_get())
             $$->push_back(std::shared_ptr<ucc::ast::Decl>($1->decl_get()));
+        else if (driver.sym_.size() == 1 || $1->is_typedef())
+        {
+            ucc::ast::Type* t;
+            ucc::ast::RecordType* rt;
+            ucc::ast::EnumType* et;
+
+            t = $1->type_get();
+            rt = dynamic_cast<ucc::ast::RecordType*>(t);
+            et = dynamic_cast<ucc::ast::EnumType*>(t);
+
+            if (rt)
+                $$->push_back(std::shared_ptr<ucc::ast::Decl>(
+                                new ucc::ast::RecordDecl(@1,
+                                                        rt->name_get(),
+                                                        rt->type_get(),
+                                                        nullptr)));
+            else if (et)
+                $$->push_back(std::shared_ptr<ucc::ast::Decl>(
+                                new ucc::ast::EnumDecl(@1,
+                                                       et->name_get(),
+                                                       nullptr)));
+
+            delete t;
+        }
 
         for (auto decl : *$2)
         {
@@ -773,8 +796,8 @@ declaration
                     yyparser.error(decl->location_get(), "illegal initializer"
                                    " (only variables can be initialized)");
                 new_decl = new ucc::ast::TypeDecl(@1, decl->name_get(), type);
-                driver.sym_[decl->name_get().data_get()] =
-                    ucc::parse::Parser::token::TYPEDEF_NAME;
+                driver.sym_.put(decl->name_get().data_get(),
+                    ucc::parse::Parser::token::TYPEDEF_NAME);
             }
             else if (type && dynamic_cast<ucc::ast::FunctionType*>(type))
             {
@@ -784,7 +807,7 @@ declaration
                 new_decl = new ucc::ast::FunctionDecl(@1, decl->name_get(), t);
             }
             else
-                new_decl = new ucc::ast::VarDecl(@1, decl->name_get(),
+                new_decl = new ucc::ast::VarDecl(@$, decl->name_get(),
                                                  type, decl->init_get());
 
             new_decl->storage_class_set($1->storage_class_get());
@@ -1942,10 +1965,6 @@ declaration_list
 
 attribute_spec
     : "__attribute__" "(" "(" attribute_list ")" ")"
-    {
-        driver.in_attribute_ = false;
-    }
-    | attribute_spec "__attribute__" "(" "(" attribute_list ")" ")"
     {
         driver.in_attribute_ = false;
     }
