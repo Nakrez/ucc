@@ -49,7 +49,7 @@ namespace ucc
 
                 void parse_file(const std::string& name);
 
-                const std::string& file_get() const;
+                const ucc::misc::Symbol& file_get() const;
 
             public:
                 ucc::misc::Error error_;
@@ -68,7 +68,7 @@ namespace ucc
                 bool trace_parser_;
                 bool trace_lexer_;
 
-                std::string file_;
+                ucc::misc::Symbol file_;
         };
     } // namespace parse
 } // namespace ucc

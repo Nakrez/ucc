@@ -1,5 +1,23 @@
-%require "2.4"
+%require "2.7"
+%language "C++"
+
 %skeleton "glr.cc"
+
+%glr-parser
+
+%define api.namespace { ucc::parse }
+%define parser_class_name { Parser }
+
+%debug
+%defines
+%verbose
+%error-verbose
+%define "filename_type" "const std::string"
+%locations
+%initial-action
+{
+    @$.begin.filename = @$.end.filename = &driver.file_get().data_get();
+};
 
 %code requires
 {
@@ -21,18 +39,6 @@ typedef ucc::ast::DeclSpecifier::FunctionSpecifier FunctionSpecifier;
 typedef ucc::ast::DeclSpecifier::TypeQualifier TypeQualifier;
 typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 }
-
-%glr-parser
-
-%define api.namespace { ucc::parse }
-
-%define parser_class_name { Parser }
-
-%debug
-%defines
-%verbose
-%error-verbose
-%locations
 
 %parse-param { ucc::parse::Driver& driver }
 %lex-param { ucc::parse::Driver& driver }
@@ -73,7 +79,6 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::EnumExprList* enum_expr_list;
     ucc::ast::Type* type;
 }
-
 
 %token<symbol>  IDENTIFIER      "identifier"
                 TYPEDEF_NAME    "typedef_name"
@@ -2015,6 +2020,5 @@ void ucc::parse::Parser::error(ucc::parse::location const& l,
                                std::string const& s)
 {
     driver.error_ << ucc::misc::Error::Type::parse
-                  << driver.file_get() << ":"  << l << ": error: "
-                  << s << std::endl;
+                  << l << ": error: " << s << std::endl;
 }

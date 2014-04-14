@@ -438,12 +438,12 @@ void ucc::parse::Driver::lexer_begin()
 {
     yy_flex_debug = trace_lexer_;
 
-    if (file_.empty() || file_ == "-")
+    if (file_.data_get().empty() || file_.data_get() == "-")
         yyin = stdin;
-    else if (!(yyin = fopen (file_.c_str(), "r")))
+    else if (!(yyin = fopen (file_.data_get().c_str(), "r")))
     {
         error_ << ucc::misc::Error::Type::lex
-               << "Cannot open file " << file_ << std::endl;
+               << "Cannot open file " << file_.data_get() << std::endl;
     }
 
     yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));
@@ -453,6 +453,6 @@ void ucc::parse::Driver::lexer_end()
 {
     yypop_buffer_state();
 
-    if (!file_.empty() && file_ != "-")
+    if (!file_.data_get().empty() && file_.data_get() != "-")
         fclose(yyin);
 }

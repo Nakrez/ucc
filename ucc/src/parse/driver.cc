@@ -30,6 +30,7 @@ Driver::Driver()
     , ast_(nullptr)
     , trace_parser_(ucc::parse::parse_trace)
     , trace_lexer_(false)
+    , file_("")
 {}
 
 Driver::~Driver()
@@ -48,7 +49,7 @@ void Driver::parse_file(const std::string& name)
     lexer_end();
 }
 
-const std::string& Driver::file_get() const
+const ucc::misc::Symbol& Driver::file_get() const
 {
     return file_;
 }
