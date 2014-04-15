@@ -32,8 +32,8 @@ namespace ucc
         class FunctionType : public Type
         {
             public:
-                FunctionType(const ucc::parse::location& loc);
-                FunctionType(const ucc::parse::location& loc,
+                FunctionType(const ucc::misc::location& loc);
+                FunctionType(const ucc::misc::location& loc,
                              const std::list<VarDecl*>& param);
                 virtual ~FunctionType();
 

@@ -37,7 +37,7 @@ namespace ucc
                 };
 
             public:
-                RecordDecl(const ucc::parse::location& loc,
+                RecordDecl(const ucc::misc::location& loc,
                            const ucc::misc::Symbol& name,
                            RecordType type,
                            FieldList* fields);

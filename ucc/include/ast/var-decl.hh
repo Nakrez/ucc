@@ -31,11 +31,11 @@ namespace ucc
         class VarDecl : public Decl
         {
             public:
-                VarDecl(const ucc::parse::location& loc,
+                VarDecl(const ucc::misc::location& loc,
                         const ucc::misc::Symbol& name,
                         Type* type,
                         Expr* e);
-                VarDecl(const ucc::parse::location& loc);
+                VarDecl(const ucc::misc::location& loc);
                 ~VarDecl();
 
                 const Type* type_get() const;

@@ -21,14 +21,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-SizeofExpr::SizeofExpr(const ucc::parse::location& loc,
+SizeofExpr::SizeofExpr(const ucc::misc::location& loc,
                        Expr* expr)
     : Expr(loc)
     , expr_(expr)
     , type_(nullptr)
 {}
 
-SizeofExpr::SizeofExpr(const ucc::parse::location& loc,
+SizeofExpr::SizeofExpr(const ucc::misc::location& loc,
                        Type* type)
     : Expr(loc)
     , expr_(nullptr)

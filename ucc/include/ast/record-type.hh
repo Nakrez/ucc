@@ -31,7 +31,7 @@ namespace ucc
         class RecordType : public Type
         {
             public:
-                RecordType(const ucc::parse::location& loc,
+                RecordType(const ucc::misc::location& loc,
                            RecordDecl::RecordType type,
                            const ucc::misc::Symbol& name);
                 virtual ~RecordType();

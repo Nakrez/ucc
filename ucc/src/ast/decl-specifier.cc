@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-DeclSpecifier::DeclSpecifier(const ucc::parse::location& loc)
+DeclSpecifier::DeclSpecifier(const ucc::misc::location& loc)
     : loc_(loc)
     , storage_class_(SCS_unspecified)
     , type_qualifier_(TQ_unspecified)

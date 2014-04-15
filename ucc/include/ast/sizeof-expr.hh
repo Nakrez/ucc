@@ -29,9 +29,9 @@ namespace ucc
         class SizeofExpr : public Expr
         {
             public:
-                SizeofExpr(const ucc::parse::location& loc,
+                SizeofExpr(const ucc::misc::location& loc,
                            Expr* expr);
-                SizeofExpr(const ucc::parse::location& loc,
+                SizeofExpr(const ucc::misc::location& loc,
                            Type* type);
                 virtual ~SizeofExpr();
 

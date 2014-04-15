@@ -16,25 +16,34 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_AST_EXPR_HH
-# define UCC_AST_EXPR_HH
+#ifndef UCC_TYPE_TYPE_CHECKER_HH
+# define UCC_TYPE_TYPE_CHECKER_HH
 
-# include <ast/stmt.hh>
+# include <misc/error.hh>
+
+# include <ast/default-visitor.hh>
 
 namespace ucc
 {
-    namespace ast
+    namespace type
     {
-        class Expr : public Stmt
+        class TypeChecker : public ucc::ast::DefaultVisitor
         {
             public:
-                Expr(const ucc::misc::location& loc);
-                virtual ~Expr();
+                using ucc::ast::DefaultVisitor::operator();
 
-                virtual void accept(Visitor& v) = 0;
-                virtual void accept(ConstVisitor& v) const = 0;
+                TypeChecker();
+                virtual ~TypeChecker();
+
+                ucc::misc::Error error_get() const
+                {
+                    return error_;
+                }
+
+            protected:
+                ucc::misc::Error error_;
         };
-    } // namespace ast
+    } // namespace type
 } // namespace ucc
 
-#endif /* !UCC_AST_EXPR_HH */
+#endif /* !UCC_TYPE_TYPE_CHECKER_HH */

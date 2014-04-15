@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-FunctionDecl::FunctionDecl(const ucc::parse::location& loc,
+FunctionDecl::FunctionDecl(const ucc::misc::location& loc,
                            const ucc::misc::Symbol& name,
                            FunctionType* type)
     : Decl(loc, name)
@@ -29,7 +29,7 @@ FunctionDecl::FunctionDecl(const ucc::parse::location& loc,
     , compound_(nullptr)
 {}
 
-FunctionDecl::FunctionDecl(const ucc::parse::location& loc,
+FunctionDecl::FunctionDecl(const ucc::misc::location& loc,
                            const ucc::misc::Symbol& name,
                            FunctionType* type,
                            CompoundStmt* compound)

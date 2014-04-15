@@ -28,8 +28,8 @@ namespace ucc
         class PtrType : public Type
         {
             public:
-                PtrType(const ucc::parse::location& loc);
-                PtrType(const ucc::parse::location& loc, Type* pointed_type);
+                PtrType(const ucc::misc::location& loc);
+                PtrType(const ucc::misc::location& loc, Type* pointed_type);
                 virtual ~PtrType();
 
                 const Type* pointed_type_get() const;

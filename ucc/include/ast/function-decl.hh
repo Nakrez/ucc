@@ -32,10 +32,10 @@ namespace ucc
         class FunctionDecl : public Decl
         {
             public:
-                FunctionDecl(const ucc::parse::location& loc,
+                FunctionDecl(const ucc::misc::location& loc,
                              const ucc::misc::Symbol& name,
                              FunctionType* type);
-                FunctionDecl(const ucc::parse::location& loc,
+                FunctionDecl(const ucc::misc::location& loc,
                              const ucc::misc::Symbol& name,
                              FunctionType* type,
                              CompoundStmt* compound);

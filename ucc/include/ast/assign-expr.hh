@@ -46,7 +46,7 @@ namespace ucc
                 };
 
             public:
-                AssignExpr(const ucc::parse::location& loc,
+                AssignExpr(const ucc::misc::location& loc,
                            Expr* lvalue,
                            AssignOp op,
                            Expr* rvalue);

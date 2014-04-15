@@ -30,7 +30,7 @@ namespace ucc
         class FieldDecl : public Decl
         {
             public:
-                FieldDecl(const ucc::parse::location& loc,
+                FieldDecl(const ucc::misc::location& loc,
                           const ucc::misc::Symbol& name,
                           Type* type,
                           Expr* bit_field);

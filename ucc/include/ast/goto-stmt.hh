@@ -30,7 +30,7 @@ namespace ucc
         class GotoStmt : public Stmt
         {
             public:
-                GotoStmt(const ucc::parse::location& loc,
+                GotoStmt(const ucc::misc::location& loc,
                          const ucc::misc::Symbol& name);
                 virtual ~GotoStmt();
 

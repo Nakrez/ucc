@@ -26,7 +26,7 @@ namespace ucc
     namespace ast
     {
         template <class T>
-        AnyList<T>::AnyList(const ucc::parse::location& loc)
+        AnyList<T>::AnyList(const ucc::misc::location& loc)
             : Ast(loc)
         {}
 

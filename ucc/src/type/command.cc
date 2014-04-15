@@ -16,25 +16,20 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_AST_EXPR_HH
-# define UCC_AST_EXPR_HH
+#include <ucc.hh>
 
-# include <ast/stmt.hh>
+#include <command/command.hh>
 
-namespace ucc
+#include <type/type-checker.hh>
+
+REGISTER_COMMAND(type_check, "type-check", "Check type from the input file",
+                 type_check, "compute-bindings");
+
+void type_check()
 {
-    namespace ast
-    {
-        class Expr : public Stmt
-        {
-            public:
-                Expr(const ucc::misc::location& loc);
-                virtual ~Expr();
+    ucc::type::TypeChecker checker;
 
-                virtual void accept(Visitor& v) = 0;
-                virtual void accept(ConstVisitor& v) const = 0;
-        };
-    } // namespace ast
-} // namespace ucc
+    checker(*ucc::ast::the_ast);
 
-#endif /* !UCC_AST_EXPR_HH */
+    checker.error_get().throw_on_error();
+}

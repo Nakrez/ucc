@@ -30,8 +30,8 @@ namespace ucc
         class ArrayType : public Type
         {
             public:
-                ArrayType(const ucc::parse::location& loc);
-                ArrayType(const ucc::parse::location& loc, Expr* expr);
+                ArrayType(const ucc::misc::location& loc);
+                ArrayType(const ucc::misc::location& loc, Expr* expr);
 
                 virtual ~ArrayType();
 

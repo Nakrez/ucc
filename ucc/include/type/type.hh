@@ -16,25 +16,35 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_AST_EXPR_HH
-# define UCC_AST_EXPR_HH
+#ifndef UCC_TYPE_TYPE_HH
+# define UCC_TYPE_TYPE_HH
 
-# include <ast/stmt.hh>
+# include <ostream>
 
 namespace ucc
 {
-    namespace ast
+    namespace type
     {
-        class Expr : public Stmt
+        class Type
         {
             public:
-                Expr(const ucc::misc::location& loc);
-                virtual ~Expr();
+                Type()
+                {}
 
-                virtual void accept(Visitor& v) = 0;
-                virtual void accept(ConstVisitor& v) const = 0;
+                virtual ~Type()
+                {}
+
+                virtual bool compatible_with(const Type& t) const = 0;
+                virtual void dump(std::ostream& o) const = 0;
         };
-    } // namespace ast
+    } // namespace type
 } // namespace ucc
 
-#endif /* !UCC_AST_EXPR_HH */
+inline std::ostream& operator<<(std::ostream& o, const ucc::type::Type& t)
+{
+    t.dump(o);
+
+    return t;
+}
+
+#endif /* !UCC_TYPE_TYPE_HH */

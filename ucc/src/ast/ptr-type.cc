@@ -21,12 +21,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-PtrType::PtrType(const ucc::parse::location& loc)
+PtrType::PtrType(const ucc::misc::location& loc)
     : Type(loc)
     , pointed_type_(nullptr)
 {}
 
-PtrType::PtrType(const ucc::parse::location& loc, Type* pointed_type)
+PtrType::PtrType(const ucc::misc::location& loc, Type* pointed_type)
     : Type(loc)
     , pointed_type_(pointed_type)
 {}

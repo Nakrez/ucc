@@ -28,7 +28,7 @@ namespace ucc
         class Type: public Ast
         {
             public:
-                Type(const ucc::parse::location& loc);
+                Type(const ucc::misc::location& loc);
                 virtual ~Type();
 
                 bool is_const() const;

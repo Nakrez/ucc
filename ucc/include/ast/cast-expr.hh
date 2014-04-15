@@ -29,7 +29,7 @@ namespace ucc
         class CastExpr : public Expr
         {
             public:
-                CastExpr(const ucc::parse::location& loc,
+                CastExpr(const ucc::misc::location& loc,
                          Type* type,
                          Expr* expr);
                 virtual ~CastExpr();

@@ -21,8 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <misc/symbol.hh>
 # include <misc/error.hh>
-
-# include <location.hh>
+# include <misc/location.hh>
 
 # include <ast/fwd.hh>
 
@@ -79,7 +78,7 @@ namespace ucc
                 };
 
             public:
-                DeclSpecifier(const ucc::parse::location& loc);
+                DeclSpecifier(const ucc::misc::location& loc);
                 virtual ~DeclSpecifier();
 
                 Type* type_get();
@@ -120,7 +119,7 @@ namespace ucc
 
                 std::string type_to_string() const;
             private:
-                ucc::parse::location loc_;
+                ucc::misc::location loc_;
                 StorageClassSpecifier storage_class_;
                 unsigned type_qualifier_ : 3;
                 FunctionSpecifier function_specifier_;

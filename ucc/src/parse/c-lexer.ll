@@ -9,7 +9,7 @@ typedef ucc::parse::Parser::token token;
 # define yywrap() 1
 # define yyterminate() return token::END_OF_FILE
 
-static void comment(ucc::parse::Driver& driver, ucc::parse::location* yylloc);
+static void comment(ucc::parse::Driver& driver, ucc::misc::location* yylloc);
 static ucc::parse::Parser::token_type check_type(ucc::parse::Driver& driver);
 
 # define ATTRIBUTE(tok)                                 \
@@ -389,7 +389,7 @@ WS  [ \t\v\f]
 
 %%
 
-static void comment(ucc::parse::Driver& driver, ucc::parse::location* yylloc)
+static void comment(ucc::parse::Driver& driver, ucc::misc::location* yylloc)
 {
     int c;
 

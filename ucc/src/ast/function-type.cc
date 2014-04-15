@@ -22,13 +22,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-FunctionType::FunctionType(const ucc::parse::location& loc)
+FunctionType::FunctionType(const ucc::misc::location& loc)
     : Type(loc)
     , return_type_(nullptr)
     , param_()
 {}
 
-FunctionType::FunctionType(const ucc::parse::location& loc,
+FunctionType::FunctionType(const ucc::misc::location& loc,
                            const std::list<VarDecl*>& param)
     : Type(loc)
     , return_type_(nullptr)

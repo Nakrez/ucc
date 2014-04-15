@@ -31,7 +31,7 @@ namespace ucc
         class EnumType : public Type
         {
             public:
-                EnumType(const ucc::parse::location& loc,
+                EnumType(const ucc::misc::location& loc,
                          const ucc::misc::Symbol& name);
                 virtual ~EnumType();
 

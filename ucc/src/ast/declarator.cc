@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-Declarator::Declarator(const ucc::parse::location& loc,
+Declarator::Declarator(const ucc::misc::location& loc,
                        const ucc::misc::Symbol& s)
     : Decl(loc, s)
     , type_(nullptr)

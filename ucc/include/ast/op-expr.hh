@@ -54,7 +54,7 @@ namespace ucc
                 };
 
             public:
-                OpExpr(const ucc::parse::location& loc,
+                OpExpr(const ucc::misc::location& loc,
                        Expr* lexpr,
                        Op op,
                        Expr* rexpr);

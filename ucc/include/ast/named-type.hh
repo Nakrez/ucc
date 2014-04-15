@@ -31,7 +31,7 @@ namespace ucc
         class NamedType : public Type
         {
             public:
-                NamedType(const ucc::parse::location& loc,
+                NamedType(const ucc::misc::location& loc,
                           const ucc::misc::Symbol& name);
                 virtual ~NamedType();
 

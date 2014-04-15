@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-LabelStmt::LabelStmt(const ucc::parse::location& loc,
+LabelStmt::LabelStmt(const ucc::misc::location& loc,
                      const ucc::misc::Symbol& sym,
                      Stmt* stmt)
     : Stmt(loc)

@@ -33,7 +33,7 @@ namespace ucc
         class Declarator : public Decl
         {
             public:
-                Declarator(const ucc::parse::location& loc,
+                Declarator(const ucc::misc::location& loc,
                            const ucc::misc::Symbol& s);
                 virtual ~Declarator();
 

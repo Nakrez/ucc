@@ -30,7 +30,7 @@ namespace ucc
         class TypeDecl : public Decl
         {
             public:
-                TypeDecl(const ucc::parse::location& loc,
+                TypeDecl(const ucc::misc::location& loc,
                          const ucc::misc::Symbol& name,
                          Type* type);
                 virtual ~TypeDecl();

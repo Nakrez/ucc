@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-RecordType::RecordType(const ucc::parse::location& loc,
+RecordType::RecordType(const ucc::misc::location& loc,
                        RecordDecl::RecordType type,
                        const ucc::misc::Symbol& name)
     : Type(loc)

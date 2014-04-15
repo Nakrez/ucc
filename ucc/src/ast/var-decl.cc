@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-VarDecl::VarDecl(const ucc::parse::location& loc,
+VarDecl::VarDecl(const ucc::misc::location& loc,
                  const ucc::misc::Symbol& name,
                  Type* type,
                  Expr* e)
@@ -35,7 +35,7 @@ VarDecl::VarDecl(const ucc::parse::location& loc,
     , prev_(nullptr)
 {}
 
-VarDecl::VarDecl(const ucc::parse::location& loc)
+VarDecl::VarDecl(const ucc::misc::location& loc)
     : Decl(loc, "")
     , type_(nullptr)
     , init_(nullptr)

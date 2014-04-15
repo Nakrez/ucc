@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-Type::Type(const ucc::parse::location& loc)
+Type::Type(const ucc::misc::location& loc)
     : Ast(loc)
     , is_const_(false)
     , is_volatile_(false)

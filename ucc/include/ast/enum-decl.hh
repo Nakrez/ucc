@@ -30,7 +30,7 @@ namespace ucc
         class EnumDecl : public Decl
         {
             public:
-                EnumDecl(const ucc::parse::location& loc,
+                EnumDecl(const ucc::misc::location& loc,
                          const ucc::misc::Symbol& name,
                          EnumExprList* body);
                 virtual ~EnumDecl();

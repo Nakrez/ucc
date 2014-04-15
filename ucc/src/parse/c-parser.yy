@@ -12,12 +12,6 @@
 %defines
 %verbose
 %error-verbose
-%define "filename_type" "const std::string"
-%locations
-%initial-action
-{
-    @$.begin.filename = @$.end.filename = &driver.file_get().data_get();
-};
 
 %code requires
 {
@@ -40,12 +34,20 @@ typedef ucc::ast::DeclSpecifier::TypeQualifier TypeQualifier;
 typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 }
 
+%define api.location.type { ucc::misc::location };
+%locations
+%initial-action
+{
+    @$.begin.filename = @$.end.filename = &driver.file_get().data_get();
+};
+
 %parse-param { ucc::parse::Driver& driver }
 %lex-param { ucc::parse::Driver& driver }
 
 %code
 {
 # include <parse/driver.hh>
+# include <misc/location.hh>
 }
 
 %union
@@ -2016,7 +2018,7 @@ format_archetype
 
 %%
 
-void ucc::parse::Parser::error(ucc::parse::location const& l,
+void ucc::parse::Parser::error(ucc::misc::location const& l,
                                std::string const& s)
 {
     driver.error_ << ucc::misc::Error::Type::parse
