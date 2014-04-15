@@ -58,6 +58,8 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/command.cc \
 			  src/bind/binder.cc \
 			  src/bind/command.cc \
+			  src/type/type-checker.cc \
+			  src/type/command.cc \
 			  src/main.cc \
 			  src/ucc.cc
 
