@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_AST_DECL_SPECIFIER_HH
 
 # include <misc/symbol.hh>
-# include <misc/error.hh>
+# include <misc/diagnostic-reporter.hh>
 # include <misc/location.hh>
 
 # include <ast/fwd.hh>
@@ -97,18 +97,14 @@ namespace ucc
 
                 DeclSpecifier::StorageClassSpecifier storage_class_get() const;
 
-                bool storage_class_set(const StorageClassSpecifier& spec,
-                                       ucc::misc::Error& err);
-                bool type_qualifier_set(const TypeQualifier& qual,
-                                        ucc::misc::Error& err);
-                bool function_specifier_set(const FunctionSpecifier& spec,
-                                            ucc::misc::Error& err);
-                bool type_specifier_set(const TypeSpecifier& spec,
-                                        ucc::misc::Error& err);
+                bool storage_class_set(const StorageClassSpecifier& spec);
+                bool type_qualifier_set(const TypeQualifier& qual);
+                bool function_specifier_set(const FunctionSpecifier& spec);
+                bool type_specifier_set(const TypeSpecifier& spec);
 
                 void type_name_set(const ucc::misc::Symbol& s);
 
-                bool merge(const DeclSpecifier* decl, ucc::misc::Error& err);
+                bool merge(const DeclSpecifier* decl);
 
                 Decl* decl_get() const;
                 void decl_set(Decl* rec);

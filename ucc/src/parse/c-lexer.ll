@@ -2,6 +2,7 @@
 %{
 
 # include <parse/driver.hh>
+# include <misc/diagnostic.hh>
 
 typedef ucc::parse::Parser::token token;
 
@@ -278,11 +279,14 @@ WS  [ \t\v\f]
                                             yylval->int_ = '\0';
                                             break;
                                         default:
-                                            driver.error_
-                                                << ucc::misc::Error::Type::lex
+                                            ucc::misc::Diagnostic d;
+
+                                            d << ucc::misc::Diagnostic::Severity::err
+                                                << ucc::misc::Diagnostic::Type::scan
                                                 << "Unexpected escape char"
-                                                << yytext << std::endl;
-                                            yylval->int_ = '\0';
+                                                << yytext << *yylloc;
+
+                                            ucc::misc::DiagnosticReporter::instance_get().add(d);
                                             break;
                                     }
                                 }
@@ -382,14 +386,20 @@ WS  [ \t\v\f]
                           yylloc->step();
                         }
 {WS}                    { yylloc->step(); }
-.                       { driver.error_ << ucc::misc::Error::Type::lex
-                                        << "Unexpected char "
-                                        << yytext << std::endl;
+.                       {
+                            ucc::misc::Diagnostic d;
+
+                            d << ucc::misc::Diagnostic::Severity::err
+                              << ucc::misc::Diagnostic::Type::scan
+                              << "Unexpected char"
+                              << yytext << *yylloc;
+
+                            ucc::misc::DiagnosticReporter::instance_get().add(d);
                         }
 
 %%
 
-static void comment(ucc::parse::Driver& driver, ucc::misc::location* yylloc)
+static void comment(ucc::parse::Driver&, ucc::misc::location* yylloc)
 {
     int c;
 
@@ -417,8 +427,13 @@ static void comment(ucc::parse::Driver& driver, ucc::misc::location* yylloc)
             yylloc->step();
     }
 
-    driver.error_ << ucc::misc::Error::Type::lex
-                  << "Unterminated comment" << std::endl;
+    ucc::misc::Diagnostic d;
+
+    d << ucc::misc::Diagnostic::Severity::err
+      << ucc::misc::Diagnostic::Type::scan
+      << "Unterminated comment" << *yylloc;
+
+    ucc::misc::DiagnosticReporter::instance_get().add(d);
 }
 
 static ucc::parse::Parser::token_type check_type(ucc::parse::Driver& driver)
@@ -442,8 +457,13 @@ void ucc::parse::Driver::lexer_begin()
         yyin = stdin;
     else if (!(yyin = fopen (file_.data_get().c_str(), "r")))
     {
-        error_ << ucc::misc::Error::Type::lex
-               << "Cannot open file " << file_.data_get() << std::endl;
+        ucc::misc::Diagnostic d;
+
+        d << ucc::misc::Diagnostic::Severity::err
+          << ucc::misc::Diagnostic::Type::scan
+          << "cannot open file " << file_.data_get();
+
+        ucc::misc::DiagnosticReporter::instance_get().add(d);
     }
 
     yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));

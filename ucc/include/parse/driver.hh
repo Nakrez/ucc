@@ -22,7 +22,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <map>
 # include <string>
 
-# include <misc/error.hh>
 # include <misc/scope-map.hh>
 
 # include <parse/c-parser.hh>
@@ -52,7 +51,6 @@ namespace ucc
                 const ucc::misc::Symbol& file_get() const;
 
             public:
-                ucc::misc::Error error_;
                 bool in_attribute_;
 
                 ucc::ast::DeclList* ast_;

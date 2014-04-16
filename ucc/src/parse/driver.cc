@@ -25,8 +25,7 @@ using namespace ucc;
 using namespace parse;
 
 Driver::Driver()
-    : error_()
-    , in_attribute_(false)
+    : in_attribute_(false)
     , ast_(nullptr)
     , trace_parser_(ucc::parse::parse_trace)
     , trace_lexer_(false)

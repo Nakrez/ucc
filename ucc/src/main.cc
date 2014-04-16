@@ -16,7 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <misc/error.hh>
+#include <misc/diagnostic-reporter.hh>
 
 #include <command/command.hh>
 
@@ -38,13 +38,13 @@ int main(int argc, char *argv[])
     {
         command::Command::instance().run();
     }
-    catch (ucc::misc::Error& e)
+    catch (ucc::misc::DiagnosticReporter::Error&)
     {
-        std::cerr << e.msg_get() << std::endl;
+        ucc::misc::DiagnosticReporter::instance_get().flush(std::cerr);
 
         delete ucc::ast::the_ast;
 
-        return e.error_code_get();
+        return ucc::misc::DiagnosticReporter::instance_get().error_type_get();
     }
 
     delete ucc::ast::the_ast;

@@ -23,8 +23,7 @@ using namespace ucc;
 using namespace bind;
 
 Binder::Binder()
-    : error_()
-    , scope_()
+    : scope_()
     , record_enum_()
     , loop_switch_()
 {}
@@ -34,8 +33,12 @@ Binder::~Binder()
 
 void Binder::error(const ucc::ast::Ast& ast, std::string msg)
 {
-    error_ << ucc::misc::Error::Type::bind
-           << ast.location_get() << ": error: " << msg << std::endl;
+    ucc::misc::Diagnostic d;
+
+    d << ucc::misc::Diagnostic::Severity::err
+      << ucc::misc::Diagnostic::Type::bind << msg << ast.location_get();
+
+    ucc::misc::DiagnosticReporter::instance_get().add(d);
 }
 
 void Binder::operator()(ucc::ast::VarDecl& ast)
@@ -377,11 +380,6 @@ void Binder::operator()(ucc::ast::ContinueStmt& ast)
         error(ast, "'continue' statement outside any loop statement");
     else
         ast.def_set(*it);
-}
-
-ucc::misc::Error& Binder::error_get()
-{
-    return error_;
 }
 
 bool Binder::is_builtin_type(const ucc::misc::Symbol& s)

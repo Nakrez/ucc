@@ -16,6 +16,7 @@
 %code requires
 {
 # include <string>
+# include <misc/diagnostic-reporter.hh>
 # include <misc/symbol.hh>
 # include <ast/fwd.hh>
 # include <ast/all.hh>
@@ -834,7 +835,7 @@ declaration_specifiers
     : storage_class_specifier declaration_specifiers
     {
         $$ = $1;
-        $$->merge($2, driver.error_);
+        $$->merge($2);
 
         delete $2;
     }
@@ -845,7 +846,7 @@ declaration_specifiers
     | type_specifier declaration_specifiers
     {
         $$ = $1;
-        $$->merge($2, driver.error_);
+        $$->merge($2);
 
         delete $2;
     }
@@ -856,14 +857,14 @@ declaration_specifiers
     | type_qualifier attribute_spec declaration_specifiers
     {
         $$ = $1;
-        $$->merge($3, driver.error_);
+        $$->merge($3);
 
         delete $3;
     }
     | type_qualifier declaration_specifiers
     {
         $$ = $1;
-        $$->merge($2, driver.error_);
+        $$->merge($2);
         delete $2;
     }
     | type_qualifier
@@ -877,7 +878,7 @@ declaration_specifiers
     | function_specifier declaration_specifiers
     {
         $$ = $1;
-        $$->merge($2, driver.error_);
+        $$->merge($2);
         delete $2;
     }
     | function_specifier
@@ -919,32 +920,28 @@ storage_class_specifier
     : "typedef"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_typedef,
-                              driver.error_);
+        $$->storage_class_set(StorageClassSpecifier::SCS_typedef);
     }
     | "extern"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_extern,
-                              driver.error_);
+        $$->storage_class_set(StorageClassSpecifier::SCS_extern);
     }
     | "static"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_static,
-                              driver.error_);
+        $$->storage_class_set(StorageClassSpecifier::SCS_static);
     }
     /*| "_Thread_local"*/
     | "auto"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_auto, driver.error_);
+        $$->storage_class_set(StorageClassSpecifier::SCS_auto);
     }
     | "register"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_register,
-                              driver.error_);
+        $$->storage_class_set(StorageClassSpecifier::SCS_register);
     }
     ;
 
@@ -952,47 +949,47 @@ type_specifier
     : "void"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_void, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_void);
     }
     | "char"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_char, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_char);
     }
     | "short"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_short, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_short);
     }
     | "int"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_int, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_int);
     }
     | "long"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_long, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_long);
     }
     | "float"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_float, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_float);
     }
     | "double"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_double, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_double);
     }
     | "signed"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_signed, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_signed);
     }
     | "unsigned"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_unsigned, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_unsigned);
     }
     /*| "_Bool"*/
     /*| "_Complex"*/
@@ -1010,9 +1007,9 @@ type_specifier
             $$->type_name_set(ty->name_get());
 
             if (ty->type_get() == ucc::ast::RecordDecl::RecordType::STRUCT)
-                $$->type_specifier_set(TypeSpecifier::TS_struct, driver.error_);
+                $$->type_specifier_set(TypeSpecifier::TS_struct);
             else
-                $$->type_specifier_set(TypeSpecifier::TS_union, driver.error_);
+                $$->type_specifier_set(TypeSpecifier::TS_union);
 
             delete ty;
         }
@@ -1022,9 +1019,9 @@ type_specifier
             $$->decl_set(decl);
 
             if (decl->type_get() == ucc::ast::RecordDecl::RecordType::STRUCT)
-                $$->type_specifier_set(TypeSpecifier::TS_struct, driver.error_);
+                $$->type_specifier_set(TypeSpecifier::TS_struct);
             else
-                $$->type_specifier_set(TypeSpecifier::TS_union, driver.error_);
+                $$->type_specifier_set(TypeSpecifier::TS_union);
         }
     }
     | enum_specifier
@@ -1046,12 +1043,12 @@ type_specifier
             $$->decl_set(decl);
         }
 
-        $$->type_specifier_set(TypeSpecifier::TS_enum, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_enum);
     }
     | "typedef_name"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_type_name, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_type_name);
         $$->type_name_set(*$1);
 
         delete $1;
@@ -1153,7 +1150,7 @@ specifier_qualifier_list
     : type_specifier specifier_qualifier_list
     {
         $$ = $1;
-        $$->merge($2, driver.error_);
+        $$->merge($2);
 
         delete $2;
     }
@@ -1164,7 +1161,7 @@ specifier_qualifier_list
     | type_qualifier specifier_qualifier_list
     {
         $$ = $1;
-        $$->merge($2, driver.error_);
+        $$->merge($2);
 
         delete $2;
     }
@@ -1270,17 +1267,17 @@ type_qualifier
     : "const"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_qualifier_set(TypeQualifier::TQ_const, driver.error_);
+        $$->type_qualifier_set(TypeQualifier::TQ_const);
     }
     | "restrict"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_qualifier_set(TypeQualifier::TQ_restrict, driver.error_);
+        $$->type_qualifier_set(TypeQualifier::TQ_restrict);
     }
     | "volatile"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_qualifier_set(TypeQualifier::TQ_volatile, driver.error_);
+        $$->type_qualifier_set(TypeQualifier::TQ_volatile);
     }
     /*| "_Atomic"*/
     ;
@@ -1289,7 +1286,7 @@ function_specifier
     : "inline"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->function_specifier_set(FunctionSpecifier::FS_inline, driver.error_);
+        $$->function_specifier_set(FunctionSpecifier::FS_inline);
     }
     /*| "_Noreturn"*/
     ;
@@ -1432,11 +1429,11 @@ type_qualifier_list
         $$ = $1;
 
         if ($2->is_const())
-            $$->type_qualifier_set(TypeQualifier::TQ_const, driver.error_);
+            $$->type_qualifier_set(TypeQualifier::TQ_const);
         if ($2->is_restrict())
-            $$->type_qualifier_set(TypeQualifier::TQ_restrict, driver.error_);
+            $$->type_qualifier_set(TypeQualifier::TQ_restrict);
         if ($2->is_restrict())
-            $$->type_qualifier_set(TypeQualifier::TQ_volatile, driver.error_);
+            $$->type_qualifier_set(TypeQualifier::TQ_volatile);
 
         delete $2;
     }
@@ -2021,6 +2018,8 @@ format_archetype
 void ucc::parse::Parser::error(ucc::misc::location const& l,
                                std::string const& s)
 {
-    driver.error_ << ucc::misc::Error::Type::parse
-                  << l << ": error: " << s << std::endl;
+    ucc::misc::Diagnostic d(ucc::misc::Diagnostic::Severity::err,
+                            ucc::misc::Diagnostic::Type::parse,
+                            s, l);
+    ucc::misc::DiagnosticReporter::instance_get().add(d);
 }
