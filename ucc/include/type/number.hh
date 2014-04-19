@@ -16,34 +16,21 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_TYPE_TYPE_HH
-# define UCC_TYPE_TYPE_HH
+#ifndef UCC_TYPE_NUMBER_HH
+# define UCC_TYPE_NUMBER_HH
 
-# include <ostream>
-
-# include <ast/op-expr.hh>
-# include <ast/assign-expr.hh>
+# include <type/type.hh>
 
 namespace ucc
 {
     namespace type
     {
-        class Type
+        class Number : public Type
         {
             public:
-                enum TypeCompatibility
-                {
-                    full,
-                    warning,
-                    error
-                };
+                Number() = default;
 
-            public:
-                Type()
-                {}
-
-                virtual ~Type()
-                {}
+                virtual ~Number() = default;
 
                 virtual TypeCompatibility
                 compatible_on_assign(const Type& t,
@@ -55,20 +42,8 @@ namespace ucc
                 virtual const Type& actual_type() const = 0;
 
                 virtual std::string to_str() const = 0;
-
-                void dump(std::ostream& o) const
-                {
-                    o << to_str();
-                }
         };
     } // namespace type
 } // namespace ucc
 
-inline std::ostream& operator<<(std::ostream& o, const ucc::type::Type& t)
-{
-    t.dump(o);
-
-    return o;
-}
-
-#endif /* !UCC_TYPE_TYPE_HH */
+#endif /* !UCC_TYPE_NUMBER_HH */
