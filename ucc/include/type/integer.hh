@@ -16,8 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_TYPE_SIGNED_NUMBER_HH
-# define UCC_TYPE_SIGNED_NUMBER_HH
+#ifndef UCC_TYPE_INTEGER_HH
+# define UCC_TYPE_INTEGER_HH
 
 # include <type/number.hh>
 
@@ -25,12 +25,12 @@ namespace ucc
 {
     namespace type
     {
-        class SignedNumber : public Number
+        class Integer : public Number
         {
             public:
-                SignedNumber() = default;
+                Integer() = default;
 
-                virtual ~SignedNumber() = default;
+                virtual ~Integer() = default;
 
                 virtual TypeCompatibility
                 compatible_on_assign(const Type& t,
@@ -46,4 +46,4 @@ namespace ucc
     } // namespace type
 } // namespace ucc
 
-#endif /* !UCC_TYPE_SIGNED_NUMBER_HH */
+#endif /* !UCC_TYPE_INTEGER_HH */

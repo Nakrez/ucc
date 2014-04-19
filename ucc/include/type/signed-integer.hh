@@ -16,28 +16,28 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_TYPE_UNSIGNED_NUMBER_HH
-# define UCC_TYPE_UNSIGNED_NUMBER_HH
+#ifndef UCC_TYPE_SIGNED_INTEGER_HH
+# define UCC_TYPE_SIGNED_INTEGER_HH
 
-# include <type/number.hh>
+# include <type/integer.hh>
 
 namespace ucc
 {
     namespace type
     {
-        class UnsignedNumber : public Number
+        class SignedInteger : public Integer
         {
             public:
-                UnsignedNumber() = default;
+                SignedInteger() = default;
 
-                virtual ~UnsignedNumber() = default;
+                virtual ~SignedInteger() = default;
 
                 virtual TypeCompatibility
                 compatible_on_assign(const Type& t,
-                                     ast::AssignExpr::AssignOp op) const = 0;
+                                     ast::AssignExpr::AssignOp op) const;
 
                 virtual TypeCompatibility
-                compatible_on_op(const Type& t, ast::OpExpr::Op op) const = 0;
+                compatible_on_op(const Type& t, ast::OpExpr::Op op) const;
 
                 virtual const Type& actual_type() const = 0;
 
@@ -46,4 +46,4 @@ namespace ucc
     } // namespace type
 } // namespace ucc
 
-#endif /* !UCC_TYPE_UNSIGNED_NUMBER_HH */
+#endif /* !UCC_TYPE_SIGNED_NUMBER_HH */

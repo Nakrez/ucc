@@ -20,8 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_TYPE_BUILTIN_TYPE_HH
 
 # include <type/floating-point.hh>
-# include <type/signed-number.hh>
-# include <type/unsigned-number.hh>
+# include <type/signed-integer.hh>
+# include <type/unsigned-integer.hh>
 
 namespace ucc
 {
@@ -41,13 +41,6 @@ namespace ucc
 
                     return f;
                 }
-
-                virtual TypeCompatibility
-                compatible_on_assign(const Type& t,
-                                     ast::AssignExpr::AssignOp op) const;
-
-                virtual TypeCompatibility
-                compatible_on_op(const Type& t, ast::OpExpr::Op op) const;
 
                 virtual const Type& actual_type() const
                 {
@@ -78,13 +71,6 @@ namespace ucc
                     return f;
                 }
 
-                virtual TypeCompatibility
-                compatible_on_assign(const Type& t,
-                                     ast::AssignExpr::AssignOp op) const;
-
-                virtual TypeCompatibility
-                compatible_on_op(const Type& t, ast::OpExpr::Op op) const;
-
                 virtual const Type& actual_type() const
                 {
                     return *this;
@@ -99,7 +85,7 @@ namespace ucc
                 Double() = default;
         };
 
-        class Char : public SignedNumber
+        class Char : public SignedInteger
         {
             Char(const Char&) = delete;
             Char& operator=(const Char&) = delete;
@@ -113,13 +99,6 @@ namespace ucc
 
                     return f;
                 }
-
-                virtual TypeCompatibility
-                compatible_on_assign(const Type& t,
-                                     ast::AssignExpr::AssignOp op) const;
-
-                virtual TypeCompatibility
-                compatible_on_op(const Type& t, ast::OpExpr::Op op) const;
 
                 virtual const Type& actual_type() const
                 {

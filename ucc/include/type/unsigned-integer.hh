@@ -16,20 +16,21 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_TYPE_FLOATING_POINT_HH
-# define UCC_TYPE_FLOATING_POINT_HH
+#ifndef UCC_TYPE_UNSIGNED_INTEGER_HH
+# define UCC_TYPE_UNSIGNED_INTEGER_HH
 
-# include <type/number.hh>
+# include <type/integer.hh>
 
 namespace ucc
 {
     namespace type
     {
-        class FloatingPoint : public Type
+        class UnsignedInteger : public Integer
         {
             public:
-                FloatingPoint() = default;
-                virtual ~FloatingPoint() = default;
+                UnsignedInteger() = default;
+
+                virtual ~UnsignedInteger() = default;
 
                 virtual TypeCompatibility
                 compatible_on_assign(const Type& t,
@@ -45,4 +46,4 @@ namespace ucc
     } // namespace type
 } // namespace ucc
 
-#endif /* !UCC_TYPE_FLOATING_POINT_HH */
+#endif /* !UCC_TYPE_UNSIGNED_INTEGER_HH */

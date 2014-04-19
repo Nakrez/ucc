@@ -61,7 +61,6 @@ namespace ucc
 
                 AssignOp op_get() const;
 
-                OpExpr::Op to_op_expr() const;
 
                 std::string op_to_str() const;
 
@@ -73,6 +72,8 @@ namespace ucc
                 Expr* rvalue_;
                 AssignOp op_;
         };
+
+        OpExpr::Op assign_op_to_op_expr(AssignExpr::AssignOp op);
     } // namespace ast
 } // namespace ucc
 
