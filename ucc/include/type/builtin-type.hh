@@ -66,9 +66,9 @@ namespace ucc
 
                 static Double& instance_get()
                 {
-                    static Double f;
+                    static Double d;
 
-                    return f;
+                    return d;
                 }
 
                 virtual const Type& actual_type() const
@@ -95,9 +95,9 @@ namespace ucc
 
                 static Char& instance_get()
                 {
-                    static Char f;
+                    static Char c;
 
-                    return f;
+                    return c;
                 }
 
                 virtual const Type& actual_type() const
@@ -107,11 +107,40 @@ namespace ucc
 
                 virtual std::string to_str() const
                 {
-                    return "Char";
+                    return "char";
                 }
 
             private:
                 Char() = default;
+        };
+
+        class UnsignedChar : public UnsignedInteger
+        {
+            UnsignedChar(const UnsignedChar&) = delete;
+            UnsignedChar& operator=(const UnsignedChar&) = delete;
+
+            public:
+                virtual ~UnsignedChar();
+
+                static UnsignedChar& instance_get()
+                {
+                    static UnsignedChar uc;
+
+                    return uc;
+                }
+
+                virtual const Type& actual_type() const
+                {
+                    return *this;
+                }
+
+                virtual std::string to_str() const
+                {
+                    return "unsigned char";
+                }
+
+            private:
+                UnsignedChar() = default;
         };
     } // namespace type
 } // namespace ucc
