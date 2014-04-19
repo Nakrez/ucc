@@ -200,6 +200,35 @@ namespace ucc
             private:
                 UnsignedShort() = default;
         };
+
+        class Int : public SignedInteger
+        {
+            Int(const Int&) = delete;
+            Int& operator=(const Int&) = delete;
+
+            public:
+                virtual ~Int() = default;
+
+                static Int& instance_get()
+                {
+                    static Int i;
+
+                    return i;
+                }
+
+                virtual const Type& actual_type() const override
+                {
+                    return *this;
+                }
+
+                virtual std::string to_str() const override
+                {
+                    return "int";
+                }
+
+            private:
+                Int() = default;
+        };
     } // namespace type
 } // namespace ucc
 
