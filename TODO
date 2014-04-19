@@ -9,13 +9,12 @@
 
 -- BIND --
 
-- Implement binder
-- Implement scope-map
-
 -- TYPE CHECKER --
 
 - Implement type checker
 - Implement type classes
+
+- Move actual_type() implem to Number class.
 
 -- IR CONVERTER --
 

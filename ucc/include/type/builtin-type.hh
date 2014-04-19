@@ -229,6 +229,35 @@ namespace ucc
             private:
                 Int() = default;
         };
+
+        class UnsignedInt : public UnsignedInteger
+        {
+            UnsignedInt(const UnsignedInt&) = delete;
+            UnsignedInt& operator=(const UnsignedInt&) = delete;
+
+            public:
+                virtual ~UnsignedInt() = default;
+
+                static UnsignedInt& instance_get()
+                {
+                    static UnsignedInt ui;
+
+                    return ui;
+                }
+
+                virtual const Type& actual_type() const override
+                {
+                    return *this;
+                }
+
+                virtual std::string to_str() const override
+                {
+                    return "unsigned int";
+                }
+
+            private:
+                UnsignedInt() = default;
+        };
     } // namespace type
 } // namespace ucc
 
