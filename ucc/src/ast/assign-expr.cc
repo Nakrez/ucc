@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+#include <cassert>
+
 #include <ast/assign-expr.hh>
 
 using namespace ucc;
@@ -60,6 +62,36 @@ Expr* AssignExpr::rvalue_get()
 AssignExpr::AssignOp AssignExpr::op_get() const
 {
     return op_;
+}
+
+OpExpr::Op AssignExpr::to_op_expr() const
+{
+    switch (op_)
+    {
+        case MUL_ASSIGN:
+            return OpExpr::Op::OP_MUL;
+        case DIV_ASSIGN:
+            return OpExpr::Op::OP_DIV;
+        case MOD_ASSIGN:
+            return OpExpr::Op::OP_MOD;
+        case PLUS_ASSIGN:
+            return OpExpr::Op::OP_PLUS;
+        case MINUS_ASSIGN:
+            return OpExpr::Op::OP_MINUS;
+        case LSHIFT_ASSIGN:
+            return OpExpr::Op::OP_LSHIFT;
+        case RSHIFT_ASSIGN:
+            return OpExpr::Op::OP_RSHIFT;
+        case BAND_ASSIGN:
+            return OpExpr::Op::OP_BAND;
+        case BXOR_ASSIGN:
+            return OpExpr::Op::OP_XOR;
+        case BOR_ASSIGN:
+            return OpExpr::Op::OP_BOR;
+        default:
+            assert(false &&
+                   "Internal error: cannot convert assign op to op expr");
+    }
 }
 
 std::string AssignExpr::op_to_str() const
