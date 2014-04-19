@@ -171,6 +171,35 @@ namespace ucc
             private:
                 Short() = default;
         };
+
+        class UnsignedShort : public UnsignedInteger
+        {
+            UnsignedShort(const UnsignedShort&) = delete;
+            UnsignedShort& operator=(const UnsignedShort&) = delete;
+
+            public:
+                virtual ~UnsignedShort() = default;
+
+                static UnsignedShort& instance_get()
+                {
+                    static UnsignedShort us;
+
+                    return us;
+                }
+
+                virtual const Type& actual_type() const override
+                {
+                    return *this;
+                }
+
+                virtual std::string to_str() const override
+                {
+                    return "unsigned short";
+                }
+
+            private:
+                UnsignedShort() = default;
+        };
     } // namespace type
 } // namespace ucc
 
