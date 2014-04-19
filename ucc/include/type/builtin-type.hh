@@ -374,6 +374,42 @@ namespace ucc
             private:
                 UnsignedLongLong() = default;
         };
+
+
+        class Void : public Type
+        {
+            Void(const Void&) = delete;
+            Void& operator=(const Void&) = delete;
+
+            public:
+                virtual ~Void() = default;
+
+                virtual TypeCompatibility
+                compatible_on_assign(const Type&,
+                                     ast::AssignExpr::AssignOp) const override
+                {
+                    return Type::TypeCompatibility::error;
+                }
+
+                virtual TypeCompatibility
+                compatible_on_op(const Type&, ast::OpExpr::Op) const override
+                {
+                    return Type::TypeCompatibility::error;
+                }
+
+                virtual const Type& actual_type() const override
+                {
+                    return *this;
+                }
+
+                virtual std::string to_str() const override
+                {
+                    return "void";
+                }
+
+            private:
+                Void() = default;
+        };
     } // namespace type
 } // namespace ucc
 
