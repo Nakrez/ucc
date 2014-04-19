@@ -42,12 +42,12 @@ namespace ucc
                     return f;
                 }
 
-                virtual const Type& actual_type() const
+                virtual const Type& actual_type() const override
                 {
                     return *this;
                 }
 
-                virtual std::string to_str() const
+                virtual std::string to_str() const override
                 {
                     return "float";
                 }
@@ -71,12 +71,12 @@ namespace ucc
                     return d;
                 }
 
-                virtual const Type& actual_type() const
+                virtual const Type& actual_type() const override
                 {
                     return *this;
                 }
 
-                virtual std::string to_str() const
+                virtual std::string to_str() const override
                 {
                     return "double";
                 }
@@ -100,12 +100,12 @@ namespace ucc
                     return c;
                 }
 
-                virtual const Type& actual_type() const
+                virtual const Type& actual_type() const override
                 {
                     return *this;
                 }
 
-                virtual std::string to_str() const
+                virtual std::string to_str() const override
                 {
                     return "char";
                 }
@@ -129,18 +129,47 @@ namespace ucc
                     return uc;
                 }
 
-                virtual const Type& actual_type() const
+                virtual const Type& actual_type() const override
                 {
                     return *this;
                 }
 
-                virtual std::string to_str() const
+                virtual std::string to_str() const override
                 {
                     return "unsigned char";
                 }
 
             private:
                 UnsignedChar() = default;
+        };
+
+        class Short : public SignedInteger
+        {
+            Short(const Short&) = delete;
+            Short& operator=(const Short&) = delete;
+
+            public:
+                virtual ~Short() = default;
+
+                static Short& instance_get()
+                {
+                    static Short s;
+
+                    return s;
+                }
+
+                virtual const Type& actual_type() const override
+                {
+                    return *this;
+                }
+
+                virtual std::string to_str() const override
+                {
+                    return "short";
+                }
+
+            private:
+                Short() = default;
         };
     } // namespace type
 } // namespace ucc
