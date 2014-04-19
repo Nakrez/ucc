@@ -258,6 +258,35 @@ namespace ucc
             private:
                 UnsignedInt() = default;
         };
+
+        class Long : public SignedInteger
+        {
+            Long(const Long&) = delete;
+            Long& operator=(const Long&) = delete;
+
+            public:
+                virtual ~Long() = default;
+
+                static Long& instance_get()
+                {
+                    static Long l;
+
+                    return l;
+                }
+
+                virtual const Type& actual_type() const override
+                {
+                    return *this;
+                }
+
+                virtual std::string to_str() const override
+                {
+                    return "long";
+                }
+
+            private:
+                Long() = default;
+        };
     } // namespace type
 } // namespace ucc
 

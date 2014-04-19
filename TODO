@@ -14,7 +14,8 @@
 - Implement type checker
 - Implement type classes
 
-- Move actual_type() implem to Number class.
+- Move actual_type() implem to Type class and let other classes decides to
+  override it.
 
 -- IR CONVERTER --
 
