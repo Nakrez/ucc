@@ -18,6 +18,11 @@ You just have to do these 3 commands to build it:
 ./configure
 make
 
+* Documentation
+
+To generate documentation simply run 'make doxygen-doc'. This will generate
+the documentation in doc/gen
+
 * Usage
 
 Usage: ucc [OPTION...] file...
