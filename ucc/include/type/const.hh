@@ -33,7 +33,7 @@ namespace ucc
                 Const(Type* inner_type);
                 virtual ~Const();
 
-                /// \brief  Check compatibility of Const type on assignement
+                /// \brief  Check compatibility of Const type on assignment
                 /// \param  t   The type to check compatibility with
                 /// \param  op  The assignment operator
                 /// \return Type compatibility level

@@ -28,34 +28,55 @@ namespace ucc
 {
     namespace type
     {
+        /// Mother class representing all types
         class Type
         {
             public:
+                /// Describe type compatibility
                 enum TypeCompatibility
                 {
+                    /// Types are compatible
                     full,
+
+                    /// Type checker should emit waring
                     warning,
+
+                    /// Types are not compatible
                     error
                 };
 
             public:
+                /// Constructor
                 Type()
                 {}
 
+                /// Destructor
                 virtual ~Type()
                 {}
 
+                /// \brief  Check compatibility of types on assignment
+                /// \param  t   The type to check compatibility with
+                /// \param  op  The assignment operator
+                /// \return Type compatibility level
                 virtual TypeCompatibility
                 compatible_on_assign(const Type& t,
                                      ast::AssignExpr::AssignOp op) const = 0;
 
+                /// \brief  Check compatibility of types on operation
+                /// \param  t   The type to check compatibility with
+                /// \param  op  The binary operator
+                /// \return Type compatibility level
                 virtual TypeCompatibility
                 compatible_on_op(const Type& t, ast::OpExpr::Op op) const = 0;
 
+                /// Return the real type behind a node
                 virtual const Type& actual_type() const = 0;
 
+                /// Return a string representing the type
                 virtual std::string to_str() const = 0;
 
+                /// \brief  Dump the type inside a ostream
+                /// \param  o   The stream where you want to dump your type
                 void dump(std::ostream& o) const
                 {
                     o << to_str();
@@ -64,6 +85,7 @@ namespace ucc
     } // namespace type
 } // namespace ucc
 
+/// Override operator<< to accept any Type.
 inline std::ostream& operator<<(std::ostream& o, const ucc::type::Type& t)
 {
     t.dump(o);

@@ -25,7 +25,7 @@ namespace ucc
 {
     namespace type
     {
-        class FloatingPoint : public Type
+        class FloatingPoint : public Number
         {
             public:
                 FloatingPoint() = default;
