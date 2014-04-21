@@ -33,8 +33,10 @@ namespace ucc
             Float& operator=(const Float&) = delete;
 
             public:
+                /// Destructor
                 virtual ~Float() = default;
 
+                /// Return the Float singleton instance
                 static Float& instance_get()
                 {
                     static Float f;
@@ -53,6 +55,7 @@ namespace ucc
                 }
 
             private:
+                /// Constructor
                 Float() = default;
         };
 
@@ -62,8 +65,10 @@ namespace ucc
             Double& operator=(const Double&) = delete;
 
             public:
+                /// Destructor
                 virtual ~Double() = default;
 
+                /// Return the Double singleton instance
                 static Double& instance_get()
                 {
                     static Double d;
@@ -82,6 +87,7 @@ namespace ucc
                 }
 
             private:
+                /// Constructor
                 Double() = default;
         };
 
@@ -91,8 +97,10 @@ namespace ucc
             Char& operator=(const Char&) = delete;
 
             public:
+                /// Destructor
                 virtual ~Char() = default;
 
+                /// Return the Char singleton instance
                 static Char& instance_get()
                 {
                     static Char c;
@@ -111,6 +119,7 @@ namespace ucc
                 }
 
             private:
+                /// Constructor
                 Char() = default;
         };
 
@@ -120,8 +129,10 @@ namespace ucc
             UnsignedChar& operator=(const UnsignedChar&) = delete;
 
             public:
+                /// Destructor
                 virtual ~UnsignedChar();
 
+                /// Return the UnsignedChar singleton instance
                 static UnsignedChar& instance_get()
                 {
                     static UnsignedChar uc;
@@ -140,6 +151,7 @@ namespace ucc
                 }
 
             private:
+                /// Constructor
                 UnsignedChar() = default;
         };
 
@@ -149,8 +161,10 @@ namespace ucc
             Short& operator=(const Short&) = delete;
 
             public:
+                /// Destructor
                 virtual ~Short() = default;
 
+                /// Return the Short singleton instance
                 static Short& instance_get()
                 {
                     static Short s;
@@ -169,6 +183,7 @@ namespace ucc
                 }
 
             private:
+                /// Constructor
                 Short() = default;
         };
 
@@ -178,8 +193,10 @@ namespace ucc
             UnsignedShort& operator=(const UnsignedShort&) = delete;
 
             public:
+                /// Destructor
                 virtual ~UnsignedShort() = default;
 
+                /// Return the UnsignedShort singleton instance
                 static UnsignedShort& instance_get()
                 {
                     static UnsignedShort us;
@@ -198,6 +215,7 @@ namespace ucc
                 }
 
             private:
+                /// Constructor
                 UnsignedShort() = default;
         };
 
@@ -207,8 +225,10 @@ namespace ucc
             Int& operator=(const Int&) = delete;
 
             public:
+                /// Destructor
                 virtual ~Int() = default;
 
+                /// Return the Int singleton instance
                 static Int& instance_get()
                 {
                     static Int i;
@@ -227,6 +247,7 @@ namespace ucc
                 }
 
             private:
+                /// Constructor
                 Int() = default;
         };
 
@@ -236,8 +257,10 @@ namespace ucc
             UnsignedInt& operator=(const UnsignedInt&) = delete;
 
             public:
+                /// Destructor
                 virtual ~UnsignedInt() = default;
 
+                /// Return the UnsignedInt singleton instance
                 static UnsignedInt& instance_get()
                 {
                     static UnsignedInt ui;
@@ -256,6 +279,7 @@ namespace ucc
                 }
 
             private:
+                /// Constructor
                 UnsignedInt() = default;
         };
 
@@ -265,8 +289,10 @@ namespace ucc
             Long& operator=(const Long&) = delete;
 
             public:
+                /// Destructor
                 virtual ~Long() = default;
 
+                /// Return the Long singleton instance
                 static Long& instance_get()
                 {
                     static Long l;
@@ -285,6 +311,7 @@ namespace ucc
                 }
 
             private:
+                /// Constructor
                 Long() = default;
         };
 
@@ -294,8 +321,10 @@ namespace ucc
             UnsignedLong& operator=(const UnsignedLong&) = delete;
 
             public:
+                /// Destructor
                 virtual ~UnsignedLong() = default;
 
+                /// Return the UnsignedLong singleton instance
                 static UnsignedLong& instance_get()
                 {
                     static UnsignedLong ul;
@@ -314,6 +343,7 @@ namespace ucc
                 }
 
             private:
+                /// Constructor
                 UnsignedLong() = default;
         };
 
@@ -323,8 +353,10 @@ namespace ucc
             LongLong& operator=(const LongLong&) = delete;
 
             public:
+                /// Destructor
                 virtual ~LongLong() = default;
 
+                /// Return the LongLong singleton instance
                 static LongLong& instance_get()
                 {
                     static LongLong ll;
@@ -343,6 +375,7 @@ namespace ucc
                 }
 
             private:
+                /// Constructor
                 LongLong() = default;
         };
 
@@ -352,8 +385,10 @@ namespace ucc
             UnsignedLongLong& operator=(const UnsignedLongLong&) = delete;
 
             public:
+                /// Destructor
                 virtual ~UnsignedLongLong() = default;
 
+                /// Return the UnsignedLongLong singleton instance
                 static UnsignedLongLong& instance_get()
                 {
                     static UnsignedLongLong ull;
@@ -372,6 +407,7 @@ namespace ucc
                 }
 
             private:
+                /// Constructor
                 UnsignedLongLong() = default;
         };
 
@@ -382,8 +418,10 @@ namespace ucc
             Void& operator=(const Void&) = delete;
 
             public:
+                /// Destructor
                 virtual ~Void() = default;
 
+                /// Return the Void singleton instance
                 static Void& instance_get()
                 {
                     static Void v;
@@ -415,6 +453,7 @@ namespace ucc
                 }
 
             private:
+                /// Constructor
                 Void() = default;
         };
     } // namespace type
