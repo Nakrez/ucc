@@ -28,7 +28,7 @@ namespace ucc
 {
     namespace type
     {
-        /// Mother class representing all types
+        /// Mother class representing a type
         class Type
         {
             public:
@@ -38,7 +38,8 @@ namespace ucc
                     /// Types are compatible
                     full,
 
-                    /// Type checker should emit waring
+                    /// Types are not fully compatible but it is not consider
+                    /// as an error. Note: TypeChecker should emit warning
                     warning,
 
                     /// Types are not compatible
