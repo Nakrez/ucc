@@ -63,6 +63,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/type/signed-integer.cc \
 			  src/type/unsigned-integer.cc \
 			  src/type/const.cc \
+			  src/type/ptr.cc \
 			  src/type/command.cc \
 			  src/command.cc \
 			  src/main.cc \

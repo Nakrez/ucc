@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <type/signed-integer.hh>
 #include <type/floating-point.hh>
+#include <type/ptr.hh>
 
 using namespace ucc;
 using namespace type;
@@ -27,6 +28,9 @@ SignedInteger::compatible_on_assign(const Type& t,
                                     ast::AssignExpr::AssignOp op) const
 {
     const Type* type = &t.actual_type();
+
+    if (dynamic_cast<const Ptr*> (type))
+        return Type::TypeCompatibility::warning;
 
     if (dynamic_cast<const Number*> (type))
     {
@@ -44,6 +48,10 @@ SignedInteger::compatible_on_op(const Type& t,
                                 ast::OpExpr::Op op) const
 {
     const Type* type = &t.actual_type();
+
+    if (dynamic_cast<const Ptr*> (type) &&
+        (op == ast::OpExpr::Op::OP_PLUS || op == ast::OpExpr::Op::OP_MINUS))
+        return Type::TypeCompatibility::full;
 
     if (dynamic_cast<const Number*> (type))
     {

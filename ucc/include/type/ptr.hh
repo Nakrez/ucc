@@ -16,24 +16,26 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_TYPE_CONST_HH
-# define UCC_TYPE_CONST_HH
+#ifndef UCC_TYPE_PTR_HH
+# define UCC_TYPE_PTR_HH
 
 # include <type/type.hh>
+# include <type/builtin-type.hh>
 
 namespace ucc
 {
     namespace type
     {
-        /// Implements the const qualifier with a type to ease const checking
-        /// in the TypeChecker.
-        class Const : public Type
+        class Ptr : public Type
         {
             public:
-                Const(Type* inner_type);
-                virtual ~Const();
+                /// Constructor
+                Ptr(Type* pointed_type);
 
-                /// \brief  Check compatibility of Const type on assignment
+                /// Destructor
+                virtual ~Ptr();
+
+                /// \brief  Check compatibility of types on assignment
                 /// \param  t   The type to check compatibility with
                 /// \param  op  The assignment operator
                 /// \return Type compatibility level
@@ -41,7 +43,7 @@ namespace ucc
                 compatible_on_assign(const Type& t,
                                      ast::AssignExpr::AssignOp op) const override;
 
-                /// \brief  Check compatibility of Const type on operation
+                /// \brief  Check compatibility of types on operation
                 /// \param  t   The type to check compatibility with
                 /// \param  op  The binary operator
                 /// \return Type compatibility level
@@ -49,30 +51,34 @@ namespace ucc
                 compatible_on_op(const Type& t,
                                  ast::OpExpr::Op op) const override;
 
-                /// Return the inner type because Const type is bypassed when
-                /// checking types, it is only used by TypeChecker on
-                /// assignation.
+                /// Return the real type behind a node
                 virtual const Type& actual_type() const override
                 {
-                    return *inner_type_;
+                    return *this;
                 }
 
-                /// Return a string representing the Const type.
+                /// Return a string representing the type
                 virtual std::string to_str() const override
                 {
-                    return inner_type_->to_str() + "const";
+                    return pointed_type_->to_str() + "*";
                 }
 
-                /// Return the inner type contained by Const instance
-                const Type* inner_type_get() const
+                /// Return the type pointed by the Ptr instance
+                const Type* pointed_type_get() const
                 {
-                    return inner_type_;
+                    return pointed_type_;
+                }
+
+                /// Return true if the Ptr instance is a 'void *'
+                bool is_void_ptr() const
+                {
+                    return pointed_type_ == &Void::instance_get();
                 }
 
             private:
-                Type* inner_type_;
+                Type* pointed_type_;
         };
     } // namespace type
 } // namespace ucc
 
-#endif /* !UCC_TYPE_CONST_HH */
+#endif /* !UCC_TYPE_PTR_HH */

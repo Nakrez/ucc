@@ -384,6 +384,13 @@ namespace ucc
             public:
                 virtual ~Void() = default;
 
+                static Void& instance_get()
+                {
+                    static Void v;
+
+                    return v;
+                }
+
                 virtual TypeCompatibility
                 compatible_on_assign(const Type&,
                                      ast::AssignExpr::AssignOp) const override
