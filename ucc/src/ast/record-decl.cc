@@ -36,7 +36,7 @@ RecordDecl::~RecordDecl()
     delete fields_;
 }
 
-RecordDecl::RecordType RecordDecl::type_get() const
+RecordDecl::RecordType RecordDecl::record_type_get() const
 {
     return type_;
 }

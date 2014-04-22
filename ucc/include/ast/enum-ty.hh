@@ -16,61 +16,65 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_AST_FIELD_DECL_HH
-# define UCC_AST_FIELD_DECL_HH
+#ifndef UCC_AST_ENUM_TY_HH
+# define UCC_AST_ENUM_TY_HH
 
-# include <ast/decl.hh>
+# include <misc/symbol.hh>
+
+# include <ast/enum-decl.hh>
 # include <ast/ty.hh>
-# include <ast/expr.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class FieldDecl : public Decl
+        /// Represents an enumeration type on the ast
+        class EnumTy : public Ty
         {
             public:
                 /// \brief  Constructor
-                /// \param  loc         The location of the field
-                /// \param  name        The name of the field
-                /// \param  ty          The type of the field
-                /// \param  bit_field   The bit field expression
-                FieldDecl(const ucc::misc::location& loc,
-                          const ucc::misc::Symbol& name,
-                          Ty* ty,
-                          Expr* bit_field);
+                /// \param  loc     The location of the EnumTy
+                /// \param  name    The name of the EnumTy
+                EnumTy(const ucc::misc::location& loc,
+                       const ucc::misc::Symbol& name);
 
                 /// Destructor
-                virtual ~FieldDecl();
+                virtual ~EnumTy() = default;
 
-                /// Return the type of the field
-                const Ty* ty_get() const
+                /// Return the name of the EnumTy
+                const ucc::misc::Symbol& name_get() const
                 {
-                    return ty_;
+                    return name_;
                 }
 
-                /// Return the type of the field
-                Ty* ty_get()
+                /// Return the name of the EnumTy
+                ucc::misc::Symbol& name_get()
                 {
-                    return ty_;
+                    return name_;
                 }
 
-                /// Return the bit field value
-                const Expr* bit_field_get() const
+                /// Return the definition node
+                const EnumDecl* def_get() const
                 {
-                    return bit_field_;
+                    return def_;
                 }
 
-                /// Return the bit field value
-                Expr* bit_field_get()
+                /// Return the definition node
+                EnumDecl* def_get()
                 {
-                    return bit_field_;
+                    return def_;
                 }
 
-                /// Set the type of the field
-                void ty_set(Ty* t)
+                /// \brief  Set the definition node
+                /// \param  def The new definition node
+                void def_set(EnumDecl* def)
                 {
-                    ty_ = t;
+                    def_ = def;
+                }
+
+                virtual bool extends_ty(Ty*) override
+                {
+                    return false;
                 }
 
                 virtual void accept(Visitor& v) override
@@ -84,10 +88,10 @@ namespace ucc
                 }
 
             protected:
-                Ty* ty_;
-                Expr* bit_field_;
+                ucc::misc::Symbol name_;
+                EnumDecl* def_;
         };
     } // namespace ast
 } // namespace ucc
 
-#endif /* !UCC_AST_FIELD_DECL_HH */
+#endif /* !UCC_AST_ENUM_TYPE_HH */

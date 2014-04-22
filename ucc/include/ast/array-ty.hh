@@ -16,58 +16,58 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_AST_SIZEOF_EXPR_HH
-# define UCC_AST_SIZEOF_EXPR_HH
+#ifndef UCC_AST_ARRAY_TY_HH
+# define UCC_AST_ARRAY_TY_HH
 
-# include <ast/expr.hh>
 # include <ast/ty.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        /// Represent a sizeof expression
-        class SizeofExpr : public Expr
+        class Expr;
+
+        /// Represents an array type in the ast
+        class ArrayTy : public Ty
         {
             public:
                 /// \brief  Constructor
-                /// \param  loc     The location of the SizeofExpr
-                /// \para   expr    The expression held by the SizeofExpr
-                SizeofExpr(const ucc::misc::location& loc,
-                           Expr* expr);
+                /// \param  loc The location of the ArrayTy
+                ArrayTy(const ucc::misc::location& loc);
 
                 /// \brief  Constructor
-                /// \param  loc The location of the SizeofExpr
-                /// \para   ty  The Ty held by the SizeofExpr
-                SizeofExpr(const ucc::misc::location& loc,
-                           Ty* ty);
+                /// \param  loc     The location of the ArrayTy
+                /// \param  expr    The size of the ArrayTy
+                ArrayTy(const ucc::misc::location& loc, Expr* expr);
 
                 /// Destructor
-                virtual ~SizeofExpr();
+                virtual ~ArrayTy();
 
-                /// Return the Expr held by the SizeofExpr
-                const Expr* expr_get() const
+                /// Return the Ty held by the ArrayTy
+                const Ty* sub_ty_get() const
                 {
-                    return expr_;
+                    return sub_ty_;
                 }
 
-                /// Return the Expr held by the SizeofExpr
-                Expr* expr_get()
+                /// Return the Ty held by the ArrayTy
+                Ty* sub_ty_get()
                 {
-                    return expr_;
+                    return sub_ty_;
                 }
 
-                /// Return the Ty held by the SizeofExpr
-                const Ty* ty_get() const
+                /// Return the size of the ArrayTy
+                const Expr* size_get() const
                 {
-                    return ty_;
+                    return size_;
                 }
 
-                /// Return the Ty held by the SizeofExpr
-                Ty* ty_get()
+                /// Return the size of the ArrayTy
+                Expr* size_get()
                 {
-                    return ty_;
+                    return size_;
                 }
+
+                virtual bool extends_ty(Ty *t) override;
 
                 virtual void accept(Visitor& v) override
                 {
@@ -79,11 +79,11 @@ namespace ucc
                     v(*this);
                 }
 
-            protected:
-                Expr* expr_;
-                Ty* ty_;
+            private:
+                Ty* sub_ty_;
+                Expr* size_;
         };
     } // namespace ast
 } // namespace ucc
 
-#endif /* !UCC_AST_SIZEOF_EXPR_HH */
+#endif /* !UCC_AST_ARRAY_TY_HH */

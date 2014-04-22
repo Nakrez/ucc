@@ -22,45 +22,15 @@ using namespace ucc;
 using namespace ast;
 
 CastExpr::CastExpr(const ucc::misc::location& loc,
-                   Type* type,
+                   Ty* ty,
                    Expr* expr)
     : Expr(loc)
-    , type_(type)
+    , ty_(ty)
     , expr_(expr)
 {}
 
 CastExpr::~CastExpr()
 {
-    delete type_;
+    delete ty_;
     delete expr_;
-}
-
-const Type* CastExpr::type_get() const
-{
-    return type_;
-}
-
-Type* CastExpr::type_get()
-{
-    return type_;
-}
-
-const Expr* CastExpr::expr_get() const
-{
-    return expr_;
-}
-
-Expr* CastExpr::expr_get()
-{
-    return expr_;
-}
-
-void CastExpr::accept(Visitor& v)
-{
-    v(*this);
-}
-
-void CastExpr::accept(ConstVisitor& v) const
-{
-    v(*this);
 }

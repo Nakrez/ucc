@@ -43,7 +43,7 @@ namespace ucc
                            FieldList* fields);
                 virtual ~RecordDecl();
 
-                RecordType type_get() const;
+                RecordType record_type_get() const;
 
                 const FieldList* fields_get() const;
                 FieldList* fields_get();

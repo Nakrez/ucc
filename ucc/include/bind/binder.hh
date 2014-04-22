@@ -59,9 +59,9 @@ namespace ucc
                 virtual void operator()(ucc::ast::EnumDecl& ast);
                 virtual void operator()(ucc::ast::EnumExprDecl& ast);
 
-                virtual void operator()(ucc::ast::NamedType& ast);
-                virtual void operator()(ucc::ast::RecordType& ast);
-                virtual void operator()(ucc::ast::EnumType& ast);
+                virtual void operator()(ucc::ast::NamedTy& ast);
+                virtual void operator()(ucc::ast::RecordTy& ast);
+                virtual void operator()(ucc::ast::EnumTy& ast);
 
                 virtual void operator()(ucc::ast::VarExpr& ast);
                 virtual void operator()(ucc::ast::EnumExpr& ast);

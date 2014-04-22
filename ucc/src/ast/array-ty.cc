@@ -16,68 +16,39 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <ast/array-type.hh>
+#include <ast/array-ty.hh>
 #include <ast/expr.hh>
 
 using namespace ucc;
 using namespace ast;
 
-ArrayType::ArrayType(const ucc::misc::location& loc)
-    : Type(loc)
-    , sub_type_(nullptr)
+ArrayTy::ArrayTy(const ucc::misc::location& loc)
+    : Ty(loc)
+    , sub_ty_(nullptr)
     , size_(nullptr)
 {}
 
-ArrayType::ArrayType(const ucc::misc::location& loc, Expr* expr)
-    : Type(loc)
-    , sub_type_(nullptr)
+ArrayTy::ArrayTy(const ucc::misc::location& loc, Expr* expr)
+    : Ty(loc)
+    , sub_ty_(nullptr)
     , size_(expr)
+
 {}
 
-ArrayType::~ArrayType()
+ArrayTy::~ArrayTy()
 {
-    delete sub_type_;
+    delete sub_ty_;
     delete size_;
 }
 
-const Type* ArrayType::sub_type_get() const
+bool ArrayTy::extends_ty(Ty *t)
 {
-    return sub_type_;
-}
-
-Type* ArrayType::sub_type_get()
-{
-    return sub_type_;
-}
-
-const Expr* ArrayType::size_get() const
-{
-    return size_;
-}
-
-Expr* ArrayType::size_get()
-{
-    return size_;
-}
-
-bool ArrayType::extends_type(Type *t)
-{
-    if (sub_type_ == nullptr)
+    if (sub_ty_ == nullptr)
     {
-        sub_type_ = t;
+        sub_ty_ = t;
 
         return t;
     }
 
-    return sub_type_->extends_type(t);
-}
-
-void ArrayType::accept(Visitor& v)
-{
-    v(*this);
-}
-
-void ArrayType::accept(ConstVisitor& v) const
-{
-    v(*this);
+    return sub_ty_->extends_ty(t);
 }

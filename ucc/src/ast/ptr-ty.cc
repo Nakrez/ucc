@@ -16,52 +16,33 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <ast/enum-type.hh>
+#include <ast/ptr-ty.hh>
 
 using namespace ucc;
 using namespace ast;
 
-EnumType::EnumType(const ucc::misc::location& loc,
-                   const ucc::misc::Symbol& name)
-    : Type(loc)
-    , name_(name)
-    , def_(nullptr)
+PtrTy::PtrTy(const ucc::misc::location& loc)
+    : Ty(loc)
+    , pointed_ty_(nullptr)
 {}
 
-EnumType::~EnumType()
+PtrTy::PtrTy(const ucc::misc::location& loc, Ty* pointed_ty)
+    : Ty(loc)
+    , pointed_ty_(pointed_ty)
 {}
 
-const ucc::misc::Symbol& EnumType::name_get() const
+PtrTy::~PtrTy()
 {
-    return name_;
+    delete pointed_ty_;
 }
 
-ucc::misc::Symbol& EnumType::name_get()
+bool PtrTy::extends_ty(Ty *t)
 {
-    return name_;
-}
+    if (!pointed_ty_)
+    {
+        pointed_ty_ = t;
+        return true;
+    }
 
-const EnumDecl* EnumType::def_get() const
-{
-    return def_;
-}
-
-EnumDecl* EnumType::def_get()
-{
-    return def_;
-}
-
-void EnumType::def_set(EnumDecl* def)
-{
-    def_ = def;
-}
-
-void EnumType::accept(Visitor& v)
-{
-    v(*this);
-}
-
-void EnumType::accept(ConstVisitor& v) const
-{
-    v(*this);
+    return pointed_ty_->extends_ty(t);
 }

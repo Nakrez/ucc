@@ -16,34 +16,41 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_AST_PTR_TYPE_HH
-# define UCC_AST_PTR_TYPE_HH
+#include <ast/var-decl.hh>
+#include <ast/function-ty.hh>
 
-# include <ast/type.hh>
+using namespace ucc;
+using namespace ast;
 
-namespace ucc
+FunctionTy::FunctionTy(const ucc::misc::location& loc)
+    : Ty(loc)
+    , return_ty_(nullptr)
+    , param_()
+{}
+
+FunctionTy::FunctionTy(const ucc::misc::location& loc,
+                        const std::list<VarDecl*>& param)
+    : Ty(loc)
+    , return_ty_(nullptr)
+    , param_(param)
+{}
+
+FunctionTy::~FunctionTy()
 {
-    namespace ast
+    delete return_ty_;
+
+    for (auto decl : param_)
+        delete decl;
+}
+
+bool FunctionTy::extends_ty(Ty *t)
+{
+    if (!return_ty_)
     {
-        class PtrType : public Type
-        {
-            public:
-                PtrType(const ucc::misc::location& loc);
-                PtrType(const ucc::misc::location& loc, Type* pointed_type);
-                virtual ~PtrType();
+        return_ty_ = t;
 
-                const Type* pointed_type_get() const;
-                Type* pointed_type_get();
+        return true;
+    }
 
-                virtual bool extends_type(Type *t);
-
-                virtual void accept(Visitor& v);
-                virtual void accept(ConstVisitor& v) const;
-
-            protected:
-                Type* pointed_type_;
-        };
-    } // namespace ast
-} // namespace ucc
-
-#endif /* !UCC_AST_PTR_TYPE_HH */
+    return return_ty_->extends_ty(t);
+}

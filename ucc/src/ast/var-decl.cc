@@ -18,18 +18,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <ast/var-decl.hh>
 
-#include <ast/expr.hh>
-#include <ast/type.hh>
-
 using namespace ucc;
 using namespace ast;
 
 VarDecl::VarDecl(const ucc::misc::location& loc,
                  const ucc::misc::Symbol& name,
-                 Type* type,
+                 Ty* ty,
                  Expr* e)
     : Decl(loc, name)
-    , type_(type)
+    , ty_(ty)
     , init_(e)
     , is_elipsis_(false)
     , prev_(nullptr)
@@ -37,7 +34,7 @@ VarDecl::VarDecl(const ucc::misc::location& loc,
 
 VarDecl::VarDecl(const ucc::misc::location& loc)
     : Decl(loc, "")
-    , type_(nullptr)
+    , ty_(nullptr)
     , init_(nullptr)
     , is_elipsis_(true)
     , prev_(nullptr)
@@ -45,56 +42,6 @@ VarDecl::VarDecl(const ucc::misc::location& loc)
 
 VarDecl::~VarDecl()
 {
-    delete type_;
+    delete ty_;
     delete init_;
-}
-
-const Type* VarDecl::type_get() const
-{
-    return type_;
-}
-
-Type* VarDecl::type_get()
-{
-    return type_;
-}
-
-const Expr* VarDecl::init_get() const
-{
-    return init_;
-}
-
-Expr* VarDecl::init_get()
-{
-    return init_;
-}
-
-const VarDecl* VarDecl::prev_get() const
-{
-    return prev_;
-}
-
-VarDecl* VarDecl::prev_get()
-{
-    return prev_;
-}
-
-void VarDecl::prev_set(VarDecl* d)
-{
-    prev_ = d;
-}
-
-bool VarDecl::is_elipsis() const
-{
-    return is_elipsis_;
-}
-
-void VarDecl::accept(Visitor& v)
-{
-    v(*this);
-}
-
-void VarDecl::accept(ConstVisitor& v) const
-{
-    v(*this);
 }

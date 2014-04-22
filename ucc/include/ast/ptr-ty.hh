@@ -16,43 +16,44 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_AST_TYPE_DECL_HH
-# define UCC_AST_TYPE_DECL_HH
+#ifndef UCC_AST_PTR_TY_HH
+# define UCC_AST_PTR_TY_HH
 
-# include <ast/decl.hh>
+# include <ast/ty.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class Ty;
-
-        /// Represent a type declaration in the ast
-        class TypeDecl : public Decl
+        /// Represents pointer type in the ast
+        class PtrTy : public Ty
         {
             public:
                 /// \brief  Constructor
-                /// \param  loc     The location of the TypeDecl
-                /// \param  name    The name defined by the TypeDecl
-                /// \param  ty      The type defined by the TypeDecl
-                TypeDecl(const ucc::misc::location& loc,
-                         const ucc::misc::Symbol& name,
-                         Ty* ty);
+                /// \param  loc The location of the PtrTy
+                PtrTy(const ucc::misc::location& loc);
+
+                /// \brief  Constructor
+                /// \param  loc             The location of the PtrTy
+                /// \param  pointed_type    The Ty pointed by the PtrTy
+                PtrTy(const ucc::misc::location& loc, Ty* pointed_ty);
 
                 /// Destructor
-                virtual ~TypeDecl();
+                virtual ~PtrTy();
 
-                /// Return the type declared by the TypeDecl
-                const Ty* ty_get() const
+                /// Return the Ty pointed by the PtrTy
+                const Ty* pointed_ty_get() const
                 {
-                    return ty_;
+                    return pointed_ty_;
                 }
 
-                /// Return the type declared by the TypeDecl
-                Ty* ty_get()
+                /// Return the Ty pointed by the PtrTy
+                Ty* pointed_ty_get()
                 {
-                    return ty_;
+                    return pointed_ty_;
                 }
+
+                virtual bool extends_ty(Ty *t) override;
 
                 virtual void accept(Visitor& v) override
                 {
@@ -65,9 +66,10 @@ namespace ucc
                 }
 
             protected:
-                Ty* ty_;
+                /// The pointed Ty held by the PtrTy
+                Ty* pointed_ty_;
         };
     } // namespace ast
 } // namespace ucc
 
-#endif /* !UCC_AST_TYPE_DECL_HH */
+#endif /* !UCC_AST_PTR_TY_HH */

@@ -18,12 +18,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <misc/diagnostic-reporter.hh>
 #include <ast/decl-specifier.hh>
-#include <ast/type.hh>
-#include <ast/named-type.hh>
+#include <ast/ty.hh>
+#include <ast/named-ty.hh>
 #include <ast/record-decl.hh>
-#include <ast/record-type.hh>
+#include <ast/record-ty.hh>
 #include <ast/enum-decl.hh>
-#include <ast/enum-type.hh>
+#include <ast/enum-ty.hh>
 
 using namespace ucc;
 using namespace ast;
@@ -38,70 +38,16 @@ DeclSpecifier::DeclSpecifier(const ucc::misc::location& loc)
     , decl_(nullptr)
 {}
 
-DeclSpecifier::~DeclSpecifier()
-{}
-
-bool DeclSpecifier::is_typedef() const
+Ty* DeclSpecifier::ty_get()
 {
-    return storage_class_ & SCS_typedef;
-}
-
-bool DeclSpecifier::is_const() const
-{
-    return type_qualifier_ & TQ_const;
-}
-
-bool DeclSpecifier::is_restrict() const
-{
-    return type_qualifier_ & TQ_restrict;
-}
-
-bool DeclSpecifier::is_volatile() const
-{
-    return type_qualifier_ & TQ_volatile;
-}
-
-bool DeclSpecifier::is_struct_or_union() const
-{
-    return (type_specifier_ & TS_union) ||
-           (type_specifier_ & TS_struct);
-}
-
-bool DeclSpecifier::is_struct() const
-{
-    return type_specifier_ & TS_struct;
-}
-
-bool DeclSpecifier::is_union() const
-{
-    return type_specifier_ & TS_union;
-}
-
-bool DeclSpecifier::is_enum() const
-{
-    return type_specifier_ & TS_enum;
-}
-
-ucc::misc::Symbol& DeclSpecifier::name_get()
-{
-    return type_name_;
-}
-
-DeclSpecifier::StorageClassSpecifier DeclSpecifier::storage_class_get() const
-{
-    return storage_class_;
-}
-
-Type* DeclSpecifier::type_get()
-{
-    Type* t = nullptr;
+    Ty* t = nullptr;
 
     if (type_specifier_ & TS_type_name)
-        t = new NamedType(loc_, type_name_);
+        t = new NamedTy(loc_, type_name_);
     else if (type_specifier_ & TS_struct)
     {
-        RecordType* rec = new RecordType(loc_, RecordDecl::RecordType::STRUCT,
-                                         type_name_);
+        RecordTy* rec = new RecordTy(loc_, RecordDecl::RecordType::STRUCT,
+                                     type_name_);
 
         rec->def_set(dynamic_cast<RecordDecl*> (decl_));
 
@@ -109,8 +55,8 @@ Type* DeclSpecifier::type_get()
     }
     else if (type_specifier_ & TS_union)
     {
-        RecordType* rec = new RecordType(loc_, RecordDecl::RecordType::UNION,
-                                         type_name_);
+        RecordTy* rec = new RecordTy(loc_, RecordDecl::RecordType::UNION,
+                                     type_name_);
 
         rec->def_set(dynamic_cast<RecordDecl*> (decl_));
 
@@ -118,14 +64,14 @@ Type* DeclSpecifier::type_get()
     }
     else if (type_specifier_ & TS_enum)
     {
-        EnumType* e = new EnumType(loc_, type_name_);
+        EnumTy* e = new EnumTy(loc_, type_name_);
 
         e->def_set(dynamic_cast<EnumDecl*> (decl_));
 
         t = e;
     }
     else
-        t = new NamedType(loc_, type_to_string());
+        t = new NamedTy(loc_, type_to_string());
 
     if (type_qualifier_ & TQ_const)
         t->const_set();

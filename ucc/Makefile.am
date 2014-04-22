@@ -17,13 +17,11 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/record-decl.cc \
 			  src/ast/enum-expr-decl.cc \
 			  src/ast/enum-decl.cc \
-			  src/ast/type.cc \
-			  src/ast/named-type.cc \
-			  src/ast/array-type.cc \
-			  src/ast/function-type.cc \
-			  src/ast/ptr-type.cc \
-			  src/ast/record-type.cc \
-			  src/ast/enum-type.cc \
+			  src/ast/array-ty.cc \
+			  src/ast/function-ty.cc \
+			  src/ast/ptr-ty.cc \
+			  src/ast/record-ty.cc \
+			  src/ast/enum-ty.cc \
 			  src/ast/stmt.cc \
 			  src/ast/compound-stmt.cc \
 			  src/ast/return-stmt.cc \

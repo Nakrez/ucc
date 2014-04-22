@@ -43,8 +43,8 @@ void Binder::error(const ucc::ast::Ast& ast, std::string msg)
 
 void Binder::operator()(ucc::ast::VarDecl& ast)
 {
-    if (ast.type_get())
-        ast.type_get()->accept(*this);
+    if (ast.ty_get())
+        ast.ty_get()->accept(*this);
 
     ast::Decl* d;
     ast::VarDecl* vd;
@@ -95,8 +95,8 @@ void Binder::operator()(ucc::ast::FunctionDecl& ast)
         scope_.put(ast.name_get(), &ast);
     }
 
-    if (ast.return_type_get())
-        ast.return_type_get()->accept(*this);
+    if (ast.return_ty_get())
+        ast.return_ty_get()->accept(*this);
 
     scope_begin();
 
@@ -111,8 +111,8 @@ void Binder::operator()(ucc::ast::FunctionDecl& ast)
 
 void Binder::operator()(ucc::ast::TypeDecl& ast)
 {
-    if (ast.type_get())
-        ast.type_get()->accept(*this);
+    if (ast.ty_get())
+        ast.ty_get()->accept(*this);
 
     ast::Decl* d;
 
@@ -145,7 +145,7 @@ void Binder::operator()(ucc::ast::RecordDecl& ast)
 
     rd = dynamic_cast<ast::RecordDecl*> (d);
 
-    if ((d && !rd) || (rd && rd->type_get() != ast.type_get()))
+    if ((d && !rd) || (rd && rd->record_type_get() != ast.record_type_get()))
         error(ast, "Redefinition of '" + ast.name_get().data_get() + "' as "
                    "different kind of symbol");
     else if (rd && rd->fields_get() && ast.fields_get())
@@ -200,7 +200,7 @@ void Binder::operator()(ucc::ast::EnumExprDecl& ast)
         scope_.put(ast.name_get(), &ast);
 }
 
-void Binder::operator()(ucc::ast::NamedType& ast)
+void Binder::operator()(ucc::ast::NamedTy& ast)
 {
     ast::Decl* d;
 
@@ -221,7 +221,7 @@ void Binder::operator()(ucc::ast::NamedType& ast)
         ast.def_set(td);
 }
 
-void Binder::operator()(ucc::ast::RecordType& ast)
+void Binder::operator()(ucc::ast::RecordTy& ast)
 {
     if (ast.name_get().data_get() == "")
         return;
@@ -233,7 +233,7 @@ void Binder::operator()(ucc::ast::RecordType& ast)
 
     rd = dynamic_cast<ast::RecordDecl*> (d);
 
-    if ((d && !rd) || (rd && rd->type_get() != ast.type_get()))
+    if ((d && !rd) || (rd && rd->record_type_get() != ast.record_type_get()))
         error(ast, "'" + ast.name_get().data_get() + "' used "
                    " with wrong declaration type");
     else if (!rd)
@@ -242,7 +242,7 @@ void Binder::operator()(ucc::ast::RecordType& ast)
         ast.def_set(rd);
 }
 
-void Binder::operator()(ucc::ast::EnumType& ast)
+void Binder::operator()(ucc::ast::EnumTy& ast)
 {
     if (ast.name_get().data_get() == "")
         return;
