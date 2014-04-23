@@ -16,8 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_AST_TYPE_BUILDER_HH
-# define UCC_AST_TYPE_BUILDER_HH
+#ifndef UCC_AST_TYPE_USER_HH
+# define UCC_AST_TYPE_USER_HH
 
 # include <type/type.hh>
 
@@ -25,33 +25,34 @@ namespace ucc
 {
     namespace ast
     {
-        /// Used by ast nodes that create a new type
-        class TypeBuilder
+        /// Used by ast nodes that use types
+        class TypeUser
         {
             public:
                 /// Constructor
-                TypeBuilder();
+                TypeUser();
 
                 /// Destructor
-                virtual ~TypeBuilder();
+                virtual ~TypeUser();
 
-                /// Return the built type
-                const type::Type* built_type_get() const
+                /// Return the used type
+                const type::Type* type_get() const
                 {
-                    return built_type_;
+                    return type_;
                 }
 
-                /// \brief  Set the built type
-                /// \param  t   The built type you want to set
-                void built_type_set(const type::Type* t)
+                /// \brief  Set the used type
+                /// \param  t   The type you want to set as used by the ast
+                ///             node
+                void type_set(const type::Type* t)
                 {
-                    built_type_ = t;
+                    type_ = t;
                 }
 
             protected:
-                const type::Type* built_type_;
+                const type::Type* type_;
         };
     } // namespace ast
 } // namespace ucc
 
-#endif /* !UCC_AST_TYPE_BUILDER_HH */
+#endif /* !UCC_AST_TYPE_USER_HH */
