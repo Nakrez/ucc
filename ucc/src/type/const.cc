@@ -17,6 +17,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <type/const.hh>
+#include <type/builtin-type.hh>
 
 using namespace ucc;
 using namespace type;
@@ -27,8 +28,9 @@ Const::Const(Type* inner_type)
 
 Const::~Const()
 {
-    // Inner type is deleted by the TypeBuilder no or it's a
-    // Singleton (if it is a builtin type)
+    if (!dynamic_cast<Number*> (inner_type_) &&
+        !dynamic_cast<Void*> (inner_type_))
+        delete inner_type_;
 }
 
 Type::TypeCompatibility

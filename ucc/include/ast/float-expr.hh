@@ -20,12 +20,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_AST_FLOAT_EXPR_HH
 
 # include <ast/expr.hh>
+# include <ast/type-user.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class FloatExpr : public Expr
+        class FloatExpr : public Expr, public TypeUser
         {
             public:
                 FloatExpr(const ucc::misc::location& loc, long double val);

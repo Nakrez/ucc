@@ -17,13 +17,34 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <type/type-checker.hh>
+# include <type/builtin-type.hh>
+# include <type/ptr.hh>
+# include <type/named.hh>
+# include <type/const.hh>
 
 using namespace ucc;
 using namespace type;
 
 TypeChecker::TypeChecker()
-    : error_()
 {}
 
 TypeChecker::~TypeChecker()
 {}
+
+void TypeChecker::operator()(ast::IntExpr& e)
+{
+    e.type_set(&Int::instance_get());
+}
+
+void TypeChecker::operator()(ast::FloatExpr& e)
+{
+    e.type_set(&Float::instance_get());
+}
+
+void TypeChecker::operator()(ast::StringExpr& e)
+{
+    Const* ctype = new Const(&Char::instance_get());
+    Ptr* str_type = new Ptr(ctype);
+
+    e.built_type_set(str_type);
+}

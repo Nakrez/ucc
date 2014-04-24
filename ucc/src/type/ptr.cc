@@ -17,7 +17,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <type/ptr.hh>
-#include <type/integer.hh>
+#include <type/builtin-type.hh>
 
 using namespace ucc;
 using namespace type;
@@ -28,8 +28,9 @@ Ptr::Ptr(Type* pointed_type)
 
 Ptr::~Ptr()
 {
-    // pointed type member will be deleted in the TypeBuilder or it's a
-    // Singleton
+    if (!dynamic_cast<Number*> (pointed_type_) &&
+        !dynamic_cast<Void*> (pointed_type_))
+        delete pointed_type_;
 }
 
 Type::TypeCompatibility

@@ -31,5 +31,5 @@ void type_check()
 
     checker(*ucc::ast::the_ast);
 
-    checker.error_get().throw_on_error();
+    ucc::misc::DiagnosticReporter::instance_get().throw_on_error();
 }

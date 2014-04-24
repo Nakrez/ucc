@@ -23,10 +23,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <ast/default-visitor.hh>
 
-# include <type/builtin-type.hh>
-# include <type/ptr.hh>
-# include <type/named.hh>
-
 namespace ucc
 {
     namespace type
@@ -39,13 +35,9 @@ namespace ucc
                 TypeChecker();
                 virtual ~TypeChecker();
 
-                ucc::misc::Error error_get() const
-                {
-                    return error_;
-                }
-
-            protected:
-                ucc::misc::Error error_;
+                virtual void operator()(ast::IntExpr& e);
+                virtual void operator()(ast::FloatExpr& e);
+                virtual void operator()(ast::StringExpr& e);
         };
     } // namespace type
 } // namespace ucc
