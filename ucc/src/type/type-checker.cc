@@ -81,6 +81,15 @@ void TypeChecker::operator()(ast::VarDecl& ast)
     ast.type_set(var_type);
 }
 
+void TypeChecker::operator()(ast::PtrTy& ast)
+{
+    const Type* inner = node_type(*ast.pointed_ty_get());
+    Ptr* p = new Ptr(inner);
+
+    ast.built_type_set(p);
+    ast.type_set(p);
+}
+
 void TypeChecker::operator()(ast::IntExpr& e)
 {
     e.type_set(&Int::instance_get());

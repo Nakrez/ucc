@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace type;
 
-Ptr::Ptr(Type* pointed_type)
+Ptr::Ptr(const Type* pointed_type)
     : pointed_type_(pointed_type)
 {}
 
@@ -48,7 +48,9 @@ Ptr::compatible_on_assign(const Type& t,
         }
 
         if (dynamic_cast<const Integer*> (type))
+        {
             return Type::TypeCompatibility::warning;
+        }
 
         return Type::TypeCompatibility::error;
     }

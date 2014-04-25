@@ -30,7 +30,7 @@ namespace ucc
         {
             public:
                 /// Constructor
-                Ptr(Type* pointed_type);
+                Ptr(const Type* pointed_type);
 
                 /// Destructor
                 virtual ~Ptr();
@@ -40,8 +40,8 @@ namespace ucc
                 /// \param  op  The assignment operator
                 /// \return Type compatibility level
                 virtual TypeCompatibility
-                compatible_on_assign(const Type& t,
-                                     ast::AssignExpr::AssignOp op) const override;
+                compatible_on_assign(const Type&,
+                                     ast::AssignExpr::AssignOp) const override;
 
                 /// \brief  Check compatibility of types on operation
                 /// \param  t   The type to check compatibility with
@@ -76,7 +76,7 @@ namespace ucc
                 }
 
             private:
-                Type* pointed_type_;
+                const Type* pointed_type_;
         };
     } // namespace type
 } // namespace ucc

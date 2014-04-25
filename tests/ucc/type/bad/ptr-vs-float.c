@@ -1,9 +1,6 @@
 int main(void)
 {
-    int *a = (void*)0;
-    float b = 0;
-
-    a = b;
+    int* a = 0.00f;
 
     return 0;
 }
