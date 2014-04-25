@@ -22,13 +22,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <ast/decl.hh>
 # include <ast/expr.hh>
 # include <ast/ty.hh>
+# include <ast/type-user.hh>
 
 namespace ucc
 {
     namespace ast
     {
         /// Represent a variable declaration in the ast
-        class VarDecl : public Decl
+        class VarDecl : public Decl, public TypeUser
         {
             public:
                 /// \brief  Constructor

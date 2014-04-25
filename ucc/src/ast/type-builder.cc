@@ -17,6 +17,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <ast/type-builder.hh>
+#include <type/type.hh>
 
 using namespace ucc;
 using namespace ast;
@@ -28,4 +29,14 @@ TypeBuilder::TypeBuilder()
 TypeBuilder::~TypeBuilder()
 {
     delete built_type_;
+}
+
+const type::Type* TypeBuilder::built_type_get() const
+{
+    return built_type_;
+}
+
+void TypeBuilder::built_type_set(const type::Type* t)
+{
+    built_type_ = t;
 }

@@ -20,13 +20,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_AST_INT_EXPR_HH
 
 # include <ast/expr.hh>
-# include <ast/type-user.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class IntExpr : public Expr, public TypeUser
+        class IntExpr : public Expr
         {
             public:
                 IntExpr(const ucc::misc::location& loc, int val);

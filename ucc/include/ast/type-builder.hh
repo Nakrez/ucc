@@ -19,10 +19,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_AST_TYPE_BUILDER_HH
 # define UCC_AST_TYPE_BUILDER_HH
 
-# include <type/type.hh>
+# include <ast/visitor.hh>
 
 namespace ucc
 {
+    namespace type
+    {
+        class Type;
+    }
+
     namespace ast
     {
         /// Used by ast nodes that create a new type
@@ -36,17 +41,14 @@ namespace ucc
                 virtual ~TypeBuilder();
 
                 /// Return the built type
-                const type::Type* built_type_get() const
-                {
-                    return built_type_;
-                }
+                const type::Type* built_type_get() const;
 
                 /// \brief  Set the built type
                 /// \param  t   The built type you want to set
-                void built_type_set(const type::Type* t)
-                {
-                    built_type_ = t;
-                }
+                void built_type_set(const type::Type* t);
+
+                virtual void accept(Visitor& v) = 0;
+                virtual void accept(ConstVisitor& v) const = 0;
 
             protected:
                 const type::Type* built_type_;

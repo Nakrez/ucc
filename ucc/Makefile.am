@@ -58,7 +58,6 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/command.cc \
 			  src/bind/binder.cc \
 			  src/bind/command.cc \
-			  src/type/type-checker.cc \
 			  src/type/floating-point.cc \
 			  src/type/signed-integer.cc \
 			  src/type/unsigned-integer.cc \
@@ -67,6 +66,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/type/record.cc \
 			  src/type/array.cc \
 			  src/type/function.cc \
+			  src/type/type-checker.cc \
 			  src/type/command.cc \
 			  src/command.cc \
 			  src/main.cc \

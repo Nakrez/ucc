@@ -20,13 +20,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_AST_TY_HH
 
 # include <ast/ast.hh>
+# include <ast/type-builder.hh>
+# include <ast/type-user.hh>
 
 namespace ucc
 {
     namespace ast
     {
         /// Abstract class that represents a type node in the ast
-        class Ty: public Ast
+        class Ty: public Ast, public TypeBuilder, public TypeUser
         {
             public:
                 /// \brief  Constructor

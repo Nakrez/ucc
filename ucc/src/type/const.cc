@@ -27,11 +27,7 @@ Const::Const(Type* inner_type)
 {}
 
 Const::~Const()
-{
-    if (!dynamic_cast<Number*> (inner_type_) &&
-        !dynamic_cast<Void*> (inner_type_))
-        delete inner_type_;
-}
+{}
 
 Type::TypeCompatibility
 Const::compatible_on_assign(const Type& t,

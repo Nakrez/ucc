@@ -19,10 +19,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_AST_TYPE_USER_HH
 # define UCC_AST_TYPE_USER_HH
 
-# include <type/type.hh>
+# include <ast/visitor.hh>
 
 namespace ucc
 {
+    namespace type
+    {
+        class Type;
+    }
+
     namespace ast
     {
         /// Used by ast nodes that use types
@@ -36,18 +41,15 @@ namespace ucc
                 virtual ~TypeUser();
 
                 /// Return the used type
-                const type::Type* type_get() const
-                {
-                    return type_;
-                }
+                const type::Type* type_get() const;
 
                 /// \brief  Set the used type
                 /// \param  t   The type you want to set as used by the ast
                 ///             node
-                void type_set(const type::Type* t)
-                {
-                    type_ = t;
-                }
+                void type_set(const type::Type* t);
+
+                virtual void accept(Visitor& v) = 0;
+                virtual void accept(ConstVisitor& v) const = 0;
 
             protected:
                 const type::Type* type_;

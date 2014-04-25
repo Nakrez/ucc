@@ -21,6 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <ast/decl.hh>
 
+# include <ast/type-builder.hh>
+
 namespace ucc
 {
     namespace ast
@@ -28,7 +30,7 @@ namespace ucc
         class Ty;
 
         /// Represent a type declaration in the ast
-        class TypeDecl : public Decl
+        class TypeDecl : public Decl, public TypeBuilder
         {
             public:
                 /// \brief  Constructor

@@ -16,11 +16,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+#include <cassert>
+
 #include <type/type-checker.hh>
-# include <type/builtin-type.hh>
-# include <type/ptr.hh>
-# include <type/named.hh>
-# include <type/const.hh>
+#include <type/builtin-type.hh>
+#include <type/ptr.hh>
+#include <type/named.hh>
+#include <type/const.hh>
 
 using namespace ucc;
 using namespace type;
@@ -30,6 +32,54 @@ TypeChecker::TypeChecker()
 
 TypeChecker::~TypeChecker()
 {}
+
+const Type* TypeChecker::node_type(ast::TypeUser& a)
+{
+    if (!a.type_get())
+        a.accept(*this);
+
+    return a.type_get();
+}
+
+void TypeChecker::check_assign_types(const ucc::misc::location& loc,
+                                     ast::AssignExpr::AssignOp op,
+                                     const Type* t1,
+                                     const Type* t2)
+{
+    Type::TypeCompatibility c = t1->compatible_on_assign(*t2, op);
+
+    if (c != Type::TypeCompatibility::full)
+    {
+        ucc::misc::Diagnostic d;
+
+        if (c == Type::TypeCompatibility::error)
+            d << ucc::misc::Diagnostic::Severity::err;
+        else
+            d << ucc::misc::Diagnostic::Severity::warn;
+
+        d << ucc::misc::Diagnostic::Type::type << loc;
+        d << "incompatible assignement between '" << t1->to_str() << "' and '"
+          << t2->to_str() << "'";
+
+        ucc::misc::DiagnosticReporter::instance_get().add(d);
+    }
+}
+
+void TypeChecker::operator()(ast::VarDecl& ast)
+{
+    const Type* var_type = node_type(*ast.ty_get());
+
+    if (ast.init_get())
+    {
+        const Type* init_type = node_type(*ast.init_get());
+
+        check_assign_types(ast.location_get(),
+                           ast::AssignExpr::AssignOp::ASSIGN,
+                           var_type, init_type);
+    }
+
+    ast.type_set(var_type);
+}
 
 void TypeChecker::operator()(ast::IntExpr& e)
 {
@@ -43,8 +93,42 @@ void TypeChecker::operator()(ast::FloatExpr& e)
 
 void TypeChecker::operator()(ast::StringExpr& e)
 {
-    Const* ctype = new Const(&Char::instance_get());
-    Ptr* str_type = new Ptr(ctype);
+    Ptr* str_type = new Ptr(&Char::instance_get());
 
     e.built_type_set(str_type);
+    e.type_set(str_type);
+}
+
+void TypeChecker::operator()(ast::NamedTy& ast)
+{
+    if (ast.def_get())
+        ast.type_set(ast.def_get()->built_type_get());
+    else if (ast.name_get() == "char")
+        ast.type_set(&Char::instance_get());
+    else if (ast.name_get() == "unsigned char")
+        ast.type_set(&UnsignedChar::instance_get());
+    else if (ast.name_get() == "short")
+        ast.type_set(&Short::instance_get());
+    else if (ast.name_get() == "unsigned short")
+        ast.type_set(&UnsignedShort::instance_get());
+    else if (ast.name_get() == "int")
+        ast.type_set(&Int::instance_get());
+    else if (ast.name_get() == "unsigned int")
+        ast.type_set(&UnsignedInt::instance_get());
+    else if (ast.name_get() == "long")
+        ast.type_set(&Long::instance_get());
+    else if (ast.name_get() == "unsigned long")
+        ast.type_set(&UnsignedLong::instance_get());
+    else if (ast.name_get() == "long long")
+        ast.type_set(&LongLong::instance_get());
+    else if (ast.name_get() == "unsigned long long")
+        ast.type_set(&UnsignedLongLong::instance_get());
+    else if (ast.name_get() == "float")
+        ast.type_set(&Float::instance_get());
+    else if (ast.name_get() == "double")
+        ast.type_set(&Double::instance_get());
+    else if (ast.name_get() == "void")
+        ast.type_set(&Void::instance_get());
+    else
+        assert(false && "Internal compiler error: Unknown name type");
 }

@@ -130,7 +130,7 @@ namespace ucc
 
             public:
                 /// Destructor
-                virtual ~UnsignedChar();
+                virtual ~UnsignedChar() = default;
 
                 /// Return the UnsignedChar singleton instance
                 static UnsignedChar& instance_get()

@@ -39,6 +39,7 @@ namespace ucc
                         const ucc::misc::Symbol& name)
                     : Ty(loc)
                     , name_(name)
+                    , def_(nullptr)
                 {}
 
                 /// Destructor

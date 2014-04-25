@@ -17,6 +17,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <ast/type-user.hh>
+#include <type/type.hh>
 
 using namespace ucc;
 using namespace ast;
@@ -27,3 +28,13 @@ TypeUser::TypeUser()
 
 TypeUser::~TypeUser()
 {}
+
+const type::Type* TypeUser::type_get() const
+{
+    return type_;
+}
+
+void TypeUser::type_set(const type::Type* t)
+{
+    type_ = t;
+}

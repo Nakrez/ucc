@@ -27,11 +27,7 @@ Ptr::Ptr(Type* pointed_type)
 {}
 
 Ptr::~Ptr()
-{
-    if (!dynamic_cast<Number*> (pointed_type_) &&
-        !dynamic_cast<Void*> (pointed_type_))
-        delete pointed_type_;
-}
+{}
 
 Type::TypeCompatibility
 Ptr::compatible_on_assign(const Type& t,

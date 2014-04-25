@@ -35,6 +35,15 @@ namespace ucc
                 TypeChecker();
                 virtual ~TypeChecker();
 
+                const Type* node_type(ast::TypeUser& a);
+                void check_assign_types(const ucc::misc::location& loc,
+                                        ast::AssignExpr::AssignOp op,
+                                        const Type* t1, const Type* t2);
+
+                virtual void operator()(ast::VarDecl& ast);
+
+                virtual void operator()(ast::NamedTy& ast);
+
                 virtual void operator()(ast::IntExpr& e);
                 virtual void operator()(ast::FloatExpr& e);
                 virtual void operator()(ast::StringExpr& e);
