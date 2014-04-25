@@ -34,7 +34,7 @@ namespace ucc
         {
             public:
                 /// Constructor
-                Named(const ucc::misc::Symbol& name, Type* alias)
+                Named(const ucc::misc::Symbol& name, const Type* alias)
                     : name_(name)
                     , alias_(alias)
                 {}
@@ -64,18 +64,18 @@ namespace ucc
 
                 const Type& actual_type() const override
                 {
-                    return *alias_;
+                    return alias_->actual_type();
                 }
 
                 virtual std::string to_str() const override
                 {
-                    return name_.data_get() + "(alias on " + alias_->to_str() +
-                           ")";
+                    return name_.data_get() + " (aka " +
+                           alias_->actual_type().to_str() + ")";
                 }
 
             private:
                 ucc::misc::Symbol name_;
-                Type* alias_;
+                const Type* alias_;
         };
     } // namespace type
 } // namespace ucc

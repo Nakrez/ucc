@@ -46,7 +46,9 @@ void TypeChecker::check_assign_types(const ucc::misc::location& loc,
                                      const Type* t1,
                                      const Type* t2)
 {
-    Type::TypeCompatibility c = t1->compatible_on_assign(*t2, op);
+    Type::TypeCompatibility c;
+
+    c = t1->actual_type().compatible_on_assign(t2->actual_type(), op);
 
     if (c != Type::TypeCompatibility::full)
     {
@@ -79,6 +81,14 @@ void TypeChecker::operator()(ast::VarDecl& ast)
     }
 
     ast.type_set(var_type);
+}
+
+void TypeChecker::operator()(ast::TypeDecl& ast)
+{
+    const Type* t = node_type(*ast.ty_get());
+    Named* n = new Named(ast.name_get(), t);
+
+    ast.built_type_set(n);
 }
 
 void TypeChecker::operator()(ast::PtrTy& ast)

@@ -27,20 +27,33 @@ namespace ucc
 {
     namespace type
     {
+        /// Check type consistency in an ast
         class TypeChecker : public ucc::ast::DefaultVisitor
         {
             public:
                 using ucc::ast::DefaultVisitor::operator();
 
+                /// Constructor
                 TypeChecker();
+
+                /// Destructor
                 virtual ~TypeChecker();
 
+                /// \brief  Return the type of an ast node.
+                /// \param  a   The ast node you want to get the type
                 const Type* node_type(ast::TypeUser& a);
+
+                /// \brief  Check type correctness on an assignment
+                /// \param  loc The location of the assignment
+                /// \param  op  The assignment operator
+                /// \param  t1  The left expression type
+                /// \param  t2  The right expression type
                 void check_assign_types(const ucc::misc::location& loc,
                                         ast::AssignExpr::AssignOp op,
                                         const Type* t1, const Type* t2);
 
                 virtual void operator()(ast::VarDecl& ast);
+                virtual void operator()(ast::TypeDecl& ast);
 
                 virtual void operator()(ast::NamedTy& ast);
                 virtual void operator()(ast::PtrTy& ast);
