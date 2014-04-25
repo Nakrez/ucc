@@ -41,6 +41,17 @@ const Type* TypeChecker::node_type(ast::TypeUser& a)
     return a.type_get();
 }
 
+void TypeChecker::error(const std::string& msg, const ucc::misc::location& loc)
+{
+    ucc::misc::Diagnostic d;
+
+    d << ucc::misc::Diagnostic::Severity::err;
+    d << ucc::misc::Diagnostic::Type::type << loc;
+    d << msg;
+
+    ucc::misc::DiagnosticReporter::instance_get().add(d);
+}
+
 void TypeChecker::check_assign_types(const ucc::misc::location& loc,
                                      ast::AssignExpr::AssignOp op,
                                      const Type* t1,
@@ -159,4 +170,53 @@ void TypeChecker::operator()(ast::VarExpr& ast)
     assert(d);
 
     ast.type_set(d->type_get());
+}
+
+void TypeChecker::operator()(ast::UnaryExpr& ast)
+{
+    const Type *t = node_type(*ast.expr_get());
+    const Type *actual = &t->actual_type();
+
+    switch (ast.op_get())
+    {
+        case ast::UnaryExpr::UnaryOp::BAND:
+            {
+                Ptr *p = new Ptr(t);
+
+                ast.type_set(p);
+                ast.built_type_set(p);
+            }
+            break;
+        case ast::UnaryExpr::UnaryOp::DEREF:
+            assert(false && "TODO");
+            break;
+        case ast::UnaryExpr::UnaryOp::PLUS:
+        case ast::UnaryExpr::UnaryOp::MINUS:
+            if (!dynamic_cast<const Number*> (actual))
+                error("cannot use operator '" + ast.op_to_str() + "' on '" +
+                      t->to_str() + "'", ast.location_get());
+        case ast::UnaryExpr::UnaryOp::TILDE:
+            if (!dynamic_cast<const Integer*> (actual))
+                error("cannot use operator '~' on '" + t->to_str() + "'",
+                      ast.location_get());
+        case ast::UnaryExpr::UnaryOp::BANG:
+            if (!dynamic_cast<const Ptr*> (actual) &&
+                !dynamic_cast<const Number*> (actual))
+                error("cannot use operator '!' on '" + t->to_str() + "'",
+                      ast.location_get());
+            break;
+        case ast::UnaryExpr::UnaryOp::PRE_INCR:
+        case ast::UnaryExpr::UnaryOp::PRE_DECR:
+        case ast::UnaryExpr::UnaryOp::POST_INCR:
+        case ast::UnaryExpr::UnaryOp::POST_DECR:
+            if (dynamic_cast<const Const*> (t))
+                error("cannot modify const expression",
+                        ast.location_get());
+
+            if (!dynamic_cast<const Ptr*> (actual) &&
+                    !dynamic_cast<const Number*> (actual))
+                error("cannot use operator '" + ast.op_to_str() + "' on '" +
+                        t->to_str() + "'", ast.location_get());
+            break;
+    }
 }

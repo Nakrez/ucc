@@ -43,6 +43,9 @@ namespace ucc
                 /// \param  a   The ast node you want to get the type
                 const Type* node_type(ast::TypeUser& a);
 
+                void error(const std::string& msg,
+                           const ucc::misc::location& loc);
+
                 /// \brief  Check type correctness on an assignment
                 /// \param  loc The location of the assignment
                 /// \param  op  The assignment operator
@@ -62,6 +65,7 @@ namespace ucc
                 virtual void operator()(ast::FloatExpr& e);
                 virtual void operator()(ast::StringExpr& e);
                 virtual void operator()(ast::VarExpr& ast);
+                virtual void operator()(ast::UnaryExpr& ast);
         };
     } // namespace type
 } // namespace ucc
