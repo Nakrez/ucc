@@ -141,3 +141,12 @@ void TypeChecker::operator()(ast::NamedTy& ast)
     else
         assert(false && "Internal compiler error: Unknown name type");
 }
+
+void TypeChecker::operator()(ast::VarExpr& ast)
+{
+    const ast::VarDecl* d = dynamic_cast<const ast::VarDecl*> (ast.def_get());
+
+    assert(d);
+
+    ast.type_set(d->type_get());
+}
