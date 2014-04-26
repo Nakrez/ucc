@@ -73,6 +73,7 @@ namespace ucc
                 virtual void operator()(ast::RecordDecl& ast);
 
                 virtual void operator()(ast::NamedTy& ast);
+                virtual void operator()(ast::FunctionTy& ast);
                 virtual void operator()(ast::PtrTy& ast);
                 virtual void operator()(ast::RecordTy& ast);
 

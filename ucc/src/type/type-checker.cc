@@ -244,6 +244,23 @@ void TypeChecker::operator()(ast::NamedTy& ast)
     }
 }
 
+void TypeChecker::operator()(ast::FunctionTy& ast)
+{
+    bool tmp = fun_param_;
+    const Type* ret_type = node_type(*ast.return_ty_get());
+    Function *f = new Function(ret_type);
+
+    fun_param_ = true;
+
+    for (auto p : ast.param_get())
+        f->param_add(p->name_get(), node_type(*p));
+
+    fun_param_ = tmp;
+
+    ast.built_type_set(f);
+    ast.type_set(f);
+}
+
 void TypeChecker::operator()(ast::RecordTy& ast)
 {
     ast.type_set(ast.def_get()->type_get());

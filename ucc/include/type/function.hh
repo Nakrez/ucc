@@ -101,8 +101,20 @@ namespace ucc
 
                 virtual std::string to_str() const override
                 {
-                    /* TODO */
-                    return "";
+                    std::string args = return_type_->to_str() + "(";
+                    auto begin = args_.cbegin();
+                    auto it = args_.cbegin();
+                    auto end = args_.cend();
+
+                    for (; it != end; ++it)
+                    {
+                        if (it != begin)
+                            args += ", ";
+
+                        args += (*it).type_get()->to_str();
+                    }
+
+                    return args + ")";
                 }
 
             private:
