@@ -57,9 +57,11 @@ namespace ucc
 
                 virtual void operator()(ast::VarDecl& ast);
                 virtual void operator()(ast::TypeDecl& ast);
+                virtual void operator()(ast::RecordDecl& ast);
 
                 virtual void operator()(ast::NamedTy& ast);
                 virtual void operator()(ast::PtrTy& ast);
+                virtual void operator()(ast::RecordTy& ast);
 
                 virtual void operator()(ast::IntExpr& e);
                 virtual void operator()(ast::FloatExpr& e);

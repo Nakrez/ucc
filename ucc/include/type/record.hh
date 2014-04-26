@@ -49,6 +49,14 @@ namespace ucc
                     fields_.push_back(f);
                 }
 
+                /// \brief  Add a new Field to the Record.
+                /// \param  n   The name of the field
+                /// \param  t   The type of the field
+                void field_add(const ucc::misc::Symbol& n, const Type* t)
+                {
+                    fields_.push_back(Field(n, t));
+                }
+
                 /// \brief  Get the Type of a Field named @a name.
                 /// \param  name    The name of the Field you want to get the
                 ///                 Type.

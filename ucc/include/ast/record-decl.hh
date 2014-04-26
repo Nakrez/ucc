@@ -21,12 +21,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <ast/fwd.hh>
 # include <ast/decl.hh>
+# include <ast/type-builder.hh>
+# include <ast/type-user.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class RecordDecl : public Decl
+        class RecordDecl : public Decl, public TypeBuilder, public TypeUser
         {
             public:
                 enum RecordType

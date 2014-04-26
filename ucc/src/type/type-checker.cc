@@ -24,6 +24,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <type/named.hh>
 #include <type/const.hh>
 #include <type/array.hh>
+#include <type/field.hh>
+#include <type/record.hh>
 
 using namespace ucc;
 using namespace type;
@@ -103,6 +105,28 @@ void TypeChecker::operator()(ast::TypeDecl& ast)
     ast.built_type_set(n);
 }
 
+void TypeChecker::operator()(ast::RecordDecl& ast)
+{
+    if (ast.fields_get())
+    {
+        Record *r = new Record(ast.name_get(),
+                               ast.record_type_get() ==
+                               ast::RecordDecl::RecordType::STRUCT);
+
+        for (auto f : ast.fields_get()->list_get())
+        {
+            ucc::ast::DefaultVisitor::operator()(*f);
+
+            r->field_add(f->name_get(), f->built_type_get());
+        }
+
+        ast.built_type_set(r);
+        ast.type_set(r);
+
+        /* TODO: handle prev */
+    }
+}
+
 void TypeChecker::operator()(ast::PtrTy& ast)
 {
     const Type* inner = node_type(*ast.pointed_ty_get());
@@ -162,6 +186,11 @@ void TypeChecker::operator()(ast::NamedTy& ast)
         ast.type_set(c);
         ast.built_type_set(c);
     }
+}
+
+void TypeChecker::operator()(ast::RecordTy& ast)
+{
+    ast.type_set(ast.def_get()->type_get());
 }
 
 void TypeChecker::operator()(ast::IntExpr& e)

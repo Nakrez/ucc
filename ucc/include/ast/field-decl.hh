@@ -22,12 +22,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <ast/decl.hh>
 # include <ast/ty.hh>
 # include <ast/expr.hh>
+# include <ast/type-builder.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class FieldDecl : public Decl
+        class FieldDecl : public Decl, public TypeBuilder
         {
             public:
                 /// \brief  Constructor
