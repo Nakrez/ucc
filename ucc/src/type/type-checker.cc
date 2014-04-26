@@ -146,9 +146,14 @@ void TypeChecker::operator()(ast::FunctionDecl& ast)
 
     ast.built_type_set(f);
 
-    declared_fun_ = &ast;
-    ucc::ast::DefaultVisitor::operator()(*ast.compound_get());
-    declared_fun_ = nullptr;
+    if (ast.compound_get())
+    {
+        declared_fun_ = &ast;
+        ucc::ast::DefaultVisitor::operator()(*ast.compound_get());
+        declared_fun_ = nullptr;
+    }
+
+    /* TODO: Check coherence with forward decl */
 }
 
 void TypeChecker::operator()(ast::TypeDecl& ast)
