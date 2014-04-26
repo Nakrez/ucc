@@ -324,3 +324,15 @@ void TypeChecker::operator()(ast::AssignExpr& ast)
 
     ast.type_set(lvalue);
 }
+
+void TypeChecker::operator()(ast::OpExpr& ast)
+{
+    const Type* lexpr = node_type(*ast.lexpr_get());
+    const Type* rexpr = node_type(*ast.rexpr_get());
+
+    check_op_types(ast.location_get(), ast.op_get(), lexpr, rexpr);
+
+    /* TODO: Type promotion */
+
+    ast.type_set(lexpr);
+}

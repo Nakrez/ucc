@@ -76,6 +76,7 @@ namespace ucc
                 virtual void operator()(ast::VarExpr& ast);
                 virtual void operator()(ast::UnaryExpr& ast);
                 virtual void operator()(ast::AssignExpr& ast);
+                virtual void operator()(ast::OpExpr& ast);
         };
     } // namespace type
 } // namespace ucc
