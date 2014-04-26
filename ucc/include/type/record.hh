@@ -57,6 +57,21 @@ namespace ucc
                     fields_.push_back(Field(n, t));
                 }
 
+                typename std::list<Field>::const_iterator cbegin() const
+                {
+                    return fields_.cbegin();
+                }
+
+                typename std::list<Field>::const_iterator cend() const
+                {
+                    return fields_.cend();
+                }
+
+                const std::list<Field>& fields_get() const
+                {
+                    return fields_;
+                }
+
                 /// \brief  Get the Type of a Field named @a name.
                 /// \param  name    The name of the Field you want to get the
                 ///                 Type.

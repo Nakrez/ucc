@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <type/type.hh>
 # include <type/record.hh>
+# include <type/builtin-type.hh>
 
 namespace ucc
 {
@@ -43,6 +44,36 @@ namespace ucc
                 void param_add(const ucc::misc::Symbol& n, const Type* t)
                 {
                     args_.field_add(n, t);
+                }
+
+                /// Return a constant iterator of the beginning of the
+                /// parameter list
+                typename std::list<Field>::const_iterator cbegin() const
+                {
+                    return args_.cbegin();
+                }
+
+                /// Return a constant iterator of the end of the
+                /// parameter list
+                typename std::list<Field>::const_iterator cend() const
+                {
+                    return args_.cend();
+                }
+
+                /// Return the number of parameter
+                unsigned long size_get() const
+                {
+                    return args_.fields_get().size();
+                }
+
+                /// Return true if the type of the parameter is void
+                /// ie : no parameter expected
+                bool no_param() const
+                {
+                    return args_.fields_get().size() == 1 &&
+                           dynamic_cast<const Void*>(args_.cbegin()->type_get()) &&
+                           args_.cbegin()->name_get() == "";
+
                 }
 
                 virtual TypeCompatibility

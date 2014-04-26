@@ -336,11 +336,88 @@ void TypeChecker::operator()(ast::StringExpr& e)
 
 void TypeChecker::operator()(ast::VarExpr& ast)
 {
-    const ast::VarDecl* d = dynamic_cast<const ast::VarDecl*> (ast.def_get());
+    const ast::VarDecl* vd = dynamic_cast<const ast::VarDecl*> (ast.def_get());
+    const ast::FunctionDecl* fd;
 
-    assert(d);
+    fd = dynamic_cast<const ast::FunctionDecl*> (ast.def_get());
 
-    ast.type_set(d->type_get());
+    if (vd)
+        ast.type_set(vd->type_get());
+    else
+        ast.type_set(fd->built_type_get());
+}
+
+void TypeChecker::operator()(ast::CallExpr& ast)
+{
+    const Type* t = node_type(*ast.var_get());
+    const Function* f = dynamic_cast<const Function*> (t);
+    const ast::VarExpr* v = dynamic_cast<const ast::VarExpr*> (ast.var_get());
+
+    if (!f)
+    {
+        if (v)
+            error("called object '" + v->name_get().data_get() +
+                  "' is not a function", ast.location_get());
+        else
+            error("called object is not a function", ast.location_get());
+        ast.type_set(t);
+
+        return;
+    }
+
+    ast.type_set(f->return_type_get());
+
+    if (f->size_get() == 0)
+        return;
+    else if (f->no_param())
+    {
+        if (ast.param_get())
+        {
+            if (v)
+                error("too many arguments to function '" +
+                      v->name_get().data_get() + "'", ast.location_get());
+            else
+                error("too many arguments to function", ast.location_get());
+        }
+
+        return;
+    }
+
+    if (ast.param_get() &&
+        ast.param_get()->list_get().size() > f->size_get())
+    {
+        if (v)
+            error("too many arguments to function '" + v->name_get().data_get()
+                  + "'", ast.location_get());
+        else
+            error("too many arguments to function", ast.location_get());
+
+        return;
+    }
+
+    if ((!ast.param_get() && f->size_get()) ||
+        ast.param_get()->list_get().size() < f->size_get())
+    {
+        if (v)
+            error("too few arguments to function '" +
+                  v->name_get().data_get() + "'", ast.location_get());
+        else
+            error("too few arguments to function", ast.location_get());
+
+        return;
+    }
+
+    auto type_it = f->cbegin();
+    const Type* p_type;
+
+    for (auto arg : ast.param_get()->list_get())
+    {
+        p_type = node_type(*arg);
+
+        check_assign_types(arg->location_get(), p_type, type_it->type_get());
+
+        ++type_it;
+    }
 }
 
 void TypeChecker::operator()(ast::UnaryExpr& ast)
