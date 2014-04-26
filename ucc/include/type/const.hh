@@ -30,7 +30,7 @@ namespace ucc
         class Const : public Type
         {
             public:
-                Const(Type* inner_type);
+                Const(const Type* inner_type);
                 virtual ~Const();
 
                 /// \brief  Check compatibility of Const type on assignment
@@ -70,7 +70,7 @@ namespace ucc
                 }
 
             private:
-                Type* inner_type_;
+                const Type* inner_type_;
         };
     } // namespace type
 } // namespace ucc

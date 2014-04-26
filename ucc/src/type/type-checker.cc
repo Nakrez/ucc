@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <type/ptr.hh>
 #include <type/named.hh>
 #include <type/const.hh>
+#include <type/array.hh>
 
 using namespace ucc;
 using namespace type;
@@ -107,26 +108,18 @@ void TypeChecker::operator()(ast::PtrTy& ast)
     const Type* inner = node_type(*ast.pointed_ty_get());
     Ptr* p = new Ptr(inner);
 
-    ast.built_type_set(p);
-    ast.type_set(p);
-}
+    if (ast.is_const())
+    {
+        Const* c = new Const(p);
 
-void TypeChecker::operator()(ast::IntExpr& e)
-{
-    e.type_set(&Int::instance_get());
-}
-
-void TypeChecker::operator()(ast::FloatExpr& e)
-{
-    e.type_set(&Float::instance_get());
-}
-
-void TypeChecker::operator()(ast::StringExpr& e)
-{
-    Ptr* str_type = new Ptr(&Char::instance_get());
-
-    e.built_type_set(str_type);
-    e.type_set(str_type);
+        ast.built_type_set(c);
+        ast.type_set(c);
+    }
+    else
+    {
+        ast.built_type_set(p);
+        ast.type_set(p);
+    }
 }
 
 void TypeChecker::operator()(ast::NamedTy& ast)
@@ -161,6 +154,32 @@ void TypeChecker::operator()(ast::NamedTy& ast)
         ast.type_set(&Void::instance_get());
     else
         assert(false && "Internal compiler error: Unknown name type");
+
+    if (ast.is_const())
+    {
+        Const* c = new Const(ast.type_get());
+
+        ast.type_set(c);
+        ast.built_type_set(c);
+    }
+}
+
+void TypeChecker::operator()(ast::IntExpr& e)
+{
+    e.type_set(&Int::instance_get());
+}
+
+void TypeChecker::operator()(ast::FloatExpr& e)
+{
+    e.type_set(&Float::instance_get());
+}
+
+void TypeChecker::operator()(ast::StringExpr& e)
+{
+    Ptr* str_type = new Ptr(&Char::instance_get());
+
+    e.built_type_set(str_type);
+    e.type_set(str_type);
 }
 
 void TypeChecker::operator()(ast::VarExpr& ast)
@@ -188,22 +207,41 @@ void TypeChecker::operator()(ast::UnaryExpr& ast)
             }
             break;
         case ast::UnaryExpr::UnaryOp::DEREF:
-            assert(false && "TODO");
+            {
+                const Ptr* p = dynamic_cast<const Ptr*> (actual);
+                const Array* a = dynamic_cast<const Array*> (actual);
+
+                if (p)
+                    ast.type_set(p->pointed_type_get());
+                else if (a)
+                    ast.type_set(a->inner_type_get());
+                else
+                {
+                    error("invalid type of argument of unary '*' (have '" +
+                          t->to_str() + "')", ast.location_get());
+                    ast.type_set(t);
+                }
+            }
             break;
         case ast::UnaryExpr::UnaryOp::PLUS:
         case ast::UnaryExpr::UnaryOp::MINUS:
             if (!dynamic_cast<const Number*> (actual))
                 error("cannot use operator '" + ast.op_to_str() + "' on '" +
                       t->to_str() + "'", ast.location_get());
+            ast.type_set(t);
+            break;
         case ast::UnaryExpr::UnaryOp::TILDE:
             if (!dynamic_cast<const Integer*> (actual))
                 error("cannot use operator '~' on '" + t->to_str() + "'",
                       ast.location_get());
+            ast.type_set(t);
+            break;
         case ast::UnaryExpr::UnaryOp::BANG:
             if (!dynamic_cast<const Ptr*> (actual) &&
                 !dynamic_cast<const Number*> (actual))
                 error("cannot use operator '!' on '" + t->to_str() + "'",
                       ast.location_get());
+            ast.type_set(&Int::instance_get());
             break;
         case ast::UnaryExpr::UnaryOp::PRE_INCR:
         case ast::UnaryExpr::UnaryOp::PRE_DECR:

@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace type;
 
-Const::Const(Type* inner_type)
+Const::Const(const Type* inner_type)
     : inner_type_(inner_type)
 {}
 
