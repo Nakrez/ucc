@@ -61,7 +61,7 @@ void TypeChecker::check_assign_types(const ucc::misc::location& loc,
 {
     Type::TypeCompatibility c;
 
-    c = t1->compatible_on_assign(*t2);
+    c = t1->actual_type().compatible_on_assign(*t2);
 
     if (c != Type::TypeCompatibility::full)
     {
@@ -86,7 +86,7 @@ void TypeChecker::check_op_types(const ucc::misc::location& loc,
 {
     Type::TypeCompatibility c;
 
-    c = t1->compatible_on_op(*t2, op);
+    c = t1->actual_type().compatible_on_op(*t2, op);
 
     if (c != Type::TypeCompatibility::full)
     {
@@ -145,8 +145,10 @@ void TypeChecker::operator()(ast::RecordDecl& ast)
         ast.built_type_set(r);
         ast.type_set(r);
 
-        /* TODO: handle prev */
     }
+    else if (ast.prev_get() && ast.prev_get()->fields_get())
+        ast.type_set(ast.prev_get()->type_get());
+
 }
 
 void TypeChecker::operator()(ast::PtrTy& ast)

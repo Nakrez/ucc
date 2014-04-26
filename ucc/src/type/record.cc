@@ -35,7 +35,7 @@ const Type* Record::field_type_get(const ucc::misc::Symbol name) const
 Type::TypeCompatibility
 Record::compatible_on_assign(const Type& t) const
 {
-    if (&t != this)
+    if (&t.actual_type() != this)
         return Type::TypeCompatibility::error;
 
     return Type::TypeCompatibility::full;
