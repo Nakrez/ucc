@@ -366,6 +366,8 @@ void TypeChecker::operator()(ast::UnaryExpr& ast)
                     !dynamic_cast<const Number*> (actual))
                 error("cannot use operator '" + ast.op_to_str() + "' on '" +
                         t->to_str() + "'", ast.location_get());
+
+            ast.type_set(t);
             break;
     }
 }
@@ -390,9 +392,12 @@ void TypeChecker::operator()(ast::OpExpr& ast)
     const Type* lexpr = node_type(*ast.lexpr_get());
     const Type* rexpr = node_type(*ast.rexpr_get());
 
-    check_op_types(ast.location_get(), ast.op_get(), lexpr, rexpr);
+    if (ast.op_get() != ast::OpExpr::Op::OP_COMA)
+    {
+        check_op_types(ast.location_get(), ast.op_get(), lexpr, rexpr);
 
-    /* TODO: Type promotion */
-
-    ast.type_set(lexpr);
+        ast.type_set(lexpr);
+    }
+    else
+        ast.type_set(rexpr);
 }
