@@ -471,3 +471,12 @@ void TypeChecker::operator()(ast::OpExpr& ast)
     else
         ast.type_set(rexpr);
 }
+
+void TypeChecker::operator()(ast::CastExpr& ast)
+{
+    ucc::ast::DefaultVisitor::operator()(ast);
+
+    const Type* t = node_type(*ast.ty_get());
+
+    ast.type_set(t);
+}
