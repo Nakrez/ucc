@@ -148,7 +148,7 @@ void TypeChecker::operator()(ast::RecordDecl& ast)
         {
             ucc::ast::DefaultVisitor::operator()(*f);
 
-            r->field_add(f->name_get(), f->built_type_get());
+            r->field_add(f->name_get(), f->ty_get()->type_get());
         }
 
         ast.built_type_set(r);
@@ -370,6 +370,76 @@ void TypeChecker::operator()(ast::UnaryExpr& ast)
             ast.type_set(t);
             break;
     }
+}
+
+// NOTE: The default type in case of error is set to the lvalue, maybe find
+// something better to avoid other errors
+void TypeChecker::operator()(ast::MemberExpr& ast)
+{
+    const Type* t = node_type(*ast.lexpr_get());
+    const Record* rec;
+
+    if (ast.is_arrow())
+    {
+        const Ptr* ptr = dynamic_cast<const Ptr*> (&t->actual_type());
+
+        if (!ptr)
+        {
+            error("invalid type argument of '->' (have '" + t->to_str() + "')",
+                  ast.location_get());
+
+            // Set a default type even if it's wrong
+            ast.type_set(t);
+
+            return;
+        }
+
+        rec = dynamic_cast<const Record*> (&ptr->pointed_type_get()->actual_type());
+
+        if (!rec)
+        {
+            error("request for member '" + ast.name_get().data_get() +
+                  "' in something not a structure or union",
+                  ast.location_get());
+
+            // Set a default type even if it's wrong
+            ast.type_set(t);
+
+            return;
+        }
+    }
+    else
+    {
+        rec = dynamic_cast<const Record*> (&t->actual_type());
+
+        if (!rec)
+        {
+            error("request for member '" + ast.name_get().data_get() +
+                  "' in something not a structure or union",
+                  ast.location_get());
+
+            // Set a default type even if it's wrong
+            ast.type_set(t);
+
+            return;
+        }
+    }
+
+    const Type* member_type = rec->field_type_get(ast.name_get());
+
+    if (!member_type)
+    {
+        std::cout << "oups" << std::endl;
+        error("'" + rec->to_str() + "' has no member '" +
+              ast.name_get().data_get() + "'", ast.location_get());
+
+        // Set a default type even if it's wrong
+        ast.type_set(t);
+
+        return;
+    }
+
+    ast.type_set(member_type);
 }
 
 void TypeChecker::operator()(ast::AssignExpr& ast)
