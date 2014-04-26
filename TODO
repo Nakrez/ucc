@@ -5,7 +5,7 @@
 
 -- AST --
 
-- --ast-dump
+- --ast-dump (dump the ast inner node on std::cout)
 
 -- BIND --
 
@@ -31,3 +31,8 @@
 - Add Target x86 64bits
 - Add Target arm
 - ...
+
+-- OTHER --
+
+- Correct locations starting at 0
+- Add support of #line locations
