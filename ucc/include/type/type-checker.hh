@@ -68,6 +68,7 @@ namespace ucc
                 bool is_scalar(const Type* t);
 
                 virtual void operator()(ast::VarDecl& ast);
+                virtual void operator()(ast::FunctionDecl& ast);
                 virtual void operator()(ast::TypeDecl& ast);
                 virtual void operator()(ast::RecordDecl& ast);
 
@@ -75,6 +76,7 @@ namespace ucc
                 virtual void operator()(ast::PtrTy& ast);
                 virtual void operator()(ast::RecordTy& ast);
 
+                virtual void operator()(ast::ReturnStmt& ast);
                 virtual void operator()(ast::WhileStmt& ast);
                 virtual void operator()(ast::DoWhileStmt& ast);
                 virtual void operator()(ast::IfStmt& ast);
@@ -90,6 +92,10 @@ namespace ucc
                 virtual void operator()(ast::AssignExpr& ast);
                 virtual void operator()(ast::OpExpr& ast);
                 virtual void operator()(ast::CastExpr& ast);
+
+            private:
+                bool fun_param_;
+                ast::FunctionDecl *declared_fun_;
         };
     } // namespace type
 } // namespace ucc

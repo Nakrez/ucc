@@ -26,11 +26,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <type/array.hh>
 #include <type/field.hh>
 #include <type/record.hh>
+#include <type/function.hh>
 
 using namespace ucc;
 using namespace type;
 
 TypeChecker::TypeChecker()
+    : fun_param_(false)
+    , declared_fun_(nullptr)
 {}
 
 TypeChecker::~TypeChecker()
@@ -126,6 +129,26 @@ void TypeChecker::operator()(ast::VarDecl& ast)
     }
 
     ast.type_set(var_type);
+}
+
+void TypeChecker::operator()(ast::FunctionDecl& ast)
+{
+    bool tmp = fun_param_;
+    const Type* ret_type = node_type(*ast.return_ty_get());
+    Function *f = new Function(ret_type);
+
+    fun_param_ = true;
+
+    for (auto p : ast.param_get())
+        f->param_add(p->name_get(), node_type(*p));
+
+    fun_param_ = tmp;
+
+    ast.built_type_set(f);
+
+    declared_fun_ = &ast;
+    ucc::ast::DefaultVisitor::operator()(*ast.compound_get());
+    declared_fun_ = nullptr;
 }
 
 void TypeChecker::operator()(ast::TypeDecl& ast)
@@ -224,6 +247,24 @@ void TypeChecker::operator()(ast::NamedTy& ast)
 void TypeChecker::operator()(ast::RecordTy& ast)
 {
     ast.type_set(ast.def_get()->type_get());
+}
+
+void TypeChecker::operator()(ast::ReturnStmt& ast)
+{
+    const Type* t = declared_fun_->built_type_get();
+    const Function *f = dynamic_cast<const Function*> (t);
+
+    if (ast.expr_get())
+    {
+        ast::DefaultVisitor::operator()(*ast.expr_get());
+
+        // TODO: Change error message from standard assignation
+        check_assign_types(ast.location_get(), f->return_type_get(),
+                           ast.expr_get()->type_get());
+    }
+    else
+        check_assign_types(ast.location_get(), f->return_type_get(),
+                           &Void::instance_get());
 }
 
 void TypeChecker::operator()(ast::WhileStmt& ast)

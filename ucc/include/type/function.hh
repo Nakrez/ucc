@@ -29,7 +29,7 @@ namespace ucc
         class Function : public Type
         {
             public:
-                Function(Type* return_type);
+                Function(const Type* return_type);
 
                 /// Destructor
                 virtual ~Function();
@@ -38,6 +38,11 @@ namespace ucc
                 const Type* return_type_get() const
                 {
                     return return_type_;
+                }
+
+                void param_add(const ucc::misc::Symbol& n, const Type* t)
+                {
+                    args_.field_add(n, t);
                 }
 
                 virtual TypeCompatibility
@@ -70,7 +75,7 @@ namespace ucc
                 }
 
             private:
-                Type* return_type_;
+                const Type* return_type_;
                 Record args_;
         };
     } // namespace type

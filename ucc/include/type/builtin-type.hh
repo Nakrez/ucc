@@ -430,8 +430,11 @@ namespace ucc
                 }
 
                 virtual TypeCompatibility
-                compatible_on_assign(const Type&) const override
+                compatible_on_assign(const Type& t) const override
                 {
+                    if (&t == this)
+                        return Type::TypeCompatibility::full;
+
                     return Type::TypeCompatibility::error;
                 }
 

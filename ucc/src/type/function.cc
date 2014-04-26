@@ -21,12 +21,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace type;
 
-Function::Function(Type* return_type)
+Function::Function(const Type* return_type)
     : return_type_(return_type)
     , args_("")
 {}
 
 Function::~Function()
-{
-    delete return_type_;
-}
+{}

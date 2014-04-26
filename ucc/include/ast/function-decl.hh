@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <ast/decl.hh>
 # include <ast/function-ty.hh>
+# include <ast/type-builder.hh>
 
 namespace ucc
 {
@@ -31,7 +32,7 @@ namespace ucc
         class FunctionTy;
 
         /// Represent a function declaration in the ast
-        class FunctionDecl : public Decl
+        class FunctionDecl : public Decl, public TypeBuilder
         {
             public:
                 /// \brief  Constructor

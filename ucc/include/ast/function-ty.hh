@@ -41,7 +41,7 @@ namespace ucc
                 /// \param  loc     The location of the FunctionTy
                 /// \param  param   The list of parameter of the FunctionTy
                 FunctionTy(const ucc::misc::location& loc,
-                             const std::list<VarDecl*>& param);
+                           const std::list<VarDecl*>& param);
 
                 /// Destructor
                 virtual ~FunctionTy();
