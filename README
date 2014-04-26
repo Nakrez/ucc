@@ -55,9 +55,16 @@ UCC is under GPL2. See COPYING file for more informations.
 
 - The parser as some problem with type definitions. Once a typedef defines an
 identifier this identifier is flagged as type no matter redefinition in
-different scopes
+different scopes.
 
 * Contact
 
 If you find bugs, or you have any questions, ... Feel free to can contact me
 at b.covolatoATgmail.com
+
+* Note
+
+UCPP is not working for now (more interesting and funnier to work on the
+actual compiler).
+So you need first to preprocess (or not use C preprocessor directive)
+input files before running UCC on it.
