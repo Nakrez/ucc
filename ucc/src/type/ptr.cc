@@ -30,32 +30,26 @@ Ptr::~Ptr()
 {}
 
 Type::TypeCompatibility
-Ptr::compatible_on_assign(const Type& t,
-        ast::AssignExpr::AssignOp op) const
+Ptr::compatible_on_assign(const Type& t) const
 {
-    if (op == ast::AssignExpr::AssignOp::ASSIGN)
+    const Type* type = &t.actual_type();
+    const Ptr* ptr = dynamic_cast<const Ptr*> (type);
+
+    if (ptr)
     {
-        const Type* type = &t.actual_type();
-        const Ptr* ptr = dynamic_cast<const Ptr*> (type);
-
-        if (ptr)
-        {
-            if (ptr->is_void_ptr() || is_void_ptr())
-                return Type::TypeCompatibility::full;
-
-            /* TODO: Check compatibility between pointers */
+        if (ptr->is_void_ptr() || is_void_ptr())
             return Type::TypeCompatibility::full;
-        }
 
-        if (dynamic_cast<const Integer*> (type))
-        {
-            return Type::TypeCompatibility::warning;
-        }
-
-        return Type::TypeCompatibility::error;
+        /* TODO: Check compatibility between pointers */
+        return Type::TypeCompatibility::full;
     }
 
-    return compatible_on_op(t, ast::assign_op_to_op_expr(op));
+    if (dynamic_cast<const Integer*> (type))
+    {
+        return Type::TypeCompatibility::warning;
+    }
+
+    return Type::TypeCompatibility::error;
 }
 
 Type::TypeCompatibility

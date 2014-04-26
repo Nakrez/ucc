@@ -37,11 +37,9 @@ namespace ucc
 
                 /// \brief  Check compatibility of types on assignment
                 /// \param  t   The type to check compatibility with
-                /// \param  op  The assignment operator
                 /// \return Type compatibility level
                 virtual TypeCompatibility
-                compatible_on_assign(const Type&,
-                                     ast::AssignExpr::AssignOp) const override;
+                compatible_on_assign(const Type& t) const override;
 
                 /// \brief  Check compatibility of types on operation
                 /// \param  t   The type to check compatibility with

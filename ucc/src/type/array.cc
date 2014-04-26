@@ -27,8 +27,7 @@ Array::Array(Type* inner_type)
 {}
 
 Type::TypeCompatibility
-Array::compatible_on_assign(const Type&,
-                            ast::AssignExpr::AssignOp) const
+Array::compatible_on_assign(const Type&) const
 {
     /* TODO */
 

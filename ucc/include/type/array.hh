@@ -41,8 +41,7 @@ namespace ucc
                 }
 
                 virtual TypeCompatibility
-                compatible_on_assign(const Type&,
-                                     ast::AssignExpr::AssignOp) const override;
+                compatible_on_assign(const Type&) const override;
 
                 virtual TypeCompatibility
                 compatible_on_op(const Type& t,

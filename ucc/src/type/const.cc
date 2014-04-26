@@ -30,10 +30,9 @@ Const::~Const()
 {}
 
 Type::TypeCompatibility
-Const::compatible_on_assign(const Type& t,
-                            ast::AssignExpr::AssignOp op) const
+Const::compatible_on_assign(const Type& t) const
 {
-    return inner_type_->compatible_on_assign(t, op);
+    return inner_type_->compatible_on_assign(t);
 }
 
 Type::TypeCompatibility

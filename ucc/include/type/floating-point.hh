@@ -32,11 +32,11 @@ namespace ucc
                 virtual ~FloatingPoint() = default;
 
                 virtual TypeCompatibility
-                compatible_on_assign(const Type& t,
-                                     ast::AssignExpr::AssignOp op) const;
+                compatible_on_assign(const Type& t) const override;
 
                 virtual TypeCompatibility
-                compatible_on_op(const Type& t, ast::OpExpr::Op op) const;
+                compatible_on_op(const Type& t,
+                                 ast::OpExpr::Op op) const override;
 
                 virtual const Type& actual_type() const = 0;
 

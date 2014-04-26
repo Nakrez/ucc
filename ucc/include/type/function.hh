@@ -41,8 +41,7 @@ namespace ucc
                 }
 
                 virtual TypeCompatibility
-                compatible_on_assign(const Type&,
-                                     ast::AssignExpr::AssignOp) const override
+                compatible_on_assign(const Type&) const override
                 {
                     // You cannot assign a function to another
                     // You cannot event declare such type

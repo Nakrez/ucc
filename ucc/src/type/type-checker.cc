@@ -56,13 +56,12 @@ void TypeChecker::error(const std::string& msg, const ucc::misc::location& loc)
 }
 
 void TypeChecker::check_assign_types(const ucc::misc::location& loc,
-                                     ast::AssignExpr::AssignOp op,
                                      const Type* t1,
                                      const Type* t2)
 {
     Type::TypeCompatibility c;
 
-    c = t1->actual_type().compatible_on_assign(t2->actual_type(), op);
+    c = t1->compatible_on_assign(*t2);
 
     if (c != Type::TypeCompatibility::full)
     {
@@ -81,6 +80,31 @@ void TypeChecker::check_assign_types(const ucc::misc::location& loc,
     }
 }
 
+void TypeChecker::check_op_types(const ucc::misc::location& loc,
+                                 ast::OpExpr::Op op,
+                                 const Type* t1, const Type* t2)
+{
+    Type::TypeCompatibility c;
+
+    c = t1->compatible_on_op(*t2, op);
+
+    if (c != Type::TypeCompatibility::full)
+    {
+        ucc::misc::Diagnostic d;
+
+        if (c == Type::TypeCompatibility::error)
+            d << ucc::misc::Diagnostic::Severity::err;
+        else
+            d << ucc::misc::Diagnostic::Severity::warn;
+
+        d << ucc::misc::Diagnostic::Type::type << loc;
+        d << "incompatible operand to '" + op_to_str(op) + "' (have '"
+          << t1->to_str() << "' and '" << t2->to_str() << "')";
+
+        ucc::misc::DiagnosticReporter::instance_get().add(d);
+    }
+}
+
 void TypeChecker::operator()(ast::VarDecl& ast)
 {
     const Type* var_type = node_type(*ast.ty_get());
@@ -89,9 +113,7 @@ void TypeChecker::operator()(ast::VarDecl& ast)
     {
         const Type* init_type = node_type(*ast.init_get());
 
-        check_assign_types(ast.location_get(),
-                           ast::AssignExpr::AssignOp::ASSIGN,
-                           var_type, init_type);
+        check_assign_types(ast.location_get(), var_type, init_type);
     }
 
     ast.type_set(var_type);
@@ -286,4 +308,19 @@ void TypeChecker::operator()(ast::UnaryExpr& ast)
                         t->to_str() + "'", ast.location_get());
             break;
     }
+}
+
+void TypeChecker::operator()(ast::AssignExpr& ast)
+{
+    const Type* lvalue = node_type(*ast.lvalue_get());
+    const Type* rvalue = node_type(*ast.rvalue_get());
+
+    if (ast.op_get() == ast::AssignExpr::AssignOp::ASSIGN)
+        check_assign_types(ast.location_get(), lvalue, rvalue);
+    else
+        check_op_types(ast.location_get(),
+                       ast::assign_op_to_op_expr(ast.op_get()),
+                       lvalue, rvalue);
+
+    ast.type_set(lvalue);
 }

@@ -24,8 +24,7 @@ using namespace ucc;
 using namespace type;
 
 Type::TypeCompatibility
-SignedInteger::compatible_on_assign(const Type& t,
-                                    ast::AssignExpr::AssignOp op) const
+SignedInteger::compatible_on_assign(const Type& t) const
 {
     const Type* type = &t.actual_type();
 
@@ -33,12 +32,7 @@ SignedInteger::compatible_on_assign(const Type& t,
         return Type::TypeCompatibility::warning;
 
     if (dynamic_cast<const Number*> (type))
-    {
-        if (op == ast::AssignExpr::AssignOp::ASSIGN)
-            return Type::TypeCompatibility::full;
-
-        return compatible_on_op(t, ast::assign_op_to_op_expr(op));
-    }
+        return Type::TypeCompatibility::full;
 
     return Type::TypeCompatibility::error;
 }

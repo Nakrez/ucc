@@ -33,12 +33,8 @@ const Type* Record::field_type_get(const ucc::misc::Symbol name) const
 }
 
 Type::TypeCompatibility
-Record::compatible_on_assign(const Type& t,
-                             ast::AssignExpr::AssignOp op) const
+Record::compatible_on_assign(const Type& t) const
 {
-    if (op != ast::AssignExpr::AssignOp::ASSIGN)
-        return Type::TypeCompatibility::error;
-
     if (&t != this)
         return Type::TypeCompatibility::error;
 

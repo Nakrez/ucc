@@ -44,8 +44,7 @@ namespace ucc
                 {}
 
                 virtual TypeCompatibility
-                compatible_on_assign(const Type&,
-                                     ast::AssignExpr::AssignOp) const override
+                compatible_on_assign(const Type&) const override
                 {
                     assert(false && "Internal compiler error: should not check"
                            " compatibility of named type");

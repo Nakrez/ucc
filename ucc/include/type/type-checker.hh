@@ -48,12 +48,19 @@ namespace ucc
 
                 /// \brief  Check type correctness on an assignment
                 /// \param  loc The location of the assignment
-                /// \param  op  The assignment operator
                 /// \param  t1  The left expression type
                 /// \param  t2  The right expression type
                 void check_assign_types(const ucc::misc::location& loc,
-                                        ast::AssignExpr::AssignOp op,
                                         const Type* t1, const Type* t2);
+
+                /// \brief  Check type correctness on an operation
+                /// \param  loc The location of the assignment
+                /// \param  op  The operation operator
+                /// \param  t1  The left expression type
+                /// \param  t2  The right expression type
+                void check_op_types(const ucc::misc::location& loc,
+                                    ast::OpExpr::Op op,
+                                    const Type* t1, const Type* t2);
 
                 virtual void operator()(ast::VarDecl& ast);
                 virtual void operator()(ast::TypeDecl& ast);
@@ -68,6 +75,7 @@ namespace ucc
                 virtual void operator()(ast::StringExpr& e);
                 virtual void operator()(ast::VarExpr& ast);
                 virtual void operator()(ast::UnaryExpr& ast);
+                virtual void operator()(ast::AssignExpr& ast);
         };
     } // namespace type
 } // namespace ucc

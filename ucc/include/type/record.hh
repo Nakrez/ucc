@@ -65,8 +65,7 @@ namespace ucc
                 const Type* field_type_get(const ucc::misc::Symbol name) const;
 
                 virtual Type::TypeCompatibility
-                compatible_on_assign(const Type&,
-                                     ast::AssignExpr::AssignOp) const override;
+                compatible_on_assign(const Type&) const override;
 
                 virtual TypeCompatibility
                 compatible_on_op(const Type&, ast::OpExpr::Op) const override

@@ -22,7 +22,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <ostream>
 
 # include <ast/op-expr.hh>
-# include <ast/assign-expr.hh>
 
 namespace ucc
 {
@@ -57,11 +56,9 @@ namespace ucc
 
                 /// \brief  Check compatibility of types on assignment
                 /// \param  t   The type to check compatibility with
-                /// \param  op  The assignment operator
                 /// \return Type compatibility level
                 virtual TypeCompatibility
-                compatible_on_assign(const Type& t,
-                                     ast::AssignExpr::AssignOp op) const = 0;
+                compatible_on_assign(const Type& t) const = 0;
 
                 /// \brief  Check compatibility of types on operation
                 /// \param  t   The type to check compatibility with

@@ -78,6 +78,8 @@ namespace ucc
                 Expr* rexpr_;
                 Op op_;
         };
+
+        std::string op_to_str(OpExpr::Op op);
     } // namespace ast
 } // namespace ucc
 

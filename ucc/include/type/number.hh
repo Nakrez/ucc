@@ -33,8 +33,7 @@ namespace ucc
                 virtual ~Number() = default;
 
                 virtual TypeCompatibility
-                compatible_on_assign(const Type& t,
-                                     ast::AssignExpr::AssignOp op) const = 0;
+                compatible_on_assign(const Type& t) const = 0;
 
                 virtual TypeCompatibility
                 compatible_on_op(const Type& t, ast::OpExpr::Op op) const = 0;

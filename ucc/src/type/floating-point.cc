@@ -22,8 +22,7 @@ using namespace ucc;
 using namespace type;
 
 Type::TypeCompatibility
-FloatingPoint::compatible_on_assign(const Type& t,
-                                    ast::AssignExpr::AssignOp) const
+FloatingPoint::compatible_on_assign(const Type& t) const
 {
     const Type* type = &t.actual_type();
 
