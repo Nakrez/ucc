@@ -55,6 +55,15 @@ void TypeChecker::error(const std::string& msg, const ucc::misc::location& loc)
     ucc::misc::DiagnosticReporter::instance_get().add(d);
 }
 
+bool TypeChecker::is_scalar(const Type* t)
+{
+    const Type* actual = &t->actual_type();
+
+    return dynamic_cast<const Ptr*> (actual) ||
+           dynamic_cast<const Number*> (actual) ||
+           dynamic_cast<const Array*> (actual);
+}
+
 void TypeChecker::check_assign_types(const ucc::misc::location& loc,
                                      const Type* t1,
                                      const Type* t2)
@@ -215,6 +224,55 @@ void TypeChecker::operator()(ast::NamedTy& ast)
 void TypeChecker::operator()(ast::RecordTy& ast)
 {
     ast.type_set(ast.def_get()->type_get());
+}
+
+void TypeChecker::operator()(ast::WhileStmt& ast)
+{
+    ucc::ast::DefaultVisitor::operator()(ast);
+
+    if (!is_scalar(ast.cond_get()->type_get()))
+        error("used '" + ast.cond_get()->type_get()->to_str() + "' type where "
+              "scalar is required", ast.location_get());
+}
+
+void TypeChecker::operator()(ast::DoWhileStmt& ast)
+{
+    ucc::ast::DefaultVisitor::operator()(ast);
+
+    if (!is_scalar(ast.cond_get()->type_get()))
+        error("used '" + ast.cond_get()->type_get()->to_str() + "' type where "
+              "scalar is required", ast.location_get());
+}
+
+void TypeChecker::operator()(ast::IfStmt& ast)
+{
+    ucc::ast::DefaultVisitor::operator()(ast);
+
+    if (!is_scalar(ast.cond_get()->type_get()))
+        error("used '" + ast.cond_get()->type_get()->to_str() + "' type where "
+              "scalar is required", ast.location_get());
+}
+
+void TypeChecker::operator()(ast::SwitchStmt& ast)
+{
+    ucc::ast::DefaultVisitor::operator()(ast);
+
+    const Type* t = &ast.cond_get()->type_get()->actual_type();
+    const Integer* i = dynamic_cast<const Integer*> (t);
+
+    if (!i)
+        error("used '" + ast.cond_get()->type_get()->to_str() + "' type as "
+              "switch quantity where integer type is required",
+              ast.location_get());
+}
+
+void TypeChecker::operator()(ast::ForStmt& ast)
+{
+    ucc::ast::DefaultVisitor::operator()(ast);
+
+    if (!is_scalar(ast.cond_get()->type_get()))
+        error("used '" + ast.cond_get()->type_get()->to_str() + "' type where "
+              "scalar is required", ast.location_get());
 }
 
 void TypeChecker::operator()(ast::IntExpr& e)

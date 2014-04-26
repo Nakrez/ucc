@@ -62,6 +62,11 @@ namespace ucc
                                     ast::OpExpr::Op op,
                                     const Type* t1, const Type* t2);
 
+                /// \brief  Return true if the Type @a t is scalar
+                /// \param  t   The type you want to know if it is scalar
+                /// \return true if the Type @a t is scalar, false otherwise
+                bool is_scalar(const Type* t);
+
                 virtual void operator()(ast::VarDecl& ast);
                 virtual void operator()(ast::TypeDecl& ast);
                 virtual void operator()(ast::RecordDecl& ast);
@@ -69,6 +74,12 @@ namespace ucc
                 virtual void operator()(ast::NamedTy& ast);
                 virtual void operator()(ast::PtrTy& ast);
                 virtual void operator()(ast::RecordTy& ast);
+
+                virtual void operator()(ast::WhileStmt& ast);
+                virtual void operator()(ast::DoWhileStmt& ast);
+                virtual void operator()(ast::IfStmt& ast);
+                virtual void operator()(ast::SwitchStmt& ast);
+                virtual void operator()(ast::ForStmt& ast);
 
                 virtual void operator()(ast::IntExpr& e);
                 virtual void operator()(ast::FloatExpr& e);
