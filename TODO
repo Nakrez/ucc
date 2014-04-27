@@ -11,7 +11,11 @@
 
 -- TYPE CHECKER --
 
-- Implement type checker
+- Correct assignation of pointers
+- Update error messages for return statement
+- Handle elipsis parameter
+- Handle case where function pointer receive a function (not other function
+  pointer)
 
 -- IR CONVERTER --
 
