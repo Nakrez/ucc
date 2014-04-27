@@ -36,7 +36,12 @@ const type::Type* TypeBuilder::built_type_get() const
     return built_type_;
 }
 
-void TypeBuilder::built_type_set(const type::Type* t)
+type::Type* TypeBuilder::built_type_get()
+{
+    return built_type_;
+}
+
+void TypeBuilder::built_type_set(type::Type* t)
 {
     built_type_ = t;
 }

@@ -41,17 +41,18 @@ namespace ucc
                 virtual ~TypeBuilder();
 
                 /// Return the built type
+                type::Type* built_type_get();
                 const type::Type* built_type_get() const;
 
                 /// \brief  Set the built type
                 /// \param  t   The built type you want to set
-                void built_type_set(const type::Type* t);
+                void built_type_set(type::Type* t);
 
                 virtual void accept(Visitor& v) = 0;
                 virtual void accept(ConstVisitor& v) const = 0;
 
             protected:
-                const type::Type* built_type_;
+                type::Type* built_type_;
         };
     } // namespace ast
 } // namespace ucc

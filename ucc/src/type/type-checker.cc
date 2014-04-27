@@ -193,30 +193,47 @@ void TypeChecker::operator()(ast::TypeDecl& ast)
 
 void TypeChecker::operator()(ast::RecordDecl& ast)
 {
-    if (ast.fields_get())
+    if (ast.prev_get() && ast.prev_get()->fields_get())
+        ast.type_set(ast.prev_get()->type_get());
+    else
     {
         Record *r = new Record(ast.name_get(),
                                ast.record_type_get() ==
                                ast::RecordDecl::RecordType::STRUCT);
 
-        for (auto f : ast.fields_get()->list_get())
+        if (ast.fields_get())
         {
-            ucc::ast::DefaultVisitor::operator()(*f);
+            // If there is a forward declaration the forward declaration
+            // already built an empty record type so use it
+            if (ast.prev_get())
+            {
+                delete r;
+                r = dynamic_cast<Record*>(ast.prev_get()->built_type_get());
 
-            if (f->ty_get()->type_get() == &Void::instance_get())
-                error("field '" + f->name_get().data_get() + "' "
-                      "declared void", f->location_get());
+                assert(r);
+            }
+            else
+                ast.built_type_set(r);
 
-            r->field_add(f->name_get(), f->ty_get()->type_get());
+            for (auto f : ast.fields_get()->list_get())
+            {
+                ucc::ast::DefaultVisitor::operator()(*f);
+
+                if (f->ty_get()->type_get() == &Void::instance_get())
+                    error("field '" + f->name_get().data_get() + "' "
+                            "declared void", f->location_get());
+
+                r->field_add(f->name_get(), f->ty_get()->type_get());
+            }
+
+            ast.type_set(r);
         }
-
-        ast.built_type_set(r);
-        ast.type_set(r);
-
+        else
+        {
+            ast.built_type_set(r);
+            ast.type_set(r);
+        }
     }
-    else if (ast.prev_get() && ast.prev_get()->fields_get())
-        ast.type_set(ast.prev_get()->type_get());
-
 }
 
 void TypeChecker::operator()(ast::PtrTy& ast)
@@ -403,8 +420,13 @@ void TypeChecker::operator()(ast::VarExpr& ast)
 void TypeChecker::operator()(ast::CallExpr& ast)
 {
     const Type* t = node_type(*ast.var_get());
-    const Function* f = dynamic_cast<const Function*> (t);
+    const Function* f = dynamic_cast<const Function*> (&t->actual_type());
+    const Ptr* p = dynamic_cast<const Ptr*> (&t->actual_type());
     const ast::VarExpr* v = dynamic_cast<const ast::VarExpr*> (ast.var_get());
+
+    // Support for direct call of function pointer
+    if (p)
+        f = dynamic_cast<const Function*> (&p->pointed_type_get()->actual_type());
 
     if (!f)
     {
