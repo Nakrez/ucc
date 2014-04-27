@@ -35,6 +35,7 @@ namespace ucc
                 /// Destructor
                 virtual ~Array() = default;
 
+                /// Return the inner type pointed by the array Type
                 const Type* inner_type_get() const
                 {
                     return inner_type_;
@@ -46,11 +47,6 @@ namespace ucc
                 virtual TypeCompatibility
                 compatible_on_op(const Type& t,
                                  ast::OpExpr::Op op) const override;
-
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
-                }
 
                 virtual std::string to_str() const override
                 {

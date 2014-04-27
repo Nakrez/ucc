@@ -78,7 +78,10 @@ namespace ucc
                 compatible_on_op(const Type& t, ast::OpExpr::Op op) const = 0;
 
                 /// Return the real type behind a node
-                virtual const Type& actual_type() const = 0;
+                virtual const Type& actual_type() const
+                {
+                    return *this;
+                }
 
                 /// Return a string representing the type
                 virtual std::string to_str() const = 0;

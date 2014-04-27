@@ -43,6 +43,9 @@ namespace ucc
                     return return_type_;
                 }
 
+                /// \brief  Add a parameter to the function
+                /// \param  n   The name of the parameter
+                /// \param  t   The type of the paramerer
                 void param_add(const ucc::misc::Symbol& n, const Type* t)
                 {
                     args_.field_add(n, t);
@@ -84,6 +87,7 @@ namespace ucc
                     return has_elipsis_;
                 }
 
+                /// Set if the function contains an elipsis parameter
                 void set_elipsis(bool b = true)
                 {
                     has_elipsis_ = b;
@@ -94,9 +98,6 @@ namespace ucc
                 {
                     // You cannot assign a function to another
                     // You cannot event declare such type
-                    // So this method will be used to check function call
-
-                    /* TODO */
                     return Type::TypeCompatibility::error;
                 }
 
@@ -105,11 +106,6 @@ namespace ucc
                                  ast::OpExpr::Op) const override
                 {
                     return Type::TypeCompatibility::error;
-                }
-
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
                 }
 
                 virtual std::string to_str() const override

@@ -38,8 +38,6 @@ namespace ucc
                 compatible_on_op(const Type& t,
                                  ast::OpExpr::Op op) const override;
 
-                virtual const Type& actual_type() const = 0;
-
                 virtual std::string to_str() const = 0;
         };
     } // namespace type

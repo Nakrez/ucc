@@ -12,10 +12,6 @@
 -- TYPE CHECKER --
 
 - Implement type checker
-- Implement type classes
-
-- Move actual_type() implem to Type class and let other classes decides to
-  override it.
 
 -- IR CONVERTER --
 

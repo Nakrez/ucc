@@ -42,6 +42,8 @@ namespace ucc
 
                 /// Return the built type
                 type::Type* built_type_get();
+
+                /// Return the built type
                 const type::Type* built_type_get() const;
 
                 /// \brief  Set the built type

@@ -44,11 +44,6 @@ namespace ucc
                     return f;
                 }
 
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
-                }
-
                 virtual std::string to_str() const override
                 {
                     return "float";
@@ -74,11 +69,6 @@ namespace ucc
                     static Double d;
 
                     return d;
-                }
-
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
                 }
 
                 virtual std::string to_str() const override
@@ -108,11 +98,6 @@ namespace ucc
                     return c;
                 }
 
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
-                }
-
                 virtual std::string to_str() const override
                 {
                     return "char";
@@ -138,11 +123,6 @@ namespace ucc
                     static UnsignedChar uc;
 
                     return uc;
-                }
-
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
                 }
 
                 virtual std::string to_str() const override
@@ -172,11 +152,6 @@ namespace ucc
                     return s;
                 }
 
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
-                }
-
                 virtual std::string to_str() const override
                 {
                     return "short";
@@ -202,11 +177,6 @@ namespace ucc
                     static UnsignedShort us;
 
                     return us;
-                }
-
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
                 }
 
                 virtual std::string to_str() const override
@@ -236,11 +206,6 @@ namespace ucc
                     return i;
                 }
 
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
-                }
-
                 virtual std::string to_str() const override
                 {
                     return "int";
@@ -266,11 +231,6 @@ namespace ucc
                     static UnsignedInt ui;
 
                     return ui;
-                }
-
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
                 }
 
                 virtual std::string to_str() const override
@@ -300,11 +260,6 @@ namespace ucc
                     return l;
                 }
 
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
-                }
-
                 virtual std::string to_str() const override
                 {
                     return "long";
@@ -330,11 +285,6 @@ namespace ucc
                     static UnsignedLong ul;
 
                     return ul;
-                }
-
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
                 }
 
                 virtual std::string to_str() const override
@@ -364,11 +314,6 @@ namespace ucc
                     return ll;
                 }
 
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
-                }
-
                 virtual std::string to_str() const override
                 {
                     return "long long";
@@ -394,11 +339,6 @@ namespace ucc
                     static UnsignedLongLong ull;
 
                     return ull;
-                }
-
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
                 }
 
                 virtual std::string to_str() const override
@@ -442,11 +382,6 @@ namespace ucc
                 compatible_on_op(const Type&, ast::OpExpr::Op) const override
                 {
                     return Type::TypeCompatibility::error;
-                }
-
-                virtual const Type& actual_type() const override
-                {
-                    return *this;
                 }
 
                 virtual std::string to_str() const override
