@@ -642,13 +642,19 @@ void TypeChecker::operator()(ast::AssignExpr& ast)
 {
     const Type* lvalue = node_type(*ast.lvalue_get());
     const Type* rvalue = node_type(*ast.rvalue_get());
+    const Const* clvalue = dynamic_cast<const Const*> (lvalue);
 
-    if (ast.op_get() == ast::AssignExpr::AssignOp::ASSIGN)
-        check_assign_types(ast.location_get(), lvalue, rvalue);
+    if (clvalue)
+        error("assignment of read-only lvalue", ast.location_get());
     else
-        check_op_types(ast.location_get(),
-                       ast::assign_op_to_op_expr(ast.op_get()),
-                       lvalue, rvalue);
+    {
+        if (ast.op_get() == ast::AssignExpr::AssignOp::ASSIGN)
+            check_assign_types(ast.location_get(), lvalue, rvalue);
+        else
+            check_op_types(ast.location_get(),
+                           ast::assign_op_to_op_expr(ast.op_get()),
+                           lvalue, rvalue);
+    }
 
     ast.type_set(lvalue);
 }
