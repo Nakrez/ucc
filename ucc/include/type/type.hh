@@ -54,6 +54,16 @@ namespace ucc
                 virtual ~Type()
                 {}
 
+                virtual bool operator==(const Type& t) const
+                {
+                    return this == &t.actual_type();
+                }
+
+                bool operator!=(const Type& t) const
+                {
+                    return !(*this == t);
+                }
+
                 /// \brief  Check compatibility of types on assignment
                 /// \param  t   The type to check compatibility with
                 /// \return Type compatibility level

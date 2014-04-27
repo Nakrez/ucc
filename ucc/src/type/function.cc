@@ -24,7 +24,43 @@ using namespace type;
 Function::Function(const Type* return_type)
     : return_type_(return_type)
     , args_("")
+    , has_elipsis_(false)
 {}
 
 Function::~Function()
 {}
+
+bool Function::operator==(const Type& t) const
+{
+    const Function* f = dynamic_cast<const Function*> (&t.actual_type());
+
+    if (!f)
+        return false;
+
+    if (size_get() == 0)
+        return true;
+
+    if (f->size_get() == 0)
+        return true;
+
+    if (no_param() != f->no_param())
+        return false;
+
+    if (has_elipsis_ != f->has_elipsis())
+        return false;
+
+    if (size_get() != f->size_get())
+        return false;
+
+    auto it = f->cbegin();
+    auto tit = cbegin();
+    auto tend = cend();
+
+    for (; tit != tend; ++tit, ++it)
+    {
+        if (*tit->type_get() != *it->type_get())
+            return false;
+    }
+
+    return true;
+}

@@ -151,6 +151,7 @@ void TypeChecker::operator()(ast::FunctionDecl& ast)
     Function *f = new Function(ret_type);
     const Type* p_type;
 
+
     fun_param_ = true;
 
     for (auto p : ast.param_get())
@@ -180,7 +181,9 @@ void TypeChecker::operator()(ast::FunctionDecl& ast)
         declared_fun_ = nullptr;
     }
 
-    /* TODO: Check coherence with forward decl */
+    if (ast.prev_get() && *ast.prev_get()->built_type_get() != *f)
+        error("conflicting types for '" + ast.name_get().data_get() + "'",
+              ast.location_get());
 }
 
 void TypeChecker::operator()(ast::TypeDecl& ast)

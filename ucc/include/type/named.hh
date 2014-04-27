@@ -43,6 +43,11 @@ namespace ucc
                 virtual ~Named()
                 {}
 
+                virtual bool operator==(const Type& t) const override
+                {
+                    return *alias_ == t.actual_type();
+                }
+
                 virtual TypeCompatibility
                 compatible_on_assign(const Type&) const override
                 {

@@ -35,6 +35,8 @@ namespace ucc
                 /// Destructor
                 virtual ~Function();
 
+                virtual bool operator==(const Type& t) const override;
+
                 /// Return the return type of the Function
                 const Type* return_type_get() const
                 {
@@ -74,6 +76,17 @@ namespace ucc
                            dynamic_cast<const Void*>(args_.cbegin()->type_get()) &&
                            args_.cbegin()->name_get() == "";
 
+                }
+
+                /// Return true if the function contains variadic parameters
+                bool has_elipsis() const
+                {
+                    return has_elipsis_;
+                }
+
+                void set_elipsis(bool b = true)
+                {
+                    has_elipsis_ = b;
                 }
 
                 virtual TypeCompatibility
@@ -120,6 +133,7 @@ namespace ucc
             private:
                 const Type* return_type_;
                 Record args_;
+                bool has_elipsis_;
         };
     } // namespace type
 } // namespace ucc
