@@ -121,6 +121,19 @@ void TypeChecker::operator()(ast::VarDecl& ast)
 {
     const Type* var_type = node_type(*ast.ty_get());
 
+    if (var_type == &Void::instance_get())
+    {
+        if (fun_param_)
+        {
+            ast.type_set(var_type);
+
+            return;
+        }
+        else
+            error("variable '" + ast.name_get().data_get() + "' "
+                  "declared void", ast.location_get());
+    }
+
     if (ast.init_get())
     {
         const Type* init_type = node_type(*ast.init_get());
@@ -136,11 +149,25 @@ void TypeChecker::operator()(ast::FunctionDecl& ast)
     bool tmp = fun_param_;
     const Type* ret_type = node_type(*ast.return_ty_get());
     Function *f = new Function(ret_type);
+    const Type* p_type;
 
     fun_param_ = true;
 
     for (auto p : ast.param_get())
+    {
+        p_type = node_type(*p);
+
+        if (p_type == &Void::instance_get())
+        {
+            if (p->name_get() != "")
+                error("parameter '" + p->name_get().data_get() + "' "
+                      "has incomplete type", p->location_get());
+            else if (ast.param_get().size() > 1)
+                error("void must be the only parameter", p->location_get());
+        }
+
         f->param_add(p->name_get(), node_type(*p));
+    }
 
     fun_param_ = tmp;
 
@@ -175,6 +202,10 @@ void TypeChecker::operator()(ast::RecordDecl& ast)
         for (auto f : ast.fields_get()->list_get())
         {
             ucc::ast::DefaultVisitor::operator()(*f);
+
+            if (f->ty_get()->type_get() == &Void::instance_get())
+                error("field '" + f->name_get().data_get() + "' "
+                      "declared void", f->location_get());
 
             r->field_add(f->name_get(), f->ty_get()->type_get());
         }
