@@ -459,11 +459,9 @@ void ucc::parse::Driver::lexer_begin()
     {
         ucc::misc::Diagnostic d;
 
-        d << ucc::misc::Diagnostic::Severity::err
-          << ucc::misc::Diagnostic::Type::scan
-          << "cannot open file " << file_.data_get();
-
-        ucc::misc::DiagnosticReporter::instance_get().add(d);
+        std::cerr << "ucc: error: cannot open file '" << file_ << "'"
+                  << std::endl;
+        exit(2);
     }
 
     yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));
