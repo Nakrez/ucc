@@ -53,15 +53,21 @@ Ptr::compatible_on_assign(const Type& t) const
 {
     const Type* type = &t.actual_type();
     const Ptr* ptr = dynamic_cast<const Ptr*> (type);
+    const Array* a = dynamic_cast<const Array*> (type);
 
     if (ptr)
     {
         if (ptr->is_void_ptr() || is_void_ptr())
             return Type::TypeCompatibility::full;
 
-        return (*this == *ptr) ? Type::TypeCompatibility::full :
+        return (*pointed_type_ == *ptr->pointed_type_get()) ?
+               Type::TypeCompatibility::full :
                Type::TypeCompatibility::warning;
     }
+
+    if (a)
+        return (*this == *a) ? Type::TypeCompatibility::full :
+               Type::TypeCompatibility::warning;
 
     if (dynamic_cast<const Integer*> (type))
         return Type::TypeCompatibility::warning;

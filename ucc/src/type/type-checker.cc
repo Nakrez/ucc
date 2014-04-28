@@ -300,6 +300,18 @@ void TypeChecker::operator()(ast::NamedTy& ast)
     }
 }
 
+void TypeChecker::operator()(ast::ArrayTy& ast)
+{
+    const Type* t = node_type(*ast.sub_ty_get());
+    Array *a = new Array(t);
+
+    ast.built_type_set(a);
+    ast.type_set(a);
+
+    if (ast.size_get())
+        ast.size_get()->accept(*this);
+}
+
 void TypeChecker::operator()(ast::FunctionTy& ast)
 {
     bool tmp = fun_param_;

@@ -33,6 +33,8 @@ namespace ucc
                 Const(const Type* inner_type);
                 virtual ~Const();
 
+                virtual bool operator==(const Type& t) const override;
+
                 /// \brief  Check compatibility of Const type on assignment
                 /// \param  t   The type to check compatibility with
                 /// \return Type compatibility level
@@ -58,7 +60,7 @@ namespace ucc
                 /// Return a string representing the Const type.
                 virtual std::string to_str() const override
                 {
-                    return inner_type_->to_str() + "const";
+                    return inner_type_->to_str() + " const";
                 }
 
                 /// Return the inner type contained by Const instance

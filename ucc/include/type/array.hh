@@ -30,7 +30,7 @@ namespace ucc
             public:
                 /// \brief  Constructor
                 /// \param  inner_type  The type pointed by the array
-                Array(Type* inner_type);
+                Array(const Type* inner_type);
 
                 /// Destructor
                 virtual ~Array() = default;
@@ -54,7 +54,7 @@ namespace ucc
                 }
 
             private:
-                Type* inner_type_;
+                const Type* inner_type_;
         };
     } // namespace type
 } // namespace ucc

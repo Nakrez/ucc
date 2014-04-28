@@ -16,38 +16,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <type/const.hh>
-#include <type/builtin-type.hh>
+#include <type/type.hh>
+#include <type/named.hh>
 
 using namespace ucc;
 using namespace type;
 
-Const::Const(const Type* inner_type)
-    : inner_type_(inner_type)
-{}
-
-Const::~Const()
-{}
-
-bool Const::operator==(const Type& t) const
+bool Type::operator==(const Type& t) const
 {
-    const Const* c = dynamic_cast<const Const*> (&t);
+    const Named* n = dynamic_cast<const Named*> (&t);
 
-    if (!c)
-        return false;
+    if (n)
+        return *this == *n->alias_get();
 
-    return *inner_type_ == *c->inner_type_get();
-}
-
-Type::TypeCompatibility
-Const::compatible_on_assign(const Type& t) const
-{
-    return inner_type_->compatible_on_assign(t);
-}
-
-Type::TypeCompatibility
-Const::compatible_on_op(const Type& t,
-                        ast::OpExpr::Op op) const
-{
-    return inner_type_->compatible_on_op(t, op);
+    return this == &t;
 }

@@ -54,10 +54,7 @@ namespace ucc
                 virtual ~Type()
                 {}
 
-                virtual bool operator==(const Type& t) const
-                {
-                    return this == &t.actual_type();
-                }
+                virtual bool operator==(const Type& t) const;
 
                 bool operator!=(const Type& t) const
                 {

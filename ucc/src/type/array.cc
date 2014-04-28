@@ -18,18 +18,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <type/array.hh>
 #include <type/integer.hh>
+#include <type/ptr.hh>
 
 using namespace ucc;
 using namespace type;
 
-Array::Array(Type* inner_type)
+Array::Array(const Type* inner_type)
     : inner_type_(inner_type)
 {}
 
 Type::TypeCompatibility
-Array::compatible_on_assign(const Type&) const
+Array::compatible_on_assign(const Type& t) const
 {
-    /* TODO */
+    const Array* a = dynamic_cast<const Array*> (&t.actual_type());
+    const Ptr* p = dynamic_cast<const Ptr*> (&t.actual_type());
+
+    if (a)
+        return Type::TypeCompatibility::warning;
+    else if (p)
+        return Type::TypeCompatibility::warning;
 
     return Type::TypeCompatibility::error;
 }

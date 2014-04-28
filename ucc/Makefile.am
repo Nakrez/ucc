@@ -66,6 +66,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/type/record.cc \
 			  src/type/array.cc \
 			  src/type/function.cc \
+			  src/type/type.cc \
 			  src/type/type-checker.cc \
 			  src/type/command.cc \
 			  src/command.cc \
