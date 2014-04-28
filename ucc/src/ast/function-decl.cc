@@ -27,6 +27,7 @@ FunctionDecl::FunctionDecl(const ucc::misc::location& loc,
     : Decl(loc, name)
     , ty_(ty)
     , compound_(nullptr)
+    , prev_(nullptr)
 {}
 
 FunctionDecl::FunctionDecl(const ucc::misc::location& loc,
@@ -36,6 +37,7 @@ FunctionDecl::FunctionDecl(const ucc::misc::location& loc,
     : Decl(loc, name)
     , ty_(ty)
     , compound_(compound)
+    , prev_(nullptr)
 {}
 
 FunctionDecl::~FunctionDecl()

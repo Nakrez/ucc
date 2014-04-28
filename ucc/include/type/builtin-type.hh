@@ -81,6 +81,33 @@ namespace ucc
                 Double() = default;
         };
 
+        class LongDouble : public FloatingPoint
+        {
+            LongDouble(const LongDouble&) = delete;
+            LongDouble& operator=(const LongDouble&) = delete;
+
+            public:
+                /// Destructor
+                virtual ~LongDouble() = default;
+
+                /// Return the LongDouble singleton instance
+                static LongDouble& instance_get()
+                {
+                    static LongDouble ld;
+
+                    return ld;
+                }
+
+                virtual std::string to_str() const override
+                {
+                    return "long double";
+                }
+
+            private:
+                /// Constructor
+                LongDouble() = default;
+        };
+
         class Char : public SignedInteger
         {
             Char(const Char&) = delete;

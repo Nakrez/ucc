@@ -119,6 +119,9 @@ void TypeChecker::check_op_types(const ucc::misc::location& loc,
 
 void TypeChecker::operator()(ast::VarDecl& ast)
 {
+    if (ast.is_elipsis())
+        return;
+
     const Type* var_type = node_type(*ast.ty_get());
 
     if (var_type == &Void::instance_get())
@@ -138,6 +141,7 @@ void TypeChecker::operator()(ast::VarDecl& ast)
     {
         const Type* init_type = node_type(*ast.init_get());
 
+        std::cout << var_type->to_str() << std::endl;
         check_assign_types(ast.location_get(), var_type, init_type);
     }
 
@@ -151,23 +155,27 @@ void TypeChecker::operator()(ast::FunctionDecl& ast)
     Function *f = new Function(ret_type);
     const Type* p_type;
 
-
     fun_param_ = true;
 
     for (auto p : ast.param_get())
     {
-        p_type = node_type(*p);
-
-        if (p_type == &Void::instance_get())
+        if (p->is_elipsis())
+            f->set_elipsis();
+        else
         {
-            if (p->name_get() != "")
-                error("parameter '" + p->name_get().data_get() + "' "
-                      "has incomplete type", p->location_get());
-            else if (ast.param_get().size() > 1)
-                error("void must be the only parameter", p->location_get());
-        }
+            p_type = node_type(*p);
 
-        f->param_add(p->name_get(), node_type(*p));
+            if (p_type == &Void::instance_get())
+            {
+                if (p->name_get() != "")
+                    error("parameter '" + p->name_get().data_get() + "' "
+                          "has incomplete type", p->location_get());
+                else if (ast.param_get().size() > 1)
+                    error("void must be the only parameter", p->location_get());
+            }
+
+            f->param_add(p->name_get(), node_type(*p));
+        }
     }
 
     fun_param_ = tmp;
@@ -288,6 +296,8 @@ void TypeChecker::operator()(ast::NamedTy& ast)
         ast.type_set(&Double::instance_get());
     else if (ast.name_get() == "void")
         ast.type_set(&Void::instance_get());
+    else if (ast.name_get() == "long double")
+        ast.type_set(&LongDouble::instance_get());
     else
         assert(false && "Internal compiler error: Unknown name type");
 
@@ -498,7 +508,8 @@ void TypeChecker::operator()(ast::CallExpr& ast)
     }
 
     if (ast.param_get() &&
-        ast.param_get()->list_get().size() > f->size_get())
+        ast.param_get()->list_get().size() > f->size_get() &&
+        !f->has_elipsis())
     {
         if (v)
             error("too many arguments to function '" + v->name_get().data_get()
@@ -522,15 +533,17 @@ void TypeChecker::operator()(ast::CallExpr& ast)
     }
 
     auto type_it = f->cbegin();
+    auto type_end = f->cend();
+    auto arg_it = ast.param_get()->list_get().cbegin();
+
     const Type* p_type;
 
-    for (auto arg : ast.param_get()->list_get())
+    for (; type_it != type_end; ++type_it, ++arg_it)
     {
-        p_type = node_type(*arg);
+        p_type = node_type(**arg_it);
 
-        check_assign_types(arg->location_get(), p_type, type_it->type_get());
-
-        ++type_it;
+        check_assign_types((*arg_it)->location_get(), p_type,
+                           type_it->type_get());
     }
 }
 
@@ -661,7 +674,6 @@ void TypeChecker::operator()(ast::MemberExpr& ast)
 
     if (!member_type)
     {
-        std::cout << "oups" << std::endl;
         error("'" + rec->to_str() + "' has no member '" +
               ast.name_get().data_get() + "'", ast.location_get());
 
