@@ -66,6 +66,11 @@ namespace ucc
                     return Type::TypeCompatibility::error;
                 }
 
+                const Type* alias_get() const
+                {
+                    return alias_;
+                }
+
                 const Type& actual_type() const override
                 {
                     return alias_->actual_type();

@@ -35,6 +35,8 @@ namespace ucc
                 /// Destructor
                 virtual ~Ptr();
 
+                virtual bool operator==(const Type& t) const override;
+
                 /// \brief  Check compatibility of types on assignment
                 /// \param  t   The type to check compatibility with
                 /// \return Type compatibility level

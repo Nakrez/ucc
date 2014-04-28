@@ -71,7 +71,7 @@ void TypeChecker::check_assign_types(const ucc::misc::location& loc,
                                      const Type* t1,
                                      const Type* t2)
 {
-    Type::TypeCompatibility c;
+    Type::TypeCompatibility c = Type::TypeCompatibility::full;
 
     c = t1->actual_type().compatible_on_assign(*t2);
 

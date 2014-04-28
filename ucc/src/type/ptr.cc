@@ -18,6 +18,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <type/ptr.hh>
 #include <type/builtin-type.hh>
+#include <type/const.hh>
+#include <type/named.hh>
+#include <type/array.hh>
 
 using namespace ucc;
 using namespace type;
@@ -28,6 +31,22 @@ Ptr::Ptr(const Type* pointed_type)
 
 Ptr::~Ptr()
 {}
+
+bool Ptr::operator==(const Type& t) const
+{
+    const Ptr* p = dynamic_cast<const Ptr*> (&t);
+    const Named* n = dynamic_cast<const Named*> (&t);
+    const Array* a = dynamic_cast<const Array*> (&t);
+
+    if (p)
+        return *pointed_type_ == *p->pointed_type_get();
+    else if (n)
+        return *this == *n->alias_get();
+    else if (a)
+        return *pointed_type_ == *a->inner_type_get();
+
+    return false;
+}
 
 Type::TypeCompatibility
 Ptr::compatible_on_assign(const Type& t) const
@@ -40,14 +59,12 @@ Ptr::compatible_on_assign(const Type& t) const
         if (ptr->is_void_ptr() || is_void_ptr())
             return Type::TypeCompatibility::full;
 
-        /* TODO: Check compatibility between pointers */
-        return Type::TypeCompatibility::full;
+        return (*this == *ptr) ? Type::TypeCompatibility::full :
+               Type::TypeCompatibility::warning;
     }
 
     if (dynamic_cast<const Integer*> (type))
-    {
         return Type::TypeCompatibility::warning;
-    }
 
     return Type::TypeCompatibility::error;
 }
