@@ -89,6 +89,7 @@ namespace ucc
                 virtual void operator()(ast::FloatExpr& e);
                 virtual void operator()(ast::StringExpr& e);
                 virtual void operator()(ast::VarExpr& ast);
+                virtual void operator()(ast::SubscriptExpr& ast);
                 virtual void operator()(ast::CallExpr& ast);
                 virtual void operator()(ast::UnaryExpr& ast);
                 virtual void operator()(ast::MemberExpr& ast);

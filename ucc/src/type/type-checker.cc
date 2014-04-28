@@ -432,6 +432,30 @@ void TypeChecker::operator()(ast::VarExpr& ast)
         ast.type_set(fd->built_type_get());
 }
 
+void TypeChecker::operator()(ast::SubscriptExpr& ast)
+{
+    const Type* subscript_type = node_type(*ast.expr_get());
+    const Type* t = node_type(*ast.var_get());
+
+    if (!dynamic_cast<const Integer*> (subscript_type))
+        error("array subscript is no an integer", ast.location_get());
+
+    const Ptr* p = dynamic_cast<const Ptr*> (&t->actual_type());
+    const Array* a = dynamic_cast<const Array*> (&t->actual_type());
+
+    if (p)
+        ast.type_set(p->pointed_type_get());
+    else if (a)
+        ast.type_set(a->inner_type_get());
+    else
+    {
+        error("subscripted value is neither array nor pointer nor vector",
+              ast.location_get());
+
+        ast.type_set(t);
+    }
+}
+
 void TypeChecker::operator()(ast::CallExpr& ast)
 {
     const Type* t = node_type(*ast.var_get());
