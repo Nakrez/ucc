@@ -80,6 +80,20 @@ Ptr::compatible_on_op(const Type& t,
                       ast::OpExpr::Op op) const
 {
     const Type* type = &t.actual_type();
+    const Ptr* ptr = dynamic_cast<const Ptr*> (&t.actual_type());
+
+    if (ptr &&
+        op >= ast::OpExpr::Op::OP_GT &&
+        op <= ast::OpExpr::Op::OP_DIFF)
+    {
+        if (is_void_ptr() || ptr->is_void_ptr())
+            return Type::TypeCompatibility::full;
+
+        if (*pointed_type_ == *ptr->pointed_type_get())
+            return Type::TypeCompatibility::full;
+
+        return Type::TypeCompatibility::warning;
+    }
 
     if (!dynamic_cast<const Integer*> (type))
         return Type::TypeCompatibility::error;
