@@ -9,7 +9,8 @@
 
 -- BIND --
 
-- Fix handling of incomplete type pointers which are supposed to work
+- Fix some incomplete type pointers which are supposed to work
+  (see incomplete-type-ptr-2.c test in bind/good)
 
 -- TYPE CHECKER --
 

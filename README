@@ -43,7 +43,7 @@ ucc: Micro C compiler
 - AST : 90% (cannot embed "__asm__" statements and "gcc __attribute__")
 - PRETTY-PRINTER : 90% (print the generated AST from the code)
 - BINDER : 90% (link usage of variables, types, ... To their definitions)
-- TYPE CHECKER : 0%
+- TYPE CHECKER : 90% (verify type correctness from input file)
 - MIDDLE END : 0%
 - BACK END : 0%
 
@@ -64,7 +64,11 @@ at b.covolatoATgmail.com
 
 * Note
 
-UCPP is not working for now (more interesting and funnier to work on the
-actual compiler).
-So you need first to preprocess (or not use C preprocessor directive)
-input files before running UCC on it.
+- UCPP is not working for now (more interesting and funnier to work on the
+actual compiler). So you need first to preprocess (or not use C preprocessor
+directive) input files before running UCC on it.
+
+- Unfortunately LIBC headers uses a lot gcc attributes, as well as variadic
+parameters type, which are not handled by UCC for now. So to test your code you
+will have to declare C standard function that you want to use (malloc,
+printf, ...) and avoid LIBC headers.
