@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <type/const.hh>
 #include <type/named.hh>
 #include <type/array.hh>
+#include <type/function.hh>
 
 using namespace ucc;
 using namespace type;
@@ -54,6 +55,7 @@ Ptr::compatible_on_assign(const Type& t) const
     const Type* type = &t.actual_type();
     const Ptr* ptr = dynamic_cast<const Ptr*> (type);
     const Array* a = dynamic_cast<const Array*> (type);
+    const Function* f = dynamic_cast<const Function*> (type);
 
     if (ptr)
     {
@@ -67,6 +69,10 @@ Ptr::compatible_on_assign(const Type& t) const
 
     if (a)
         return (*this == *a) ? Type::TypeCompatibility::full :
+               Type::TypeCompatibility::warning;
+
+    if (f)
+        return (*pointed_type_ == *f) ? Type::TypeCompatibility::full :
                Type::TypeCompatibility::warning;
 
     if (dynamic_cast<const Integer*> (type))

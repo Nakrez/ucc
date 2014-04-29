@@ -9,11 +9,12 @@
 
 -- BIND --
 
+- Fix handling of incomplete type pointers which are supposed to work
+
 -- TYPE CHECKER --
 
 - Update error messages for return statement
-- Handle case where function pointer receive a function (not other function
-  pointer)
+- Fix handling of incomplete type pointers which are supposed to work
 
 -- IR CONVERTER --
 
@@ -34,4 +35,3 @@
 
 - Correct locations starting at 0
 - Add support of #line locations
-- Fix handling of incomplete type pointers which are supposed to work
