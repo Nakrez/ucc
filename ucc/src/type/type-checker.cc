@@ -575,9 +575,20 @@ void TypeChecker::operator()(ast::UnaryExpr& ast)
                 const Array* a = dynamic_cast<const Array*> (actual);
 
                 if (p)
+                {
+                    if (!p->pointed_type_get()->is_complete())
+                        error("dereferencing pointer to incomplete type",
+                              ast.location_get());
+
                     ast.type_set(p->pointed_type_get());
+                }
                 else if (a)
+                {
+                    if (!a->inner_type_get()->is_complete())
+                        error("dereferencing pointer to incomplete type",
+                              ast.location_get());
                     ast.type_set(a->inner_type_get());
+                }
                 else
                 {
                     error("invalid type of argument of unary '*' (have '" +
