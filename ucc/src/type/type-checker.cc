@@ -541,8 +541,8 @@ void TypeChecker::operator()(ast::CallExpr& ast)
     {
         p_type = node_type(**arg_it);
 
-        check_assign_types((*arg_it)->location_get(), p_type,
-                           type_it->type_get());
+        check_assign_types((*arg_it)->location_get(), type_it->type_get(),
+                           p_type);
     }
 }
 

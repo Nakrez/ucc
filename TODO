@@ -14,7 +14,6 @@
 - Update error messages for return statement
 - Handle case where function pointer receive a function (not other function
   pointer)
-- Fix wrong const warning
 
 -- IR CONVERTER --
 

@@ -34,7 +34,7 @@ bool Const::operator==(const Type& t) const
     const Const* c = dynamic_cast<const Const*> (&t);
 
     if (!c)
-        return false;
+        return *inner_type_ == t;
 
     return *inner_type_ == *c->inner_type_get();
 }
