@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-OpExpr::OpExpr(const ucc::parse::location& loc,
+OpExpr::OpExpr(const ucc::misc::location& loc,
                Expr* lexpr,
                Op op,
                Expr* rexpr)
@@ -115,4 +115,49 @@ void OpExpr::accept(Visitor& v)
 void OpExpr::accept(ConstVisitor& v) const
 {
     v(*this);
+}
+
+std::string ast::op_to_str(OpExpr::Op op)
+{
+    switch (op)
+    {
+        case OpExpr::Op::OP_PLUS:
+            return "+";
+        case OpExpr::Op::OP_MINUS:
+            return "-";
+        case OpExpr::Op::OP_MUL:
+            return "*";
+        case OpExpr::Op::OP_DIV:
+            return "/";
+        case OpExpr::Op::OP_MOD:
+            return "%";
+        case OpExpr::Op::OP_LSHIFT:
+            return "<<";
+        case OpExpr::Op::OP_RSHIFT:
+            return ">>";
+        case OpExpr::Op::OP_GT:
+            return ">";
+        case OpExpr::Op::OP_GE:
+            return ">=";
+        case OpExpr::Op::OP_LT:
+            return "<";
+        case OpExpr::Op::OP_LE:
+            return "<=";
+        case OpExpr::Op::OP_EQ:
+            return "==";
+        case OpExpr::Op::OP_DIFF:
+            return "!=";
+        case OpExpr::Op::OP_BAND:
+            return "&";
+        case OpExpr::Op::OP_XOR:
+            return "^";
+        case OpExpr::Op::OP_BOR:
+            return "|";
+        case OpExpr::Op::OP_AND:
+            return "&&";
+        case OpExpr::Op::OP_OR:
+            return "||";
+        case OpExpr::Op::OP_COMA:
+            return ",";
+    }
 }

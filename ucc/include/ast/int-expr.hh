@@ -28,7 +28,7 @@ namespace ucc
         class IntExpr : public Expr
         {
             public:
-                IntExpr(const ucc::parse::location& loc, int val);
+                IntExpr(const ucc::misc::location& loc, int val);
                 virtual ~IntExpr();
 
                 int value_get() const;

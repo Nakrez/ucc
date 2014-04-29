@@ -1,3 +1,6 @@
+# DOXYGEN SUPPORT
+include $(top_srcdir)/aminclude.am
+
 export AM_CXXFLAGS
 export ACLOCAL_AMFLAGS
 

@@ -1,9 +1,22 @@
-%require "2.4"
+%require "2.7"
+%language "C++"
+
 %skeleton "glr.cc"
+
+%glr-parser
+
+%define api.namespace { ucc::parse }
+%define parser_class_name { Parser }
+
+%debug
+%defines
+%verbose
+%error-verbose
 
 %code requires
 {
 # include <string>
+# include <misc/diagnostic-reporter.hh>
 # include <misc/symbol.hh>
 # include <ast/fwd.hh>
 # include <ast/all.hh>
@@ -22,17 +35,12 @@ typedef ucc::ast::DeclSpecifier::TypeQualifier TypeQualifier;
 typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 }
 
-%glr-parser
-
-%define api.namespace { ucc::parse }
-
-%define parser_class_name { Parser }
-
-%debug
-%defines
-%verbose
-%error-verbose
+%define api.location.type { ucc::misc::location };
 %locations
+%initial-action
+{
+    @$.begin.filename = @$.end.filename = &driver.file_get().data_get();
+};
 
 %parse-param { ucc::parse::Driver& driver }
 %lex-param { ucc::parse::Driver& driver }
@@ -40,6 +48,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %code
 {
 # include <parse/driver.hh>
+# include <misc/location.hh>
 }
 
 %union
@@ -57,7 +66,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::DeclList* decl_list;
     ucc::ast::StmtList* stmt_list;
     ucc::ast::VarDecl* vardecl;
-    ucc::ast::PtrType* ptr_type;
+    ucc::ast::PtrTy* ptr_type;
     ucc::ast::FunctionDecl* fun_decl;
     ucc::ast::AstList* ast_list;
     ucc::ast::Ast* ast;
@@ -71,9 +80,8 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
     ucc::ast::RecordDecl::RecordType rec_type;
     ucc::ast::EnumExprDecl* enum_expr_decl;
     ucc::ast::EnumExprList* enum_expr_list;
-    ucc::ast::Type* type;
+    ucc::ast::Ty* type;
 }
-
 
 %token<symbol>  IDENTIFIER      "identifier"
                 TYPEDEF_NAME    "typedef_name"
@@ -752,25 +760,25 @@ declaration
     {
         ucc::ast::Decl* new_decl = nullptr;
         $$ = new ucc::ast::DeclList(@1);
-        ucc::ast::Type* type;
+        ucc::ast::Ty* type;
 
         if ($1->decl_get())
             $$->push_back(std::shared_ptr<ucc::ast::Decl>($1->decl_get()));
         else if (driver.sym_.size() == 1 || $1->is_typedef())
         {
-            ucc::ast::Type* t;
-            ucc::ast::RecordType* rt;
-            ucc::ast::EnumType* et;
+            ucc::ast::Ty* t;
+            ucc::ast::RecordTy* rt;
+            ucc::ast::EnumTy* et;
 
-            t = $1->type_get();
-            rt = dynamic_cast<ucc::ast::RecordType*>(t);
-            et = dynamic_cast<ucc::ast::EnumType*>(t);
+            t = $1->ty_get();
+            rt = dynamic_cast<ucc::ast::RecordTy*>(t);
+            et = dynamic_cast<ucc::ast::EnumTy*>(t);
 
             if (rt)
                 $$->push_back(std::shared_ptr<ucc::ast::Decl>(
                                 new ucc::ast::RecordDecl(@1,
                                                         rt->name_get(),
-                                                        rt->type_get(),
+                                                        rt->record_type_get(),
                                                         nullptr)));
             else if (et)
                 $$->push_back(std::shared_ptr<ucc::ast::Decl>(
@@ -783,12 +791,12 @@ declaration
 
         for (auto decl : *$2)
         {
-            type = decl->type_get();
+            type = decl->ty_get();
 
             if (!type)
-                type = $1->type_get();
+                type = $1->ty_get();
             else
-                type->extends_type($1->type_get());
+                type->extends_ty($1->ty_get());
 
             if ($1->is_typedef())
             {
@@ -799,10 +807,10 @@ declaration
                 driver.sym_.put(decl->name_get().data_get(),
                     ucc::parse::Parser::token::TYPEDEF_NAME);
             }
-            else if (type && dynamic_cast<ucc::ast::FunctionType*>(type))
+            else if (type && dynamic_cast<ucc::ast::FunctionTy*>(type))
             {
-                ucc::ast::FunctionType* t;
-                t = dynamic_cast<ucc::ast::FunctionType*>(type);
+                ucc::ast::FunctionTy* t;
+                t = dynamic_cast<ucc::ast::FunctionTy*>(type);
 
                 new_decl = new ucc::ast::FunctionDecl(@1, decl->name_get(), t);
             }
@@ -827,7 +835,7 @@ declaration_specifiers
     : storage_class_specifier declaration_specifiers
     {
         $$ = $1;
-        $$->merge($2, driver.error_);
+        $$->merge($2);
 
         delete $2;
     }
@@ -838,7 +846,7 @@ declaration_specifiers
     | type_specifier declaration_specifiers
     {
         $$ = $1;
-        $$->merge($2, driver.error_);
+        $$->merge($2);
 
         delete $2;
     }
@@ -849,14 +857,14 @@ declaration_specifiers
     | type_qualifier attribute_spec declaration_specifiers
     {
         $$ = $1;
-        $$->merge($3, driver.error_);
+        $$->merge($3);
 
         delete $3;
     }
     | type_qualifier declaration_specifiers
     {
         $$ = $1;
-        $$->merge($2, driver.error_);
+        $$->merge($2);
         delete $2;
     }
     | type_qualifier
@@ -870,7 +878,7 @@ declaration_specifiers
     | function_specifier declaration_specifiers
     {
         $$ = $1;
-        $$->merge($2, driver.error_);
+        $$->merge($2);
         delete $2;
     }
     | function_specifier
@@ -912,32 +920,28 @@ storage_class_specifier
     : "typedef"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_typedef,
-                              driver.error_);
+        $$->storage_class_set(StorageClassSpecifier::SCS_typedef);
     }
     | "extern"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_extern,
-                              driver.error_);
+        $$->storage_class_set(StorageClassSpecifier::SCS_extern);
     }
     | "static"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_static,
-                              driver.error_);
+        $$->storage_class_set(StorageClassSpecifier::SCS_static);
     }
     /*| "_Thread_local"*/
     | "auto"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_auto, driver.error_);
+        $$->storage_class_set(StorageClassSpecifier::SCS_auto);
     }
     | "register"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->storage_class_set(StorageClassSpecifier::SCS_register,
-                              driver.error_);
+        $$->storage_class_set(StorageClassSpecifier::SCS_register);
     }
     ;
 
@@ -945,47 +949,47 @@ type_specifier
     : "void"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_void, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_void);
     }
     | "char"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_char, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_char);
     }
     | "short"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_short, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_short);
     }
     | "int"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_int, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_int);
     }
     | "long"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_long, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_long);
     }
     | "float"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_float, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_float);
     }
     | "double"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_double, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_double);
     }
     | "signed"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_signed, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_signed);
     }
     | "unsigned"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_unsigned, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_unsigned);
     }
     /*| "_Bool"*/
     /*| "_Complex"*/
@@ -993,7 +997,7 @@ type_specifier
     /*| atomic_type_specifier*/
     | struct_or_union_specifier
     {
-        ucc::ast::RecordType* ty = dynamic_cast<ucc::ast::RecordType*>($1);
+        ucc::ast::RecordTy* ty = dynamic_cast<ucc::ast::RecordTy*>($1);
         ucc::ast::RecordDecl* decl = dynamic_cast<ucc::ast::RecordDecl*>($1);
 
         $$ = new ucc::ast::DeclSpecifier(@1);
@@ -1002,10 +1006,11 @@ type_specifier
         {
             $$->type_name_set(ty->name_get());
 
-            if (ty->type_get() == ucc::ast::RecordDecl::RecordType::STRUCT)
-                $$->type_specifier_set(TypeSpecifier::TS_struct, driver.error_);
+            if (ty->record_type_get() ==
+                ucc::ast::RecordDecl::RecordType::STRUCT)
+                $$->type_specifier_set(TypeSpecifier::TS_struct);
             else
-                $$->type_specifier_set(TypeSpecifier::TS_union, driver.error_);
+                $$->type_specifier_set(TypeSpecifier::TS_union);
 
             delete ty;
         }
@@ -1014,15 +1019,16 @@ type_specifier
             $$->type_name_set(decl->name_get());
             $$->decl_set(decl);
 
-            if (decl->type_get() == ucc::ast::RecordDecl::RecordType::STRUCT)
-                $$->type_specifier_set(TypeSpecifier::TS_struct, driver.error_);
+            if (decl->record_type_get() ==
+                ucc::ast::RecordDecl::RecordType::STRUCT)
+                $$->type_specifier_set(TypeSpecifier::TS_struct);
             else
-                $$->type_specifier_set(TypeSpecifier::TS_union, driver.error_);
+                $$->type_specifier_set(TypeSpecifier::TS_union);
         }
     }
     | enum_specifier
     {
-        ucc::ast::EnumType* ty = dynamic_cast<ucc::ast::EnumType*>($1);
+        ucc::ast::EnumTy* ty = dynamic_cast<ucc::ast::EnumTy*>($1);
         ucc::ast::EnumDecl* decl = dynamic_cast<ucc::ast::EnumDecl*>($1);
 
         $$ = new ucc::ast::DeclSpecifier(@1);
@@ -1039,12 +1045,12 @@ type_specifier
             $$->decl_set(decl);
         }
 
-        $$->type_specifier_set(TypeSpecifier::TS_enum, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_enum);
     }
     | "typedef_name"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_specifier_set(TypeSpecifier::TS_type_name, driver.error_);
+        $$->type_specifier_set(TypeSpecifier::TS_type_name);
         $$->type_name_set(*$1);
 
         delete $1;
@@ -1076,13 +1082,13 @@ struct_or_union_specifier
     }
     | struct_or_union "identifier"
     {
-        $$ = new ucc::ast::RecordType(@1, $1, *$2);
+        $$ = new ucc::ast::RecordTy(@1, $1, *$2);
 
         delete $2;
     }
     | struct_or_union attribute_spec "identifier"
     {
-        $$ = new ucc::ast::RecordType(@1, $1, *$3);
+        $$ = new ucc::ast::RecordTy(@1, $1, *$3);
 
         delete $3;
     }
@@ -1116,18 +1122,18 @@ struct_declaration_list
 struct_declaration
     : specifier_qualifier_list struct_declarator_list ";"
     {
-        ucc::ast::Type* type;
+        ucc::ast::Ty* ty;
 
         for (auto decl : $2->list_get())
         {
-            type = decl->type_get();
+            ty = decl->ty_get();
 
-            if (!type)
-                type = $1->type_get();
+            if (!ty)
+                ty = $1->ty_get();
             else
-                type->extends_type($1->type_get());
+                ty->extends_ty($1->ty_get());
 
-            decl->type_set(type);
+            decl->ty_set(ty);
 
             decl->storage_class_set($1->storage_class_get());
         }
@@ -1146,7 +1152,7 @@ specifier_qualifier_list
     : type_specifier specifier_qualifier_list
     {
         $$ = $1;
-        $$->merge($2, driver.error_);
+        $$->merge($2);
 
         delete $2;
     }
@@ -1157,7 +1163,7 @@ specifier_qualifier_list
     | type_qualifier specifier_qualifier_list
     {
         $$ = $1;
-        $$->merge($2, driver.error_);
+        $$->merge($2);
 
         delete $2;
     }
@@ -1187,13 +1193,13 @@ struct_declarator
     }
     | declarator ":" constant_expression
     {
-        $$ = new ucc::ast::FieldDecl(@1, $1->name_get(), $1->type_get(), $3);
+        $$ = new ucc::ast::FieldDecl(@1, $1->name_get(), $1->ty_get(), $3);
 
         delete $1;
     }
     | declarator
     {
-        $$ = new ucc::ast::FieldDecl(@1, $1->name_get(), $1->type_get(), nullptr);
+        $$ = new ucc::ast::FieldDecl(@1, $1->name_get(), $1->ty_get(), nullptr);
 
         delete $1;
     }
@@ -1222,7 +1228,7 @@ enum_specifier
     }
     | "enum" "identifier"
     {
-        $$ = new ucc::ast::EnumType(@1, *$2);
+        $$ = new ucc::ast::EnumTy(@1, *$2);
 
         delete $2;
     }
@@ -1263,17 +1269,17 @@ type_qualifier
     : "const"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_qualifier_set(TypeQualifier::TQ_const, driver.error_);
+        $$->type_qualifier_set(TypeQualifier::TQ_const);
     }
     | "restrict"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_qualifier_set(TypeQualifier::TQ_restrict, driver.error_);
+        $$->type_qualifier_set(TypeQualifier::TQ_restrict);
     }
     | "volatile"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->type_qualifier_set(TypeQualifier::TQ_volatile, driver.error_);
+        $$->type_qualifier_set(TypeQualifier::TQ_volatile);
     }
     /*| "_Atomic"*/
     ;
@@ -1282,7 +1288,7 @@ function_specifier
     : "inline"
     {
         $$ = new ucc::ast::DeclSpecifier(@1);
-        $$->function_specifier_set(FunctionSpecifier::FS_inline, driver.error_);
+        $$->function_specifier_set(FunctionSpecifier::FS_inline);
     }
     /*| "_Noreturn"*/
     ;
@@ -1297,22 +1303,22 @@ alignment_specifier
 declarator
     : pointer direct_declarator
     {
-        $2->extends_type($1);
+        $2->extends_ty($1);
         $$ = $2;
     }
     | attribute_spec pointer direct_declarator
     {
-        $3->extends_type($2);
+        $3->extends_ty($2);
         $$ = $3;
     }
     | attribute_spec pointer direct_declarator attribute_spec
     {
-        $3->extends_type($2);
+        $3->extends_ty($2);
         $$ = $3;
     }
     | pointer direct_declarator attribute_spec
     {
-        $2->extends_type($1);
+        $2->extends_ty($1);
         $$ = $2;
     }
     | direct_declarator
@@ -1346,19 +1352,19 @@ direct_declarator
     | direct_declarator "[" "]"
     {
         $$ = $1;
-        if (!$$->extends_type(new ucc::ast::ArrayType(@2)))
+        if (!$$->extends_ty(new ucc::ast::ArrayTy(@2)))
             yyparser.error(@2, "incompatible type used with array");
     }
     | direct_declarator "[" constant_expression "]"
     {
         $$ = $1;
-        if (!$$->extends_type(new ucc::ast::ArrayType(@2, $3)))
+        if (!$$->extends_ty(new ucc::ast::ArrayTy(@2, $3)))
             yyparser.error(@2, "incompatible type used with array");
     }
     | direct_declarator "(" parameter_type_list ")"
     {
         $$ = $1;
-        if (!$$->extends_type(new ucc::ast::FunctionType(@2, *$3)))
+        if (!$$->extends_ty(new ucc::ast::FunctionTy(@2, *$3)))
             yyparser.error(@2, "incompatible type used with function");
 
         delete $3;
@@ -1366,7 +1372,7 @@ direct_declarator
     | direct_declarator "(" ")"
     {
         $$ = $1;
-        if (!$$->extends_type(new ucc::ast::FunctionType(@2)))
+        if (!$$->extends_ty(new ucc::ast::FunctionTy(@2)))
             yyparser.error(@2, "incompatible type used with function");
     }
     | direct_declarator "(" identifier_list ")"
@@ -1383,11 +1389,11 @@ direct_declarator
 pointer
     : "*" type_qualifier_list pointer
     {
-        $$ = new ucc::ast::PtrType(@1);
+        $$ = new ucc::ast::PtrTy(@1);
         $$->const_set($2->is_const());
         $$->restrict_set($2->is_restrict());
         $$->volatile_set($2->is_volatile());
-        $3->extends_type($$);
+        $3->extends_ty($$);
 
         $$ = $3;
 
@@ -1395,7 +1401,7 @@ pointer
     }
     | "*" type_qualifier_list
     {
-        $$ = new ucc::ast::PtrType(@1);
+        $$ = new ucc::ast::PtrTy(@1);
         $$->const_set($2->is_const());
         $$->restrict_set($2->is_restrict());
         $$->volatile_set($2->is_volatile());
@@ -1404,14 +1410,14 @@ pointer
     }
     | "*" pointer
     {
-        $$ = new ucc::ast::PtrType(@1);
-        $2->extends_type($$);
+        $$ = new ucc::ast::PtrTy(@1);
+        $2->extends_ty($$);
 
         $$ = $2;
     }
     | "*"
     {
-        $$ = new ucc::ast::PtrType(@1);
+        $$ = new ucc::ast::PtrTy(@1);
     }
     ;
 
@@ -1425,11 +1431,11 @@ type_qualifier_list
         $$ = $1;
 
         if ($2->is_const())
-            $$->type_qualifier_set(TypeQualifier::TQ_const, driver.error_);
+            $$->type_qualifier_set(TypeQualifier::TQ_const);
         if ($2->is_restrict())
-            $$->type_qualifier_set(TypeQualifier::TQ_restrict, driver.error_);
+            $$->type_qualifier_set(TypeQualifier::TQ_restrict);
         if ($2->is_restrict())
-            $$->type_qualifier_set(TypeQualifier::TQ_volatile, driver.error_);
+            $$->type_qualifier_set(TypeQualifier::TQ_volatile);
 
         delete $2;
     }
@@ -1468,12 +1474,12 @@ parameter_declaration
             ucc::ast::DeclSpecifier::StorageClassSpecifier::SCS_unspecified)
             yyparser.error(@1, "parameter can not have storage class");
 
-        ucc::ast::Type* t = $2->type_get();
+        ucc::ast::Ty* t = $2->ty_get();
 
         if (!t)
-            t = $1->type_get();
+            t = $1->ty_get();
         else
-            t->extends_type($1->type_get());
+            t->extends_ty($1->ty_get());
 
         $$ = new ucc::ast::VarDecl(@1, $2->name_get(), t, nullptr);
 
@@ -1486,12 +1492,12 @@ parameter_declaration
             ucc::ast::DeclSpecifier::StorageClassSpecifier::SCS_unspecified)
             yyparser.error(@1, "parameter can not have storage class");
 
-        ucc::ast::Type* t = $2->type_get();
+        ucc::ast::Ty* t = $2->ty_get();
 
         if (!t)
-            t = $1->type_get();
+            t = $1->ty_get();
         else
-            t->extends_type($1->type_get());
+            t->extends_ty($1->ty_get());
 
         $$ = new ucc::ast::VarDecl(@1, $2->name_get(), t, nullptr);
 
@@ -1504,7 +1510,7 @@ parameter_declaration
             ucc::ast::DeclSpecifier::StorageClassSpecifier::SCS_unspecified)
             yyparser.error(@1, "parameter can not have storage class");
         else
-            $$ = new ucc::ast::VarDecl(@1, "", $1->type_get(), nullptr);
+            $$ = new ucc::ast::VarDecl(@1, "", $1->ty_get(), nullptr);
 
         delete $1;
     }
@@ -1518,9 +1524,9 @@ identifier_list
 type_name
     : specifier_qualifier_list abstract_declarator
     {
-        $$ = $2->type_get();
+        $$ = $2->ty_get();
 
-        if (!$$->extends_type($1->type_get()))
+        if (!$$->extends_ty($1->ty_get()))
             yyparser.error(@1, "incompatible type combinaison");
 
         delete $1;
@@ -1528,7 +1534,7 @@ type_name
     }
     | specifier_qualifier_list
     {
-        $$ = $1->type_get();
+        $$ = $1->ty_get();
 
         delete $1;
     }
@@ -1537,13 +1543,13 @@ type_name
 abstract_declarator
     : pointer direct_abstract_declarator
     {
-        $2->extends_type($1);
+        $2->extends_ty($1);
         $$ = $2;
     }
     | pointer
     {
         $$ = new ucc::ast::Declarator(@1, "");
-        $$->extends_type($1);
+        $$->extends_ty($1);
     }
     | direct_abstract_declarator
     {
@@ -1560,28 +1566,28 @@ direct_abstract_declarator
     {
         $$ = new ucc::ast::Declarator(@1, "");
 
-        if (!$$->extends_type(new ucc::ast::ArrayType(@2)))
+        if (!$$->extends_ty(new ucc::ast::ArrayTy(@2)))
             yyparser.error(@2, "incompatible type used with array");
     }
     | "[" constant_expression "]"
     {
         $$ = new ucc::ast::Declarator(@1, "");
 
-        if (!$$->extends_type(new ucc::ast::ArrayType(@2, $2)))
+        if (!$$->extends_ty(new ucc::ast::ArrayTy(@2, $2)))
             yyparser.error(@2, "incompatible type used with array");
     }
     | direct_abstract_declarator "[" "]"
     {
         $$ = $1;
 
-        if (!$$->extends_type(new ucc::ast::ArrayType(@2)))
+        if (!$$->extends_ty(new ucc::ast::ArrayTy(@2)))
             yyparser.error(@2, "incompatible type used with array");
     }
     | direct_abstract_declarator "[" constant_expression "]"
     {
         $$ = $1;
 
-        if (!$$->extends_type(new ucc::ast::ArrayType(@2, $3)))
+        if (!$$->extends_ty(new ucc::ast::ArrayTy(@2, $3)))
             yyparser.error(@2, "incompatible type used with array");
     }
 /*
@@ -1603,14 +1609,14 @@ direct_abstract_declarator
     | "(" ")"
     {
         $$ = new ucc::ast::Declarator(@1, "");
-        if (!$$->extends_type(new ucc::ast::FunctionType(@2)))
+        if (!$$->extends_ty(new ucc::ast::FunctionTy(@2)))
             yyparser.error(@2, "incompatible type used with function");
     }
     | "(" parameter_type_list ")"
     {
         $$ = new ucc::ast::Declarator(@1, "");
 
-        if (!$$->extends_type(new ucc::ast::FunctionType(@2, *$2)))
+        if (!$$->extends_ty(new ucc::ast::FunctionTy(@2, *$2)))
             yyparser.error(@2, "incompatible type used with function");
 
         delete $2;
@@ -1618,14 +1624,14 @@ direct_abstract_declarator
     | direct_abstract_declarator "(" ")"
     {
         $$ = $1;
-        if (!$$->extends_type(new ucc::ast::FunctionType(@2)))
+        if (!$$->extends_ty(new ucc::ast::FunctionTy(@2)))
             yyparser.error(@2, "incompatible type used with function");
     }
     | direct_abstract_declarator "(" parameter_type_list ")"
     {
         $$ = $1;
 
-        if (!$$->extends_type(new ucc::ast::FunctionType(@2, *$3)))
+        if (!$$->extends_ty(new ucc::ast::FunctionTy(@2, *$3)))
             yyparser.error(@2, "incompatible type used with function");
 
         delete $3;
@@ -1896,23 +1902,23 @@ function_definition
     }
     | declaration_specifiers declarator compound_statement
     {
-        ucc::ast::Type* type;
+        ucc::ast::Ty* ty;
 
-        type = $2->type_get();
+        ty = $2->ty_get();
 
-        if (!type)
-            type = $1->type_get();
+        if (!ty)
+            ty = $1->ty_get();
         else
-            type->extends_type($1->type_get());
+            ty->extends_ty($1->ty_get());
 
         if ($1->is_typedef())
             yyparser.error(@1,
                            "Cannot define function with typedef specifier");
 
-        else if (type && dynamic_cast<ucc::ast::FunctionType*>(type))
+        else if (ty && dynamic_cast<ucc::ast::FunctionTy*>(ty))
         {
-            ucc::ast::FunctionType* t;
-            t = dynamic_cast<ucc::ast::FunctionType*>(type);
+            ucc::ast::FunctionTy* t;
+            t = dynamic_cast<ucc::ast::FunctionTy*>(ty);
 
             $$ = new ucc::ast::FunctionDecl(@1, $2->name_get(), t, $3);
             $$->storage_class_set($1->storage_class_get());
@@ -1930,14 +1936,14 @@ function_definition
     }
     | declarator compound_statement
     {
-        ucc::ast::Type* type = $1->type_get();
+        ucc::ast::Ty* ty = $1->ty_get();
 
-        type->extends_type(new ucc::ast::NamedType(@1, "int"));
+        ty->extends_ty(new ucc::ast::NamedTy(@1, "int"));
 
-        if (type && dynamic_cast<ucc::ast::FunctionType*>(type))
+        if (ty && dynamic_cast<ucc::ast::FunctionTy*>(ty))
         {
-            ucc::ast::FunctionType* t;
-            t = dynamic_cast<ucc::ast::FunctionType*>(type);
+            ucc::ast::FunctionTy* t;
+            t = dynamic_cast<ucc::ast::FunctionTy*>(ty);
 
             $$ = new ucc::ast::FunctionDecl(@1, $1->name_get(), t, $2);
             $$->storage_class_set($1->storage_class_get());
@@ -2011,10 +2017,11 @@ format_archetype
 
 %%
 
-void ucc::parse::Parser::error(ucc::parse::location const& l,
+void ucc::parse::Parser::error(ucc::misc::location const& l,
                                std::string const& s)
 {
-    driver.error_ << ucc::misc::Error::Type::parse
-                  << driver.file_get() << ":"  << l << ": error: "
-                  << s << std::endl;
+    ucc::misc::Diagnostic d(ucc::misc::Diagnostic::Severity::err,
+                            ucc::misc::Diagnostic::Type::parse,
+                            s, l);
+    ucc::misc::DiagnosticReporter::instance_get().add(d);
 }

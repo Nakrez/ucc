@@ -22,46 +22,114 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <list>
 
 # include <ast/decl.hh>
+# include <ast/function-ty.hh>
+# include <ast/type-builder.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class FunctionType;
+        class FunctionTy;
 
-        class FunctionDecl : public Decl
+        /// Represent a function declaration in the ast
+        class FunctionDecl : public Decl, public TypeBuilder
         {
             public:
-                FunctionDecl(const ucc::parse::location& loc,
+                /// \brief  Constructor
+                /// \param  loc     The location of the FunctionDecl
+                /// \param  name    The name of the function
+                /// \param  ty      The signature of the function
+                FunctionDecl(const ucc::misc::location& loc,
                              const ucc::misc::Symbol& name,
-                             FunctionType* type);
-                FunctionDecl(const ucc::parse::location& loc,
+                             FunctionTy* ty);
+
+                /// \brief  Constructor
+                /// \param  loc         The location of the FunctionDecl
+                /// \param  name        The name of the function
+                /// \param  ty          The signature of the function
+                /// \param  compound    The body of the function
+                FunctionDecl(const ucc::misc::location& loc,
                              const ucc::misc::Symbol& name,
-                             FunctionType* type,
+                             FunctionTy* ty,
                              CompoundStmt* compound);
+
+                /// Destructor
                 virtual ~FunctionDecl();
 
-                const CompoundStmt* compound_get() const;
-                CompoundStmt* compound_get();
+                /// Get the body of the function
+                const CompoundStmt* compound_get() const
+                {
+                    return compound_;
+                }
 
-                const Type* return_type_get() const;
-                Type* return_type_get();
+                /// Get the body of the function
+                CompoundStmt* compound_get()
+                {
+                    return compound_;
+                }
 
-                const std::list<VarDecl*>& param_get() const;
-                std::list<VarDecl*>& param_get();
+                /// Get the return ty of the function
+                const Ty* return_ty_get() const
+                {
+                    return ty_->return_ty_get();
+                }
 
-                const FunctionDecl* prev_get() const;
-                FunctionDecl* prev_get();
+                /// Get the return ty of the function
+                Ty* return_ty_get()
+                {
+                    return ty_->return_ty_get();
+                }
 
-                void prev_set(FunctionDecl* d);
+                /// Get the parameter list
+                const std::list<VarDecl*>& param_get() const
+                {
+                    return ty_->param_get();
+                }
 
-                void return_type_set(Type* t);
+                /// Get the parameter list
+                std::list<VarDecl*>& param_get()
+                {
+                    return ty_->param_get();
+                }
 
-                virtual void accept(Visitor& v);
-                virtual void accept(ConstVisitor& v) const;
+                /// Get the previous declaration of the function
+                const FunctionDecl* prev_get() const
+                {
+                    return prev_;
+                }
+
+                /// Get the previous declaration of the function
+                FunctionDecl* prev_get()
+                {
+                    return prev_;
+                }
+
+                /// \brief  Set the previous declaration of the function
+                /// \param  d   The previous declaration of the function
+                void prev_set(FunctionDecl* d)
+                {
+                    prev_ = d;
+                }
+
+                /// \brief  Set the return Ty of the FunctionTy
+                /// \param  t   The return ty you want to set
+                void return_ty_set(Ty* t)
+                {
+                    ty_->return_ty_set(t);
+                }
+
+                virtual void accept(Visitor& v) override
+                {
+                    v(*this);
+                }
+
+                virtual void accept(ConstVisitor& v) const override
+                {
+                    v(*this);
+                }
 
             protected:
-                FunctionType* type_;
+                FunctionTy* ty_;
                 CompoundStmt* compound_;
                 FunctionDecl* prev_;
         };

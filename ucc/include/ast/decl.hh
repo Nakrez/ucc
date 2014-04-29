@@ -32,7 +32,7 @@ namespace ucc
         class Decl : public Ast
         {
             public:
-                Decl(const ucc::parse::location& loc,
+                Decl(const ucc::misc::location& loc,
                      const ucc::misc::Symbol& name);
                 virtual ~Decl();
 

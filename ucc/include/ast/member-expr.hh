@@ -30,7 +30,7 @@ namespace ucc
         class MemberExpr : public Expr
         {
             public:
-                MemberExpr(const ucc::parse::location& loc,
+                MemberExpr(const ucc::misc::location& loc,
                            Expr* lexpr,
                            const ucc::misc::Symbol& name,
                            bool is_arrow);

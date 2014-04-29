@@ -22,15 +22,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <string>
 
 # include <ast/expr.hh>
+# include <ast/type-builder.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class StringExpr : public Expr
+        class StringExpr : public Expr, public TypeBuilder
         {
             public:
-                StringExpr(const ucc::parse::location& loc, std::string* str);
+                StringExpr(const ucc::misc::location& loc, std::string* str);
                 virtual ~StringExpr();
 
                 std::string* str_get();

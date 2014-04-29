@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <string>
 
 # include <ast/expr.hh>
+# include <ast/op-expr.hh>
 
 namespace ucc
 {
@@ -46,7 +47,7 @@ namespace ucc
                 };
 
             public:
-                AssignExpr(const ucc::parse::location& loc,
+                AssignExpr(const ucc::misc::location& loc,
                            Expr* lvalue,
                            AssignOp op,
                            Expr* rvalue);
@@ -60,6 +61,7 @@ namespace ucc
 
                 AssignOp op_get() const;
 
+
                 std::string op_to_str() const;
 
                 virtual void accept(Visitor& v);
@@ -70,6 +72,8 @@ namespace ucc
                 Expr* rvalue_;
                 AssignOp op_;
         };
+
+        OpExpr::Op assign_op_to_op_expr(AssignExpr::AssignOp op);
     } // namespace ast
 } // namespace ucc
 

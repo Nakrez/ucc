@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-CompoundStmt::CompoundStmt(const ucc::parse::location& loc,
+CompoundStmt::CompoundStmt(const ucc::misc::location& loc,
                            AstList* compound)
     : Stmt(loc)
     , compound_(compound)

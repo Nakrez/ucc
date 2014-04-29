@@ -20,9 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_AST_DECL_SPECIFIER_HH
 
 # include <misc/symbol.hh>
-# include <misc/error.hh>
-
-# include <location.hh>
+# include <misc/diagnostic-reporter.hh>
+# include <misc/location.hh>
 
 # include <ast/fwd.hh>
 
@@ -30,8 +29,10 @@ namespace ucc
 {
     namespace ast
     {
-        class Type;
+        class Ty;
 
+        /// Hold all declaration specifier (not present in the final as, just
+        /// an help to build it)
         class DeclSpecifier
         {
             public:
@@ -79,39 +80,109 @@ namespace ucc
                 };
 
             public:
-                DeclSpecifier(const ucc::parse::location& loc);
-                virtual ~DeclSpecifier();
+                /// \brief  Constructor
+                /// \param  loc The location of the DeclSpecifier
+                DeclSpecifier(const ucc::misc::location& loc);
 
-                Type* type_get();
+                /// Destructor
+                virtual ~DeclSpecifier() = default;
 
-                bool is_typedef() const;
-                bool is_const() const;
-                bool is_restrict() const;
-                bool is_volatile() const;
 
-                bool is_struct_or_union() const;
-                bool is_struct() const;
-                bool is_union() const;
-                bool is_enum() const;
+                /// Return true if the declaration specifier is a typedef
+                bool is_typedef() const
+                {
+                    return storage_class_ & SCS_typedef;
+                }
 
-                ucc::misc::Symbol& name_get();
+                /// Return true if the declaration specifier is const
+                bool is_const() const
+                {
+                    return type_qualifier_ & TQ_const;
+                }
 
-                DeclSpecifier::StorageClassSpecifier storage_class_get() const;
+                /// Return true if the declaration specifier is restrict
+                bool is_restrict() const
+                {
+                    return type_qualifier_ & TQ_restrict;
+                }
 
-                bool storage_class_set(const StorageClassSpecifier& spec,
-                                       ucc::misc::Error& err);
-                bool type_qualifier_set(const TypeQualifier& qual,
-                                        ucc::misc::Error& err);
-                bool function_specifier_set(const FunctionSpecifier& spec,
-                                            ucc::misc::Error& err);
-                bool type_specifier_set(const TypeSpecifier& spec,
-                                        ucc::misc::Error& err);
+                /// Return true if the declaration specifier is a typedef
+                bool is_volatile() const
+                {
+                    return type_qualifier_ & TQ_volatile;
+                }
 
+                /// Return true if the declaration specifier is a struct or
+                /// an union
+                bool is_struct_or_union() const
+                {
+                    return (type_specifier_ & TS_union) ||
+                           (type_specifier_ & TS_struct);
+                }
+
+                /// Return true if the declaration specifier is a struct
+                bool is_struct() const
+                {
+                    return type_specifier_ & TS_struct;
+                }
+
+                /// Return true if the declaration specifier is an union
+                bool is_union() const
+                {
+                    return type_specifier_ & TS_union;
+                }
+
+                /// Return true if the declaration specifier is an enum
+                bool is_enum() const
+                {
+                    return type_specifier_ & TS_enum;
+                }
+
+                /// Return the type name held by the DeclSpecifier
+                ucc::misc::Symbol& name_get()
+                {
+                    return type_name_;
+                }
+
+                /// Return the storage class of the DeclSpecifier
+                DeclSpecifier::StorageClassSpecifier storage_class_get() const
+                {
+                    return storage_class_;
+                }
+
+                /// Return the Ty described by the DeclSpecifier
+                Ty* ty_get();
+
+                /// \brief  Set the storage class
+                /// \param  spec    The storage class you want to set
+                bool storage_class_set(const StorageClassSpecifier& spec);
+
+                /// \brief  Set the type qualifier
+                /// \param  spec    The type qualifier you want to set
+                bool type_qualifier_set(const TypeQualifier& qual);
+
+                /// \brief  Set the function specifier
+                /// \param  spec    The function specifier you want to set
+                bool function_specifier_set(const FunctionSpecifier& spec);
+
+                /// \brief  Set the type specifier
+                /// \param  spec    The type specifier you want to set
+                bool type_specifier_set(const TypeSpecifier& spec);
+
+                /// \brief  Set the type name
+                /// \param  name    The type name you want to set
                 void type_name_set(const ucc::misc::Symbol& s);
 
-                bool merge(const DeclSpecifier* decl, ucc::misc::Error& err);
+                /// \brief  Merge two DeclSpecifier
+                /// \param  decl    The DeclSpecifier you want to merge with
+                ///                 the current one
+                bool merge(const DeclSpecifier* decl);
 
+                /// Get the declaration node of the DeclSpecifier
                 Decl* decl_get() const;
+
+                /// \brief  Set the declaration node of the DeclSpecifier
+                /// \name   rec The declaration node you want to set
                 void decl_set(Decl* rec);
 
             private:
@@ -120,7 +191,7 @@ namespace ucc
 
                 std::string type_to_string() const;
             private:
-                ucc::parse::location loc_;
+                ucc::misc::location loc_;
                 StorageClassSpecifier storage_class_;
                 unsigned type_qualifier_ : 3;
                 FunctionSpecifier function_specifier_;

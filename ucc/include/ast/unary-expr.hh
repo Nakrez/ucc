@@ -22,12 +22,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <string>
 
 # include <ast/expr.hh>
+# include <ast/type-builder.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class UnaryExpr : public Expr
+        class UnaryExpr : public Expr, public TypeBuilder
         {
             public:
                 enum UnaryOp
@@ -44,7 +45,7 @@ namespace ucc
                     POST_DECR,
                 };
 
-                UnaryExpr(const ucc::parse::location& loc,
+                UnaryExpr(const ucc::misc::location& loc,
                           UnaryOp op,
                           Expr* expr);
                 virtual ~UnaryExpr();

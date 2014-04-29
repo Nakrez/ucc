@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_BIND_BINDER_HH
 # define UCC_BIND_BINDER_HH
 
-# include <misc/error.hh>
+# include <misc/diagnostic-reporter.hh>
 # include <misc/scope-map.hh>
 # include <misc/symbol.hh>
 
@@ -59,9 +59,9 @@ namespace ucc
                 virtual void operator()(ucc::ast::EnumDecl& ast);
                 virtual void operator()(ucc::ast::EnumExprDecl& ast);
 
-                virtual void operator()(ucc::ast::NamedType& ast);
-                virtual void operator()(ucc::ast::RecordType& ast);
-                virtual void operator()(ucc::ast::EnumType& ast);
+                virtual void operator()(ucc::ast::NamedTy& ast);
+                virtual void operator()(ucc::ast::RecordTy& ast);
+                virtual void operator()(ucc::ast::EnumTy& ast);
 
                 virtual void operator()(ucc::ast::VarExpr& ast);
                 virtual void operator()(ucc::ast::EnumExpr& ast);
@@ -74,15 +74,11 @@ namespace ucc
                 virtual void operator()(ucc::ast::BreakStmt& ast);
                 virtual void operator()(ucc::ast::ContinueStmt& ast);
 
-                ucc::misc::Error& error_get();
-
             protected:
                 void error(const ucc::ast::Ast& ast, std::string msg);
                 bool is_builtin_type(const ucc::misc::Symbol& s);
 
             protected:
-                ucc::misc::Error error_;
-
                 ucc::misc::ScopeMap<ucc::misc::Symbol, ucc::ast::Decl*> scope_;
                 ucc::misc::ScopeMap<ucc::misc::Symbol,
                                     ucc::ast::Decl*> record_enum_;

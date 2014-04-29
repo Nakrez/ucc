@@ -29,7 +29,7 @@ namespace ucc
         class EnumExprDecl : public Decl
         {
             public:
-                EnumExprDecl(const ucc::parse::location& loc,
+                EnumExprDecl(const ucc::misc::location& loc,
                              const ucc::misc::Symbol& name,
                              Expr* value);
                 virtual ~EnumExprDecl();

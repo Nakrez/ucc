@@ -52,11 +52,11 @@ namespace ucc
                 virtual void operator()(const EnumExprDecl& ast);
                 virtual void operator()(const EnumDecl& ast);
 
-                virtual void operator()(const ArrayType& ast);
-                virtual void operator()(const NamedType& ast);
-                virtual void operator()(const PtrType& ast);
-                virtual void operator()(const RecordType& ast);
-                virtual void operator()(const EnumType& ast);
+                virtual void operator()(const ArrayTy& ast);
+                virtual void operator()(const NamedTy& ast);
+                virtual void operator()(const PtrTy& ast);
+                virtual void operator()(const RecordTy& ast);
+                virtual void operator()(const EnumTy& ast);
 
                 virtual void operator()(const CompoundStmt& ast);
                 virtual void operator()(const ReturnStmt& ast);
@@ -89,9 +89,9 @@ namespace ucc
                 virtual void operator()(const InitListExpr& ast);
 
             protected:
-                bool print_fun_ptr(const Type* ast,
+                bool print_fun_ptr(const Ty* ast,
                                    const ucc::misc::Symbol& sym);
-                bool print_array_ty(const Type* ast,
+                bool print_array_ty(const Ty* ast,
                                     const ucc::misc::Symbol& sym);
 
             protected:

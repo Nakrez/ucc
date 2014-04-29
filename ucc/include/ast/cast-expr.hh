@@ -19,32 +19,63 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_AST_CAST_EXPR_HH
 # define UCC_AST_CAST_EXPR_HH
 
-# include <ast/type.hh>
+# include <ast/ty.hh>
 # include <ast/expr.hh>
 
 namespace ucc
 {
     namespace ast
     {
+        /// Represent a cast in the ast
         class CastExpr : public Expr
         {
             public:
-                CastExpr(const ucc::parse::location& loc,
-                         Type* type,
+                /// \brief  Constructor
+                /// \param  ty      The type node
+                /// \param  expr    The expression casted
+                CastExpr(const ucc::misc::location& loc,
+                         Ty* ty,
                          Expr* expr);
+
+                /// Destructor
                 virtual ~CastExpr();
 
-                const Type* type_get() const;
-                Type* type_get();
+                /// Return the Ty held by CastExpr
+                const Ty* ty_get() const
+                {
+                    return ty_;
+                }
 
-                const Expr* expr_get() const;
-                Expr* expr_get();
+                /// Return the Ty held by CastExpr
+                Ty* ty_get()
+                {
+                    return ty_;
+                }
 
-                virtual void accept(Visitor& v);
-                virtual void accept(ConstVisitor& v) const;
+                /// Return the Expr held by the CastExpr
+                const Expr* expr_get() const
+                {
+                    return expr_;
+                }
+
+                /// Return the Expr held by the CastExpr
+                Expr* expr_get()
+                {
+                    return expr_;
+                }
+
+                virtual void accept(Visitor& v) override
+                {
+                    v(*this);
+                }
+
+                virtual void accept(ConstVisitor& v) const override
+                {
+                    v(*this);
+                }
 
             protected:
-                Type* type_;
+                Ty* ty_;
                 Expr* expr_;
         };
     } // namespace ast

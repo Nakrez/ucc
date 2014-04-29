@@ -37,6 +37,8 @@ namespace ucc
 
                 const std::string& data_get() const;
 
+                bool operator==(const ucc::misc::Symbol& s) const;
+                bool operator!=(const ucc::misc::Symbol& s) const;
                 bool operator<(const ucc::misc::Symbol& s) const;
 
                 Symbol fresh() const;

@@ -29,7 +29,7 @@ namespace ucc
         class CaseStmt : public Stmt
         {
             public:
-                CaseStmt(const ucc::parse::location& loc,
+                CaseStmt(const ucc::misc::location& loc,
                          Expr* expr,
                          Stmt* body);
                 virtual ~CaseStmt();

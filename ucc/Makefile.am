@@ -17,13 +17,11 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/record-decl.cc \
 			  src/ast/enum-expr-decl.cc \
 			  src/ast/enum-decl.cc \
-			  src/ast/type.cc \
-			  src/ast/named-type.cc \
-			  src/ast/array-type.cc \
-			  src/ast/function-type.cc \
-			  src/ast/ptr-type.cc \
-			  src/ast/record-type.cc \
-			  src/ast/enum-type.cc \
+			  src/ast/array-ty.cc \
+			  src/ast/function-ty.cc \
+			  src/ast/ptr-ty.cc \
+			  src/ast/record-ty.cc \
+			  src/ast/enum-ty.cc \
 			  src/ast/stmt.cc \
 			  src/ast/compound-stmt.cc \
 			  src/ast/return-stmt.cc \
@@ -54,10 +52,24 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ast/cast-expr.cc \
 			  src/ast/sizeof-expr.cc \
 			  src/ast/init-list-expr.cc \
+			  src/ast/type-builder.cc \
+			  src/ast/type-user.cc \
 			  src/ast/pretty-printer.cc \
 			  src/ast/command.cc \
 			  src/bind/binder.cc \
 			  src/bind/command.cc \
+			  src/type/floating-point.cc \
+			  src/type/signed-integer.cc \
+			  src/type/unsigned-integer.cc \
+			  src/type/const.cc \
+			  src/type/ptr.cc \
+			  src/type/record.cc \
+			  src/type/array.cc \
+			  src/type/function.cc \
+			  src/type/type.cc \
+			  src/type/type-checker.cc \
+			  src/type/command.cc \
+			  src/command.cc \
 			  src/main.cc \
 			  src/ucc.cc
 

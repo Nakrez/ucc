@@ -31,7 +31,7 @@ namespace ucc
         class EnumExpr : public Expr
         {
             public:
-                EnumExpr(const ucc::parse::location& loc,
+                EnumExpr(const ucc::misc::location& loc,
                          const ucc::misc::Symbol& name);
                 virtual ~EnumExpr();
 

@@ -22,61 +22,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-Declarator::Declarator(const ucc::parse::location& loc,
+Declarator::Declarator(const ucc::misc::location& loc,
                        const ucc::misc::Symbol& s)
     : Decl(loc, s)
-    , type_(nullptr)
+    , ty_(nullptr)
     , init_(nullptr)
 {}
 
-Declarator::~Declarator()
+bool Declarator::extends_ty(Ty* t)
 {
-    /* type_ and init_ are not deleted because it is transfered to a decl */
-}
-
-const Type* Declarator::type_get() const
-{
-    return type_;
-}
-
-Type* Declarator::type_get()
-{
-    return type_;
-}
-
-const Expr* Declarator::init_get() const
-{
-    return init_;
-}
-
-Expr* Declarator::init_get()
-{
-    return init_;
-}
-
-void Declarator::init_set(Expr* e)
-{
-    init_ = e;
-}
-
-bool Declarator::extends_type(Type* t)
-{
-    if (!type_)
+    if (!ty_)
     {
-        type_ = t;
+        ty_ = t;
 
         return true;
     }
 
-    return type_->extends_type(t);
-}
-
-void Declarator::accept(Visitor& v)
-{
-    v(*this);
-}
-
-void Declarator::accept(ConstVisitor& v) const
-{
-    v(*this);
+    return ty_->extends_ty(t);
 }

@@ -22,7 +22,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <map>
 # include <string>
 
-# include <misc/error.hh>
 # include <misc/scope-map.hh>
 
 # include <parse/c-parser.hh>
@@ -49,10 +48,9 @@ namespace ucc
 
                 void parse_file(const std::string& name);
 
-                const std::string& file_get() const;
+                const ucc::misc::Symbol& file_get() const;
 
             public:
-                ucc::misc::Error error_;
                 bool in_attribute_;
 
                 ucc::ast::DeclList* ast_;
@@ -68,7 +66,7 @@ namespace ucc
                 bool trace_parser_;
                 bool trace_lexer_;
 
-                std::string file_;
+                ucc::misc::Symbol file_;
         };
     } // namespace parse
 } // namespace ucc

@@ -29,8 +29,8 @@ namespace ucc
         class ReturnStmt : public Stmt
         {
             public:
-                ReturnStmt(const ucc::parse::location& loc);
-                ReturnStmt(const ucc::parse::location& loc, Expr* expr);
+                ReturnStmt(const ucc::misc::location& loc);
+                ReturnStmt(const ucc::misc::location& loc, Expr* expr);
 
                 virtual ~ReturnStmt();
 

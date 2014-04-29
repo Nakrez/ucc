@@ -21,28 +21,53 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <ast/decl.hh>
 
+# include <ast/type-builder.hh>
+
 namespace ucc
 {
     namespace ast
     {
-        class Type;
+        class Ty;
 
-        class TypeDecl : public Decl
+        /// Represent a type declaration in the ast
+        class TypeDecl : public Decl, public TypeBuilder
         {
             public:
-                TypeDecl(const ucc::parse::location& loc,
+                /// \brief  Constructor
+                /// \param  loc     The location of the TypeDecl
+                /// \param  name    The name defined by the TypeDecl
+                /// \param  ty      The type defined by the TypeDecl
+                TypeDecl(const ucc::misc::location& loc,
                          const ucc::misc::Symbol& name,
-                         Type* type);
+                         Ty* ty);
+
+                /// Destructor
                 virtual ~TypeDecl();
 
-                const Type* type_get() const;
-                Type* type_get();
+                /// Return the type declared by the TypeDecl
+                const Ty* ty_get() const
+                {
+                    return ty_;
+                }
 
-                virtual void accept(Visitor& v);
-                virtual void accept(ConstVisitor& v) const;
+                /// Return the type declared by the TypeDecl
+                Ty* ty_get()
+                {
+                    return ty_;
+                }
+
+                virtual void accept(Visitor& v) override
+                {
+                    v(*this);
+                }
+
+                virtual void accept(ConstVisitor& v) const override
+                {
+                    v(*this);
+                }
 
             protected:
-                Type* type_;
+                Ty* ty_;
         };
     } // namespace ast
 } // namespace ucc

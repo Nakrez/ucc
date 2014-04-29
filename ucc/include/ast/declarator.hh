@@ -27,31 +27,65 @@ namespace ucc
 {
     namespace ast
     {
-        class Type;
+        class Ty;
         class Expr;
 
         class Declarator : public Decl
         {
             public:
-                Declarator(const ucc::parse::location& loc,
+                /// \brief  Constructor
+                /// \param  loc The location of the Declarator
+                /// \param  s   The name of the Declarator
+                Declarator(const ucc::misc::location& loc,
                            const ucc::misc::Symbol& s);
-                virtual ~Declarator();
 
-                const Type* type_get() const;
-                Type* type_get();
+                /// Destructor
+                virtual ~Declarator() = default;
 
-                const Expr* init_get() const;
-                Expr* init_get();
+                /// Return the type node of the Declarator
+                const Ty* ty_get() const
+                {
+                    return ty_;
+                }
 
-                void init_set(Expr* e);
+                /// Return the type node of the Declarator
+                Ty* ty_get()
+                {
+                    return ty_;
+                }
 
-                bool extends_type(Type* t);
+                /// Return the initialization expression
+                const Expr* init_get() const
+                {
+                    return init_;
+                }
 
-                virtual void accept(Visitor& v);
-                virtual void accept(ConstVisitor& v) const;
+                /// Return the initialization expression
+                Expr* init_get()
+                {
+                    return init_;
+                }
+
+                /// Set the initialization expression
+                void init_set(Expr* e)
+                {
+                    init_ = e;
+                }
+
+                bool extends_ty(Ty* t);
+
+                virtual void accept(Visitor& v) override
+                {
+                    v(*this);
+                }
+
+                virtual void accept(ConstVisitor& v) const override
+                {
+                    v(*this);
+                }
 
             private:
-                Type* type_;
+                Ty* ty_;
                 Expr* init_;
         };
     } // namespace ast
