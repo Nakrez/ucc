@@ -39,13 +39,13 @@ namespace ucc
         class EnumExprDecl;
         class EnumDecl;
 
-        class Type;
-        class NamedType;
-        class ArrayType;
-        class FunctionType;
-        class PtrType;
-        class RecordType;
-        class EnumType;
+        class Ty;
+        class NamedTy;
+        class ArrayTy;
+        class FunctionTy;
+        class PtrTy;
+        class RecordTy;
+        class EnumTy;
 
         class Stmt;
         class CompoundStmt;

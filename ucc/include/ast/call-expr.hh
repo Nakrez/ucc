@@ -29,7 +29,7 @@ namespace ucc
         class CallExpr : public Expr
         {
             public:
-                CallExpr(const ucc::parse::location& loc,
+                CallExpr(const ucc::misc::location& loc,
                          Expr* var,
                          ExprList* param);
                 virtual ~CallExpr();

@@ -20,35 +20,72 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_AST_FIELD_DECL_HH
 
 # include <ast/decl.hh>
-# include <ast/type.hh>
+# include <ast/ty.hh>
 # include <ast/expr.hh>
+# include <ast/type-builder.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class FieldDecl : public Decl
+        class FieldDecl : public Decl, public TypeBuilder
         {
             public:
-                FieldDecl(const ucc::parse::location& loc,
+                /// \brief  Constructor
+                /// \param  loc         The location of the field
+                /// \param  name        The name of the field
+                /// \param  ty          The type of the field
+                /// \param  bit_field   The bit field expression
+                FieldDecl(const ucc::misc::location& loc,
                           const ucc::misc::Symbol& name,
-                          Type* type,
+                          Ty* ty,
                           Expr* bit_field);
+
+                /// Destructor
                 virtual ~FieldDecl();
 
-                const Type* type_get() const;
-                Type* type_get();
+                /// Return the type of the field
+                const Ty* ty_get() const
+                {
+                    return ty_;
+                }
 
-                const Expr* bit_field_get() const;
-                Expr* bit_field_get();
+                /// Return the type of the field
+                Ty* ty_get()
+                {
+                    return ty_;
+                }
 
-                void type_set(Type* t);
+                /// Return the bit field value
+                const Expr* bit_field_get() const
+                {
+                    return bit_field_;
+                }
 
-                virtual void accept(Visitor& v);
-                virtual void accept(ConstVisitor& v) const;
+                /// Return the bit field value
+                Expr* bit_field_get()
+                {
+                    return bit_field_;
+                }
+
+                /// Set the type of the field
+                void ty_set(Ty* t)
+                {
+                    ty_ = t;
+                }
+
+                virtual void accept(Visitor& v) override
+                {
+                    v(*this);
+                }
+
+                virtual void accept(ConstVisitor& v) const override
+                {
+                    v(*this);
+                }
 
             protected:
-                Type* type_;
+                Ty* ty_;
                 Expr* bit_field_;
         };
     } // namespace ast

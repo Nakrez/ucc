@@ -29,10 +29,18 @@ void bind()
 {
     ucc::bind::Binder binder;
 
-    assert(ucc::ast::the_ast &&
-           "Internal error: No ast retrieved by the parser");
+    if (!ucc::ast::the_ast)
+    {
+        ucc::misc::Diagnostic d;
+
+        d << ucc::misc::Diagnostic::Severity::critical
+          << ucc::misc::Diagnostic::Type::internal
+          << "No ast retrieved by the parser";
+
+        ucc::misc::DiagnosticReporter::instance_get().add(d);
+    }
 
     binder(*ucc::ast::the_ast);
 
-    binder.error_get().throw_on_error();
+    ucc::misc::DiagnosticReporter::instance_get().throw_on_error();
 }

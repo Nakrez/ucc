@@ -28,7 +28,7 @@ namespace ucc
         class IfStmt : public Stmt
         {
             public:
-                IfStmt(const ucc::parse::location& loc,
+                IfStmt(const ucc::misc::location& loc,
                        Expr* cond,
                        Stmt* if_body,
                        Stmt* else_body);

@@ -124,18 +124,17 @@ void PrettyPrinter::operator()(const VarDecl& ast)
     else if (ast.is_extern())
         ostr_ << "extern ";
 
-    if (ast.type_get())
+    if (ast.ty_get())
     {
-        if (print_fun_ptr(ast.type_get(), ast.name_get()) ||
-            print_array_ty(ast.type_get(), ast.name_get()))
-
+        if (print_fun_ptr(ast.ty_get(), ast.name_get()) ||
+            print_array_ty(ast.ty_get(), ast.name_get()))
             goto end;
 
-        ast.type_get()->accept(*this);
+        ast.ty_get()->accept(*this);
     }
 
     if (ast.name_get().data_get() != "" &&
-        !dynamic_cast<const PtrType*> (ast.type_get()))
+        !dynamic_cast<const PtrTy*> (ast.ty_get()))
         ostr_ << " ";
 
     ostr_ << ast.name_get();
@@ -166,13 +165,13 @@ void PrettyPrinter::operator()(const TypeDecl& ast)
 {
     ostr_ << "typedef ";
 
-    if (ast.type_get())
+    if (ast.ty_get())
     {
-        if (print_fun_ptr(ast.type_get(), ast.name_get()) ||
-            print_array_ty(ast.type_get(), ast.name_get()))
+        if (print_fun_ptr(ast.ty_get(), ast.name_get()) ||
+            print_array_ty(ast.ty_get(), ast.name_get()))
             goto end;
 
-        ast.type_get()->accept(*this);
+        ast.ty_get()->accept(*this);
     }
 
     ostr_ << " " << ast.name_get();
@@ -190,11 +189,11 @@ void PrettyPrinter::operator()(const FunctionDecl& ast)
     auto begin = it;
     auto end = ast.param_get().cend();
 
-    if (ast.return_type_get())
+    if (ast.return_ty_get())
     {
-        ast.return_type_get()->accept(*this);
+        ast.return_ty_get()->accept(*this);
 
-        if (!dynamic_cast<const PtrType*>(ast.return_type_get()))
+        if (!dynamic_cast<const PtrTy*>(ast.return_ty_get()))
             ostr_ << " ";
     }
 
@@ -235,8 +234,8 @@ void PrettyPrinter::operator()(const FunctionDecl& ast)
 
 void PrettyPrinter::operator()(const FieldDecl& ast)
 {
-    if (ast.type_get())
-        ast.type_get()->accept(*this);
+    if (ast.ty_get())
+        ast.ty_get()->accept(*this);
 
     ostr_ << " " << ast.name_get();
 
@@ -252,7 +251,7 @@ void PrettyPrinter::operator()(const RecordDecl& ast)
     if (ast.name_get().data_get() == "")
         return;
 
-    if (ast.type_get() == RecordDecl::RecordType::STRUCT)
+    if (ast.record_type_get() == RecordDecl::RecordType::STRUCT)
         ostr_ << "struct";
     else
         ostr_ << "union";
@@ -333,10 +332,10 @@ void PrettyPrinter::operator()(const EnumDecl& ast)
     ostr_ << ";";
 }
 
-void PrettyPrinter::operator()(const ArrayType& ast)
+void PrettyPrinter::operator()(const ArrayTy& ast)
 {
-    if (ast.sub_type_get())
-        ast.sub_type_get()->accept(*this);
+    if (ast.sub_ty_get())
+        ast.sub_ty_get()->accept(*this);
 
     ostr_ << "[";
 
@@ -346,7 +345,7 @@ void PrettyPrinter::operator()(const ArrayType& ast)
     ostr_ << "]";
 }
 
-void PrettyPrinter::operator()(const NamedType& ast)
+void PrettyPrinter::operator()(const NamedTy& ast)
 {
     if (ast.is_const())
         ostr_ << "const ";
@@ -359,12 +358,12 @@ void PrettyPrinter::operator()(const NamedType& ast)
         ostr_ << " /* " << ast.def_get() << " */";
 }
 
-void PrettyPrinter::operator()(const PtrType& ast)
+void PrettyPrinter::operator()(const PtrTy& ast)
 {
-    if (ast.pointed_type_get())
-        ast.pointed_type_get()->accept(*this);
+    if (ast.pointed_ty_get())
+        ast.pointed_ty_get()->accept(*this);
 
-    if (!dynamic_cast<const PtrType*>(ast.pointed_type_get()))
+    if (!dynamic_cast<const PtrTy*>(ast.pointed_ty_get()))
         ostr_ << " ";
 
     ostr_ << "*";
@@ -375,9 +374,9 @@ void PrettyPrinter::operator()(const PtrType& ast)
         ostr_ << "restrict ";
 }
 
-void PrettyPrinter::operator()(const RecordType& ast)
+void PrettyPrinter::operator()(const RecordTy& ast)
 {
-    if (ast.type_get() == RecordDecl::RecordType::STRUCT)
+    if (ast.record_type_get() == RecordDecl::RecordType::STRUCT)
         ostr_ << "struct";
     else
         ostr_ << "union";
@@ -405,7 +404,7 @@ void PrettyPrinter::operator()(const RecordType& ast)
     }
 }
 
-void PrettyPrinter::operator()(const EnumType& ast)
+void PrettyPrinter::operator()(const EnumTy& ast)
 {
     ostr_ << "enum";
 
@@ -792,8 +791,8 @@ void PrettyPrinter::operator()(const CastExpr& ast)
 {
     ostr_ << "(";
 
-    if (ast.type_get())
-        ast.type_get()->accept(*this);
+    if (ast.ty_get())
+        ast.ty_get()->accept(*this);
 
     ostr_ << ")";
 
@@ -805,8 +804,8 @@ void PrettyPrinter::operator()(const SizeofExpr& ast)
 {
     ostr_ << "sizeof (";
 
-    if (ast.type_get())
-        ast.type_get()->accept(*this);
+    if (ast.ty_get())
+        ast.ty_get()->accept(*this);
     else if (ast.expr_get())
         ast.expr_get()->accept(*this);
 
@@ -823,19 +822,19 @@ void PrettyPrinter::operator()(const InitListExpr& ast)
     ostr_ << " }";
 }
 
-bool PrettyPrinter::print_fun_ptr(const Type* ast,
-        const ucc::misc::Symbol& sym)
+bool PrettyPrinter::print_fun_ptr(const Ty* ast,
+                                  const ucc::misc::Symbol& sym)
 {
-    const PtrType* ptr = dynamic_cast<const PtrType*> (ast);
-    const PtrType* tmp = nullptr;
-    const FunctionType* fn = nullptr;
+    const PtrTy* ptr = dynamic_cast<const PtrTy*> (ast);
+    const PtrTy* tmp = nullptr;
+    const FunctionTy* fn = nullptr;
     int ptr_nb = 1;
 
     if (ptr)
     {
         while (1)
         {
-            tmp = dynamic_cast<const PtrType*> (ptr->pointed_type_get());
+            tmp = dynamic_cast<const PtrTy*> (ptr->pointed_ty_get());
 
             if (!tmp)
                 break;
@@ -844,15 +843,15 @@ bool PrettyPrinter::print_fun_ptr(const Type* ast,
             ptr = tmp;
         }
 
-        fn = dynamic_cast<const FunctionType*> (ptr->pointed_type_get());
+        fn = dynamic_cast<const FunctionTy*> (ptr->pointed_ty_get());
 
         if (!fn)
             return false;
 
-        if (fn->return_type_get())
-            fn->return_type_get()->accept(*this);
+        if (fn->return_ty_get())
+            fn->return_ty_get()->accept(*this);
 
-        if (!dynamic_cast<const PtrType*>(fn->return_type_get()))
+        if (!dynamic_cast<const PtrTy*>(fn->return_ty_get()))
             ostr_ << " ";
 
         ostr_ << "(";
@@ -887,16 +886,16 @@ bool PrettyPrinter::print_fun_ptr(const Type* ast,
     return false;
 }
 
-bool PrettyPrinter::print_array_ty(const Type* ast,
-        const ucc::misc::Symbol& sym)
+bool PrettyPrinter::print_array_ty(const Ty* ast,
+                                   const ucc::misc::Symbol& sym)
 {
-    const ArrayType *t = dynamic_cast<const ArrayType*> (ast);
+    const ArrayTy *t = dynamic_cast<const ArrayTy*> (ast);
 
     if (!t)
         return false;
 
-    if (t->sub_type_get())
-        t->sub_type_get()->accept(*this);
+    if (t->sub_ty_get())
+        t->sub_ty_get()->accept(*this);
 
     ostr_ << " " << sym << "[";
 

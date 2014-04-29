@@ -37,14 +37,14 @@ namespace ucc
                     OP_MUL,
                     OP_DIV,
                     OP_MOD,
-                    OP_LSHIFT,
-                    OP_RSHIFT,
                     OP_GT,
                     OP_GE,
                     OP_LT,
                     OP_LE,
                     OP_EQ,
                     OP_DIFF,
+                    OP_LSHIFT,
+                    OP_RSHIFT,
                     OP_BAND,
                     OP_XOR,
                     OP_BOR,
@@ -54,7 +54,7 @@ namespace ucc
                 };
 
             public:
-                OpExpr(const ucc::parse::location& loc,
+                OpExpr(const ucc::misc::location& loc,
                        Expr* lexpr,
                        Op op,
                        Expr* rexpr);
@@ -78,6 +78,8 @@ namespace ucc
                 Expr* rexpr_;
                 Op op_;
         };
+
+        std::string op_to_str(OpExpr::Op op);
     } // namespace ast
 } // namespace ucc
 

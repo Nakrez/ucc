@@ -53,15 +53,15 @@ namespace ucc
                 virtual void operator()(typename Const<EnumExprDecl>::type& ast) = 0;
                 virtual void operator()(typename Const<EnumDecl>::type& ast) = 0;
 
-                virtual void operator()(typename Const<Type>::type& ast) = 0;
+                virtual void operator()(typename Const<Ty>::type& ast) = 0;
 
-                virtual void operator()(typename Const<NamedType>::type& ast) = 0;
-                virtual void operator()(typename Const<ArrayType>::type& ast) = 0;
+                virtual void operator()(typename Const<NamedTy>::type& ast) = 0;
+                virtual void operator()(typename Const<ArrayTy>::type& ast) = 0;
                 virtual void
-                operator()(typename Const<FunctionType>::type& ast) = 0;
-                virtual void operator()(typename Const<PtrType>::type& ast) = 0;
-                virtual void operator()(typename Const<RecordType>::type& ast) = 0;
-                virtual void operator()(typename Const<EnumType>::type& ast) = 0;
+                operator()(typename Const<FunctionTy>::type& ast) = 0;
+                virtual void operator()(typename Const<PtrTy>::type& ast) = 0;
+                virtual void operator()(typename Const<RecordTy>::type& ast) = 0;
+                virtual void operator()(typename Const<EnumTy>::type& ast) = 0;
 
                 virtual void operator()(typename Const<Stmt>::type& ast) = 0;
                 virtual void operator()(typename Const<CompoundStmt>::type& ast) = 0;

@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-ConditionalExpr::ConditionalExpr(const ucc::parse::location& loc,
+ConditionalExpr::ConditionalExpr(const ucc::misc::location& loc,
                                  Expr* cond,
                                  Expr* true_expr,
                                  Expr* false_expr)

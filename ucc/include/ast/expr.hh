@@ -20,15 +20,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_AST_EXPR_HH
 
 # include <ast/stmt.hh>
+# include <ast/type-user.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class Expr : public Stmt
+        class Expr : public Stmt, public TypeUser
         {
             public:
-                Expr(const ucc::parse::location& loc);
+                Expr(const ucc::misc::location& loc);
                 virtual ~Expr();
 
                 virtual void accept(Visitor& v) = 0;

@@ -17,39 +17,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <ast/type-decl.hh>
-#include <ast/type.hh>
+#include <ast/ty.hh>
 
 using namespace ucc;
 using namespace ast;
 
-TypeDecl::TypeDecl(const ucc::parse::location& loc,
+TypeDecl::TypeDecl(const ucc::misc::location& loc,
                    const ucc::misc::Symbol& name,
-                   Type* type)
+                   Ty* ty)
     : Decl(loc, name)
-    , type_(type)
+    , ty_(ty)
 {}
 
 TypeDecl::~TypeDecl()
 {
-    delete type_;
-}
-
-const Type* TypeDecl::type_get() const
-{
-    return type_;
-}
-
-Type* TypeDecl::type_get()
-{
-    return type_;
-}
-
-void TypeDecl::accept(Visitor& v)
-{
-    v(*this);
-}
-
-void TypeDecl::accept(ConstVisitor& v) const
-{
-    v(*this);
+    delete ty_;
 }

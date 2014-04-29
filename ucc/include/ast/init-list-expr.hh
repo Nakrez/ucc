@@ -28,7 +28,7 @@ namespace ucc
         class InitListExpr : public Expr
         {
             public:
-                InitListExpr(const ucc::parse::location& loc,
+                InitListExpr(const ucc::misc::location& loc,
                              ExprList* list);
                 virtual ~InitListExpr();
 

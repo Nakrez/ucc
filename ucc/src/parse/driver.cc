@@ -25,11 +25,11 @@ using namespace ucc;
 using namespace parse;
 
 Driver::Driver()
-    : error_()
-    , in_attribute_(false)
+    : in_attribute_(false)
     , ast_(nullptr)
     , trace_parser_(ucc::parse::parse_trace)
     , trace_lexer_(false)
+    , file_("")
 {}
 
 Driver::~Driver()
@@ -48,7 +48,7 @@ void Driver::parse_file(const std::string& name)
     lexer_end();
 }
 
-const std::string& Driver::file_get() const
+const ucc::misc::Symbol& Driver::file_get() const
 {
     return file_;
 }

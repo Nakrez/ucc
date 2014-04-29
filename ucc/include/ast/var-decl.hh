@@ -20,42 +20,96 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_AST_VAR_DECL_HH
 
 # include <ast/decl.hh>
+# include <ast/expr.hh>
+# include <ast/ty.hh>
+# include <ast/type-user.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class Expr;
-        class Type;
-
-        class VarDecl : public Decl
+        /// Represent a variable declaration in the ast
+        class VarDecl : public Decl, public TypeUser
         {
             public:
-                VarDecl(const ucc::parse::location& loc,
+                /// \brief  Constructor
+                /// \param  loc     The location of the VarDecl
+                /// \param  name    The name of the variable declared
+                /// \param  ty      The type of the variable declared
+                /// \param  e       The init expression
+                VarDecl(const ucc::misc::location& loc,
                         const ucc::misc::Symbol& name,
-                        Type* type,
+                        Ty* ty,
                         Expr* e);
-                VarDecl(const ucc::parse::location& loc);
-                ~VarDecl();
 
-                const Type* type_get() const;
-                Type* type_get();
+                /// \brief  Constructor
+                /// \param  loc     The location of the VarDecl
+                VarDecl(const ucc::misc::location& loc);
 
-                const Expr* init_get() const;
-                Expr* init_get();
+                /// Destructor
+                virtual ~VarDecl();
 
-                const VarDecl* prev_get() const;
-                VarDecl* prev_get();
+                /// Return the type of the variable
+                const Ty* ty_get() const
+                {
+                    return ty_;
+                }
 
-                void prev_set(VarDecl* d);
+                /// Return the type of the variable
+                Ty* ty_get()
+                {
+                    return ty_;
+                }
 
-                bool is_elipsis() const;
+                /// Return the init value of the variable
+                const Expr* init_get() const
+                {
+                    return init_;
+                }
 
-                virtual void accept(Visitor& v);
-                virtual void accept(ConstVisitor& v) const;
+                /// Return the init value of the variable
+                Expr* init_get()
+                {
+                    return init_;
+                }
+
+                /// Get the previous declaration of the variable
+                const VarDecl* prev_get() const
+                {
+                    return prev_;
+                }
+
+                /// Get the previous declaration of the variable
+                VarDecl* prev_get()
+                {
+                    return prev_;
+                }
+
+                /// \brief  Set the previous declaration of the variable
+                /// \param  d   The previous declaration of the variable
+                void prev_set(VarDecl* d)
+                {
+                    prev_ = d;
+                }
+
+                /// Return true if the variable is an elispis
+                bool is_elipsis() const
+                {
+                    return is_elipsis_;
+                }
+
+                virtual void accept(Visitor& v) override
+                {
+                    v(*this);
+                }
+
+                virtual void accept(ConstVisitor& v) const override
+                {
+                    v(*this);
+                }
 
             private:
-                Type* type_;
+                Ty* ty_;
                 Expr* init_;
                 bool is_elipsis_;
                 VarDecl* prev_;

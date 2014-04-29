@@ -16,6 +16,20 @@ AC_PROG_LEX
 
 LT_INIT
 
+# Doxygen
+
+DX_INIT_DOXYGEN(ucc, doc/Doxyfile, doc/gen)
+DX_DOXYGEN_FEATURE(ON)
+DX_DOT_FEATURE(ON)
+DX_HTML_FEATURE(ON)
+DX_CHM_FEATURE(OFF)
+DX_CHI_FEATURE(OFF)
+DX_MAN_FEATURE(ON)
+DX_RTF_FEATURE(OFF)
+DX_XML_FEATURE(OFF)
+DX_PDF_FEATURE(ON)
+DX_PS_FEATURE(OFF)
+
 # Checks for libraries.
 
 # Checks for header files.
@@ -28,6 +42,7 @@ AC_CONFIG_HEADERS([config.h])
 
 AC_CONFIG_FILES([Makefile ucpp/Makefile lib/Makefile
                  lib/command/Makefile lib/misc/Makefile ucc/Makefile
-                 tests/Makefile])
+                 tests/Makefile
+                 doc/Doxyfile])
 
 AC_OUTPUT

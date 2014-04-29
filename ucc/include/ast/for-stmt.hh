@@ -29,7 +29,7 @@ namespace ucc
         class ForStmt : public Stmt
         {
             public:
-                ForStmt(const ucc::parse::location& loc,
+                ForStmt(const ucc::misc::location& loc,
                         Expr* init,
                         Expr* cond,
                         Expr* inc,

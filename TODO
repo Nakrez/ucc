@@ -5,17 +5,16 @@
 
 -- AST --
 
-- --ast-dump
+- --ast-dump (dump the ast inner node on std::cout)
 
 -- BIND --
 
-- Implement binder
-- Implement scope-map
+- Fix some incomplete type pointers which are supposed to work
+  (see incomplete-type-ptr-2.c test in bind/good)
 
 -- TYPE CHECKER --
 
-- Implement type checker
-- Implement type classes
+- Update error messages for return statement
 
 -- IR CONVERTER --
 
@@ -31,3 +30,8 @@
 - Add Target x86 64bits
 - Add Target arm
 - ...
+
+-- OTHER --
+
+- Correct locations starting at 0
+- Add support of #line locations

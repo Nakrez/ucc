@@ -20,33 +20,68 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_AST_SIZEOF_EXPR_HH
 
 # include <ast/expr.hh>
-# include <ast/type.hh>
+# include <ast/ty.hh>
 
 namespace ucc
 {
     namespace ast
     {
+        /// Represent a sizeof expression
         class SizeofExpr : public Expr
         {
             public:
-                SizeofExpr(const ucc::parse::location& loc,
+                /// \brief  Constructor
+                /// \param  loc     The location of the SizeofExpr
+                /// \para   expr    The expression held by the SizeofExpr
+                SizeofExpr(const ucc::misc::location& loc,
                            Expr* expr);
-                SizeofExpr(const ucc::parse::location& loc,
-                           Type* type);
+
+                /// \brief  Constructor
+                /// \param  loc The location of the SizeofExpr
+                /// \para   ty  The Ty held by the SizeofExpr
+                SizeofExpr(const ucc::misc::location& loc,
+                           Ty* ty);
+
+                /// Destructor
                 virtual ~SizeofExpr();
 
-                const Expr* expr_get() const;
-                Expr* expr_get();
+                /// Return the Expr held by the SizeofExpr
+                const Expr* expr_get() const
+                {
+                    return expr_;
+                }
 
-                const Type* type_get() const;
-                Type* type_get();
+                /// Return the Expr held by the SizeofExpr
+                Expr* expr_get()
+                {
+                    return expr_;
+                }
 
-                virtual void accept(Visitor& v);
-                virtual void accept(ConstVisitor& v) const;
+                /// Return the Ty held by the SizeofExpr
+                const Ty* ty_get() const
+                {
+                    return ty_;
+                }
+
+                /// Return the Ty held by the SizeofExpr
+                Ty* ty_get()
+                {
+                    return ty_;
+                }
+
+                virtual void accept(Visitor& v) override
+                {
+                    v(*this);
+                }
+
+                virtual void accept(ConstVisitor& v) const override
+                {
+                    v(*this);
+                }
 
             protected:
                 Expr* expr_;
-                Type* type_;
+                Ty* ty_;
         };
     } // namespace ast
 } // namespace ucc

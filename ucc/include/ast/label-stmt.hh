@@ -30,7 +30,7 @@ namespace ucc
         class LabelStmt : public Stmt
         {
             public:
-                LabelStmt(const ucc::parse::location& loc,
+                LabelStmt(const ucc::misc::location& loc,
                           const ucc::misc::Symbol& sym,
                           Stmt* stmt);
                 virtual ~LabelStmt();

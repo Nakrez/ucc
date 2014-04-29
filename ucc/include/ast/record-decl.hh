@@ -21,12 +21,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <ast/fwd.hh>
 # include <ast/decl.hh>
+# include <ast/type-builder.hh>
+# include <ast/type-user.hh>
 
 namespace ucc
 {
     namespace ast
     {
-        class RecordDecl : public Decl
+        class RecordDecl : public Decl, public TypeBuilder, public TypeUser
         {
             public:
                 enum RecordType
@@ -37,13 +39,13 @@ namespace ucc
                 };
 
             public:
-                RecordDecl(const ucc::parse::location& loc,
+                RecordDecl(const ucc::misc::location& loc,
                            const ucc::misc::Symbol& name,
                            RecordType type,
                            FieldList* fields);
                 virtual ~RecordDecl();
 
-                RecordType type_get() const;
+                RecordType record_type_get() const;
 
                 const FieldList* fields_get() const;
                 FieldList* fields_get();

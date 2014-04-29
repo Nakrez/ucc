@@ -34,13 +34,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <ast/enum-expr-decl.hh>
 # include <ast/enum-decl.hh>
 
-# include <ast/type.hh>
-# include <ast/named-type.hh>
-# include <ast/array-type.hh>
-# include <ast/function-type.hh>
-# include <ast/ptr-type.hh>
-# include <ast/record-type.hh>
-# include <ast/enum-type.hh>
+# include <ast/ty.hh>
+# include <ast/named-ty.hh>
+# include <ast/array-ty.hh>
+# include <ast/function-ty.hh>
+# include <ast/ptr-ty.hh>
+# include <ast/record-ty.hh>
+# include <ast/enum-ty.hh>
 
 # include <ast/stmt.hh>
 # include <ast/compound-stmt.hh>

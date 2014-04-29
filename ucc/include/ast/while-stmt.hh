@@ -28,7 +28,7 @@ namespace ucc
         class WhileStmt : public Stmt
         {
             public:
-                WhileStmt(const ucc::parse::location& loc,
+                WhileStmt(const ucc::misc::location& loc,
                           Expr* cond,
                           Ast* body);
                 virtual ~WhileStmt();

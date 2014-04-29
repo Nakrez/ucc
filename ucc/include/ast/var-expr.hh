@@ -31,7 +31,7 @@ namespace ucc
         class VarExpr : public Expr
         {
             public:
-                VarExpr(const ucc::parse::location& loc,
+                VarExpr(const ucc::misc::location& loc,
                         const ucc::misc::Symbol& sym);
                 virtual ~VarExpr();
 

@@ -26,4 +26,14 @@ inline const std::string& ucc::misc::Symbol::data_get() const
     return *data_;
 }
 
+inline bool ucc::misc::Symbol::operator==(const ucc::misc::Symbol& s) const
+{
+    return data_get() == s.data_get();
+}
+
+inline bool ucc::misc::Symbol::operator!=(const ucc::misc::Symbol& s) const
+{
+    return data_get() != s.data_get();
+}
+
 #endif /* !SYMBOL_HXX */

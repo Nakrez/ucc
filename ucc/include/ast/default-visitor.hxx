@@ -72,8 +72,8 @@ template <template <typename> class Const>
 void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<VarDecl>::type& ast)
 {
-    if (ast.type_get())
-        ast.type_get()->accept(*this);
+    if (ast.ty_get())
+        ast.ty_get()->accept(*this);
 
     if (ast.init_get())
         ast.init_get()->accept(*this);
@@ -83,8 +83,8 @@ template <template <typename> class Const>
 void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<FunctionDecl>::type& ast)
 {
-    if (ast.return_type_get())
-        ast.return_type_get()->accept(*this);
+    if (ast.return_ty_get())
+        ast.return_ty_get()->accept(*this);
 
     for (auto param : ast.param_get())
         param->accept(*this);
@@ -97,16 +97,16 @@ template <template <typename> class Const>
 void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<TypeDecl>::type& ast)
 {
-    if (ast.type_get())
-        ast.type_get()->accept(*this);
+    if (ast.ty_get())
+        ast.ty_get()->accept(*this);
 }
 
 template <template <typename> class Const>
 void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<FieldDecl>::type& ast)
 {
-    if (ast.type_get())
-        ast.type_get()->accept(*this);
+    if (ast.ty_get())
+        ast.ty_get()->accept(*this);
 
     if (ast.bit_field_get())
         ast.bit_field_get()->accept(*this);
@@ -137,22 +137,22 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<EnumDecl>::type& a
 }
 
 template <template <typename> class Const>
-void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Type>::type& ast)
+void ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<Ty>::type& ast)
 {
     ast.accept(*this);
 }
 
 template <template <typename> class Const>
 void
-ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<NamedType>::type&)
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<NamedTy>::type&)
 {}
 
 template <template <typename> class Const>
 void
-ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<ArrayType>::type& ast)
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<ArrayTy>::type& ast)
 {
-    if (ast.sub_type_get())
-        ast.sub_type_get()->accept(*this);
+    if (ast.sub_ty_get())
+        ast.sub_ty_get()->accept(*this);
 
     if (ast.size_get())
         ast.size_get()->accept(*this);
@@ -160,10 +160,10 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<ArrayType>::type& 
 
 template <template <typename> class Const>
 void
-ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<FunctionType>::type& ast)
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<FunctionTy>::type& ast)
 {
-    if (ast.return_type_get())
-        ast.return_type_get()->accept(*this);
+    if (ast.return_ty_get())
+        ast.return_ty_get()->accept(*this);
 
     for (auto param : ast.param_get())
         param->accept(*this);
@@ -171,20 +171,20 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<FunctionType>::typ
 
 template <template <typename> class Const>
 void
-ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<PtrType>::type& ast)
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<PtrTy>::type& ast)
 {
-    if (ast.pointed_type_get())
-        ast.pointed_type_get()->accept(*this);
+    if (ast.pointed_ty_get())
+        ast.pointed_ty_get()->accept(*this);
 }
 
 template <template <typename> class Const>
 void
-ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<RecordType>::type&)
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<RecordTy>::type&)
 {}
 
 template <template <typename> class Const>
 void
-ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<EnumType>::type&)
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<EnumTy>::type&)
 {}
 
 template <template <typename> class Const>
@@ -426,8 +426,8 @@ template <template <typename> class Const>
 void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<CastExpr>::type& ast)
 {
-    if (ast.type_get())
-        ast.type_get()->accept(*this);
+    if (ast.ty_get())
+        ast.ty_get()->accept(*this);
 
     if (ast.expr_get())
         ast.expr_get()->accept(*this);
@@ -443,8 +443,8 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<SizeofExpr>::type&
         return;
     }
 
-    if (ast.type_get())
-        ast.type_get()->accept(*this);
+    if (ast.ty_get())
+        ast.ty_get()->accept(*this);
 }
 
 template <template <typename> class Const>
