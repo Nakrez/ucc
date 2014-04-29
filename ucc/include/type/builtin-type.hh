@@ -418,7 +418,10 @@ namespace ucc
 
             private:
                 /// Constructor
-                Void() = default;
+                Void()
+                {
+                    set_complete(false);
+                }
         };
     } // namespace type
 } // namespace ucc

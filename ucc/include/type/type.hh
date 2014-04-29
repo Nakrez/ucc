@@ -48,6 +48,7 @@ namespace ucc
             public:
                 /// Constructor
                 Type()
+                    : is_complete_(true)
                 {}
 
                 /// Destructor
@@ -59,6 +60,16 @@ namespace ucc
                 bool operator!=(const Type& t) const
                 {
                     return !(*this == t);
+                }
+
+                bool is_complete() const
+                {
+                    return is_complete_;
+                }
+
+                void set_complete(bool b)
+                {
+                    is_complete_ = b;
                 }
 
                 /// \brief  Check compatibility of types on assignment
@@ -89,6 +100,9 @@ namespace ucc
                 {
                     o << to_str();
                 }
+
+            protected:
+                bool is_complete_;
         };
     } // namespace type
 } // namespace ucc

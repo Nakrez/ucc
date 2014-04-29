@@ -136,6 +136,9 @@ void TypeChecker::operator()(ast::VarDecl& ast)
             error("variable '" + ast.name_get().data_get() + "' "
                   "declared void", ast.location_get());
     }
+    else if (!var_type->is_complete())
+        error("variable '" + ast.name_get().data_get() + "' has incomplete "
+              "type '" + var_type->to_str() + "'", ast.location_get());
 
     if (ast.init_get())
     {
@@ -231,12 +234,17 @@ void TypeChecker::operator()(ast::RecordDecl& ast)
             {
                 ucc::ast::DefaultVisitor::operator()(*f);
 
-                if (f->ty_get()->type_get() == &Void::instance_get())
+                if (!f->ty_get()->type_get()->is_complete())
                     error("field '" + f->name_get().data_get() + "' "
-                            "declared void", f->location_get());
+                            "has incomplete type '" +
+                            f->ty_get()->type_get()->to_str() + "'",
+                            ast.location_get());
 
                 r->field_add(f->name_get(), f->ty_get()->type_get());
             }
+
+            // Now mark the record type as complete type
+            r->set_complete(true);
         }
         else
         {

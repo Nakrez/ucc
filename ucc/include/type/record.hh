@@ -37,7 +37,9 @@ namespace ucc
                 Record(const ucc::misc::Symbol name, bool is_struct = true)
                     : name_(name)
                     , is_struct_(is_struct)
-                {}
+                {
+                    set_complete(false);
+                }
 
                 /// Destructor
                 virtual ~Record() = default;
