@@ -225,6 +225,8 @@ void TypeChecker::operator()(ast::RecordDecl& ast)
             else
                 ast.built_type_set(r);
 
+            ast.type_set(r);
+
             for (auto f : ast.fields_get()->list_get())
             {
                 ucc::ast::DefaultVisitor::operator()(*f);
@@ -235,8 +237,6 @@ void TypeChecker::operator()(ast::RecordDecl& ast)
 
                 r->field_add(f->name_get(), f->ty_get()->type_get());
             }
-
-            ast.type_set(r);
         }
         else
         {
