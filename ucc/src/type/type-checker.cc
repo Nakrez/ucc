@@ -141,7 +141,6 @@ void TypeChecker::operator()(ast::VarDecl& ast)
     {
         const Type* init_type = node_type(*ast.init_get());
 
-        std::cout << var_type->to_str() << std::endl;
         check_assign_types(ast.location_get(), var_type, init_type);
     }
 
@@ -729,4 +728,14 @@ void TypeChecker::operator()(ast::CastExpr& ast)
     const Type* t = node_type(*ast.ty_get());
 
     ast.type_set(t);
+}
+
+void TypeChecker::operator()(ast::SizeofExpr& ast)
+{
+    if (ast.expr_get())
+        ucc::ast::DefaultVisitor::operator()(*ast.expr_get());
+    else if (ast.ty_get())
+        ucc::ast::DefaultVisitor::operator()(*ast.ty_get());
+
+    ast.type_set(&UnsignedInt::instance_get());
 }

@@ -96,6 +96,7 @@ namespace ucc
                 virtual void operator()(ast::AssignExpr& ast);
                 virtual void operator()(ast::OpExpr& ast);
                 virtual void operator()(ast::CastExpr& ast);
+                virtual void operator()(ast::SizeofExpr& ast);
 
             private:
                 bool fun_param_;
