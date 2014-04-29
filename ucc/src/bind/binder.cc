@@ -129,15 +129,6 @@ void Binder::operator()(ucc::ast::RecordDecl& ast)
     if (ast.name_get().data_get() == "")
         return;
 
-    if (ast.fields_get())
-    {
-        scope_begin();
-
-        ast.fields_get()->accept(*this);
-
-        scope_end();
-    }
-
     ast::RecordDecl* rd;
     ast::Decl* d;
 
@@ -156,6 +147,15 @@ void Binder::operator()(ucc::ast::RecordDecl& ast)
             ast.prev_set(rd);
 
         record_enum_.put(ast.name_get(), &ast);
+    }
+
+    if (ast.fields_get())
+    {
+        scope_begin();
+
+        ast.fields_get()->accept(*this);
+
+        scope_end();
     }
 }
 

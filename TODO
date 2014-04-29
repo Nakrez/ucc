@@ -35,3 +35,4 @@
 
 - Correct locations starting at 0
 - Add support of #line locations
+- Fix handling of incomplete type pointers which are supposed to work
