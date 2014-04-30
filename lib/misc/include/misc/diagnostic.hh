@@ -36,6 +36,7 @@ namespace ucc
                     parse = 3,
                     bind = 4,
                     type = 5,
+                    analysis = 6,
                 };
 
                 enum Severity

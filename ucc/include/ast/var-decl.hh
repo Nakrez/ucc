@@ -98,6 +98,16 @@ namespace ucc
                     return is_elipsis_;
                 }
 
+                bool is_initialized() const
+                {
+                    return initialized_;
+                }
+
+                void set_initialized(bool b = true)
+                {
+                    initialized_ = b;
+                }
+
                 virtual void accept(Visitor& v) override
                 {
                     v(*this);
@@ -112,6 +122,7 @@ namespace ucc
                 Ty* ty_;
                 Expr* init_;
                 bool is_elipsis_;
+                bool initialized_;
                 VarDecl* prev_;
         };
     } // namespace ast

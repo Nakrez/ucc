@@ -16,34 +16,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <ast/var-decl.hh>
+#include <command/unifier-command.hh>
 
-using namespace ucc;
-using namespace ast;
+using namespace command;
 
-VarDecl::VarDecl(const ucc::misc::location& loc,
-                 const ucc::misc::Symbol& name,
-                 Ty* ty,
-                 Expr* e)
-    : Decl(loc, name)
-    , ty_(ty)
-    , init_(e)
-    , is_elipsis_(false)
-    , initialized_(false)
-    , prev_(nullptr)
+UnifierCommand::UnifierCommand(const std::string& opt,
+                               const std::string& description,
+                               const std::string& dependancies)
+    : BasicCommand(opt, description, dependancies)
 {}
 
-VarDecl::VarDecl(const ucc::misc::location& loc)
-    : Decl(loc, "")
-    , ty_(nullptr)
-    , init_(nullptr)
-    , is_elipsis_(true)
-    , initialized_(false)
-    , prev_(nullptr)
+UnifierCommand::~UnifierCommand()
 {}
-
-VarDecl::~VarDecl()
-{
-    delete ty_;
-    delete init_;
-}

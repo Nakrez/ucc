@@ -16,6 +16,11 @@
 
 - Update error messages for return statement
 
+-- ANALYSIS --
+
+- Add volatile consideration for -Wuninitialized
+- Add -Wunused-*
+
 -- IR CONVERTER --
 
 - Design IR
