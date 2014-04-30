@@ -69,6 +69,8 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/type/type.cc \
 			  src/type/type-checker.cc \
 			  src/type/command.cc \
+			  src/analysis/uninitialized-variables.cc \
+			  src/analysis/command.cc \
 			  src/command.cc \
 			  src/main.cc \
 			  src/ucc.cc

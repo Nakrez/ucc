@@ -29,6 +29,7 @@ VarDecl::VarDecl(const ucc::misc::location& loc,
     , ty_(ty)
     , init_(e)
     , is_elipsis_(false)
+    , initialized_(false)
     , prev_(nullptr)
 {}
 
@@ -37,6 +38,7 @@ VarDecl::VarDecl(const ucc::misc::location& loc)
     , ty_(nullptr)
     , init_(nullptr)
     , is_elipsis_(true)
+    , initialized_(false)
     , prev_(nullptr)
 {}
 

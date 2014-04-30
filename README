@@ -34,6 +34,13 @@ ucc: Micro C compiler
   -b, --compute-bindings     Compute bindings on the AST
   -p, --parse                Parse the input file
       --parse-trace          Activate parse trace
+      --type-check           Check type from the input file
+  -w, --disable-warnings     Disable all warnings
+      --Wall                 Enable warning flags about constructions that are
+                             questionable
+      --Werror               Treat warnings as errors
+      --Wextra               Enable extra warning flags
+      --Wuninitialized       Warn if variable is used before being initialized
   -?, --help                 Give this help list
       --usage                Give a short usage message
 
@@ -44,6 +51,7 @@ ucc: Micro C compiler
 - PRETTY-PRINTER : 90% (print the generated AST from the code)
 - BINDER : 90% (link usage of variables, types, ... To their definitions)
 - TYPE CHECKER : 90% (verify type correctness from input file)
+- ANALYSIS : 5% (try to detect questionable constructions)
 - MIDDLE END : 0%
 - BACK END : 0%
 
@@ -60,7 +68,7 @@ different scopes.
 * Contact
 
 If you find bugs, or you have any questions, ... Feel free to can contact me
-at b.covolatoATgmail.com
+at b.covolato AT gmail.com
 
 * Note
 
