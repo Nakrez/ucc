@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <command/basic-command.hh>
 # include <command/callback-command.hh>
 # include <command/boolean-command.hh>
+# include <command/unifier-command.hh>
 
 # define REGISTER_COMMAND(name, opt, description, callback, dep)            \
     extern void (callback)();                                               \
@@ -34,6 +35,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define REGISTER_BOOLEAN(name, opt, description, b, dep)                   \
     static command::BooleanCommand boolean##name(opt, description, dep,     \
                                                  b)
+
+# define REGISTER_UNIFIER(name, opt, description, dep)                      \
+    static command::UnifierCommand boolean##name(opt, description, dep)
 
 namespace command
 {

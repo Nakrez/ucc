@@ -16,34 +16,24 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <ast/var-decl.hh>
+#ifndef UNIFIER_COMMAND_HH
+# define UNIFIER_COMMAND_HH
 
-using namespace ucc;
-using namespace ast;
+# include <command/basic-command.hh>
 
-VarDecl::VarDecl(const ucc::misc::location& loc,
-                 const ucc::misc::Symbol& name,
-                 Ty* ty,
-                 Expr* e)
-    : Decl(loc, name)
-    , ty_(ty)
-    , init_(e)
-    , is_elipsis_(false)
-    , initialized_(false)
-    , prev_(nullptr)
-{}
-
-VarDecl::VarDecl(const ucc::misc::location& loc)
-    : Decl(loc, "")
-    , ty_(nullptr)
-    , init_(nullptr)
-    , is_elipsis_(true)
-    , initialized_(false)
-    , prev_(nullptr)
-{}
-
-VarDecl::~VarDecl()
+namespace command
 {
-    delete ty_;
-    delete init_;
-}
+    class UnifierCommand : public BasicCommand
+    {
+        public:
+            UnifierCommand(const std::string& opt,
+                           const std::string& description,
+                           const std::string& dependancies);
+            virtual ~UnifierCommand();
+
+            virtual void run()
+            {}
+    };
+} // namespace command
+
+#endif /* !UNIFIER_COMMAND_HH */
