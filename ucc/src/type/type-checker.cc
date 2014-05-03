@@ -725,6 +725,23 @@ void TypeChecker::operator()(ast::AssignExpr& ast)
     ast.type_set(lvalue);
 }
 
+void TypeChecker::operator()(ast::ConditionalExpr& ast)
+{
+    const Type* cond = node_type(*ast.cond_get());
+    const Type* texpr = node_type(*ast.true_expr_get());
+    const Type* fexpr = node_type(*ast.false_expr_get());
+
+    if (!is_scalar(cond))
+        error("used '" + ast.cond_get()->type_get()->to_str() + "' type where "
+              "scalar is required", ast.location_get());
+
+    if (texpr->compatible_on_assign(*fexpr) ==
+        Type::TypeCompatibility::error)
+        error("type mismatch in conditional expression", ast.location_get());
+
+    ast.type_set(texpr);
+}
+
 void TypeChecker::operator()(ast::OpExpr& ast)
 {
     const Type* lexpr = node_type(*ast.lexpr_get());
