@@ -203,6 +203,20 @@ void AstDumper::operator()(const AssignExpr& ast)
     ostr_ << misc::decindent;
 }
 
+void AstDumper::operator()(const ConditionalExpr& ast)
+{
+    ostr_ << color::blue << "ConditionalExpr " << color::def
+          << "'" << color::green << " '"
+          << *ast.type_get() << "'" << color::def << misc::incendl;
+
+    ast.cond_get()->accept(*this);
+    ostr_ << misc::iendl;
+    ast.true_expr_get()->accept(*this);
+    ostr_ << misc::iendl;
+    ast.false_expr_get()->accept(*this);
+    ostr_ << misc::decindent;
+}
+
 void AstDumper::operator()(const UnaryExpr& ast)
 {
     ostr_ << color::blue << "UnaryExpr " << color::def

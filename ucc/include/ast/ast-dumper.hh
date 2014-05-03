@@ -72,6 +72,7 @@ namespace ucc
                 virtual void operator()(const IntExpr& ast);
                 virtual void operator()(const VarExpr& ast);
                 virtual void operator()(const AssignExpr& ast);
+                virtual void operator()(const ConditionalExpr& ast);
                 virtual void operator()(const UnaryExpr& ast);
                 virtual void operator()(const CastExpr& ast);
 
