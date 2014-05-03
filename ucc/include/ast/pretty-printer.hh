@@ -85,6 +85,7 @@ namespace ucc
                 virtual void operator()(const MemberExpr& ast);
                 virtual void operator()(const EnumExpr& ast);
                 virtual void operator()(const CastExpr& ast);
+                virtual void operator()(const ImplicitCastExpr& ast);
                 virtual void operator()(const SizeofExpr& ast);
                 virtual void operator()(const InitListExpr& ast);
 

@@ -76,6 +76,7 @@ namespace ucc
         class MemberExpr;
         class EnumExpr;
         class CastExpr;
+        class ImplicitCastExpr;
         class SizeofExpr;
         class InitListExpr;
 

@@ -800,6 +800,12 @@ void PrettyPrinter::operator()(const CastExpr& ast)
         ast.expr_get()->accept(*this);
 }
 
+void PrettyPrinter::operator()(const ImplicitCastExpr& ast)
+{
+    if (ast.expr_get())
+        ast.expr_get()->accept(*this);
+}
+
 void PrettyPrinter::operator()(const SizeofExpr& ast)
 {
     ostr_ << "sizeof (";
