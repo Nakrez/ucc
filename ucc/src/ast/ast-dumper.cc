@@ -160,11 +160,6 @@ void AstDumper::operator()(const ReturnStmt& ast)
     }
 }
 
-void AstDumper::operator()(const BreakStmt&)
-{
-    ostr_ << color::blue << "BreakStmt" << color::def;
-}
-
 void AstDumper::operator()(const WhileStmt& ast)
 {
     ostr_ << color::blue << "WhileStmt" << color::def;
@@ -174,6 +169,16 @@ void AstDumper::operator()(const WhileStmt& ast)
     ostr_ << misc::iendl;
     ast.body_get()->accept(*this);
     ostr_ << misc::decindent;
+}
+
+void AstDumper::operator()(const BreakStmt&)
+{
+    ostr_ << color::blue << "BreakStmt" << color::def;
+}
+
+void AstDumper::operator()(const ContinueStmt&)
+{
+    ostr_ << color::blue << "ContinueStmt" << color::def;
 }
 
 void AstDumper::operator()(const IntExpr& ast)

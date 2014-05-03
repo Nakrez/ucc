@@ -68,6 +68,7 @@ namespace ucc
                 virtual void operator()(const ReturnStmt& ast);
                 virtual void operator()(const WhileStmt& ast);
                 virtual void operator()(const BreakStmt& ast);
+                virtual void operator()(const ContinueStmt& ast);
 
                 virtual void operator()(const IntExpr& ast);
                 virtual void operator()(const VarExpr& ast);
