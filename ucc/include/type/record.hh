@@ -74,6 +74,11 @@ namespace ucc
                     return fields_;
                 }
 
+                unsigned long size_get() const
+                {
+                    return fields_.size();
+                }
+
                 /// \brief  Get the Type of a Field named @a name.
                 /// \param  name    The name of the Field you want to get the
                 ///                 Type.

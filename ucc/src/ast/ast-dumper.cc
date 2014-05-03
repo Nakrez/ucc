@@ -93,15 +93,21 @@ void AstDumper::operator()(const EnumExprList& ast)
 
 void AstDumper::operator()(const VarDecl& ast)
 {
-    ostr_ << color::blue << "VarDecl " << color::white << ast.name_get()
-          << color::green << " '" << *ast.type_get() << "'" << color::def;
-
-    if (ast.init_get())
+    if (!ast.is_elipsis())
     {
-        ostr_ << misc::incendl;
-        ast.init_get()->accept(*this);
-        ostr_ << misc::decindent;
+        ostr_ << color::blue << "VarDecl " << color::white << ast.name_get()
+              << color::green << " '" << *ast.type_get() << "'" << color::def;
+
+        if (ast.init_get())
+        {
+            ostr_ << misc::incendl;
+            ast.init_get()->accept(*this);
+            ostr_ << misc::decindent;
+        }
     }
+    else
+        ostr_ << color::blue << "VarDecl " << color::white << "..."
+              << color::def;
 }
 
 void AstDumper::operator()(const TypeDecl& ast)
