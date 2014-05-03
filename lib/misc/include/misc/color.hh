@@ -16,21 +16,24 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_MISC_INDENT_HH
-# define UCC_MISC_INDENT_HH
+#ifndef UCC_MISC_COLOR_HH
+# define UCC_MISC_COLOR_HH
 
-# include <iosfwd>
+# include <string>
 
 namespace ucc
 {
     namespace misc
     {
-        std::ostream& iendl(std::ostream& o);
-        std::ostream& incindent(std::ostream& o);
-        std::ostream& decindent(std::ostream& o);
-        std::ostream& incendl(std::ostream& o);
-        std::ostream& decendl(std::ostream& o);
+        namespace color
+        {
+            const std::string def = "\033[0m";
+            const std::string blue = "\033[34m";
+            const std::string green = "\033[32m";
+            const std::string white = "\033[37m";
+            const std::string red = "\033[31m";
+        } // namespace color
     } // namespace misc
-} // namespace ucc
+} // namepsace ucc
 
-#endif /* !UCC_MISC_INDENT_HH */
+#endif /* !UCC_MISC_COLOR_HH */
