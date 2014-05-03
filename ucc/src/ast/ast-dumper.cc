@@ -203,6 +203,17 @@ void AstDumper::operator()(const AssignExpr& ast)
     ostr_ << misc::decindent;
 }
 
+void AstDumper::operator()(const UnaryExpr& ast)
+{
+    ostr_ << color::blue << "UnaryExpr " << color::def
+          << "'" << ast.op_to_str() << "'" << color::green << " '"
+          << *ast.type_get() << "'" << color::def << misc::incendl;
+
+    ast.expr_get()->accept(*this);
+
+    ostr_ << misc::decindent;
+}
+
 void AstDumper::operator()(const CastExpr& ast)
 {
     ostr_ << color::blue << "CastExpr" << color::green << " '"
