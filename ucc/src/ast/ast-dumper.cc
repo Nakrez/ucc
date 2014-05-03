@@ -165,6 +165,17 @@ void AstDumper::operator()(const BreakStmt&)
     ostr_ << color::blue << "BreakStmt" << color::def;
 }
 
+void AstDumper::operator()(const WhileStmt& ast)
+{
+    ostr_ << color::blue << "WhileStmt" << color::def;
+
+    ostr_ << misc::incendl;
+    ast.cond_get()->accept(*this);
+    ostr_ << misc::iendl;
+    ast.body_get()->accept(*this);
+    ostr_ << misc::decindent;
+}
+
 void AstDumper::operator()(const IntExpr& ast)
 {
     ostr_ << color::blue << "IntExpr " << color::white << ast.value_get()
