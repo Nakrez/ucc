@@ -160,6 +160,11 @@ void AstDumper::operator()(const ReturnStmt& ast)
     }
 }
 
+void AstDumper::operator()(const BreakStmt&)
+{
+    ostr_ << color::blue << "BreakStmt" << color::def;
+}
+
 void AstDumper::operator()(const IntExpr& ast)
 {
     ostr_ << color::blue << "IntExpr " << color::white << ast.value_get()
