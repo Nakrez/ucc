@@ -722,6 +722,15 @@ void TypeChecker::operator()(ast::AssignExpr& ast)
                            lvalue, rvalue);
     }
 
+    ast::ImplicitCastExpr* e;
+
+    e = new ast::ImplicitCastExpr(ast.rvalue_get()->location_get(),
+                                  ast.rvalue_get());
+
+    e->type_set(lvalue);
+
+    ast.rvalue_set(e);
+
     ast.type_set(lvalue);
 }
 
