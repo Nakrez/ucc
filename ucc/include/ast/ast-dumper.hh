@@ -77,6 +77,7 @@ namespace ucc
                 virtual void operator()(const OpExpr& ast);
                 virtual void operator()(const UnaryExpr& ast);
                 virtual void operator()(const CastExpr& ast);
+                virtual void operator()(const ImplicitCastExpr& ast);
 
             protected:
                 std::ostream& ostr_;

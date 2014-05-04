@@ -259,3 +259,13 @@ void AstDumper::operator()(const CastExpr& ast)
 
     ostr_ << misc::decindent;
 }
+
+void AstDumper::operator()(const ImplicitCastExpr& ast)
+{
+    ostr_ << color::red << "ImplicitCastExpr " << color::green << " '"
+          << *ast.type_get() << "'" << color::def << misc::incendl;
+
+    ast.expr_get()->accept(*this);
+
+    ostr_ << misc::decindent;
+}
