@@ -541,9 +541,10 @@ void TypeChecker::operator()(ast::CallExpr& ast)
 
     auto type_it = f->cbegin();
     auto type_end = f->cend();
-    auto arg_it = ast.param_get()->list_get().cbegin();
+    auto arg_it = ast.param_get()->list_get().begin();
 
     const Type* p_type;
+    std::list<ast::Expr*> l;
 
     for (; type_it != type_end; ++type_it, ++arg_it)
     {
@@ -551,6 +552,11 @@ void TypeChecker::operator()(ast::CallExpr& ast)
 
         check_assign_types((*arg_it)->location_get(), type_it->type_get(),
                            p_type);
+
+        // FIXME: Crap
+        std::shared_ptr<ast::Expr> e(new ast::ImplicitCastExpr((*arg_it)->location_get(), *arg_it));
+        e->type_set(p_type);
+        arg_it->swap(e);
     }
 }
 

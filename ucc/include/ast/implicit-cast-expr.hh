@@ -19,6 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_AST_IMPLICIT_CAST_EXPR_HH
 # define UCC_AST_IMPLICIT_CAST_EXPR_HH
 
+# include <memory>
+
 # include <ast/expr.hh>
 
 namespace ucc
@@ -33,17 +35,20 @@ namespace ucc
                 /// \param  expr    The expression casted
                 ImplicitCastExpr(const ucc::misc::location& loc, Expr* expr);
 
+                ImplicitCastExpr(const ucc::misc::location& loc,
+                                 const std::shared_ptr<Expr>& expr);
+
                 /// Destructor
                 virtual ~ImplicitCastExpr();
 
                 const Expr* expr_get() const
                 {
-                    return expr_;
+                    return expr_.get();
                 }
 
                 Expr* expr_get()
                 {
-                    return expr_;
+                    return expr_.get();
                 }
 
                 virtual void accept(Visitor& v) override
@@ -57,7 +62,7 @@ namespace ucc
                 }
 
             protected:
-                Expr* expr_;
+                std::shared_ptr<Expr> expr_;
         };
     } // namespace ast
 } // namespace ucc

@@ -27,7 +27,11 @@ ImplicitCastExpr::ImplicitCastExpr(const ucc::misc::location& loc,
     , expr_(expr)
 {}
 
+ImplicitCastExpr::ImplicitCastExpr(const ucc::misc::location& loc,
+                                   const std::shared_ptr<Expr>& expr)
+    : Expr(loc)
+    , expr_(expr)
+{}
+
 ImplicitCastExpr::~ImplicitCastExpr()
-{
-    delete expr_;
-}
+{}
