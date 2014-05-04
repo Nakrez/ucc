@@ -58,7 +58,8 @@ namespace ucc
                 /// \param  op  The operation operator
                 /// \param  t1  The left expression type
                 /// \param  t2  The right expression type
-                void check_op_types(const ucc::misc::location& loc,
+                /// \return return false if there is an error, true otherwise
+                bool check_op_types(const ucc::misc::location& loc,
                                     ast::OpExpr::Op op,
                                     const Type* t1, const Type* t2);
 

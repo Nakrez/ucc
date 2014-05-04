@@ -92,7 +92,7 @@ void TypeChecker::check_assign_types(const ucc::misc::location& loc,
     }
 }
 
-void TypeChecker::check_op_types(const ucc::misc::location& loc,
+bool TypeChecker::check_op_types(const ucc::misc::location& loc,
                                  ast::OpExpr::Op op,
                                  const Type* t1, const Type* t2)
 {
@@ -115,6 +115,8 @@ void TypeChecker::check_op_types(const ucc::misc::location& loc,
 
         ucc::misc::DiagnosticReporter::instance_get().add(d);
     }
+
+    return c != Type::TypeCompatibility::error;
 }
 
 void TypeChecker::operator()(ast::VarDecl& ast)
