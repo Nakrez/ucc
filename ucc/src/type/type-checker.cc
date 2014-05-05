@@ -357,7 +357,7 @@ void TypeChecker::operator()(ast::FunctionTy& ast)
 
 void TypeChecker::operator()(ast::RecordTy& ast)
 {
-    ast.type_set(ast.def_get()->type_get());
+    ast.type_set(node_type(*ast.def_get()));
 }
 
 void TypeChecker::operator()(ast::EnumTy& ast)
