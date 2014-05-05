@@ -67,6 +67,87 @@ bool TypeChecker::is_scalar(const Type* t)
            dynamic_cast<const Array*> (actual);
 }
 
+void TypeChecker::type_promotion(ast::OpExpr& ast)
+{
+    const Type* ltype = ast.lexpr_get()->type_get();
+    const Type* rtype = ast.rexpr_get()->type_get();
+
+    // If type size if less than 4 the convert both in INT
+    if (ltype->size() < 4 && rtype->size() < 4)
+    {
+        ast::Expr* le;
+        ast::Expr* re;
+
+        le = new ucc::ast::ImplicitCastExpr(ast.lexpr_get()->location_get(),
+                                            ast.lexpr_get());
+        re = new ucc::ast::ImplicitCastExpr(ast.rexpr_get()->location_get(),
+                                            ast.rexpr_get());
+
+        le->type_set(&Int::instance_get());
+        re->type_set(&Int::instance_get());
+
+        ast.lexpr_set(le);
+        ast.rexpr_set(re);
+
+        ast.type_set(&Int::instance_get());
+    }
+    // If they are of the same size check for floats
+    else if (ltype->size() == rtype->size())
+    {
+        if (dynamic_cast<const FloatingPoint*> (rtype))
+        {
+            ast.type_set(rtype);
+
+            ast::Expr* le;
+
+            le = new ucc::ast::ImplicitCastExpr(ast.lexpr_get()->location_get(),
+                                                ast.lexpr_get());
+            le->type_set(rtype);
+
+            ast.lexpr_set(le);
+        }
+        else if (dynamic_cast<const FloatingPoint*> (ltype))
+        {
+            ast.type_set(ltype);
+
+            ast::Expr* re;
+
+            re = new ucc::ast::ImplicitCastExpr(ast.rexpr_get()->location_get(),
+                                                ast.rexpr_get());
+            re->type_set(ltype);
+
+            ast.rexpr_set(re);
+        }
+        else
+            ast.type_set(ltype);
+    }
+    // If they have different size promote the little one
+    else if (ltype->size() > rtype->size())
+    {
+        ast.type_set(ltype);
+
+        ast::Expr* re;
+
+        re = new ucc::ast::ImplicitCastExpr(ast.rexpr_get()->location_get(),
+                                            ast.rexpr_get());
+        re->type_set(ltype);
+
+        ast.rexpr_set(re);
+    }
+    else
+    {
+        ast.type_set(rtype);
+
+        ast::Expr* le;
+
+        le = new ucc::ast::ImplicitCastExpr(ast.lexpr_get()->location_get(),
+                                            ast.lexpr_get());
+        le->type_set(rtype);
+
+        ast.lexpr_set(le);
+    }
+}
+
 void TypeChecker::check_assign_types(const ucc::misc::location& loc,
                                      const Type* t1,
                                      const Type* t2)
@@ -92,7 +173,7 @@ void TypeChecker::check_assign_types(const ucc::misc::location& loc,
     }
 }
 
-void TypeChecker::check_op_types(const ucc::misc::location& loc,
+bool TypeChecker::check_op_types(const ucc::misc::location& loc,
                                  ast::OpExpr::Op op,
                                  const Type* t1, const Type* t2)
 {
@@ -115,6 +196,8 @@ void TypeChecker::check_op_types(const ucc::misc::location& loc,
 
         ucc::misc::DiagnosticReporter::instance_get().add(d);
     }
+
+    return c != Type::TypeCompatibility::error;
 }
 
 void TypeChecker::operator()(ast::VarDecl& ast)
@@ -254,6 +337,13 @@ void TypeChecker::operator()(ast::RecordDecl& ast)
     }
 }
 
+void TypeChecker::operator()(ast::EnumExprDecl& ast)
+{
+    if (ast.value_get() && !dynamic_cast<ast::IntExpr*> (ast.value_get()))
+        error("enumerator value for '" + ast.name_get().data_get() + "' is "
+              "not an integer constant", ast.location_get());
+}
+
 void TypeChecker::operator()(ast::PtrTy& ast)
 {
     const Type* inner = node_type(*ast.pointed_ty_get());
@@ -348,7 +438,12 @@ void TypeChecker::operator()(ast::FunctionTy& ast)
 
 void TypeChecker::operator()(ast::RecordTy& ast)
 {
-    ast.type_set(ast.def_get()->type_get());
+    ast.type_set(node_type(*ast.def_get()));
+}
+
+void TypeChecker::operator()(ast::EnumTy& ast)
+{
+    ast.type_set(&Int::instance_get());
 }
 
 void TypeChecker::operator()(ast::ReturnStmt& ast)
@@ -363,6 +458,11 @@ void TypeChecker::operator()(ast::ReturnStmt& ast)
         // TODO: Change error message from standard assignation
         check_assign_types(ast.location_get(), f->return_type_get(),
                            ast.expr_get()->type_get());
+
+        ast::Expr* e = new ast::ImplicitCastExpr(ast.expr_get()->location_get(),
+                                                 ast.expr_get());
+        e->type_set(f->return_type_get());
+        ast.expr_set(e);
     }
     else
         check_assign_types(ast.location_get(), f->return_type_get(),
@@ -541,9 +641,10 @@ void TypeChecker::operator()(ast::CallExpr& ast)
 
     auto type_it = f->cbegin();
     auto type_end = f->cend();
-    auto arg_it = ast.param_get()->list_get().cbegin();
+    auto arg_it = ast.param_get()->list_get().begin();
 
     const Type* p_type;
+    std::list<ast::Expr*> l;
 
     for (; type_it != type_end; ++type_it, ++arg_it)
     {
@@ -551,6 +652,11 @@ void TypeChecker::operator()(ast::CallExpr& ast)
 
         check_assign_types((*arg_it)->location_get(), type_it->type_get(),
                            p_type);
+
+        // FIXME: Crap
+        std::shared_ptr<ast::Expr> e(new ast::ImplicitCastExpr((*arg_it)->location_get(), *arg_it));
+        e->type_set(p_type);
+        arg_it->swap(e);
     }
 }
 
@@ -722,7 +828,38 @@ void TypeChecker::operator()(ast::AssignExpr& ast)
                            lvalue, rvalue);
     }
 
+    ast::ImplicitCastExpr* e;
+
+    e = new ast::ImplicitCastExpr(ast.rvalue_get()->location_get(),
+                                  ast.rvalue_get());
+
+    e->type_set(lvalue);
+
+    ast.rvalue_set(e);
+
     ast.type_set(lvalue);
+}
+
+void TypeChecker::operator()(ast::ConditionalExpr& ast)
+{
+    const Type* cond = node_type(*ast.cond_get());
+    const Type* texpr = node_type(*ast.true_expr_get());
+    const Type* fexpr = node_type(*ast.false_expr_get());
+
+    if (!is_scalar(cond))
+        error("used '" + ast.cond_get()->type_get()->to_str() + "' type where "
+              "scalar is required", ast.location_get());
+
+    if (texpr->compatible_on_assign(*fexpr) ==
+        Type::TypeCompatibility::error)
+        error("type mismatch in conditional expression", ast.location_get());
+
+    ast.type_set(texpr);
+}
+
+void TypeChecker::operator()(ast::EnumExpr& ast)
+{
+    ast.type_set(&Int::instance_get());
 }
 
 void TypeChecker::operator()(ast::OpExpr& ast)
@@ -732,9 +869,10 @@ void TypeChecker::operator()(ast::OpExpr& ast)
 
     if (ast.op_get() != ast::OpExpr::Op::OP_COMA)
     {
-        check_op_types(ast.location_get(), ast.op_get(), lexpr, rexpr);
-
-        ast.type_set(lexpr);
+        if (check_op_types(ast.location_get(), ast.op_get(), lexpr, rexpr))
+            type_promotion(ast);
+        else
+            ast.type_set(lexpr);
     }
     else
         ast.type_set(rexpr);

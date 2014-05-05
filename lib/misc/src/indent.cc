@@ -40,6 +40,19 @@ namespace ucc
             return o << std::setw(indent_level_get(o)) << "" << std::setfill(fill);
         }
 
+        std::ostream& incindent(std::ostream& o)
+        {
+            indent_level_get(o) += 4;
+
+            return o;
+        }
+
+        std::ostream& decindent(std::ostream& o)
+        {
+            indent_level_get(o) -= 4;
+
+            return o;
+        }
         std::ostream& incendl(std::ostream& o)
         {
             indent_level_get(o) += 4;

@@ -123,6 +123,12 @@ namespace ucc
                         args += (*it).type_get()->to_str();
                     }
 
+                    if (has_elipsis())
+                    {
+                        if (args_.size_get() > 0)
+                            args += ", ";
+                        args += "...";
+                    }
                     return args + ")";
                 }
 

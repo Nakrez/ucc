@@ -22,6 +22,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <analysis/uninitialized-variables.hh>
 
+REGISTER_UNIFIER(fsyntax, "fsyntax-only", "Check the code for errors, but "
+                 "don't do anything beyond that.",
+                 "type-check");
+
 REGISTER_UNIFIER(werror, "Wextra", "Enable extra warning flags",
                  "Wuninitialized");
 

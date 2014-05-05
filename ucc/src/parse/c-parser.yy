@@ -744,6 +744,7 @@ declaration
             ucc::ast::EnumDecl* d = new ucc::ast::EnumDecl(@1, $1->name_get(),
                                                            nullptr);
             $$->push_back(std::shared_ptr<ucc::ast::Decl>(d));
+            driver.enum_decl_.push_back($1->name_get().data_get());
         }
         else if ($1->is_union())
         {
@@ -752,6 +753,7 @@ declaration
                                 ucc::ast::RecordDecl::RecordType::UNION,
                                 nullptr);
             $$->push_back(std::shared_ptr<ucc::ast::Decl>(d));
+            driver.record_decl_.push_back($1->name_get().data_get());
         }
 
         delete $1;
@@ -762,9 +764,9 @@ declaration
         $$ = new ucc::ast::DeclList(@1);
         ucc::ast::Ty* type;
 
-        if ($1->decl_get())
+        if ($1->decl_get() && $1->name_get() != "")
             $$->push_back(std::shared_ptr<ucc::ast::Decl>($1->decl_get()));
-        else if (driver.sym_.size() == 1 || $1->is_typedef())
+
         {
             ucc::ast::Ty* t;
             ucc::ast::RecordTy* rt;
@@ -774,13 +776,19 @@ declaration
             rt = dynamic_cast<ucc::ast::RecordTy*>(t);
             et = dynamic_cast<ucc::ast::EnumTy*>(t);
 
-            if (rt)
+            if (rt && std::find(driver.record_decl_.begin(),
+                                 driver.record_decl_.end(),
+                                 rt->name_get().data_get()) ==
+                       driver.record_decl_.end() && !rt->def_get())
                 $$->push_back(std::shared_ptr<ucc::ast::Decl>(
                                 new ucc::ast::RecordDecl(@1,
                                                         rt->name_get(),
                                                         rt->record_type_get(),
                                                         nullptr)));
-            else if (et)
+            if (et && std::find(driver.enum_decl_.begin(),
+                                 driver.enum_decl_.end(),
+                                 et->name_get().data_get()) ==
+                       driver.enum_decl_.end() && !et->def_get())
                 $$->push_back(std::shared_ptr<ucc::ast::Decl>(
                                 new ucc::ast::EnumDecl(@1,
                                                        et->name_get(),
@@ -1076,6 +1084,8 @@ struct_or_union_specifier
     }
     | struct_or_union "identifier" "{" struct_declaration_list "}"
     {
+        driver.record_decl_.push_back($2->data_get());
+
         $$ = new ucc::ast::RecordDecl(@1, *$2, $1, $4);
 
         delete $2;
@@ -1216,12 +1226,16 @@ enum_specifier
     }
     | "enum" "identifier" "{" enumerator_list "}"
     {
+        driver.enum_decl_.push_back($2->data_get());
+
         $$ = new ucc::ast::EnumDecl(@1, *$2, $4);
 
         delete $2;
     }
     | "enum" "identifier" "{" enumerator_list "," "}"
     {
+        driver.enum_decl_.push_back($2->data_get());
+
         $$ = new ucc::ast::EnumDecl(@1, *$2, $4);
 
         delete $2;

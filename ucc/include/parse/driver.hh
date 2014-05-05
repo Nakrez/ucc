@@ -55,6 +55,8 @@ namespace ucc
 
                 ucc::ast::DeclList* ast_;
 
+                std::list<std::string> record_decl_;
+                std::list<std::string> enum_decl_;
                 ucc::misc::ScopeMap<std::string,
                                     ucc::parse::Parser::token_type> sym_;
 

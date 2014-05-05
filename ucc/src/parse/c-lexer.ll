@@ -357,8 +357,8 @@ WS  [ \t\v\f]
 "=="                    { return token::EQ_OP; }
 "!="                    { return token::NE_OP; }
 ";"                     { return token::SEMI_COLON; }
-("{"|"<%")              { driver.sym_.scope_begin(); return token::LBRACE; }
-("}"|"%>")              { driver.sym_.scope_end(); return token::RBRACE; }
+("{"|"<%")              { return token::LBRACE; }
+("}"|"%>")              { return token::RBRACE; }
 ","                     { return token::COMA; }
 ":"                     { return token::COLON; }
 "="                     { return token::ASSIGN; }

@@ -101,6 +101,11 @@ namespace ucc
                     o << to_str();
                 }
 
+                virtual int size() const
+                {
+                    return 0;
+                }
+
             protected:
                 bool is_complete_;
         };

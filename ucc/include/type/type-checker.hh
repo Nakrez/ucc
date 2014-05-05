@@ -58,7 +58,8 @@ namespace ucc
                 /// \param  op  The operation operator
                 /// \param  t1  The left expression type
                 /// \param  t2  The right expression type
-                void check_op_types(const ucc::misc::location& loc,
+                /// \return return false if there is an error, true otherwise
+                bool check_op_types(const ucc::misc::location& loc,
                                     ast::OpExpr::Op op,
                                     const Type* t1, const Type* t2);
 
@@ -67,16 +68,21 @@ namespace ucc
                 /// \return true if the Type @a t is scalar, false otherwise
                 bool is_scalar(const Type* t);
 
+                /// \brief  Handle type promotion in OpExpr
+                void type_promotion(ast::OpExpr& ast);
+
                 virtual void operator()(ast::VarDecl& ast);
                 virtual void operator()(ast::FunctionDecl& ast);
                 virtual void operator()(ast::TypeDecl& ast);
                 virtual void operator()(ast::RecordDecl& ast);
+                virtual void operator()(ast::EnumExprDecl& ast);
 
                 virtual void operator()(ast::NamedTy& ast);
                 virtual void operator()(ast::ArrayTy& ast);
                 virtual void operator()(ast::FunctionTy& ast);
                 virtual void operator()(ast::PtrTy& ast);
                 virtual void operator()(ast::RecordTy& ast);
+                virtual void operator()(ast::EnumTy& ast);
 
                 virtual void operator()(ast::ReturnStmt& ast);
                 virtual void operator()(ast::WhileStmt& ast);
@@ -94,7 +100,9 @@ namespace ucc
                 virtual void operator()(ast::UnaryExpr& ast);
                 virtual void operator()(ast::MemberExpr& ast);
                 virtual void operator()(ast::AssignExpr& ast);
+                virtual void operator()(ast::ConditionalExpr& ast);
                 virtual void operator()(ast::OpExpr& ast);
+                virtual void operator()(ast::EnumExpr& ast);
                 virtual void operator()(ast::CastExpr& ast);
                 virtual void operator()(ast::SizeofExpr& ast);
 

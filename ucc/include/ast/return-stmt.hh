@@ -37,6 +37,11 @@ namespace ucc
                 Expr* expr_get();
                 const Expr* expr_get() const;
 
+                void expr_set(Expr* e)
+                {
+                    expr_ = e;
+                }
+
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
 

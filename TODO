@@ -5,7 +5,7 @@
 
 -- AST --
 
-- --ast-dump (dump the ast inner node on std::cout)
+- --ast-dump (finish implementation)
 
 -- BIND --
 

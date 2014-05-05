@@ -39,31 +39,6 @@ AssignExpr::~AssignExpr()
     delete rvalue_;
 }
 
-const Expr* AssignExpr::lvalue_get() const
-{
-    return lvalue_;
-}
-
-Expr* AssignExpr::lvalue_get()
-{
-    return lvalue_;
-}
-
-const Expr* AssignExpr::rvalue_get() const
-{
-    return rvalue_;
-}
-
-Expr* AssignExpr::rvalue_get()
-{
-    return rvalue_;
-}
-
-AssignExpr::AssignOp AssignExpr::op_get() const
-{
-    return op_;
-}
-
 std::string AssignExpr::op_to_str() const
 {
     switch (op_)
@@ -91,16 +66,6 @@ std::string AssignExpr::op_to_str() const
         case BOR_ASSIGN:
             return "|=";
     }
-}
-
-void AssignExpr::accept(Visitor& v)
-{
-    v(*this);
-}
-
-void AssignExpr::accept(ConstVisitor& v) const
-{
-    v(*this);
 }
 
 OpExpr::Op ast::assign_op_to_op_expr(AssignExpr::AssignOp op)

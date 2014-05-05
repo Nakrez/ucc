@@ -71,6 +71,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <ast/member-expr.hh>
 # include <ast/enum-expr.hh>
 # include <ast/cast-expr.hh>
+# include <ast/implicit-cast-expr.hh>
 # include <ast/sizeof-expr.hh>
 # include <ast/init-list-expr.hh>
 

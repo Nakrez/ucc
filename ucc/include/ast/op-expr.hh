@@ -70,6 +70,16 @@ namespace ucc
 
                 std::string op_to_str() const;
 
+                void lexpr_set(Expr* e)
+                {
+                    lexpr_ = e;
+                }
+
+                void rexpr_set(Expr* e)
+                {
+                    rexpr_ = e;
+                }
+
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
 
