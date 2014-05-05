@@ -53,6 +53,10 @@ namespace ucc
                     return inner_type_->to_str() + "[]";
                 }
 
+                virtual int size() const override
+                {
+                    return 8;
+                }
             private:
                 const Type* inner_type_;
         };

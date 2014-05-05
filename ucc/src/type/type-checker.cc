@@ -67,6 +67,33 @@ bool TypeChecker::is_scalar(const Type* t)
            dynamic_cast<const Array*> (actual);
 }
 
+void TypeChecker::type_promotion(ast::OpExpr& ast)
+{
+    const Type* ltype = ast.lexpr_get()->type_get();
+    const Type* rtype = ast.rexpr_get()->type_get();
+
+    if (ltype->size() < 4 && rtype->size() < 4)
+    {
+        ast::Expr* le;
+        ast::Expr* re;
+
+        le = new ucc::ast::ImplicitCastExpr(ast.lexpr_get()->location_get(),
+                                            ast.lexpr_get());
+        re = new ucc::ast::ImplicitCastExpr(ast.rexpr_get()->location_get(),
+                                            ast.rexpr_get());
+
+        le->type_set(&Int::instance_get());
+        re->type_set(&Int::instance_get());
+
+        ast.lexpr_set(le);
+        ast.rexpr_set(re);
+
+        ast.type_set(&Int::instance_get());
+    }
+    else
+        ast.type_set(ltype);
+}
+
 void TypeChecker::check_assign_types(const ucc::misc::location& loc,
                                      const Type* t1,
                                      const Type* t2)
@@ -783,9 +810,10 @@ void TypeChecker::operator()(ast::OpExpr& ast)
 
     if (ast.op_get() != ast::OpExpr::Op::OP_COMA)
     {
-        check_op_types(ast.location_get(), ast.op_get(), lexpr, rexpr);
-
-        ast.type_set(lexpr);
+        if (check_op_types(ast.location_get(), ast.op_get(), lexpr, rexpr))
+            type_promotion(ast);
+        else
+            ast.type_set(lexpr);
     }
     else
         ast.type_set(rexpr);

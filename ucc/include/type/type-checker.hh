@@ -68,6 +68,9 @@ namespace ucc
                 /// \return true if the Type @a t is scalar, false otherwise
                 bool is_scalar(const Type* t);
 
+                /// \brief  Handle type promotion in OpExpr
+                void type_promotion(ast::OpExpr& ast);
+
                 virtual void operator()(ast::VarDecl& ast);
                 virtual void operator()(ast::FunctionDecl& ast);
                 virtual void operator()(ast::TypeDecl& ast);

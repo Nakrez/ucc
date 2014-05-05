@@ -69,6 +69,10 @@ namespace ucc
                     return pointed_type_ == &Void::instance_get();
                 }
 
+                virtual int size() const override
+                {
+                    return 8;
+                }
             private:
                 const Type* pointed_type_;
         };
