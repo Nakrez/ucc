@@ -4,6 +4,8 @@ int main(void)
     {
         LOL = 1,
     } a;
+
     a = LOL;
+
     return a;
 }

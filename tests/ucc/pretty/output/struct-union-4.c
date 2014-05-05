@@ -1,10 +1,12 @@
 
+
 typedef struct
 {
     int a;
     int b : 9;
     
 } typea;
+
 
 typedef union
 {

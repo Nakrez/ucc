@@ -72,12 +72,14 @@ namespace ucc
                 virtual void operator()(ast::FunctionDecl& ast);
                 virtual void operator()(ast::TypeDecl& ast);
                 virtual void operator()(ast::RecordDecl& ast);
+                virtual void operator()(ast::EnumExprDecl& ast);
 
                 virtual void operator()(ast::NamedTy& ast);
                 virtual void operator()(ast::ArrayTy& ast);
                 virtual void operator()(ast::FunctionTy& ast);
                 virtual void operator()(ast::PtrTy& ast);
                 virtual void operator()(ast::RecordTy& ast);
+                virtual void operator()(ast::EnumTy& ast);
 
                 virtual void operator()(ast::ReturnStmt& ast);
                 virtual void operator()(ast::WhileStmt& ast);
@@ -97,6 +99,7 @@ namespace ucc
                 virtual void operator()(ast::AssignExpr& ast);
                 virtual void operator()(ast::ConditionalExpr& ast);
                 virtual void operator()(ast::OpExpr& ast);
+                virtual void operator()(ast::EnumExpr& ast);
                 virtual void operator()(ast::CastExpr& ast);
                 virtual void operator()(ast::SizeofExpr& ast);
 

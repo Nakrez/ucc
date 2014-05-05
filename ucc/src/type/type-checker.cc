@@ -256,6 +256,13 @@ void TypeChecker::operator()(ast::RecordDecl& ast)
     }
 }
 
+void TypeChecker::operator()(ast::EnumExprDecl& ast)
+{
+    if (ast.value_get() && !dynamic_cast<ast::IntExpr*> (ast.value_get()))
+        error("enumerator value for '" + ast.name_get().data_get() + "' is "
+              "not an integer constant", ast.location_get());
+}
+
 void TypeChecker::operator()(ast::PtrTy& ast)
 {
     const Type* inner = node_type(*ast.pointed_ty_get());
@@ -351,6 +358,11 @@ void TypeChecker::operator()(ast::FunctionTy& ast)
 void TypeChecker::operator()(ast::RecordTy& ast)
 {
     ast.type_set(ast.def_get()->type_get());
+}
+
+void TypeChecker::operator()(ast::EnumTy& ast)
+{
+    ast.type_set(&Int::instance_get());
 }
 
 void TypeChecker::operator()(ast::ReturnStmt& ast)
@@ -757,6 +769,11 @@ void TypeChecker::operator()(ast::ConditionalExpr& ast)
         error("type mismatch in conditional expression", ast.location_get());
 
     ast.type_set(texpr);
+}
+
+void TypeChecker::operator()(ast::EnumExpr& ast)
+{
+    ast.type_set(&Int::instance_get());
 }
 
 void TypeChecker::operator()(ast::OpExpr& ast)
