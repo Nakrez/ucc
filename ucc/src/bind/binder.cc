@@ -161,11 +161,11 @@ void Binder::operator()(ucc::ast::RecordDecl& ast)
 
 void Binder::operator()(ucc::ast::EnumDecl& ast)
 {
-    if (ast.name_get().data_get() == "")
-        return;
-
     if (ast.body_get())
         ast.body_get()->accept(*this);
+
+    if (ast.name_get().data_get() == "")
+        return;
 
     ast::EnumDecl* ed;
     ast::Decl* d;
@@ -245,7 +245,11 @@ void Binder::operator()(ucc::ast::RecordTy& ast)
 void Binder::operator()(ucc::ast::EnumTy& ast)
 {
     if (ast.name_get().data_get() == "")
+    {
+        ast.def_get()->accept(*this);
+
         return;
+    }
 
     ast::Decl* d;
     ast::EnumDecl* ed;
@@ -256,7 +260,7 @@ void Binder::operator()(ucc::ast::EnumTy& ast)
 
     if (d && !ed)
         error(ast, "'" + ast.name_get().data_get() + "' used "
-                   " with wrong declaration type");
+              " with wrong declaration type");
     else if (!ed)
         error(ast, "Undeclared enum '" + ast.name_get().data_get() + "'");
     else

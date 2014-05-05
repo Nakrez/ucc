@@ -248,9 +248,6 @@ void PrettyPrinter::operator()(const FieldDecl& ast)
 
 void PrettyPrinter::operator()(const RecordDecl& ast)
 {
-    if (ast.name_get().data_get() == "")
-        return;
-
     if (ast.record_type_get() == RecordDecl::RecordType::STRUCT)
         ostr_ << "struct";
     else
@@ -300,9 +297,6 @@ void PrettyPrinter::operator()(const EnumExprDecl& ast)
 
 void PrettyPrinter::operator()(const EnumDecl& ast)
 {
-    if (ast.name_get().data_get() == "")
-        return;
-
     ostr_ << "enum";
 
     ostr_ << " " << ast.name_get().data_get();

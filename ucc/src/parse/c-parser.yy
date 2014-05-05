@@ -764,7 +764,7 @@ declaration
         $$ = new ucc::ast::DeclList(@1);
         ucc::ast::Ty* type;
 
-        if ($1->decl_get())
+        if ($1->decl_get() && $1->name_get() != "")
             $$->push_back(std::shared_ptr<ucc::ast::Decl>($1->decl_get()));
 
         {
@@ -776,19 +776,19 @@ declaration
             rt = dynamic_cast<ucc::ast::RecordTy*>(t);
             et = dynamic_cast<ucc::ast::EnumTy*>(t);
 
-            if (rt && (std::find(driver.record_decl_.begin(),
+            if (rt && std::find(driver.record_decl_.begin(),
                                  driver.record_decl_.end(),
                                  rt->name_get().data_get()) ==
-                       driver.record_decl_.end()))
+                       driver.record_decl_.end() && !rt->def_get())
                 $$->push_back(std::shared_ptr<ucc::ast::Decl>(
                                 new ucc::ast::RecordDecl(@1,
                                                         rt->name_get(),
                                                         rt->record_type_get(),
                                                         nullptr)));
-            if (et && (std::find(driver.enum_decl_.begin(),
+            if (et && std::find(driver.enum_decl_.begin(),
                                  driver.enum_decl_.end(),
                                  et->name_get().data_get()) ==
-                       driver.enum_decl_.end()))
+                       driver.enum_decl_.end() && !et->def_get())
                 $$->push_back(std::shared_ptr<ucc::ast::Decl>(
                                 new ucc::ast::EnumDecl(@1,
                                                        et->name_get(),
