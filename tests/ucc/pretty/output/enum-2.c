@@ -1,6 +1,5 @@
 int main(void)
 {
-    
     enum
     {
         LOL = 1,

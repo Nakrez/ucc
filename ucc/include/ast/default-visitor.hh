@@ -95,6 +95,7 @@ namespace ucc
                 virtual void operator()(typename Const<MemberExpr>::type& ast);
                 virtual void operator()(typename Const<EnumExpr>::type& ast);
                 virtual void operator()(typename Const<CastExpr>::type& ast);
+                virtual void operator()(typename Const<ImplicitCastExpr>::type& ast);
                 virtual void operator()(typename Const<SizeofExpr>::type& ast);
                 virtual void operator()(typename Const<InitListExpr>::type& ast);
         };

@@ -36,7 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     static command::BooleanCommand boolean##name(opt, description, dep,     \
                                                  b)
 
-# define REGISTER_UNIFIER(name, opt, description, b, dep)                   \
+# define REGISTER_UNIFIER(name, opt, description, dep)                      \
     static command::UnifierCommand boolean##name(opt, description, dep)
 
 namespace command

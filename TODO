@@ -5,7 +5,7 @@
 
 -- AST --
 
-- --ast-dump (dump the ast inner node on std::cout)
+- --ast-dump (finish implementation)
 
 -- BIND --
 
@@ -15,6 +15,11 @@
 -- TYPE CHECKER --
 
 - Update error messages for return statement
+
+-- ANALYSIS --
+
+- Add volatile consideration for -Wuninitialized
+- Add -Wunused-*
 
 -- IR CONVERTER --
 

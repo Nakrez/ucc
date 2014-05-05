@@ -53,19 +53,47 @@ namespace ucc
                            Expr* rvalue);
                 virtual ~AssignExpr();
 
-                const Expr* lvalue_get() const;
-                Expr* lvalue_get();
+                const Expr* lvalue_get() const
+                {
+                    return lvalue_;
+                }
 
-                const Expr* rvalue_get() const;
-                Expr* rvalue_get();
+                Expr* lvalue_get()
+                {
+                    return lvalue_;
+                }
 
-                AssignOp op_get() const;
+                const Expr* rvalue_get() const
+                {
+                    return rvalue_;
+                }
 
+                Expr* rvalue_get()
+                {
+                    return rvalue_;
+                }
+
+                AssignOp op_get() const
+                {
+                    return op_;
+                }
+
+                void rvalue_set(Expr* e)
+                {
+                    rvalue_ = e;
+                }
 
                 std::string op_to_str() const;
 
-                virtual void accept(Visitor& v);
-                virtual void accept(ConstVisitor& v) const;
+                virtual void accept(Visitor& v) override
+                {
+                    v(*this);
+                }
+
+                virtual void accept(ConstVisitor& v) const override
+                {
+                    v(*this);
+                }
 
             protected:
                 Expr* lvalue_;

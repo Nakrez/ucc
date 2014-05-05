@@ -435,6 +435,14 @@ ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<CastExpr>::type& a
 
 template <template <typename> class Const>
 void
+ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<ImplicitCastExpr>::type& ast)
+{
+    if (ast.expr_get())
+        ast.expr_get()->accept(*this);
+}
+
+template <template <typename> class Const>
+void
 ucc::ast::GenDefaultVisitor<Const>::operator()(typename Const<SizeofExpr>::type& ast)
 {
     if (ast.expr_get())

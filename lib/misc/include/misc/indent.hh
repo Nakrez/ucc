@@ -26,6 +26,8 @@ namespace ucc
     namespace misc
     {
         std::ostream& iendl(std::ostream& o);
+        std::ostream& incindent(std::ostream& o);
+        std::ostream& decindent(std::ostream& o);
         std::ostream& incendl(std::ostream& o);
         std::ostream& decendl(std::ostream& o);
     } // namespace misc

@@ -28,12 +28,22 @@ the documentation in doc/gen
 Usage: ucc [OPTION...] file...
 ucc: Micro C compiler
 
+      --ast-dump             Dump the content of the ast (debug purpose)
       --ast-print            Pretty print the input file (debug purpose)
       --ast-print-bindings   Pretty print the input file compute and print the
                              bindings associated (debug purpose)
   -b, --compute-bindings     Compute bindings on the AST
+      --fsyntax-only         Check the code for errors, but don't do anything
+                             beyond that.
   -p, --parse                Parse the input file
       --parse-trace          Activate parse trace
+      --type-check           Check type from the input file
+  -w, --disable-warnings     Disable all warnings
+      --Wall                 Enable warning flags about constructions that are
+                             questionable
+      --Werror               Treat warnings as errors
+      --Wextra               Enable extra warning flags
+      --Wuninitialized       Warn if variable is used before being initialized
   -?, --help                 Give this help list
       --usage                Give a short usage message
 
@@ -44,6 +54,7 @@ ucc: Micro C compiler
 - PRETTY-PRINTER : 90% (print the generated AST from the code)
 - BINDER : 90% (link usage of variables, types, ... To their definitions)
 - TYPE CHECKER : 90% (verify type correctness from input file)
+- ANALYSIS : 5% (try to detect questionable constructions)
 - MIDDLE END : 0%
 - BACK END : 0%
 
@@ -53,14 +64,14 @@ UCC is under GPL2. See COPYING file for more informations.
 
 * Known bugs
 
-- The parser as some problem with type definitions. Once a typedef defines an
-identifier this identifier is flagged as type no matter redefinition in
-different scopes.
+- The parser as some problem with type definitions. Once a typedef or an
+enumeration define an identifier this identifier is flagged as type
+(enum constant) no matter redefinition in different scopes.
 
 * Contact
 
 If you find bugs, or you have any questions, ... Feel free to can contact me
-at b.covolatoATgmail.com
+at b.covolato AT gmail.com
 
 * Note
 

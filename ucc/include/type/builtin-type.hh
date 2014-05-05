@@ -49,6 +49,11 @@ namespace ucc
                     return "float";
                 }
 
+                virtual int size() const override
+                {
+                    return 4;
+                }
+
             private:
                 /// Constructor
                 Float() = default;
@@ -74,6 +79,11 @@ namespace ucc
                 virtual std::string to_str() const override
                 {
                     return "double";
+                }
+
+                virtual int size() const override
+                {
+                    return 8;
                 }
 
             private:
@@ -103,6 +113,11 @@ namespace ucc
                     return "long double";
                 }
 
+                virtual int size() const override
+                {
+                    return 8;
+                }
+
             private:
                 /// Constructor
                 LongDouble() = default;
@@ -128,6 +143,11 @@ namespace ucc
                 virtual std::string to_str() const override
                 {
                     return "char";
+                }
+
+                virtual int size() const override
+                {
+                    return 1;
                 }
 
             private:
@@ -157,6 +177,11 @@ namespace ucc
                     return "unsigned char";
                 }
 
+                virtual int size() const override
+                {
+                    return 1;
+                }
+
             private:
                 /// Constructor
                 UnsignedChar() = default;
@@ -182,6 +207,11 @@ namespace ucc
                 virtual std::string to_str() const override
                 {
                     return "short";
+                }
+
+                virtual int size() const override
+                {
+                    return 2;
                 }
 
             private:
@@ -211,6 +241,11 @@ namespace ucc
                     return "unsigned short";
                 }
 
+                virtual int size() const override
+                {
+                    return 2;
+                }
+
             private:
                 /// Constructor
                 UnsignedShort() = default;
@@ -236,6 +271,11 @@ namespace ucc
                 virtual std::string to_str() const override
                 {
                     return "int";
+                }
+
+                virtual int size() const override
+                {
+                    return 4;
                 }
 
             private:
@@ -265,6 +305,11 @@ namespace ucc
                     return "unsigned int";
                 }
 
+                virtual int size() const override
+                {
+                    return 4;
+                }
+
             private:
                 /// Constructor
                 UnsignedInt() = default;
@@ -290,6 +335,11 @@ namespace ucc
                 virtual std::string to_str() const override
                 {
                     return "long";
+                }
+
+                virtual int size() const override
+                {
+                    return 4;
                 }
 
             private:
@@ -319,6 +369,11 @@ namespace ucc
                     return "unsigned long";
                 }
 
+                virtual int size() const override
+                {
+                    return 4;
+                }
+
             private:
                 /// Constructor
                 UnsignedLong() = default;
@@ -344,6 +399,11 @@ namespace ucc
                 virtual std::string to_str() const override
                 {
                     return "long long";
+                }
+
+                virtual int size() const override
+                {
+                    return 8;
                 }
 
             private:
@@ -373,6 +433,10 @@ namespace ucc
                     return "unsigned long long";
                 }
 
+                virtual int size() const override
+                {
+                    return 8;
+                }
             private:
                 /// Constructor
                 UnsignedLongLong() = default;
