@@ -11,4 +11,5 @@
                         [34mVarExpr [37mvar[32m 'int'[0m
                     [34mContinueStmt[0m
             [34mReturnStmt[0m
-                [34mIntExpr [37m0[32m 'int'[0m
+                [31mImplicitCastExpr [32m 'int'[0m
+                    [34mIntExpr [37m0[32m 'int'[0m

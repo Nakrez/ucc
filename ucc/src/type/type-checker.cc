@@ -72,6 +72,7 @@ void TypeChecker::type_promotion(ast::OpExpr& ast)
     const Type* ltype = ast.lexpr_get()->type_get();
     const Type* rtype = ast.rexpr_get()->type_get();
 
+    // If type size if less than 4 the convert both in INT
     if (ltype->size() < 4 && rtype->size() < 4)
     {
         ast::Expr* le;
@@ -90,8 +91,61 @@ void TypeChecker::type_promotion(ast::OpExpr& ast)
 
         ast.type_set(&Int::instance_get());
     }
-    else
+    // If they are of the same size check for floats
+    else if (ltype->size() == rtype->size())
+    {
+        if (dynamic_cast<const FloatingPoint*> (rtype))
+        {
+            ast.type_set(rtype);
+
+            ast::Expr* le;
+
+            le = new ucc::ast::ImplicitCastExpr(ast.lexpr_get()->location_get(),
+                                                ast.lexpr_get());
+            le->type_set(rtype);
+
+            ast.lexpr_set(le);
+        }
+        else if (dynamic_cast<const FloatingPoint*> (ltype))
+        {
+            ast.type_set(ltype);
+
+            ast::Expr* re;
+
+            re = new ucc::ast::ImplicitCastExpr(ast.rexpr_get()->location_get(),
+                                                ast.rexpr_get());
+            re->type_set(ltype);
+
+            ast.rexpr_set(re);
+        }
+        else
+            ast.type_set(ltype);
+    }
+    // If they have different size promote the little one
+    else if (ltype->size() > rtype->size())
+    {
         ast.type_set(ltype);
+
+        ast::Expr* re;
+
+        re = new ucc::ast::ImplicitCastExpr(ast.rexpr_get()->location_get(),
+                                            ast.rexpr_get());
+        re->type_set(ltype);
+
+        ast.rexpr_set(re);
+    }
+    else
+    {
+        ast.type_set(rtype);
+
+        ast::Expr* le;
+
+        le = new ucc::ast::ImplicitCastExpr(ast.lexpr_get()->location_get(),
+                                            ast.lexpr_get());
+        le->type_set(rtype);
+
+        ast.lexpr_set(le);
+    }
 }
 
 void TypeChecker::check_assign_types(const ucc::misc::location& loc,
@@ -404,6 +458,11 @@ void TypeChecker::operator()(ast::ReturnStmt& ast)
         // TODO: Change error message from standard assignation
         check_assign_types(ast.location_get(), f->return_type_get(),
                            ast.expr_get()->type_get());
+
+        ast::Expr* e = new ast::ImplicitCastExpr(ast.expr_get()->location_get(),
+                                                 ast.expr_get());
+        e->type_set(f->return_type_get());
+        ast.expr_set(e);
     }
     else
         check_assign_types(ast.location_get(), f->return_type_get(),
