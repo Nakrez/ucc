@@ -17,6 +17,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <ir/unit.hh>
+#include <ir/function.hh>
 
 using namespace ucc;
 using namespace ir;
@@ -26,13 +27,13 @@ Unit::Unit()
 
 Unit::~Unit()
 {
-    for (auto f : frags_)
+    for (auto f : funs_)
         delete f;
 }
 
-std::ostream& Unit::dump(std::ostream& o)
+std::ostream& Unit::dump(std::ostream& o) const
 {
-    for (auto f : frags_)
+    for (auto f : funs_)
         f->dump(o);
 
     return o;

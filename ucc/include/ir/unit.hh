@@ -20,59 +20,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_IR_UNIT_HH
 
 # include <list>
-
-# include <ir/visitor.hh>
-# include <ir/fragment.hh>
+# include <ostream>
 
 namespace ucc
 {
     namespace ir
     {
-        /// Contains a hole file ir
+        class Function;
+
+        /// Contains a hole ir file
         class Unit
         {
+            typedef typename std::list<Function*>::iterator f_iterator;
+            typedef typename std::list<Function*>::const_iterator f_citerator;
+
             public:
                 Unit();
                 virtual ~Unit();
 
-                typename std::list<Fragment*>::iterator begin()
+                f_iterator fun_begin()          { return funs_.begin(); }
+                f_iterator fun_end()            { return funs_.end(); }
+                f_citerator fun_cbegin() const  { return funs_.cbegin(); }
+                f_citerator fun_cend() const    { return funs_.cend(); }
+
+                std::ostream& dump(std::ostream& o) const;
+
+                void add_function(Function *f)
                 {
-                    return frags_.begin();
+                    funs_.push_back(f);
                 }
 
-                typename std::list<Fragment*>::iterator end()
-                {
-                    return frags_.end();
-                }
-
-                typename std::list<Fragment*>::const_iterator cbegin() const
-                {
-                    return frags_.cbegin();
-                }
-
-                typename std::list<Fragment*>::const_iterator cend() const
-                {
-                    return frags_.cend();
-                }
-
-                std::ostream& dump(std::ostream& o);
-
-                void add(Fragment *f)
-                {
-                    frags_.push_back(f);
-                }
-
-                virtual void accept(Visitor& v)
-                {
-                    v(*this);
-                }
-
-                virtual void accept(ConstVisitor& v) const
-                {
-                    v(*this);
-                }
             private:
-                std::list<Fragment*> frags_;
+                std::list<Function*> funs_;
         };
     } // namespace ir
 } // namespace ucc

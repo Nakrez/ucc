@@ -16,6 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+#include <misc/indent.hh>
 #include <ir/function.hh>
 
 using namespace ucc;
@@ -29,4 +30,21 @@ Function::~Function()
 {
     for (auto b : blocks_)
         delete b;
+}
+
+void Function::dump(std::ostream& o) const
+{
+    o << "function " << name_get() << "()" << misc::incendl;
+
+    auto begin = cbegin();
+    auto end = cend();
+
+    for (auto it = cbegin(); it != end; ++it)
+    {
+        if (it != begin)
+            o << "; label: '" + (*it)->name_get().data_get() + "'"
+              << misc::iendl;
+
+        (*it)->dump(o);
+    }
 }

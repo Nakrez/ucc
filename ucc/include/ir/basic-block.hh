@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_IR_BASIC_BLOCK_HH
 
 # include <list>
+# include <ostream>
 
 # include <ir/value.hh>
 # include <ir/instruction.hh>
@@ -54,6 +55,8 @@ namespace ucc
                 {
                     return ins_.cend();
                 }
+
+                void dump(std::ostream& o) const;
 
             protected:
                 std::list<Instruction*> ins_;

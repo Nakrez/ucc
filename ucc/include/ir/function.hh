@@ -54,6 +54,8 @@ namespace ucc
                     return blocks_.cend();
                 }
 
+                void dump(std::ostream& o) const;
+
             protected:
                 std::list<BasicBlock*> blocks_;
         };

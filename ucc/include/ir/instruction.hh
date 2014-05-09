@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_IR_INSTRUCTION_HH
 # define UCC_IR_INSTRUCTION_HH
 
+# include <ostream>
 # include <ir/value.hh>
 
 namespace ucc
@@ -38,6 +39,8 @@ namespace ucc
                 {}
 
                 virtual ~Instruction() = default;
+
+                virtual void dump(std::ostream& o) const = 0;
         };
     } // namespace ir
 } // namespace ucc

@@ -16,6 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+#include <misc/indent.hh>
 #include <ir/basic-block.hh>
 
 using namespace ucc;
@@ -29,4 +30,13 @@ BasicBlock::~BasicBlock()
 {
     for (auto i : ins_)
         delete i;
+}
+
+void BasicBlock::dump(std::ostream& o) const
+{
+    for (auto i : ins_)
+    {
+        i->dump(o);
+        o << misc::iendl;
+    }
 }
