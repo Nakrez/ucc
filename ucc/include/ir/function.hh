@@ -16,51 +16,48 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_IR_GLOBAL_VALUE_HH
-# define UCC_IR_GLOBAL_VALUE_HH
+#ifndef UCC_IR_FUNCTION_HH
+# define UCC_IR_FUNCTION_HH
 
-# include <ir/value.hh>
+# include <list>
+
+# include <ir/global-value.hh>
+# include <ir/basic-block.hh>
 
 namespace ucc
 {
     namespace ir
     {
-        /// Represents global values
-        class GlobalValue : public Value
+        class Function : public GlobalValue
         {
             public:
-                enum Linkage
+                Function(const misc::Symbol& name);
+                virtual ~Function();
+
+                typename std::list<BasicBlock*>::iterator begin()
                 {
-                    External,
-                    Internal
-                };
-
-                GlobalValue(const Type* t)
-                    : Value(t)
-                    , link_(External)
-                {}
-
-                GlobalValue(const Type* t, const misc::Symbol& s)
-                    : Value(t, s)
-                    , link_(External)
-                {}
-
-                virtual ~GlobalValue() = default;
-
-                Linkage linkage_get() const
-                {
-                    return link_;
+                    return blocks_.begin();
                 }
 
-                void linkage_set(Linkage l)
+                typename std::list<BasicBlock*>::iterator end()
                 {
-                    link_ = l;
+                    return blocks_.end();
+                }
+
+                typename std::list<BasicBlock*>::const_iterator cbegin() const
+                {
+                    return blocks_.cbegin();
+                }
+
+                typename std::list<BasicBlock*>::const_iterator cend() const
+                {
+                    return blocks_.cend();
                 }
 
             protected:
-                enum Linkage link_;
+                std::list<BasicBlock*> blocks_;
         };
     } // namespace ir
 } // namespace ucc
 
-#endif /* !UCC_IR_GLOBAL_VALUE_HH */
+#endif /* !UCC_IR_FUNCTION_HH */

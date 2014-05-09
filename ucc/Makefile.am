@@ -75,6 +75,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/analysis/command.cc \
 			  src/ir/unit.cc \
 			  src/ir/value.cc \
+			  src/ir/function.cc \
 			  src/ir/basic-block.cc \
 			  src/command.cc \
 			  src/main.cc \
