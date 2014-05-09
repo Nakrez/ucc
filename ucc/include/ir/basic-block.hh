@@ -16,47 +16,49 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_IR_VALUE_HH
-# define UCC_IR_VALUE_HH
+#ifndef UCC_IR_BASIC_BLOCK_HH
+# define UCC_IR_BASIC_BLOCK_HH
 
-# include <misc/symbol.hh>
+# include <list>
 
-# include <ir/type.hh>
+# include <ir/value.hh>
+# include <ir/instruction.hh>
 
 namespace ucc
 {
     namespace ir
     {
-        class Value
+        /// Represent a basic block
+        class BasicBlock : public Value
         {
             public:
-                Value(const Type* t);
-                Value(const Type* t, const misc::Symbol& s);
-                virtual ~Value() = default;
+                BasicBlock(const misc::Symbol& s = "");
+                virtual ~BasicBlock();
 
-                const Type* type_get() const
+                typename std::list<Instruction*>::iterator begin()
                 {
-                    return type_;
+                    return ins_.begin();
                 }
 
-                const misc::Symbol name_get() const
+                typename std::list<Instruction*>::iterator end()
                 {
-                    return name_;
+                    return ins_.end();
+                }
+
+                typename std::list<Instruction*>::const_iterator cbegin() const
+                {
+                    return ins_.cbegin();
+                }
+
+                typename std::list<Instruction*>::const_iterator cend() const
+                {
+                    return ins_.cend();
                 }
 
             protected:
-                const Type* type_;
-                misc::Symbol name_;
-
-            private:
-                misc::Symbol fresh_name()
-                {
-                    static unsigned long num = 0;
-
-                    return misc::Symbol("v" + std::to_string(num++));
-                }
+                std::list<Instruction*> ins_;
         };
     } // namespace ir
 } // namespace ucc
 
-#endif /* !UCC_IR_VALUE_HH */
+#endif /* !UCC_IR_BASIC_BLOCK_HH */
