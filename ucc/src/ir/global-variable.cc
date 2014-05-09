@@ -16,36 +16,19 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <misc/indent.hh>
-#include <ir/function.hh>
+#include <ir/global-variable.hh>
+#include <ir/constant.hh>
 
 using namespace ucc;
 using namespace ir;
 
-Function::Function(const misc::Symbol& name)
-    : GlobalValue(nullptr, name)
+GlobalVariable::GlobalVariable(const misc::Symbol& s,
+                               Constant* init)
+    : GlobalValue(nullptr, s)
+    , init_(init)
 {}
 
-Function::~Function()
+void GlobalVariable::dump(std::ostream& o) const
 {
-    for (auto b : blocks_)
-        delete b;
-}
-
-void Function::dump(std::ostream& o) const
-{
-    o << "function " << name_get() << "()" << misc::incendl;
-
-    auto begin = cbegin();
-    auto end = cend();
-
-    for (auto it = cbegin(); it != end; ++it)
-    {
-        if (it != begin)
-            o << misc::iendl
-              << "; label: '" + (*it)->name_get().data_get() + "'"
-              << misc::iendl;
-
-        (*it)->dump(o);
-    }
+    o << name_get();
 }

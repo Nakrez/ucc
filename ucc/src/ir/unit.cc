@@ -16,8 +16,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+#include <misc/indent.hh>
+
 #include <ir/unit.hh>
 #include <ir/function.hh>
+#include <ir/global-variable.hh>
 
 using namespace ucc;
 using namespace ir;
@@ -33,6 +36,12 @@ Unit::~Unit()
 
 std::ostream& Unit::dump(std::ostream& o) const
 {
+    for (auto v : vars_)
+    {
+        v->dump(o);
+        o << misc::iendl;
+    }
+
     for (auto f : funs_)
         f->dump(o);
 

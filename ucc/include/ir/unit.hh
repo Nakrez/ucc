@@ -27,6 +27,7 @@ namespace ucc
     namespace ir
     {
         class Function;
+        class GlobalVariable;
 
         /// Contains a hole ir file
         class Unit
@@ -34,9 +35,18 @@ namespace ucc
             typedef typename std::list<Function*>::iterator f_iterator;
             typedef typename std::list<Function*>::const_iterator f_citerator;
 
+            typedef typename std::list<GlobalVariable*>::iterator gv_iterator;
+            typedef typename std::list<GlobalVariable*>::const_iterator
+                             gv_citerator;
+
             public:
                 Unit();
                 virtual ~Unit();
+
+                gv_iterator var_begin()          { return vars_.begin(); }
+                gv_iterator var_end()            { return vars_.end(); }
+                gv_citerator var_cbegin() const  { return vars_.cbegin(); }
+                gv_citerator var_cend() const    { return vars_.cend(); }
 
                 f_iterator fun_begin()          { return funs_.begin(); }
                 f_iterator fun_end()            { return funs_.end(); }
@@ -52,6 +62,7 @@ namespace ucc
 
             private:
                 std::list<Function*> funs_;
+                std::list<GlobalVariable*> vars_;
         };
     } // namespace ir
 } // namespace ucc
