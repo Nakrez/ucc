@@ -16,26 +16,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <ucc.hh>
+#include <ir/ir-generator.hh>
 
-#include <command/command.hh>
+using namespace ucc;
+using namespace ir;
 
-#include <gen/generator.hh>
-
-REGISTER_UNIFIER(uir, "uir", "Generate uir (Intermediate representation)",
-                 "ir-gen ast-delete");
-
-REGISTER_COMMAND(gen, "ir-gen", "Generate Intermediate Representation "
-                 "(internal use only)", gen_ir, "fsyntax-only");
-
-void gen_ir()
-{
-    ucc::gen::Generator gen;
-
-    assert(ucc::ast::the_ast &&
-           "Internal error: No ast retrieved by the parser");
-
-    gen(*ucc::ast::the_ast);
-
-    ucc::ir::the_unit = gen.unit_get();
-}
+IrGenerator::IrGenerator()
+    : unit_(new Unit())
+{}

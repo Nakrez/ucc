@@ -21,6 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <ast/default-visitor.hh>
 
+# include <ir/ir-generator.hh>
+
 namespace ucc
 {
     namespace gen
@@ -30,6 +32,14 @@ namespace ucc
             public:
                 Generator();
                 virtual ~Generator();
+
+                ir::Unit* unit_get()
+                {
+                    return gen_.unit_get();
+                }
+
+            protected:
+                ir::IrGenerator gen_;
         };
     } // namespace gen
 } // namespace ucc
