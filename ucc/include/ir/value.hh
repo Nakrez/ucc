@@ -44,6 +44,11 @@ namespace ucc
                     return name_;
                 }
 
+                virtual void dump(std::ostream& o) const
+                {
+                    o << name_;
+                }
+
             protected:
                 const Type* type_;
                 misc::Symbol name_;
@@ -58,5 +63,12 @@ namespace ucc
         };
     } // namespace ir
 } // namespace ucc
+
+inline std::ostream& operator<<(std::ostream& o, const ucc::ir::Value& v)
+{
+    v.dump(o);
+
+    return o;
+}
 
 #endif /* !UCC_IR_VALUE_HH */

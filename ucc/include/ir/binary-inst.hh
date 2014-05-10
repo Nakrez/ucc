@@ -16,42 +16,40 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_IR_USE_HH
-# define UCC_IR_USE_HH
+#ifndef UCC_IR_BINARY_INST_HH
+# define UCC_IR_BINARY_INST_HH
 
-# include <ir/value.hh>
+# include <ir/instruction.hh>
+# include <ir/use.hh>
 
 namespace ucc
 {
     namespace ir
     {
-        class Use
+        class BinaryInst : public Instruction
         {
             public:
-                Use(Value* v)
-                    : val_(v)
-                    , prev_(nullptr)
-                    , next_(nullptr)
-            {}
+                enum BinOp
+                {
+                    ADD,
+                    SUB,
+                    MUL,
+                    DIV,
+                    MOD,
+                };
+            public:
+                BinaryInst(BinOp op, Type* type, Use* op1, Use* op2);
+                BinaryInst(BinOp op, Type* type, Use* op1, Use* op2,
+                           const misc::Symbol& name);
+                virtual ~BinaryInst();
 
-            virtual ~Use() = default;
-
-            operator Value*() const
-            {
-                return val_;
-            }
-
-            Value* value_get() const
-            {
-                return val_;
-            }
-
-            protected:
-                Value* val_;
-                Use* prev_;
-                Use* next_;
+                virtual void dump(std::ostream& o) const override;
+            private:
+                BinOp op_;
+                Use* op1_;
+                Use* op2_;
         };
     } // namespace ir
 } // namespace ucc
 
-#endif /* !UCC_IR_USE_HH */
+#endif /* !UCC_IR_BINARY_INST_HH */
