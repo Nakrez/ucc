@@ -42,14 +42,10 @@ int main(int argc, char *argv[])
     {
         ucc::misc::DiagnosticReporter::instance_get().flush(std::cerr);
 
-        delete ucc::ast::the_ast;
-
         return ucc::misc::DiagnosticReporter::instance_get().error_type_get();
     }
 
     ucc::misc::DiagnosticReporter::instance_get().flush(std::cerr);
-
-    delete ucc::ast::the_ast;
 
     return 0;
 }

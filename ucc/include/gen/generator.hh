@@ -16,24 +16,22 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <ucc.hh>
+#ifndef UCC_GEN_GENERATOR_HH
+# define UCC_GEN_GENERATOR_HH
+
+# include <ast/default-visitor.hh>
 
 namespace ucc
 {
-    std::string input_file = "-";
-
-    namespace parse
+    namespace gen
     {
-        bool parse_trace = false;
-    } // namespace parse
-
-    namespace ast
-    {
-        Ast* the_ast = nullptr;
-    } // namespace ast
-
-    namespace ir
-    {
-        Unit* the_unit = nullptr;
-    } // namespace ir
+        class Generator : public ast::DefaultConstVisitor
+        {
+            public:
+                Generator();
+                virtual ~Generator();
+        };
+    } // namespace gen
 } // namespace ucc
+
+#endif /* !UCC_GEN_GENERATOR_HH */

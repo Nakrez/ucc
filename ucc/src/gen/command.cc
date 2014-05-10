@@ -18,22 +18,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <ucc.hh>
 
-namespace ucc
+#include <command/command.hh>
+
+#include <gen/generator.hh>
+
+REGISTER_UNIFIER(uir, "uir", "Generate uir (Intermediate representation)",
+                 "ir-gen ast-delete");
+
+REGISTER_COMMAND(gen, "ir-gen", "Generate Intermediate Representation "
+                 "(internal use only)", gen_ir, "fsyntax-only");
+
+void gen_ir()
 {
-    std::string input_file = "-";
+    ucc::gen::Generator gen;
 
-    namespace parse
-    {
-        bool parse_trace = false;
-    } // namespace parse
+    assert(ucc::ast::the_ast &&
+           "Internal error: No ast retrieved by the parser");
 
-    namespace ast
-    {
-        Ast* the_ast = nullptr;
-    } // namespace ast
-
-    namespace ir
-    {
-        Unit* the_unit = nullptr;
-    } // namespace ir
-} // namespace ucc
+    gen(*ucc::ast::the_ast);
+}

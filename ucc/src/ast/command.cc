@@ -34,6 +34,9 @@ REGISTER_COMMAND(pretty_bind, "ast-print-bindings", "Pretty print the input"
                  "(debug purpose)",
                  pretty_print_bind, "compute-bindings");
 
+REGISTER_COMMAND(delete_ast, "ast-delete", "Delete AST from memory (internal "
+                 "use only)", delete_ast, "");
+
 void pretty_print()
 {
     ucc::ast::PrettyPrinter printer(std::cout);
@@ -64,4 +67,11 @@ void ast_dump()
 
     dumper(*ucc::ast::the_ast);
     std::cout << std::endl;
+}
+
+void delete_ast()
+{
+    delete ucc::ast::the_ast;
+
+    ucc::ast::the_ast = nullptr;
 }

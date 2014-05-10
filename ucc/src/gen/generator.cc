@@ -16,24 +16,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <ucc.hh>
+#include <gen/generator.hh>
 
-namespace ucc
-{
-    std::string input_file = "-";
+using namespace ucc;
+using namespace gen;
 
-    namespace parse
-    {
-        bool parse_trace = false;
-    } // namespace parse
+Generator::Generator()
+{}
 
-    namespace ast
-    {
-        Ast* the_ast = nullptr;
-    } // namespace ast
-
-    namespace ir
-    {
-        Unit* the_unit = nullptr;
-    } // namespace ir
-} // namespace ucc
+Generator::~Generator()
+{}

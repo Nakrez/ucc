@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <string>
 
 # include <ast/all.hh>
+# include <ir/unit.hh>
 
 namespace ucc
 {
@@ -36,6 +37,11 @@ namespace ucc
     {
         extern Ast* the_ast;
     } // namespace ast
+
+    namespace ir
+    {
+        extern Unit* the_unit;
+    } // namespace ir
 } // namespace ucc
 
 #endif /* !UCC_HH */
