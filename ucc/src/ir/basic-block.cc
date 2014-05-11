@@ -18,12 +18,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <misc/indent.hh>
 #include <ir/basic-block.hh>
+#include <ir/context.hh>
 
 using namespace ucc;
 using namespace ir;
 
-BasicBlock::BasicBlock(const misc::Symbol& s)
-    : Value(nullptr, s)
+BasicBlock::BasicBlock(Context& c, const misc::Symbol& s)
+    : Value(c.label_ty_get(), s)
 {}
 
 BasicBlock::~BasicBlock()

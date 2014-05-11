@@ -16,28 +16,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <ir/unit.hh>
+#include <ir/ptr-type.hh>
 #include <ir/context.hh>
 
 using namespace ucc;
 using namespace ir;
 
-Context::Context()
-    : void_(Type::VoidTy)
-    , float_(Type::FloatTy)
-    , double_(Type::DoubleTy)
-    , label_(Type::LabelTy)
-    , i8_(8)
-    , i16_(16)
-    , i32_(32)
-    , i64_(64)
-{}
-
-Context::~Context()
+PtrType::PtrType(Context& c, Type* pointed)
+    : Type(Type::PtrTy)
+    , pointed_(pointed)
 {
-    for (auto p : ptrs_)
-        delete p;
-
-    for (auto u : units_)
-        delete u;
+    c.register_ptr(this);
 }

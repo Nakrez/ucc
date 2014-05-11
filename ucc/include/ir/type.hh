@@ -35,10 +35,10 @@ namespace ucc
                     DoubleTy,
                     LabelTy,
                     IntTy,
+                    PtrTy,
                     FunctionTy,
                     StructTy,
                     ArrayTy,
-                    PtrTy,
                 };
 
             public:

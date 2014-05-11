@@ -19,8 +19,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_IR_CONTEXT_HH
 # define UCC_IR_CONTEXT_HH
 
+# include <list>
+
 # include <ir/type.hh>
 # include <ir/int-type.hh>
+# include <ir/ptr-type.hh>
 
 namespace ucc
 {
@@ -37,6 +40,11 @@ namespace ucc
                 void add_unit(Unit* u)
                 {
                     units_.push_back(u);
+                }
+
+                void register_ptr(PtrType* p)
+                {
+                    ptrs_.push_back(p);
                 }
 
                 Type* void_ty_get()     { return &void_; }
@@ -60,6 +68,7 @@ namespace ucc
                 IntType i32_;
                 IntType i64_;
 
+                std::list<PtrType*> ptrs_;
                 std::list<Unit*> units_;
         };
     } // namespace ir

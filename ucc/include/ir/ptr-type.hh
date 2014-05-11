@@ -16,28 +16,38 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <ir/unit.hh>
-#include <ir/context.hh>
+#ifndef UCC_IR_PTR_TYPE_HH
+# define UCC_IR_PTR_TYPE_HH
 
-using namespace ucc;
-using namespace ir;
+# include <ir/type.hh>
 
-Context::Context()
-    : void_(Type::VoidTy)
-    , float_(Type::FloatTy)
-    , double_(Type::DoubleTy)
-    , label_(Type::LabelTy)
-    , i8_(8)
-    , i16_(16)
-    , i32_(32)
-    , i64_(64)
-{}
-
-Context::~Context()
+namespace ucc
 {
-    for (auto p : ptrs_)
-        delete p;
+    namespace ir
+    {
+        class Context;
 
-    for (auto u : units_)
-        delete u;
-}
+        class PtrType : public Type
+        {
+            public:
+                PtrType(Context& c, Type* pointed);
+                virtual ~PtrType() = default;
+
+                Type* pointed_type_get()
+                {
+                    return pointed_;
+                }
+
+                virtual void dump(std::ostream& o) const override
+                {
+                    pointed_->dump(o);
+                    o << "*";
+                }
+
+            protected:
+                Type* pointed_;
+        };
+    } // namespace ir
+} // namespace ucc
+
+#endif /* !UCC_IR_PTR_TYPE_HH */

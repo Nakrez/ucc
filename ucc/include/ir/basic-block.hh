@@ -29,11 +29,13 @@ namespace ucc
 {
     namespace ir
     {
+        class Context;
+
         /// Represent a basic block
         class BasicBlock : public Value
         {
             public:
-                BasicBlock(const misc::Symbol& s = "");
+                BasicBlock(Context& c, const misc::Symbol& s = "");
                 virtual ~BasicBlock();
 
                 typename std::list<Instruction*>::iterator begin()
