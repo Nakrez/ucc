@@ -16,36 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_GEN_GENERATOR_HH
-# define UCC_GEN_GENERATOR_HH
+#include <ir/unit.hh>
+#include <ir/context.hh>
 
-# include <ast/default-visitor.hh>
-
-# include <ir/ir-generator.hh>
-
-namespace ucc
-{
-    namespace gen
-    {
-        class Generator : public ast::DefaultConstVisitor
-        {
-            public:
-                using ast::DefaultConstVisitor::operator();
-
-                Generator();
-                virtual ~Generator();
-
-                ir::Unit* unit_get()
-                {
-                    return gen_.unit_get();
-                }
-
-                virtual void operator()(const ast::FunctionDecl& ast) override;
-
-            protected:
-                ir::IrGenerator gen_;
-        };
-    } // namespace gen
-} // namespace ucc
-
-#endif /* !UCC_GEN_GENERATOR_HH */
+using namespace ucc;
+using namespace ir;

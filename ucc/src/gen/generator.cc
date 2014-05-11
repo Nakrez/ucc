@@ -26,3 +26,8 @@ Generator::Generator()
 
 Generator::~Generator()
 {}
+
+void Generator::operator()(const ast::FunctionDecl& ast)
+{
+    
+}

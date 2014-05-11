@@ -79,7 +79,9 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ir/global-variable.cc \
 			  src/ir/basic-block.cc \
 			  src/ir/binary-inst.cc \
+			  src/ir/type.cc \
 			  src/ir/ir-generator.cc \
+			  src/ir/context.cc \
 			  src/ir/command.cc \
 			  src/gen/generator.cc \
 			  src/gen/command.cc \

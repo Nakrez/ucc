@@ -16,36 +16,29 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_GEN_GENERATOR_HH
-# define UCC_GEN_GENERATOR_HH
+#include <ir/type.hh>
 
-# include <ast/default-visitor.hh>
+using namespace ucc;
+using namespace ir;
 
-# include <ir/ir-generator.hh>
+Type::Type(IrType ty)
+    : ty_(ty)
+{}
 
-namespace ucc
+void Type::dump(std::ostream& o) const
 {
-    namespace gen
+    switch (ty_)
     {
-        class Generator : public ast::DefaultConstVisitor
-        {
-            public:
-                using ast::DefaultConstVisitor::operator();
-
-                Generator();
-                virtual ~Generator();
-
-                ir::Unit* unit_get()
-                {
-                    return gen_.unit_get();
-                }
-
-                virtual void operator()(const ast::FunctionDecl& ast) override;
-
-            protected:
-                ir::IrGenerator gen_;
-        };
-    } // namespace gen
-} // namespace ucc
-
-#endif /* !UCC_GEN_GENERATOR_HH */
+        case VoidTy:
+            o << "void";
+            return;
+        case FloatTy:
+            o << "float";
+            return;
+        case DoubleTy:
+            o << "double";
+            return;
+        default:
+            return;
+    }
+}

@@ -16,48 +16,24 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef UCC_IR_TYPE_HH
-# define UCC_IR_TYPE_HH
-
-# include <ostream>
+#ifndef UCC_IR_CONTEXT_HH
+# define UCC_IR_CONTEXT_HH
 
 namespace ucc
 {
     namespace ir
     {
-        class Type
+        class Unit;
+
+        class Context
         {
             public:
-                enum IrType
-                {
-                    VoidTy,
-                    FloatTy,
-                    DoubleTy,
-                    LabelTy,
-                    IntTy,
-                    FunctionTy,
-                    StructTy,
-                    ArrayTy,
-                    PtrTy,
-                };
-
-            public:
-                Type(IrType ty);
-                virtual ~Type() = default;
-
-                virtual void dump(std::ostream& o) const;
-
+                Context();
+                virtual ~Context();
             protected:
-                IrType ty_;
+                std::list<Unit*> units_;
         };
     } // namespace ir
 } // namespace ucc
 
-inline std::ostream& operator<<(std::ostream& o, const ucc::ir::Type& t)
-{
-    t.dump(o);
-
-    return o;
-}
-
-#endif /* !UCC_IR_TYPE_HH */
+#endif /* !UCC_IR_CONTEXT_HH */
