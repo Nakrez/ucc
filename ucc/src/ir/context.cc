@@ -21,3 +21,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 using namespace ucc;
 using namespace ir;
+
+Context::Context()
+    : void_(Type::VoidTy)
+    , float_(Type::FloatTy)
+    , double_(Type::DoubleTy)
+    , label_(Type::LabelTy)
+    , i8_(8)
+    , i16_(16)
+    , i32_(32)
+    , i64_(64)
+{}
+
+Context::~Context()
+{
+    for (auto u : units_)
+        delete u;
+}
