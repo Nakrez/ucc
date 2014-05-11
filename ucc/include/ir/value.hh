@@ -46,7 +46,7 @@ namespace ucc
 
                 virtual void dump(std::ostream& o) const
                 {
-                    o << name_;
+                    o << *type_ << " " << name_;
                 }
 
             protected:

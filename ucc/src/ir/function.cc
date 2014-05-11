@@ -22,8 +22,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ir;
 
-Function::Function(const misc::Symbol& name)
-    : GlobalValue(nullptr, name)
+Function::Function(const misc::Symbol& name, FunctionType* t)
+    : GlobalValue(sType(t), name)
+    , f_type_(t)
 {}
 
 Function::~Function()
@@ -34,18 +35,32 @@ Function::~Function()
 
 void Function::dump(std::ostream& o) const
 {
-    o << "function " << name_get() << "()" << misc::incendl;
+    o << "function " << name_get() << "(";
 
-    auto begin = cbegin();
-    auto end = cend();
+    auto abegin = a_cbegin();
+    auto aend = a_cend();
 
-    for (auto it = cbegin(); it != end; ++it)
+
+    for (auto ait = a_cbegin(); ait != aend; ++ait)
     {
-        if (it != begin)
+        if (ait != abegin)
+            o << ", ";
+
+        (*ait)->dump(o);
+    }
+
+    o << ")" << misc::incendl;
+
+    auto fbegin = f_cbegin();
+    auto fend = f_cend();
+
+    for (auto fit = f_cbegin(); fit != fend; ++fit)
+    {
+        if (fit != fbegin)
             o << misc::iendl
-              << "; label: '" + (*it)->name_get().data_get() + "'"
+              << "; label: '" + (*fit)->name_get().data_get() + "'"
               << misc::iendl;
 
-        (*it)->dump(o);
+        (*fit)->dump(o);
     }
 }

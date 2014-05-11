@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <ir/global-value.hh>
 # include <ir/basic-block.hh>
+# include <ir/function-type.hh>
 
 namespace ucc
 {
@@ -30,33 +31,38 @@ namespace ucc
     {
         class Function : public GlobalValue
         {
+            typedef typename std::list<BasicBlock*>::iterator bb_iterator;
+            typedef typename std::list<BasicBlock*>::const_iterator
+            bb_citerator;
+
+            typedef typename std::list<Value*>::iterator arg_iterator;
+            typedef typename std::list<Value*>::const_iterator arg_citerator;
+
             public:
-                Function(const misc::Symbol& name);
+                Function(const misc::Symbol& name, FunctionType* t);
                 virtual ~Function();
 
-                typename std::list<BasicBlock*>::iterator begin()
-                {
-                    return blocks_.begin();
-                }
+                bb_iterator f_begin()           { return blocks_.begin(); }
+                bb_iterator f_end()             { return blocks_.end(); }
+                bb_citerator f_cbegin() const   { return blocks_.cbegin(); }
+                bb_citerator f_cend() const     { return blocks_.cend(); }
 
-                typename std::list<BasicBlock*>::iterator end()
-                {
-                    return blocks_.end();
-                }
+                arg_iterator a_begin()          { return args_.begin(); }
+                arg_iterator a_end()            { return args_.end(); }
+                arg_citerator a_cbegin() const  { return args_.cbegin(); }
+                arg_citerator a_cend() const    { return args_.cend(); }
 
-                typename std::list<BasicBlock*>::const_iterator cbegin() const
+                void arg_add(Value* v)
                 {
-                    return blocks_.cbegin();
-                }
-
-                typename std::list<BasicBlock*>::const_iterator cend() const
-                {
-                    return blocks_.cend();
+                    args_.push_back(v);
+                    f_type_->arg_add(v->type_get());
                 }
 
                 void dump(std::ostream& o) const;
 
             protected:
+                FunctionType* f_type_;
+                std::list<Value*> args_;
                 std::list<BasicBlock*> blocks_;
         };
     } // namespace ir
