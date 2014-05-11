@@ -29,11 +29,11 @@ namespace ucc
         class Constant : public Value
         {
             public:
-                Constant(const Type* t)
+                Constant(sType t)
                     : Value(t)
                 {}
 
-                Constant(const Type* t, const misc::Symbol& s)
+                Constant(sType t, const misc::Symbol& s)
                     : Value(t, s)
                 {}
 

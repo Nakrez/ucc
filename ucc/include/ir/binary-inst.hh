@@ -38,8 +38,8 @@ namespace ucc
                     MOD,
                 };
             public:
-                BinaryInst(BinOp op, Type* type, Use* op1, Use* op2);
-                BinaryInst(BinOp op, Type* type, Use* op1, Use* op2,
+                BinaryInst(BinOp op, sType type, Use* op1, Use* op2);
+                BinaryInst(BinOp op, sType type, Use* op1, Use* op2,
                            const misc::Symbol& name);
                 virtual ~BinaryInst();
 

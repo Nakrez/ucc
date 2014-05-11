@@ -35,12 +35,12 @@ namespace ucc
                     Internal
                 };
 
-                GlobalValue(const Type* t)
+                GlobalValue(sType t)
                     : Value(t)
                     , link_(External)
                 {}
 
-                GlobalValue(const Type* t, const misc::Symbol& s)
+                GlobalValue(sType t, const misc::Symbol& s)
                     : Value(t, s)
                     , link_(External)
                 {}

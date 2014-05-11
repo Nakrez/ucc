@@ -22,8 +22,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <list>
 
 # include <ir/type.hh>
-# include <ir/int-type.hh>
-# include <ir/ptr-type.hh>
 
 namespace ucc
 {
@@ -42,33 +40,27 @@ namespace ucc
                     units_.push_back(u);
                 }
 
-                void register_ptr(PtrType* p)
-                {
-                    ptrs_.push_back(p);
-                }
+                sType void_ty_get()     { return void_; }
+                sType float_ty_get()    { return float_; }
+                sType double_ty_get()   { return double_; }
+                sType label_ty_get()    { return label_; }
 
-                Type* void_ty_get()     { return &void_; }
-                Type* float_ty_get()    { return &float_; }
-                Type* double_ty_get()   { return &double_; }
-                Type* label_ty_get()    { return &label_; }
-
-                IntType* i8_ty_get()    { return &i8_; }
-                IntType* i16_ty_get()   { return &i16_; }
-                IntType* i32_ty_get()   { return &i32_; }
-                IntType* i64_ty_get()   { return &i64_; }
+                sType i8_ty_get()       { return i8_; }
+                sType i16_ty_get()      { return i16_; }
+                sType i32_ty_get()      { return i32_; }
+                sType i64_ty_get()      { return i64_; }
 
             protected:
-                Type void_;
-                Type float_;
-                Type double_;
-                Type label_;
+                sType void_;
+                sType float_;
+                sType double_;
+                sType label_;
 
-                IntType i8_;
-                IntType i16_;
-                IntType i32_;
-                IntType i64_;
+                sType i8_;
+                sType i16_;
+                sType i32_;
+                sType i64_;
 
-                std::list<PtrType*> ptrs_;
                 std::list<Unit*> units_;
         };
     } // namespace ir

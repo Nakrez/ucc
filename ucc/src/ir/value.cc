@@ -21,12 +21,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ir;
 
-Value::Value(const Type* t)
+Value::Value(sType t)
     : type_(t)
     , name_(fresh_name())
 {}
 
-Value::Value(const Type* t, const misc::Symbol& s)
+Value::Value(sType t, const misc::Symbol& s)
     : type_(t)
     , name_(s)
 {}

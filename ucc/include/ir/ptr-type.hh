@@ -30,7 +30,11 @@ namespace ucc
         class PtrType : public Type
         {
             public:
-                PtrType(Context& c, Type* pointed);
+                PtrType(sType pointed)
+                    : Type(Type::PtrTy)
+                    , pointed_(pointed)
+                {}
+
                 virtual ~PtrType() = default;
 
                 Type* pointed_type_get()
@@ -45,7 +49,7 @@ namespace ucc
                 }
 
             protected:
-                Type* pointed_;
+                sType pointed_;
         };
     } // namespace ir
 } // namespace ucc

@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_IR_TYPE_HH
 # define UCC_IR_TYPE_HH
 
+# include <memory>
 # include <ostream>
 
 namespace ucc
@@ -55,6 +56,8 @@ namespace ucc
             protected:
                 IrType ty_;
         };
+
+        typedef std::shared_ptr<Type> sType;
     } // namespace ir
 } // namespace ucc
 

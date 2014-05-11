@@ -30,11 +30,11 @@ namespace ucc
         class Instruction : public Value
         {
             public:
-                Instruction(const Type* t)
+                Instruction(sType t)
                     : Value(t)
                 {}
 
-                Instruction(const Type* t, const misc::Symbol& s)
+                Instruction(sType t, const misc::Symbol& s)
                     : Value(t, s)
                 {}
 

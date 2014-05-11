@@ -16,28 +16,26 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <ir/unit.hh>
 #include <ir/context.hh>
+#include <ir/unit.hh>
+#include <ir/int-type.hh>
 
 using namespace ucc;
 using namespace ir;
 
 Context::Context()
-    : void_(Type::VoidTy)
-    , float_(Type::FloatTy)
-    , double_(Type::DoubleTy)
-    , label_(Type::LabelTy)
-    , i8_(8)
-    , i16_(16)
-    , i32_(32)
-    , i64_(64)
+    : void_(new Type(Type::VoidTy))
+    , float_(new Type(Type::FloatTy))
+    , double_(new Type(Type::DoubleTy))
+    , label_(new Type(Type::LabelTy))
+    , i8_(new IntType(8))
+    , i16_(new IntType(16))
+    , i32_(new IntType(32))
+    , i64_(new IntType(64))
 {}
 
 Context::~Context()
 {
-    for (auto p : ptrs_)
-        delete p;
-
     for (auto u : units_)
         delete u;
 }

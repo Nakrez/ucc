@@ -80,7 +80,6 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ir/basic-block.cc \
 			  src/ir/binary-inst.cc \
 			  src/ir/type.cc \
-			  src/ir/ptr-type.cc \
 			  src/ir/ir-generator.cc \
 			  src/ir/context.cc \
 			  src/ir/command.cc \

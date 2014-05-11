@@ -30,11 +30,11 @@ namespace ucc
         class Value
         {
             public:
-                Value(const Type* t);
-                Value(const Type* t, const misc::Symbol& s);
+                Value(sType t);
+                Value(sType t, const misc::Symbol& s);
                 virtual ~Value() = default;
 
-                const Type* type_get() const
+                sType type_get() const
                 {
                     return type_;
                 }
@@ -50,7 +50,7 @@ namespace ucc
                 }
 
             protected:
-                const Type* type_;
+                sType type_;
                 misc::Symbol name_;
 
             private:

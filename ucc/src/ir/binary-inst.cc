@@ -21,14 +21,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ir;
 
-BinaryInst::BinaryInst(BinOp op, Type* type, Use* op1, Use* op2)
+BinaryInst::BinaryInst(BinOp op, sType type, Use* op1, Use* op2)
     : Instruction(type)
     , op_(op)
     , op1_(op1)
     , op2_(op2)
 {}
 
-BinaryInst::BinaryInst(BinOp op, Type* type, Use* op1, Use* op2,
+BinaryInst::BinaryInst(BinOp op, sType type, Use* op1, Use* op2,
                        const misc::Symbol& name)
     : Instruction(type, name)
     , op_(op)
