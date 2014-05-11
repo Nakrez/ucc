@@ -81,6 +81,7 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ir/binary-inst.cc \
 			  src/ir/type.cc \
 			  src/ir/function-type.cc \
+			  src/ir/struct-type.cc \
 			  src/ir/ir-generator.cc \
 			  src/ir/context.cc \
 			  src/ir/command.cc \

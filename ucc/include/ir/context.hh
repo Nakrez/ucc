@@ -20,8 +20,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_IR_CONTEXT_HH
 
 # include <list>
+# include <map>
+# include <cassert>
 
 # include <ir/type.hh>
+# include <ir/struct-type.hh>
 
 namespace ucc
 {
@@ -38,6 +41,20 @@ namespace ucc
                 void add_unit(Unit* u)
                 {
                     units_.push_back(u);
+                }
+
+                void register_struct(const misc::Symbol& s, sStructType t)
+                {
+                    structs_[s] = t;
+                }
+
+                sStructType struct_get(const misc::Symbol& s)
+                {
+                    auto it = structs_.find(s);
+
+                    assert(it != structs_.end());
+
+                    return it->second;
                 }
 
                 sType void_ty_get()     { return void_; }
@@ -62,6 +79,7 @@ namespace ucc
                 sType i64_;
 
                 std::list<Unit*> units_;
+                std::map<misc::Symbol, sStructType> structs_;
         };
     } // namespace ir
 } // namespace ucc
