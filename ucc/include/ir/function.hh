@@ -52,6 +52,11 @@ namespace ucc
                 arg_citerator a_cbegin() const  { return args_.cbegin(); }
                 arg_citerator a_cend() const    { return args_.cend(); }
 
+                void arg_add(sType t, const misc::Symbol& name)
+                {
+                    arg_add(new Value(t, name));
+                }
+
                 void arg_add(Value* v)
                 {
                     args_.push_back(v);

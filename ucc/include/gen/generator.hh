@@ -39,6 +39,7 @@ namespace ucc
 
             protected:
                 ir::IrGenerator gen_;
+                ir::Context& c_;
         };
     } // namespace gen
 } // namespace ucc

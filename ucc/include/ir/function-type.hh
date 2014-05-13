@@ -47,6 +47,11 @@ namespace ucc
                     args_.push_back(t);
                 }
 
+                sType ret_type_get()
+                {
+                    return ret_type_;
+                }
+
             protected:
                 sType ret_type_;
                 std::list<sType> args_;

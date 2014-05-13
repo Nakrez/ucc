@@ -20,6 +20,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_IR_IR_GENERATOR_HH
 
 # include <ir/context.hh>
+# include <ir/unit.hh>
+# include <ir/function.hh>
+# include <ir/function-type.hh>
 
 namespace ucc
 {
@@ -32,8 +35,32 @@ namespace ucc
                 IrGenerator(Context& c);
                 virtual ~IrGenerator() = default;
 
+                void init();
+
+                Function* declared_function_get() { return fun_; }
+
+                void current_unit_set(Unit* u)
+                {
+                    c_.add_unit(u);
+
+                    unit_ = u;
+                }
+
+                void start_function(const misc::Symbol& name, sType ret_type)
+                {
+                    fun_ = new Function(name, new FunctionType(ret_type));
+                }
+
+                void end_function()
+                {
+                    unit_->add_function(fun_);
+                    fun_ = nullptr;
+                }
+
             protected:
                 Context& c_;
+                Unit* unit_;
+                Function* fun_;
         };
     } // namespace ir
 } // namespace ucc

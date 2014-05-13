@@ -35,11 +35,10 @@ Function::~Function()
 
 void Function::dump(std::ostream& o) const
 {
-    o << "function " << name_get() << "(";
+    o << "function " << *f_type_->ret_type_get() << " " << name_get() << "(";
 
     auto abegin = a_cbegin();
     auto aend = a_cend();
-
 
     for (auto ait = a_cbegin(); ait != aend; ++ait)
     {
@@ -49,7 +48,7 @@ void Function::dump(std::ostream& o) const
         (*ait)->dump(o);
     }
 
-    o << ")" << misc::incendl;
+    o << ")" << misc::iendl << "{" << misc::incendl;
 
     auto fbegin = f_cbegin();
     auto fend = f_cend();
@@ -63,4 +62,6 @@ void Function::dump(std::ostream& o) const
 
         (*fit)->dump(o);
     }
+
+    o << misc::decendl << "}";
 }
