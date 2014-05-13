@@ -54,6 +54,11 @@ namespace ucc
                     return 4;
                 }
 
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.float_ty_get();
+                }
+
             private:
                 /// Constructor
                 Float() = default;
@@ -84,6 +89,11 @@ namespace ucc
                 virtual int size() const override
                 {
                     return 8;
+                }
+
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.double_ty_get();
                 }
 
             private:
@@ -118,6 +128,11 @@ namespace ucc
                     return 8;
                 }
 
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.double_ty_get();
+                }
+
             private:
                 /// Constructor
                 LongDouble() = default;
@@ -148,6 +163,11 @@ namespace ucc
                 virtual int size() const override
                 {
                     return 1;
+                }
+
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.i8_ty_get();
                 }
 
             private:
@@ -182,6 +202,11 @@ namespace ucc
                     return 1;
                 }
 
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.i8_ty_get();
+                }
+
             private:
                 /// Constructor
                 UnsignedChar() = default;
@@ -212,6 +237,11 @@ namespace ucc
                 virtual int size() const override
                 {
                     return 2;
+                }
+
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.i16_ty_get();
                 }
 
             private:
@@ -246,6 +276,11 @@ namespace ucc
                     return 2;
                 }
 
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.i16_ty_get();
+                }
+
             private:
                 /// Constructor
                 UnsignedShort() = default;
@@ -276,6 +311,11 @@ namespace ucc
                 virtual int size() const override
                 {
                     return 4;
+                }
+
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.i32_ty_get();
                 }
 
             private:
@@ -310,6 +350,11 @@ namespace ucc
                     return 4;
                 }
 
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.i32_ty_get();
+                }
+
             private:
                 /// Constructor
                 UnsignedInt() = default;
@@ -340,6 +385,11 @@ namespace ucc
                 virtual int size() const override
                 {
                     return 4;
+                }
+
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.i32_ty_get();
                 }
 
             private:
@@ -374,6 +424,11 @@ namespace ucc
                     return 4;
                 }
 
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.i32_ty_get();
+                }
+
             private:
                 /// Constructor
                 UnsignedLong() = default;
@@ -404,6 +459,11 @@ namespace ucc
                 virtual int size() const override
                 {
                     return 8;
+                }
+
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.i64_ty_get();
                 }
 
             private:
@@ -437,6 +497,12 @@ namespace ucc
                 {
                     return 8;
                 }
+
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.i64_ty_get();
+                }
+
             private:
                 /// Constructor
                 UnsignedLongLong() = default;
@@ -478,6 +544,11 @@ namespace ucc
                 virtual std::string to_str() const override
                 {
                     return "void";
+                }
+
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return c.void_ty_get();
                 }
 
             private:

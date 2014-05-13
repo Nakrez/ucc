@@ -36,7 +36,11 @@ namespace ucc
                 StructType(Context& c,
                            const misc::Symbol& name,
                            const std::list<sType>& types);
+                StructType(Context& c,
+                           const misc::Symbol& name);
                 virtual ~StructType() = default;
+
+                void add_member(sType t)    { types_.push_back(t); }
 
             protected:
                 misc::Symbol name_;

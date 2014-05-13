@@ -37,7 +37,7 @@ namespace ucc
 
                 virtual ~PtrType() = default;
 
-                Type* pointed_type_get()
+                sType pointed_type_get()
                 {
                     return pointed_;
                 }

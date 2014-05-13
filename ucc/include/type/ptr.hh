@@ -22,6 +22,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <type/type.hh>
 # include <type/builtin-type.hh>
 
+# include <ir/ptr-type.hh>
+
 namespace ucc
 {
     namespace type
@@ -73,6 +75,16 @@ namespace ucc
                 {
                     return 8;
                 }
+
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    ir::PtrType *p;
+
+                    p = new ir::PtrType(pointed_type_->to_ir_type(c));
+
+                    return ir::sType(p);
+                }
+
             private:
                 const Type* pointed_type_;
         };

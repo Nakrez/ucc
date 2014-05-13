@@ -32,6 +32,7 @@ namespace ucc
     {
         class Record : public Type
         {
+            typedef typename std::list<Field>::const_iterator cfield_iterator;
             public:
                 /// Constructor
                 Record(const ucc::misc::Symbol name, bool is_struct = true)
@@ -59,15 +60,10 @@ namespace ucc
                     fields_.push_back(Field(n, t));
                 }
 
-                typename std::list<Field>::const_iterator cbegin() const
-                {
-                    return fields_.cbegin();
-                }
-
-                typename std::list<Field>::const_iterator cend() const
-                {
-                    return fields_.cend();
-                }
+                cfield_iterator begin() const   { return fields_.cbegin(); }
+                cfield_iterator end() const     { return fields_.cend(); }
+                cfield_iterator cbegin() const  { return fields_.cbegin(); }
+                cfield_iterator cend() const    { return fields_.cend(); }
 
                 const std::list<Field>& fields_get() const
                 {
@@ -107,6 +103,8 @@ namespace ucc
                     else
                         return "union " + name_.data_get();
                 }
+
+                virtual ir::sType to_ir_type(ir::Context& c) const override;
 
             private:
                 ucc::misc::Symbol name_;

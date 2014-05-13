@@ -108,29 +108,9 @@ namespace ucc
                     return Type::TypeCompatibility::error;
                 }
 
-                virtual std::string to_str() const override
-                {
-                    std::string args = return_type_->to_str() + "(";
-                    auto begin = args_.cbegin();
-                    auto it = args_.cbegin();
-                    auto end = args_.cend();
+                virtual std::string to_str() const override;
 
-                    for (; it != end; ++it)
-                    {
-                        if (it != begin)
-                            args += ", ";
-
-                        args += (*it).type_get()->to_str();
-                    }
-
-                    if (has_elipsis())
-                    {
-                        if (args_.size_get() > 0)
-                            args += ", ";
-                        args += "...";
-                    }
-                    return args + ")";
-                }
+                virtual ir::sType to_ir_type(ir::Context& c) const override;
 
             private:
                 const Type* return_type_;

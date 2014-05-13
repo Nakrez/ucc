@@ -60,6 +60,11 @@ namespace ucc
                     return it->second;
                 }
 
+                bool struct_exists(const misc::Symbol& s) const
+                {
+                    return structs_.find(s) != structs_.end();
+                }
+
                 u_iterator begin()          { return units_.begin(); }
                 u_iterator end()            { return units_.end(); }
                 cu_iterator cbegin() const  { return units_.cbegin(); }

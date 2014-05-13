@@ -40,3 +40,16 @@ Record::compatible_on_assign(const Type& t) const
 
     return Type::TypeCompatibility::full;
 }
+
+ir::sType Record::to_ir_type(ir::Context& c) const
+{
+    if (c.struct_exists(name_))
+        return c.struct_get(name_);
+
+    ir::StructType* s = new ir::StructType(c, name_);
+
+    for (auto f : fields_)
+        s->add_member(f.type_get()->to_ir_type(c));
+
+    return ir::sType(s);
+}

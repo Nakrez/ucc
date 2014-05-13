@@ -69,6 +69,11 @@ namespace ucc
                     return inner_type_;
                 }
 
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    return inner_type_->to_ir_type(c);
+                }
+
             private:
                 const Type* inner_type_;
         };

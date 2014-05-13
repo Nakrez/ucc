@@ -19,7 +19,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_TYPE_ARRAY_HH
 # define UCC_TYPE_ARRAY_HH
 
+# include <cassert>
+
 # include <type/type.hh>
+
+# include <ir/array-type.hh>
 
 namespace ucc
 {
@@ -57,6 +61,18 @@ namespace ucc
                 {
                     return 8;
                 }
+
+                virtual ir::sType to_ir_type(ir::Context& c) const override
+                {
+                    ir::ArrayType *t;
+
+                    t = new ir::ArrayType(inner_type_->to_ir_type(c), 2);
+
+                    assert(false);
+
+                    return ir::sType(t);
+                }
+
             private:
                 const Type* inner_type_;
         };

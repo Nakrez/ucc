@@ -17,6 +17,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <type/function.hh>
+#include <ir/function-type.hh>
 
 using namespace ucc;
 using namespace type;
@@ -63,4 +64,40 @@ bool Function::operator==(const Type& t) const
     }
 
     return true;
+}
+
+std::string Function::to_str() const
+{
+    std::string args = return_type_->to_str() + "(";
+    auto begin = args_.cbegin();
+    auto it = args_.cbegin();
+    auto end = args_.cend();
+
+    for (; it != end; ++it)
+    {
+        if (it != begin)
+            args += ", ";
+
+        args += (*it).type_get()->to_str();
+    }
+
+    if (has_elipsis())
+    {
+        if (args_.size_get() > 0)
+            args += ", ";
+        args += "...";
+    }
+    return args + ")";
+}
+
+ir::sType Function::to_ir_type(ir::Context& c) const
+{
+    ir::FunctionType *t;
+
+    t = new ir::FunctionType(return_type_->to_ir_type(c));
+
+    for (auto f : args_)
+        t->arg_add(f.type_get()->to_ir_type(c));
+
+    return ir::sType(t);
 }

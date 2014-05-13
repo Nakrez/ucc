@@ -31,3 +31,11 @@ StructType::StructType(Context& c,
 {
     c.register_struct(name, sStructType(this));
 }
+
+StructType::StructType(Context& c,
+                       const misc::Symbol& name)
+    : Type(Type::StructTy)
+    , name_(name)
+{
+    c.register_struct(name, sStructType(this));
+}

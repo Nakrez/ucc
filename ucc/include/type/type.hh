@@ -23,6 +23,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <ast/op-expr.hh>
 
+# include <ir/type.hh>
+# include <ir/context.hh>
+
 namespace ucc
 {
     namespace type
@@ -93,6 +96,8 @@ namespace ucc
 
                 /// Return a string representing the type
                 virtual std::string to_str() const = 0;
+
+                virtual ir::sType to_ir_type(ir::Context& c) const = 0;
 
                 /// \brief  Dump the type inside a ostream
                 /// \param  o   The stream where you want to dump your type
