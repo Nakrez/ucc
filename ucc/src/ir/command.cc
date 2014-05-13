@@ -22,13 +22,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <command/command.hh>
 
+#include <ir/context.hh>
+
 REGISTER_COMMAND(uir_print, "uir-print", "Print the intermediate "
                  "representation on the standard input", uir_print, "uir");
 
 void uir_print()
 {
-    assert(ucc::ir::the_unit &&
-           "Internal error: No UIR unit retrieved by the generator");
-
-    ucc::ir::the_unit->dump(std::cout);
+    for (auto u : ucc::ir::global_context)
+        u->dump(std::cout);
 }

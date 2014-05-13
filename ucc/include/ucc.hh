@@ -40,7 +40,9 @@ namespace ucc
 
     namespace ir
     {
-        extern Unit* the_unit;
+        class Context;
+
+        extern Context global_context;
     } // namespace ir
 } // namespace ucc
 

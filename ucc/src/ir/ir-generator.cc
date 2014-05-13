@@ -21,6 +21,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ir;
 
-IrGenerator::IrGenerator()
-    : unit_(new Unit())
+IrGenerator::IrGenerator(Context& c)
+    : c_(c)
 {}

@@ -21,7 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace gen;
 
-Generator::Generator()
+Generator::Generator(ir::Context& c)
+    : gen_(c)
 {}
 
 Generator::~Generator()

@@ -32,13 +32,8 @@ namespace ucc
             public:
                 using ast::DefaultConstVisitor::operator();
 
-                Generator();
+                Generator(ir::Context& c);
                 virtual ~Generator();
-
-                ir::Unit* unit_get()
-                {
-                    return gen_.unit_get();
-                }
 
                 virtual void operator()(const ast::FunctionDecl& ast) override;
 

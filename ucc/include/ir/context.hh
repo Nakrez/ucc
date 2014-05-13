@@ -34,6 +34,9 @@ namespace ucc
 
         class Context
         {
+            typedef typename std::list<Unit*>::iterator u_iterator;
+            typedef typename std::list<Unit*>::const_iterator cu_iterator;
+
             public:
                 Context();
                 virtual ~Context();
@@ -56,6 +59,11 @@ namespace ucc
 
                     return it->second;
                 }
+
+                u_iterator begin()          { return units_.begin(); }
+                u_iterator end()            { return units_.end(); }
+                cu_iterator cbegin() const  { return units_.cbegin(); }
+                cu_iterator cend() const    { return units_.cend(); }
 
                 sType void_ty_get()     { return void_; }
                 sType float_ty_get()    { return float_; }

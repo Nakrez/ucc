@@ -18,6 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <ucc.hh>
 
+#include <ir/context.hh>
+
 namespace ucc
 {
     std::string input_file = "-";
@@ -34,6 +36,6 @@ namespace ucc
 
     namespace ir
     {
-        Unit* the_unit = nullptr;
+        Context global_context;
     } // namespace ir
 } // namespace ucc

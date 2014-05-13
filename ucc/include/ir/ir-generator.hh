@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_IR_IR_GENERATOR_HH
 # define UCC_IR_IR_GENERATOR_HH
 
-# include <ir/unit.hh>
+# include <ir/context.hh>
 
 namespace ucc
 {
@@ -29,16 +29,11 @@ namespace ucc
         class IrGenerator
         {
             public:
-                IrGenerator();
+                IrGenerator(Context& c);
                 virtual ~IrGenerator() = default;
 
-                Unit* unit_get()
-                {
-                    return unit_;
-                }
-
             protected:
-                Unit* unit_;
+                Context& c_;
         };
     } // namespace ir
 } // namespace ucc
