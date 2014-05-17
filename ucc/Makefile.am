@@ -1,5 +1,6 @@
-AM_CPPFLAGS = -I${top_srcdir}/ucc/include -I${top_srcdir}/lib/command/include \
-			  -I${top_srcdir}/ucc/src -I${top_srcdir}/lib/misc/include
+AM_CPPFLAGS = -Iinclude -I../lib/command/include \
+			  -Isrc -I../lib/misc/include \
+			  -I${top_srcdir}/include
 
 bin_PROGRAMS = ucc
 ucc_SOURCES = src/parse/c-parser.yy \
@@ -92,5 +93,5 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/main.cc \
 			  src/ucc.cc
 
-ucc_LDADD = ${abs_top_builddir}/lib/command/libcommand.la \
-			${abs_top_builddir}/lib/misc/libmisc.la
+ucc_LDADD = ../lib/command/libcommand.la \
+			../lib/misc/libmisc.la
