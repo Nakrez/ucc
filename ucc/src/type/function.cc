@@ -90,14 +90,14 @@ std::string Function::to_str() const
     return args + ")";
 }
 
-ir::sType Function::to_ir_type(ir::Context& c) const
+ucmp::ir::sType Function::to_ir_type(ucmp::ir::Context& c) const
 {
-    ir::FunctionType *t;
+    ucmp::ir::FunctionType *t;
 
-    t = new ir::FunctionType(return_type_->to_ir_type(c));
+    t = new ucmp::ir::FunctionType(return_type_->to_ir_type(c));
 
     for (auto f : args_)
         t->arg_add(f.type_get()->to_ir_type(c));
 
-    return ir::sType(t);
+    return ucmp::ir::sType(t);
 }

@@ -22,8 +22,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-EnumDecl::EnumDecl(const ucc::misc::location& loc,
-                   const ucc::misc::Symbol& name,
+EnumDecl::EnumDecl(const ucmp::misc::location& loc,
+                   const ucmp::misc::Symbol& name,
                    EnumExprList* body)
     : Decl(loc, name)
     , body_(body)

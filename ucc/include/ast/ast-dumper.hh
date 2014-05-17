@@ -48,7 +48,7 @@ namespace ucc
                     for (; it != end; ++it)
                     {
                         if (it != begin)
-                            ostr_ << misc::iendl;
+                            ostr_ << ucmp::misc::iendl;
 
                         (*it)->accept(*this);
                     }

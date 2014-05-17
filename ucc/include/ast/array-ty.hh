@@ -33,12 +33,12 @@ namespace ucc
             public:
                 /// \brief  Constructor
                 /// \param  loc The location of the ArrayTy
-                ArrayTy(const ucc::misc::location& loc);
+                ArrayTy(const ucmp::misc::location& loc);
 
                 /// \brief  Constructor
                 /// \param  loc     The location of the ArrayTy
                 /// \param  expr    The size of the ArrayTy
-                ArrayTy(const ucc::misc::location& loc, Expr* expr);
+                ArrayTy(const ucmp::misc::location& loc, Expr* expr);
 
                 /// Destructor
                 virtual ~ArrayTy();

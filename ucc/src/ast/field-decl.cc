@@ -21,8 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-FieldDecl::FieldDecl(const ucc::misc::location& loc,
-                     const ucc::misc::Symbol& name,
+FieldDecl::FieldDecl(const ucmp::misc::location& loc,
+                     const ucmp::misc::Symbol& name,
                      Ty* ty,
                      Expr* bit_field)
     : Decl(loc, name)

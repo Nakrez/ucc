@@ -28,7 +28,7 @@ namespace ucc
         class Stmt : public Ast
         {
             public:
-                Stmt(const ucc::misc::location& loc);
+                Stmt(const ucmp::misc::location& loc);
                 virtual ~Stmt();
 
                 virtual void accept(Visitor& v) = 0;

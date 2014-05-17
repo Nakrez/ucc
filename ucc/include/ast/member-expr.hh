@@ -30,17 +30,17 @@ namespace ucc
         class MemberExpr : public Expr
         {
             public:
-                MemberExpr(const ucc::misc::location& loc,
+                MemberExpr(const ucmp::misc::location& loc,
                            Expr* lexpr,
-                           const ucc::misc::Symbol& name,
+                           const ucmp::misc::Symbol& name,
                            bool is_arrow);
                 virtual ~MemberExpr();
 
                 const Expr* lexpr_get() const;
                 Expr* lexpr_get();
 
-                const ucc::misc::Symbol& name_get() const;
-                ucc::misc::Symbol& name_get();
+                const ucmp::misc::Symbol& name_get() const;
+                ucmp::misc::Symbol& name_get();
 
                 bool is_arrow() const;
 
@@ -49,7 +49,7 @@ namespace ucc
 
             protected:
                 Expr* lexpr_;
-                ucc::misc::Symbol name_;
+                ucmp::misc::Symbol name_;
                 bool is_arrow_;
         };
     } // namespace ast

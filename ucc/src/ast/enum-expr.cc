@@ -21,8 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-EnumExpr::EnumExpr(const ucc::misc::location& loc,
-                   const ucc::misc::Symbol& name)
+EnumExpr::EnumExpr(const ucmp::misc::location& loc,
+                   const ucmp::misc::Symbol& name)
     : Expr(loc)
     , name_(name)
     , def_(nullptr)
@@ -31,12 +31,12 @@ EnumExpr::EnumExpr(const ucc::misc::location& loc,
 EnumExpr::~EnumExpr()
 {}
 
-const ucc::misc::Symbol& EnumExpr::name_get() const
+const ucmp::misc::Symbol& EnumExpr::name_get() const
 {
     return name_;
 }
 
-ucc::misc::Symbol& EnumExpr::name_get()
+ucmp::misc::Symbol& EnumExpr::name_get()
 {
     return name_;
 }

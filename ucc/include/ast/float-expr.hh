@@ -28,7 +28,7 @@ namespace ucc
         class FloatExpr : public Expr
         {
             public:
-                FloatExpr(const ucc::misc::location& loc, long double val);
+                FloatExpr(const ucmp::misc::location& loc, long double val);
                 virtual ~FloatExpr();
 
                 long double value_get() const;

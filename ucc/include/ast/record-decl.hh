@@ -39,8 +39,8 @@ namespace ucc
                 };
 
             public:
-                RecordDecl(const ucc::misc::location& loc,
-                           const ucc::misc::Symbol& name,
+                RecordDecl(const ucmp::misc::location& loc,
+                           const ucmp::misc::Symbol& name,
                            RecordType type,
                            FieldList* fields);
                 virtual ~RecordDecl();

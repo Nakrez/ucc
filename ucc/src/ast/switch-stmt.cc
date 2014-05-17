@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-SwitchStmt::SwitchStmt(const ucc::misc::location& loc,
+SwitchStmt::SwitchStmt(const ucmp::misc::location& loc,
                        Expr* cond,
                        Stmt* body)
     : Stmt(loc)

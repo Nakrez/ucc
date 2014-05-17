@@ -21,8 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-EnumTy::EnumTy(const ucc::misc::location& loc,
-               const ucc::misc::Symbol& name)
+EnumTy::EnumTy(const ucmp::misc::location& loc,
+               const ucmp::misc::Symbol& name)
     : Ty(loc)
     , name_(name)
     , def_(nullptr)

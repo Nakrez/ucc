@@ -21,12 +21,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-ReturnStmt::ReturnStmt(const ucc::misc::location& loc)
+ReturnStmt::ReturnStmt(const ucmp::misc::location& loc)
     : Stmt(loc)
     , expr_(nullptr)
 {}
 
-ReturnStmt::ReturnStmt(const ucc::misc::location& loc, Expr* expr)
+ReturnStmt::ReturnStmt(const ucmp::misc::location& loc, Expr* expr)
     : Stmt(loc)
     , expr_(expr)
 {}

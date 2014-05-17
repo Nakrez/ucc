@@ -22,13 +22,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-ArrayTy::ArrayTy(const ucc::misc::location& loc)
+ArrayTy::ArrayTy(const ucmp::misc::location& loc)
     : Ty(loc)
     , sub_ty_(nullptr)
     , size_(nullptr)
 {}
 
-ArrayTy::ArrayTy(const ucc::misc::location& loc, Expr* expr)
+ArrayTy::ArrayTy(const ucmp::misc::location& loc, Expr* expr)
     : Ty(loc)
     , sub_ty_(nullptr)
     , size_(expr)

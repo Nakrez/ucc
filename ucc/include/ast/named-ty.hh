@@ -35,8 +35,8 @@ namespace ucc
                 /// \brief  Constructor
                 /// \param  loc     The location of the NamedTy
                 /// \param  name    The name of the NamedTy
-                NamedTy(const ucc::misc::location& loc,
-                        const ucc::misc::Symbol& name)
+                NamedTy(const ucmp::misc::location& loc,
+                        const ucmp::misc::Symbol& name)
                     : Ty(loc)
                     , name_(name)
                     , def_(nullptr)
@@ -46,13 +46,13 @@ namespace ucc
                 virtual ~NamedTy() = default;
 
                 /// Return the name of the NamedTy
-                const ucc::misc::Symbol& name_get() const
+                const ucmp::misc::Symbol& name_get() const
                 {
                     return name_;
                 }
 
                 /// Return the name of the NamedTy
-                ucc::misc::Symbol& name_get()
+                ucmp::misc::Symbol& name_get()
                 {
                     return name_;
                 }
@@ -91,7 +91,7 @@ namespace ucc
                 }
 
             private:
-                ucc::misc::Symbol name_;
+                ucmp::misc::Symbol name_;
                 TypeDecl* def_;
         };
     } // namespace ast

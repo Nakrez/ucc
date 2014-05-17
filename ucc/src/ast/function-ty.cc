@@ -22,13 +22,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-FunctionTy::FunctionTy(const ucc::misc::location& loc)
+FunctionTy::FunctionTy(const ucmp::misc::location& loc)
     : Ty(loc)
     , return_ty_(nullptr)
     , param_()
 {}
 
-FunctionTy::FunctionTy(const ucc::misc::location& loc,
+FunctionTy::FunctionTy(const ucmp::misc::location& loc,
                         const std::list<VarDecl*>& param)
     : Ty(loc)
     , return_ty_(nullptr)

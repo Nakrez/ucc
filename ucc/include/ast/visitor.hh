@@ -97,8 +97,8 @@ namespace ucc
                 virtual void operator()(typename Const<InitListExpr>::type& ast) = 0;
         };
 
-        typedef GenVisitor<ucc::misc::const_type> ConstVisitor;
-        typedef GenVisitor<ucc::misc::nonconst_type> Visitor;
+        typedef GenVisitor<ucmp::misc::const_type> ConstVisitor;
+        typedef GenVisitor<ucmp::misc::nonconst_type> Visitor;
     } // namespace ast
 } // namespace ucc
 

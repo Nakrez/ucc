@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace type;
 
-const Type* Record::field_type_get(const ucc::misc::Symbol name) const
+const Type* Record::field_type_get(const ucmp::misc::Symbol name) const
 {
     for (auto field : fields_)
     {
@@ -41,15 +41,15 @@ Record::compatible_on_assign(const Type& t) const
     return Type::TypeCompatibility::full;
 }
 
-ir::sType Record::to_ir_type(ir::Context& c) const
+ucmp::ir::sType Record::to_ir_type(ucmp::ir::Context& c) const
 {
     if (c.struct_exists(name_))
         return c.struct_get(name_);
 
-    ir::StructType* s = new ir::StructType(c, name_);
+    ucmp::ir::StructType* s = new ucmp::ir::StructType(c, name_);
 
     for (auto f : fields_)
         s->add_member(f.type_get()->to_ir_type(c));
 
-    return ir::sType(s);
+    return ucmp::ir::sType(s);
 }

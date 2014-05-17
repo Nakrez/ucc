@@ -30,13 +30,13 @@ namespace ucc
         class LabelStmt : public Stmt
         {
             public:
-                LabelStmt(const ucc::misc::location& loc,
-                          const ucc::misc::Symbol& sym,
+                LabelStmt(const ucmp::misc::location& loc,
+                          const ucmp::misc::Symbol& sym,
                           Stmt* stmt);
                 virtual ~LabelStmt();
 
-                const ucc::misc::Symbol& name_get() const;
-                ucc::misc::Symbol& name_get();
+                const ucmp::misc::Symbol& name_get() const;
+                ucmp::misc::Symbol& name_get();
 
                 const Stmt* stmt_get() const;
                 Stmt* stmt_get();
@@ -45,7 +45,7 @@ namespace ucc
                 virtual void accept(ConstVisitor& v) const;
 
             protected:
-                ucc::misc::Symbol name_;
+                ucmp::misc::Symbol name_;
                 Stmt* stmt_;
         };
     } // namespace ast

@@ -33,12 +33,12 @@ Binder::~Binder()
 
 void Binder::error(const ucc::ast::Ast& ast, std::string msg)
 {
-    ucc::misc::Diagnostic d;
+    ucmp::misc::Diagnostic d;
 
-    d << ucc::misc::Diagnostic::Severity::err
-      << ucc::misc::Diagnostic::Type::bind << msg << ast.location_get();
+    d << ucmp::misc::Diagnostic::Severity::err
+      << ucmp::misc::Diagnostic::Type::bind << msg << ast.location_get();
 
-    ucc::misc::DiagnosticReporter::instance_get().add(d);
+    ucmp::misc::DiagnosticReporter::instance_get().add(d);
 }
 
 void Binder::operator()(ucc::ast::VarDecl& ast)
@@ -386,7 +386,7 @@ void Binder::operator()(ucc::ast::ContinueStmt& ast)
         ast.def_set(*it);
 }
 
-bool Binder::is_builtin_type(const ucc::misc::Symbol& s)
+bool Binder::is_builtin_type(const ucmp::misc::Symbol& s)
 {
     const std::string *str = &s.data_get();
 

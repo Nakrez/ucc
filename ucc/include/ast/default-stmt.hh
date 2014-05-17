@@ -28,7 +28,7 @@ namespace ucc
         class DefaultStmt : public Stmt
         {
             public:
-                DefaultStmt(const ucc::misc::location& loc, Stmt* body);
+                DefaultStmt(const ucmp::misc::location& loc, Stmt* body);
                 virtual ~DefaultStmt();
 
                 const Stmt* body_get() const;

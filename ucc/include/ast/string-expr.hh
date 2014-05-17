@@ -31,7 +31,7 @@ namespace ucc
         class StringExpr : public Expr, public TypeBuilder
         {
             public:
-                StringExpr(const ucc::misc::location& loc, std::string* str);
+                StringExpr(const ucmp::misc::location& loc, std::string* str);
                 virtual ~StringExpr();
 
                 std::string* str_get();

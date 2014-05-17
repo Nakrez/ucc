@@ -33,7 +33,7 @@ namespace ucc
             public:
                 /// \brief  Constructor
                 /// \param  loc     The location of the Type node
-                Ty(const ucc::misc::location& loc)
+                Ty(const ucmp::misc::location& loc)
                     : Ast(loc)
                     , is_const_(false)
                     , is_volatile_(false)

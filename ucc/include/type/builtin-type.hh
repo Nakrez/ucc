@@ -54,7 +54,7 @@ namespace ucc
                     return 4;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.float_ty_get();
                 }
@@ -91,7 +91,7 @@ namespace ucc
                     return 8;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.double_ty_get();
                 }
@@ -128,7 +128,7 @@ namespace ucc
                     return 8;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.double_ty_get();
                 }
@@ -165,7 +165,7 @@ namespace ucc
                     return 1;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.i8_ty_get();
                 }
@@ -202,7 +202,7 @@ namespace ucc
                     return 1;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.i8_ty_get();
                 }
@@ -239,7 +239,7 @@ namespace ucc
                     return 2;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.i16_ty_get();
                 }
@@ -276,7 +276,7 @@ namespace ucc
                     return 2;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.i16_ty_get();
                 }
@@ -313,7 +313,7 @@ namespace ucc
                     return 4;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.i32_ty_get();
                 }
@@ -350,7 +350,7 @@ namespace ucc
                     return 4;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.i32_ty_get();
                 }
@@ -387,7 +387,7 @@ namespace ucc
                     return 4;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.i32_ty_get();
                 }
@@ -424,7 +424,7 @@ namespace ucc
                     return 4;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.i32_ty_get();
                 }
@@ -461,7 +461,7 @@ namespace ucc
                     return 8;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.i64_ty_get();
                 }
@@ -498,7 +498,7 @@ namespace ucc
                     return 8;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.i64_ty_get();
                 }
@@ -546,7 +546,7 @@ namespace ucc
                     return "void";
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return c.void_ty_get();
                 }

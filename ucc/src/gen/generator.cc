@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace gen;
 
-Generator::Generator(ir::Context& c)
+Generator::Generator(ucmp::ir::Context& c)
     : gen_(c)
     , c_(c)
 {
@@ -37,7 +37,7 @@ void Generator::operator()(const ast::FunctionDecl& ast)
     if (ast.compound_get())
     {
         const type::Function* ft;
-        ir::sType ret;
+        ucmp::ir::sType ret;
 
         ft = dynamic_cast<const type::Function*> (ast.built_type_get());
         ret = ft->return_type_get()->to_ir_type(c_);

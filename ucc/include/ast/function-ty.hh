@@ -35,12 +35,12 @@ namespace ucc
             public:
                 /// \brief  Constructor
                 /// \param  loc The location of the FunctionTy
-                FunctionTy(const ucc::misc::location& loc);
+                FunctionTy(const ucmp::misc::location& loc);
 
                 /// \brief  Constructor
                 /// \param  loc     The location of the FunctionTy
                 /// \param  param   The list of parameter of the FunctionTy
-                FunctionTy(const ucc::misc::location& loc,
+                FunctionTy(const ucmp::misc::location& loc,
                            const std::list<VarDecl*>& param);
 
                 /// Destructor

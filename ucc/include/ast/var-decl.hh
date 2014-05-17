@@ -37,14 +37,14 @@ namespace ucc
                 /// \param  name    The name of the variable declared
                 /// \param  ty      The type of the variable declared
                 /// \param  e       The init expression
-                VarDecl(const ucc::misc::location& loc,
-                        const ucc::misc::Symbol& name,
+                VarDecl(const ucmp::misc::location& loc,
+                        const ucmp::misc::Symbol& name,
                         Ty* ty,
                         Expr* e);
 
                 /// \brief  Constructor
                 /// \param  loc     The location of the VarDecl
-                VarDecl(const ucc::misc::location& loc);
+                VarDecl(const ucmp::misc::location& loc);
 
                 /// Destructor
                 virtual ~VarDecl();

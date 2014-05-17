@@ -37,8 +37,8 @@ namespace ucc
                 /// \param  loc     The location of the TypeDecl
                 /// \param  name    The name defined by the TypeDecl
                 /// \param  ty      The type defined by the TypeDecl
-                TypeDecl(const ucc::misc::location& loc,
-                         const ucc::misc::Symbol& name,
+                TypeDecl(const ucmp::misc::location& loc,
+                         const ucmp::misc::Symbol& name,
                          Ty* ty);
 
                 /// Destructor

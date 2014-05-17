@@ -33,13 +33,13 @@ namespace ucc
                 /// \brief  Constructor
                 /// \param  loc     The location of the SizeofExpr
                 /// \para   expr    The expression held by the SizeofExpr
-                SizeofExpr(const ucc::misc::location& loc,
+                SizeofExpr(const ucmp::misc::location& loc,
                            Expr* expr);
 
                 /// \brief  Constructor
                 /// \param  loc The location of the SizeofExpr
                 /// \para   ty  The Ty held by the SizeofExpr
-                SizeofExpr(const ucc::misc::location& loc,
+                SizeofExpr(const ucmp::misc::location& loc,
                            Ty* ty);
 
                 /// Destructor

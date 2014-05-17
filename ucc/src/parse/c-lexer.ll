@@ -10,7 +10,7 @@ typedef ucc::parse::Parser::token token;
 # define yywrap() 1
 # define yyterminate() return token::END_OF_FILE
 
-static void comment(ucc::parse::Driver& driver, ucc::misc::location* yylloc);
+static void comment(ucc::parse::Driver& driver, ucmp::misc::location* yylloc);
 static ucc::parse::Parser::token_type check_type(ucc::parse::Driver& driver);
 
 # define ATTRIBUTE(tok)                                 \
@@ -18,7 +18,7 @@ static ucc::parse::Parser::token_type check_type(ucc::parse::Driver& driver);
         return tok;                                     \
     else                                                \
     {                                                   \
-        yylval->symbol = new ucc::misc::Symbol(yytext); \
+        yylval->symbol = new ucmp::misc::Symbol(yytext); \
         return token::IDENTIFIER;                       \
     }
 
@@ -223,7 +223,7 @@ WS  [ \t\v\f]
 "__func__"              { return token::FUNC_NAME; }
 
 {L}{A}*                 {
-                          yylval->symbol = new ucc::misc::Symbol(yytext);
+                          yylval->symbol = new ucmp::misc::Symbol(yytext);
                           return check_type(driver);
                         }
 
@@ -279,14 +279,14 @@ WS  [ \t\v\f]
                                             yylval->int_ = '\0';
                                             break;
                                         default:
-                                            ucc::misc::Diagnostic d;
+                                            ucmp::misc::Diagnostic d;
 
-                                            d << ucc::misc::Diagnostic::Severity::err
-                                                << ucc::misc::Diagnostic::Type::scan
+                                            d << ucmp::misc::Diagnostic::Severity::err
+                                                << ucmp::misc::Diagnostic::Type::scan
                                                 << "Unexpected escape char"
                                                 << yytext << *yylloc;
 
-                                            ucc::misc::DiagnosticReporter::instance_get().add(d);
+                                            ucmp::misc::DiagnosticReporter::instance_get().add(d);
                                             break;
                                     }
                                 }
@@ -387,19 +387,19 @@ WS  [ \t\v\f]
                         }
 {WS}                    { yylloc->step(); }
 .                       {
-                            ucc::misc::Diagnostic d;
+                            ucmp::misc::Diagnostic d;
 
-                            d << ucc::misc::Diagnostic::Severity::err
-                              << ucc::misc::Diagnostic::Type::scan
+                            d << ucmp::misc::Diagnostic::Severity::err
+                              << ucmp::misc::Diagnostic::Type::scan
                               << "Unexpected char"
                               << yytext << *yylloc;
 
-                            ucc::misc::DiagnosticReporter::instance_get().add(d);
+                            ucmp::misc::DiagnosticReporter::instance_get().add(d);
                         }
 
 %%
 
-static void comment(ucc::parse::Driver&, ucc::misc::location* yylloc)
+static void comment(ucc::parse::Driver&, ucmp::misc::location* yylloc)
 {
     int c;
 
@@ -427,13 +427,13 @@ static void comment(ucc::parse::Driver&, ucc::misc::location* yylloc)
             yylloc->step();
     }
 
-    ucc::misc::Diagnostic d;
+    ucmp::misc::Diagnostic d;
 
-    d << ucc::misc::Diagnostic::Severity::err
-      << ucc::misc::Diagnostic::Type::scan
+    d << ucmp::misc::Diagnostic::Severity::err
+      << ucmp::misc::Diagnostic::Type::scan
       << "Unterminated comment" << *yylloc;
 
-    ucc::misc::DiagnosticReporter::instance_get().add(d);
+    ucmp::misc::DiagnosticReporter::instance_get().add(d);
 }
 
 static ucc::parse::Parser::token_type check_type(ucc::parse::Driver& driver)
@@ -457,7 +457,7 @@ void ucc::parse::Driver::lexer_begin()
         yyin = stdin;
     else if (!(yyin = fopen (file_.data_get().c_str(), "r")))
     {
-        ucc::misc::Diagnostic d;
+        ucmp::misc::Diagnostic d;
 
         std::cerr << "ucc: error: cannot open file '" << file_ << "'"
                   << std::endl;

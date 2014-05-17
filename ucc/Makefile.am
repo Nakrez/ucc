@@ -2,6 +2,7 @@ AM_CPPFLAGS = -Iinclude -I../lib/command/include \
 			  -Isrc -I../lib/misc/include \
 			  -I${top_srcdir}/include
 
+AM_CXXFLAGS = -Wall -Wextra -std=c++11
 bin_PROGRAMS = ucc
 ucc_SOURCES = src/parse/c-parser.yy \
 			  src/parse/driver.cc \

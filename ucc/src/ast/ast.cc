@@ -21,19 +21,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-Ast::Ast(const ucc::misc::location& loc)
+Ast::Ast(const ucmp::misc::location& loc)
     : loc_(loc)
 {}
 
 Ast::~Ast()
 {}
 
-const ucc::misc::location& Ast::location_get() const
+const ucmp::misc::location& Ast::location_get() const
 {
     return loc_;
 }
 
-ucc::misc::location& Ast::location_get()
+ucmp::misc::location& Ast::location_get()
 {
     return loc_;
 }

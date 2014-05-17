@@ -32,12 +32,12 @@ namespace ucc
         class Decl : public Ast
         {
             public:
-                Decl(const ucc::misc::location& loc,
-                     const ucc::misc::Symbol& name);
+                Decl(const ucmp::misc::location& loc,
+                     const ucmp::misc::Symbol& name);
                 virtual ~Decl();
 
-                const ucc::misc::Symbol& name_get() const;
-                ucc::misc::Symbol& name_get();
+                const ucmp::misc::Symbol& name_get() const;
+                ucmp::misc::Symbol& name_get();
 
                 bool is_static() const;
                 bool is_extern() const;
@@ -52,7 +52,7 @@ namespace ucc
                 virtual void accept(ConstVisitor& v) const = 0;
 
             protected:
-                ucc::misc::Symbol name_;
+                ucmp::misc::Symbol name_;
                 DeclSpecifier::StorageClassSpecifier storage_;
         };
     } // namespace ast

@@ -45,7 +45,7 @@ namespace ucc
                     POST_DECR,
                 };
 
-                UnaryExpr(const ucc::misc::location& loc,
+                UnaryExpr(const ucmp::misc::location& loc,
                           UnaryOp op,
                           Expr* expr);
                 virtual ~UnaryExpr();

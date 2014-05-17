@@ -30,10 +30,10 @@ REGISTER_COMMAND(w, "w|disable-warnings", "Disable all warnings",
 
 void werror()
 {
-    ucc::misc::DiagnosticReporter::instance_get().set_warning_as_error();
+    ucmp::misc::DiagnosticReporter::instance_get().set_warning_as_error();
 }
 
 void w()
 {
-    ucc::misc::DiagnosticReporter::instance_get().disable_warning();
+    ucmp::misc::DiagnosticReporter::instance_get().disable_warning();
 }

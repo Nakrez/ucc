@@ -28,7 +28,7 @@ namespace ucc
         class CompoundStmt : public Stmt
         {
             public:
-                CompoundStmt(const ucc::misc::location& loc,
+                CompoundStmt(const ucmp::misc::location& loc,
                              AstList* compound);
                 virtual ~CompoundStmt();
 

@@ -28,7 +28,7 @@ namespace ucc
         class BreakStmt : public Stmt
         {
             public:
-                BreakStmt(const ucc::misc::location& loc);
+                BreakStmt(const ucmp::misc::location& loc);
                 virtual ~BreakStmt();
 
                 const Stmt* def_get() const;

@@ -34,7 +34,7 @@ namespace ucc
         {
             public:
                 /// Constructor
-                Named(const ucc::misc::Symbol& name, const Type* alias)
+                Named(const ucmp::misc::Symbol& name, const Type* alias)
                     : name_(name)
                     , alias_(alias)
                 {}
@@ -82,13 +82,13 @@ namespace ucc
                            alias_->actual_type().to_str() + ")";
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
                     return alias_->to_ir_type(c);
                 }
 
             private:
-                ucc::misc::Symbol name_;
+                ucmp::misc::Symbol name_;
                 const Type* alias_;
         };
     } // namespace type

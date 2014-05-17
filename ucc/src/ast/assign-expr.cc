@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-AssignExpr::AssignExpr(const ucc::misc::location& loc,
+AssignExpr::AssignExpr(const ucmp::misc::location& loc,
                        Expr* lvalue,
                        AssignOp op,
                        Expr* rvalue)

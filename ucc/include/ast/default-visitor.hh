@@ -100,8 +100,8 @@ namespace ucc
                 virtual void operator()(typename Const<InitListExpr>::type& ast);
         };
 
-        typedef GenDefaultVisitor<ucc::misc::const_type> DefaultConstVisitor;
-        typedef GenDefaultVisitor<ucc::misc::nonconst_type> DefaultVisitor;
+        typedef GenDefaultVisitor<ucmp::misc::const_type> DefaultConstVisitor;
+        typedef GenDefaultVisitor<ucmp::misc::nonconst_type> DefaultVisitor;
     } // namespace ast
 } // namespace ucc
 

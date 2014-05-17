@@ -33,7 +33,7 @@ namespace ucc
                 /// \brief  Constructor
                 /// \param  name    The name of the field
                 /// \param  type    The type of the field
-                Field(const ucc::misc::Symbol name, const Type* type)
+                Field(const ucmp::misc::Symbol name, const Type* type)
                     : name_(name)
                     , type_(type)
                 {}
@@ -42,7 +42,7 @@ namespace ucc
                 ~Field() = default;
 
                 /// Return the name of the field
-                const ucc::misc::Symbol& name_get() const
+                const ucmp::misc::Symbol& name_get() const
                 {
                     return name_;
                 }
@@ -54,7 +54,7 @@ namespace ucc
                 }
 
             private:
-                ucc::misc::Symbol name_;
+                ucmp::misc::Symbol name_;
                 const Type* type_;
         };
     } // namespace type

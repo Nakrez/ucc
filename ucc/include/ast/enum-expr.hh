@@ -31,12 +31,12 @@ namespace ucc
         class EnumExpr : public Expr
         {
             public:
-                EnumExpr(const ucc::misc::location& loc,
-                         const ucc::misc::Symbol& name);
+                EnumExpr(const ucmp::misc::location& loc,
+                         const ucmp::misc::Symbol& name);
                 virtual ~EnumExpr();
 
-                const ucc::misc::Symbol& name_get() const;
-                ucc::misc::Symbol& name_get();
+                const ucmp::misc::Symbol& name_get() const;
+                ucmp::misc::Symbol& name_get();
 
                 const Decl* def_get() const;
                 Decl* def_get();
@@ -47,7 +47,7 @@ namespace ucc
                 virtual void accept(ConstVisitor& v) const;
 
             protected:
-                ucc::misc::Symbol name_;
+                ucmp::misc::Symbol name_;
                 Decl* def_;
         };
     } // namespace ast

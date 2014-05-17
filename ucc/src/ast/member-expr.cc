@@ -21,9 +21,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-MemberExpr::MemberExpr(const ucc::misc::location& loc,
+MemberExpr::MemberExpr(const ucmp::misc::location& loc,
                        Expr* lexpr,
-                       const ucc::misc::Symbol& name,
+                       const ucmp::misc::Symbol& name,
                        bool is_arrow)
     : Expr(loc)
     , lexpr_(lexpr)
@@ -46,12 +46,12 @@ Expr* MemberExpr::lexpr_get()
     return lexpr_;
 }
 
-const ucc::misc::Symbol& MemberExpr::name_get() const
+const ucmp::misc::Symbol& MemberExpr::name_get() const
 {
     return name_;
 }
 
-ucc::misc::Symbol& MemberExpr::name_get()
+ucmp::misc::Symbol& MemberExpr::name_get()
 {
     return name_;
 }

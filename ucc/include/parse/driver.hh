@@ -48,7 +48,7 @@ namespace ucc
 
                 void parse_file(const std::string& name);
 
-                const ucc::misc::Symbol& file_get() const;
+                const ucmp::misc::Symbol& file_get() const;
 
             public:
                 bool in_attribute_;
@@ -57,7 +57,7 @@ namespace ucc
 
                 std::list<std::string> record_decl_;
                 std::list<std::string> enum_decl_;
-                ucc::misc::ScopeMap<std::string,
+                ucmp::misc::ScopeMap<std::string,
                                     ucc::parse::Parser::token_type> sym_;
 
             private:
@@ -68,7 +68,7 @@ namespace ucc
                 bool trace_parser_;
                 bool trace_lexer_;
 
-                ucc::misc::Symbol file_;
+                ucmp::misc::Symbol file_;
         };
     } // namespace parse
 } // namespace ucc

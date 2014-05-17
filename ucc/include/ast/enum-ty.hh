@@ -35,20 +35,20 @@ namespace ucc
                 /// \brief  Constructor
                 /// \param  loc     The location of the EnumTy
                 /// \param  name    The name of the EnumTy
-                EnumTy(const ucc::misc::location& loc,
-                       const ucc::misc::Symbol& name);
+                EnumTy(const ucmp::misc::location& loc,
+                       const ucmp::misc::Symbol& name);
 
                 /// Destructor
                 virtual ~EnumTy() = default;
 
                 /// Return the name of the EnumTy
-                const ucc::misc::Symbol& name_get() const
+                const ucmp::misc::Symbol& name_get() const
                 {
                     return name_;
                 }
 
                 /// Return the name of the EnumTy
-                ucc::misc::Symbol& name_get()
+                ucmp::misc::Symbol& name_get()
                 {
                     return name_;
                 }
@@ -88,7 +88,7 @@ namespace ucc
                 }
 
             protected:
-                ucc::misc::Symbol name_;
+                ucmp::misc::Symbol name_;
                 EnumDecl* def_;
         };
     } // namespace ast

@@ -30,18 +30,18 @@ namespace ucc
         class GotoStmt : public Stmt
         {
             public:
-                GotoStmt(const ucc::misc::location& loc,
-                         const ucc::misc::Symbol& name);
+                GotoStmt(const ucmp::misc::location& loc,
+                         const ucmp::misc::Symbol& name);
                 virtual ~GotoStmt();
 
-                const ucc::misc::Symbol& name_get() const;
-                ucc::misc::Symbol& name_get();
+                const ucmp::misc::Symbol& name_get() const;
+                ucmp::misc::Symbol& name_get();
 
                 virtual void accept(Visitor& v);
                 virtual void accept(ConstVisitor& v) const;
 
             protected:
-                ucc::misc::Symbol name_;
+                ucmp::misc::Symbol name_;
         };
     } // namespace ast
 } // namespace ucc

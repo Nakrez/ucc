@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <misc/indent.hh>
 
 using namespace ucc;
+using namespace ucmp;
 using namespace ast;
 
 PrettyPrinter::PrettyPrinter(std::ostream& ostr)
@@ -47,7 +48,7 @@ void PrettyPrinter::operator()(const AstList& ast)
     {
         if (it != begin)
         {
-            ostr_ << ucc::misc::iendl;
+            ostr_ << ucmp::misc::iendl;
         }
 
         (*it)->accept(*this);
@@ -72,7 +73,7 @@ void PrettyPrinter::operator()(const DeclList& ast)
     for (; it != end; ++it)
     {
         if (it != begin)
-            ostr_ << ucc::misc::iendl;
+            ostr_ << ucmp::misc::iendl;
         (*it)->accept(*this);
     }
 }
@@ -97,7 +98,7 @@ void PrettyPrinter::operator()(const FieldList& ast)
     {
         field->accept(*this);
 
-        ostr_ << ";" << ucc::misc::iendl;
+        ostr_ << ";" << ucmp::misc::iendl;
     }
 }
 
@@ -107,7 +108,7 @@ void PrettyPrinter::operator()(const EnumExprList& ast)
     {
         field->accept(*this);
 
-        ostr_ << "," << ucc::misc::iendl;
+        ostr_ << "," << ucmp::misc::iendl;
     }
 }
 
@@ -426,13 +427,13 @@ void PrettyPrinter::operator()(const EnumTy& ast)
 
 void PrettyPrinter::operator()(const CompoundStmt& ast)
 {
-    ostr_ << ucc::misc::iendl;
-    ostr_ << "{" << ucc::misc::incendl;
+    ostr_ << ucmp::misc::iendl;
+    ostr_ << "{" << ucmp::misc::incendl;
 
     if (ast.compound_get())
         ast.compound_get()->accept(*this);
 
-    ostr_ << ucc::misc::decendl << "}";
+    ostr_ << ucmp::misc::decendl << "}";
 }
 
 void PrettyPrinter::operator()(const WhileStmt& ast)
@@ -645,13 +646,13 @@ void PrettyPrinter::operator()(const ForStmt& ast)
     ostr_ << ")";
 
     if (!dynamic_cast<const CompoundStmt*>(ast.body_get()))
-        ostr_ << ucc::misc::incendl;
+        ostr_ << ucmp::misc::incendl;
 
     if (ast.body_get())
         ast.body_get()->accept(*this);
 
     if (!dynamic_cast<const CompoundStmt*>(ast.body_get()))
-        ostr_ << ";" << ucc::misc::decendl;
+        ostr_ << ";" << ucmp::misc::decendl;
 }
 
 void PrettyPrinter::operator()(const IntExpr& ast)
@@ -823,7 +824,7 @@ void PrettyPrinter::operator()(const InitListExpr& ast)
 }
 
 bool PrettyPrinter::print_fun_ptr(const Ty* ast,
-                                  const ucc::misc::Symbol& sym)
+                                  const ucmp::misc::Symbol& sym)
 {
     const PtrTy* ptr = dynamic_cast<const PtrTy*> (ast);
     const PtrTy* tmp = nullptr;
@@ -887,7 +888,7 @@ bool PrettyPrinter::print_fun_ptr(const Ty* ast,
 }
 
 bool PrettyPrinter::print_array_ty(const Ty* ast,
-                                   const ucc::misc::Symbol& sym)
+                                   const ucmp::misc::Symbol& sym)
 {
     const ArrayTy *t = dynamic_cast<const ArrayTy*> (ast);
 

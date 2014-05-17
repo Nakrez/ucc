@@ -30,17 +30,17 @@ namespace ucc
         class Ast
         {
             public:
-                Ast(const ucc::misc::location& loc);
+                Ast(const ucmp::misc::location& loc);
                 virtual ~Ast();
 
-                const ucc::misc::location& location_get() const;
-                ucc::misc::location& location_get();
+                const ucmp::misc::location& location_get() const;
+                ucmp::misc::location& location_get();
 
                 virtual void accept(Visitor& v) = 0;
                 virtual void accept(ConstVisitor& v) const = 0;
 
             protected:
-                ucc::misc::location loc_;
+                ucmp::misc::location loc_;
         };
     } // namespace ast
 } // namespace ucc

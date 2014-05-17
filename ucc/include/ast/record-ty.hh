@@ -37,21 +37,21 @@ namespace ucc
                 /// \param  record_type The type of the RecordTy
                 ///                     (struct or union)
                 /// \param  name        The name of the RecordTy
-                RecordTy(const ucc::misc::location& loc,
+                RecordTy(const ucmp::misc::location& loc,
                          RecordDecl::RecordType record_type,
-                         const ucc::misc::Symbol& name);
+                         const ucmp::misc::Symbol& name);
 
                 /// Destructor
                 virtual ~RecordTy() = default;
 
                 /// Return the name of the RecordTy
-                const ucc::misc::Symbol& name_get() const
+                const ucmp::misc::Symbol& name_get() const
                 {
                     return name_;
                 }
 
                 /// Return the name of the RecordTy
-                ucc::misc::Symbol& name_get()
+                ucmp::misc::Symbol& name_get()
                 {
                     return name_;
                 }
@@ -97,7 +97,7 @@ namespace ucc
                 }
 
             private:
-                ucc::misc::Symbol name_;
+                ucmp::misc::Symbol name_;
                 RecordDecl::RecordType record_type_;
                 RecordDecl* def_;
         };

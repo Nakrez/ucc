@@ -39,8 +39,8 @@ namespace ucc
                 /// \param  loc     The location of the FunctionDecl
                 /// \param  name    The name of the function
                 /// \param  ty      The signature of the function
-                FunctionDecl(const ucc::misc::location& loc,
-                             const ucc::misc::Symbol& name,
+                FunctionDecl(const ucmp::misc::location& loc,
+                             const ucmp::misc::Symbol& name,
                              FunctionTy* ty);
 
                 /// \brief  Constructor
@@ -48,8 +48,8 @@ namespace ucc
                 /// \param  name        The name of the function
                 /// \param  ty          The signature of the function
                 /// \param  compound    The body of the function
-                FunctionDecl(const ucc::misc::location& loc,
-                             const ucc::misc::Symbol& name,
+                FunctionDecl(const ucmp::misc::location& loc,
+                             const ucmp::misc::Symbol& name,
                              FunctionTy* ty,
                              CompoundStmt* compound);
 

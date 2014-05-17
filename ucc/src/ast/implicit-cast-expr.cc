@@ -21,13 +21,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-ImplicitCastExpr::ImplicitCastExpr(const ucc::misc::location& loc,
+ImplicitCastExpr::ImplicitCastExpr(const ucmp::misc::location& loc,
                                    Expr* expr)
     : Expr(loc)
     , expr_(expr)
 {}
 
-ImplicitCastExpr::ImplicitCastExpr(const ucc::misc::location& loc,
+ImplicitCastExpr::ImplicitCastExpr(const ucmp::misc::location& loc,
                                    const std::shared_ptr<Expr>& expr)
     : Expr(loc)
     , expr_(expr)

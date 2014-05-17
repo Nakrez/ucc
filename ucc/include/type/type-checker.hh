@@ -44,13 +44,13 @@ namespace ucc
                 const Type* node_type(ast::TypeUser& a);
 
                 void error(const std::string& msg,
-                           const ucc::misc::location& loc);
+                           const ucmp::misc::location& loc);
 
                 /// \brief  Check type correctness on an assignment
                 /// \param  loc The location of the assignment
                 /// \param  t1  The left expression type
                 /// \param  t2  The right expression type
-                void check_assign_types(const ucc::misc::location& loc,
+                void check_assign_types(const ucmp::misc::location& loc,
                                         const Type* t1, const Type* t2);
 
                 /// \brief  Check type correctness on an operation
@@ -59,7 +59,7 @@ namespace ucc
                 /// \param  t1  The left expression type
                 /// \param  t2  The right expression type
                 /// \return return false if there is an error, true otherwise
-                bool check_op_types(const ucc::misc::location& loc,
+                bool check_op_types(const ucmp::misc::location& loc,
                                     ast::OpExpr::Op op,
                                     const Type* t1, const Type* t2);
 

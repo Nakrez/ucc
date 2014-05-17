@@ -36,8 +36,8 @@ namespace ucc
                 /// \param  name        The name of the field
                 /// \param  ty          The type of the field
                 /// \param  bit_field   The bit field expression
-                FieldDecl(const ucc::misc::location& loc,
-                          const ucc::misc::Symbol& name,
+                FieldDecl(const ucmp::misc::location& loc,
+                          const ucmp::misc::Symbol& name,
                           Ty* ty,
                           Expr* bit_field);
 

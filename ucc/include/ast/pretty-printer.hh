@@ -91,9 +91,9 @@ namespace ucc
 
             protected:
                 bool print_fun_ptr(const Ty* ast,
-                                   const ucc::misc::Symbol& sym);
+                                   const ucmp::misc::Symbol& sym);
                 bool print_array_ty(const Ty* ast,
-                                    const ucc::misc::Symbol& sym);
+                                    const ucmp::misc::Symbol& sym);
 
             protected:
                 bool formals_;

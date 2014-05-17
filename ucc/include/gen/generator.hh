@@ -32,14 +32,14 @@ namespace ucc
             public:
                 using ast::DefaultConstVisitor::operator();
 
-                Generator(ir::Context& c);
+                Generator(ucmp::ir::Context& c);
                 virtual ~Generator();
 
                 virtual void operator()(const ast::FunctionDecl& ast) override;
 
             protected:
-                ir::IrGenerator gen_;
-                ir::Context& c_;
+                ucmp::ir::IrGenerator gen_;
+                ucmp::ir::Context& c_;
         };
     } // namespace gen
 } // namespace ucc

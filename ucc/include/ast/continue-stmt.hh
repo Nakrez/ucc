@@ -28,7 +28,7 @@ namespace ucc
         class ContinueStmt : public Stmt
         {
             public:
-                ContinueStmt(const ucc::misc::location& loc);
+                ContinueStmt(const ucmp::misc::location& loc);
                 virtual ~ContinueStmt();
 
                 const Stmt* def_get() const;

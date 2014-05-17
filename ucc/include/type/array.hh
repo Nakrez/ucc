@@ -62,15 +62,15 @@ namespace ucc
                     return 8;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
-                    ir::ArrayType *t;
+                    ucmp::ir::ArrayType *t;
 
-                    t = new ir::ArrayType(inner_type_->to_ir_type(c), 2);
+                    t = new ucmp::ir::ArrayType(inner_type_->to_ir_type(c), 2);
 
                     assert(false);
 
-                    return ir::sType(t);
+                    return ucmp::ir::sType(t);
                 }
 
             private:

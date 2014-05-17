@@ -35,7 +35,7 @@ namespace ucc
                 virtual ~UninitializedVariables();
 
                 void warn(const std::string& msg,
-                          const ucc::misc::location& loc);
+                          const ucmp::misc::location& loc);
 
                 virtual void operator()(ast::FunctionDecl& ast);
                 virtual void operator()(ast::VarDecl& ast);

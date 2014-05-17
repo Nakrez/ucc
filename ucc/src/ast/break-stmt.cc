@@ -3,7 +3,7 @@
 using namespace ucc;
 using namespace ast;
 
-BreakStmt::BreakStmt(const ucc::misc::location& loc)
+BreakStmt::BreakStmt(const ucmp::misc::location& loc)
     : Stmt(loc)
     , def_(nullptr)
 {}

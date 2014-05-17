@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-DoWhileStmt::DoWhileStmt(const ucc::misc::location& loc,
+DoWhileStmt::DoWhileStmt(const ucmp::misc::location& loc,
                          Expr* cond,
                          Ast* body)
     : WhileStmt(loc, cond, body)

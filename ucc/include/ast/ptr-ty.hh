@@ -31,12 +31,12 @@ namespace ucc
             public:
                 /// \brief  Constructor
                 /// \param  loc The location of the PtrTy
-                PtrTy(const ucc::misc::location& loc);
+                PtrTy(const ucmp::misc::location& loc);
 
                 /// \brief  Constructor
                 /// \param  loc             The location of the PtrTy
                 /// \param  pointed_type    The Ty pointed by the PtrTy
-                PtrTy(const ucc::misc::location& loc, Ty* pointed_ty);
+                PtrTy(const ucmp::misc::location& loc, Ty* pointed_ty);
 
                 /// Destructor
                 virtual ~PtrTy();

@@ -82,7 +82,7 @@ namespace ucc
             public:
                 /// \brief  Constructor
                 /// \param  loc The location of the DeclSpecifier
-                DeclSpecifier(const ucc::misc::location& loc);
+                DeclSpecifier(const ucmp::misc::location& loc);
 
                 /// Destructor
                 virtual ~DeclSpecifier() = default;
@@ -139,7 +139,7 @@ namespace ucc
                 }
 
                 /// Return the type name held by the DeclSpecifier
-                ucc::misc::Symbol& name_get()
+                ucmp::misc::Symbol& name_get()
                 {
                     return type_name_;
                 }
@@ -171,7 +171,7 @@ namespace ucc
 
                 /// \brief  Set the type name
                 /// \param  name    The type name you want to set
-                void type_name_set(const ucc::misc::Symbol& s);
+                void type_name_set(const ucmp::misc::Symbol& s);
 
                 /// \brief  Merge two DeclSpecifier
                 /// \param  decl    The DeclSpecifier you want to merge with
@@ -191,12 +191,12 @@ namespace ucc
 
                 std::string type_to_string() const;
             private:
-                ucc::misc::location loc_;
+                ucmp::misc::location loc_;
                 StorageClassSpecifier storage_class_;
                 unsigned type_qualifier_ : 3;
                 FunctionSpecifier function_specifier_;
                 unsigned type_specifier_ : 14;
-                ucc::misc::Symbol type_name_;
+                ucmp::misc::Symbol type_name_;
                 Decl* decl_;
         };
     } // namespace ast

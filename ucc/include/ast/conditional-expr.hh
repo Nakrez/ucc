@@ -28,7 +28,7 @@ namespace ucc
         class ConditionalExpr : public Expr
         {
             public:
-                ConditionalExpr(const ucc::misc::location& loc,
+                ConditionalExpr(const ucmp::misc::location& loc,
                                 Expr* cond,
                                 Expr* true_expr,
                                 Expr* false_expr);

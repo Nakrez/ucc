@@ -21,12 +21,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-PtrTy::PtrTy(const ucc::misc::location& loc)
+PtrTy::PtrTy(const ucmp::misc::location& loc)
     : Ty(loc)
     , pointed_ty_(nullptr)
 {}
 
-PtrTy::PtrTy(const ucc::misc::location& loc, Ty* pointed_ty)
+PtrTy::PtrTy(const ucmp::misc::location& loc, Ty* pointed_ty)
     : Ty(loc)
     , pointed_ty_(pointed_ty)
 {}

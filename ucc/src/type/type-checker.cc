@@ -47,15 +47,15 @@ const Type* TypeChecker::node_type(ast::TypeUser& a)
     return a.type_get();
 }
 
-void TypeChecker::error(const std::string& msg, const ucc::misc::location& loc)
+void TypeChecker::error(const std::string& msg, const ucmp::misc::location& loc)
 {
-    ucc::misc::Diagnostic d;
+    ucmp::misc::Diagnostic d;
 
-    d << ucc::misc::Diagnostic::Severity::err;
-    d << ucc::misc::Diagnostic::Type::type << loc;
+    d << ucmp::misc::Diagnostic::Severity::err;
+    d << ucmp::misc::Diagnostic::Type::type << loc;
     d << msg;
 
-    ucc::misc::DiagnosticReporter::instance_get().add(d);
+    ucmp::misc::DiagnosticReporter::instance_get().add(d);
 }
 
 bool TypeChecker::is_scalar(const Type* t)
@@ -148,7 +148,7 @@ void TypeChecker::type_promotion(ast::OpExpr& ast)
     }
 }
 
-void TypeChecker::check_assign_types(const ucc::misc::location& loc,
+void TypeChecker::check_assign_types(const ucmp::misc::location& loc,
                                      const Type* t1,
                                      const Type* t2)
 {
@@ -158,22 +158,22 @@ void TypeChecker::check_assign_types(const ucc::misc::location& loc,
 
     if (c != Type::TypeCompatibility::full)
     {
-        ucc::misc::Diagnostic d;
+        ucmp::misc::Diagnostic d;
 
         if (c == Type::TypeCompatibility::error)
-            d << ucc::misc::Diagnostic::Severity::err;
+            d << ucmp::misc::Diagnostic::Severity::err;
         else
-            d << ucc::misc::Diagnostic::Severity::warn;
+            d << ucmp::misc::Diagnostic::Severity::warn;
 
-        d << ucc::misc::Diagnostic::Type::type << loc;
+        d << ucmp::misc::Diagnostic::Type::type << loc;
         d << "incompatible assignement between '" << t1->to_str() << "' and '"
           << t2->to_str() << "'";
 
-        ucc::misc::DiagnosticReporter::instance_get().add(d);
+        ucmp::misc::DiagnosticReporter::instance_get().add(d);
     }
 }
 
-bool TypeChecker::check_op_types(const ucc::misc::location& loc,
+bool TypeChecker::check_op_types(const ucmp::misc::location& loc,
                                  ast::OpExpr::Op op,
                                  const Type* t1, const Type* t2)
 {
@@ -183,18 +183,18 @@ bool TypeChecker::check_op_types(const ucc::misc::location& loc,
 
     if (c != Type::TypeCompatibility::full)
     {
-        ucc::misc::Diagnostic d;
+        ucmp::misc::Diagnostic d;
 
         if (c == Type::TypeCompatibility::error)
-            d << ucc::misc::Diagnostic::Severity::err;
+            d << ucmp::misc::Diagnostic::Severity::err;
         else
-            d << ucc::misc::Diagnostic::Severity::warn;
+            d << ucmp::misc::Diagnostic::Severity::warn;
 
-        d << ucc::misc::Diagnostic::Type::type << loc;
+        d << ucmp::misc::Diagnostic::Type::type << loc;
         d << "incompatible operand to '" + op_to_str(op) + "' (have '"
           << t1->to_str() << "' and '" << t2->to_str() << "')";
 
-        ucc::misc::DiagnosticReporter::instance_get().add(d);
+        ucmp::misc::DiagnosticReporter::instance_get().add(d);
     }
 
     return c != Type::TypeCompatibility::error;

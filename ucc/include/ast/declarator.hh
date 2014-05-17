@@ -36,8 +36,8 @@ namespace ucc
                 /// \brief  Constructor
                 /// \param  loc The location of the Declarator
                 /// \param  s   The name of the Declarator
-                Declarator(const ucc::misc::location& loc,
-                           const ucc::misc::Symbol& s);
+                Declarator(const ucmp::misc::location& loc,
+                           const ucmp::misc::Symbol& s);
 
                 /// Destructor
                 virtual ~Declarator() = default;

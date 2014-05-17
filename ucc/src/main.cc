@@ -38,14 +38,14 @@ int main(int argc, char *argv[])
     {
         command::Command::instance().run();
     }
-    catch (ucc::misc::DiagnosticReporter::Error&)
+    catch (ucmp::misc::DiagnosticReporter::Error&)
     {
-        ucc::misc::DiagnosticReporter::instance_get().flush(std::cerr);
+        ucmp::misc::DiagnosticReporter::instance_get().flush(std::cerr);
 
-        return ucc::misc::DiagnosticReporter::instance_get().error_type_get();
+        return ucmp::misc::DiagnosticReporter::instance_get().error_type_get();
     }
 
-    ucc::misc::DiagnosticReporter::instance_get().flush(std::cerr);
+    ucmp::misc::DiagnosticReporter::instance_get().flush(std::cerr);
 
     return 0;
 }

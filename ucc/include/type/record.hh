@@ -35,7 +35,7 @@ namespace ucc
             typedef typename std::list<Field>::const_iterator cfield_iterator;
             public:
                 /// Constructor
-                Record(const ucc::misc::Symbol name, bool is_struct = true)
+                Record(const ucmp::misc::Symbol name, bool is_struct = true)
                     : name_(name)
                     , is_struct_(is_struct)
                 {
@@ -55,7 +55,7 @@ namespace ucc
                 /// \brief  Add a new Field to the Record.
                 /// \param  n   The name of the field
                 /// \param  t   The type of the field
-                void field_add(const ucc::misc::Symbol& n, const Type* t)
+                void field_add(const ucmp::misc::Symbol& n, const Type* t)
                 {
                     fields_.push_back(Field(n, t));
                 }
@@ -80,7 +80,7 @@ namespace ucc
                 ///                 Type.
                 /// \return The type of the Field, or @a nullptr if the Field
                 ///         does not exist.
-                const Type* field_type_get(const ucc::misc::Symbol name) const;
+                const Type* field_type_get(const ucmp::misc::Symbol name) const;
 
                 virtual Type::TypeCompatibility
                 compatible_on_assign(const Type&) const override;
@@ -104,10 +104,10 @@ namespace ucc
                         return "union " + name_.data_get();
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override;
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override;
 
             private:
-                ucc::misc::Symbol name_;
+                ucmp::misc::Symbol name_;
                 bool is_struct_;
                 std::list<Field> fields_;
         };

@@ -28,7 +28,7 @@ namespace ucc
         class SwitchStmt : public Stmt
         {
             public:
-                SwitchStmt(const ucc::misc::location& loc,
+                SwitchStmt(const ucmp::misc::location& loc,
                            Expr* cond,
                            Stmt* body);
                 virtual ~SwitchStmt();

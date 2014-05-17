@@ -76,11 +76,11 @@ namespace ucc
 
             protected:
                 void error(const ucc::ast::Ast& ast, std::string msg);
-                bool is_builtin_type(const ucc::misc::Symbol& s);
+                bool is_builtin_type(const ucmp::misc::Symbol& s);
 
             protected:
-                ucc::misc::ScopeMap<ucc::misc::Symbol, ucc::ast::Decl*> scope_;
-                ucc::misc::ScopeMap<ucc::misc::Symbol,
+                ucmp::misc::ScopeMap<ucmp::misc::Symbol, ucc::ast::Decl*> scope_;
+                ucmp::misc::ScopeMap<ucmp::misc::Symbol,
                                     ucc::ast::Decl*> record_enum_;
                 std::list<ucc::ast::Stmt*> loop_switch_;
         };

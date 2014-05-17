@@ -31,15 +31,15 @@ UninitializedVariables::~UninitializedVariables()
 {}
 
 void UninitializedVariables::warn(const std::string& msg,
-                                  const ucc::misc::location& loc)
+                                  const ucmp::misc::location& loc)
 {
-    ucc::misc::Diagnostic d;
+    ucmp::misc::Diagnostic d;
 
-    d << ucc::misc::Diagnostic::Severity::warn;
-    d << ucc::misc::Diagnostic::Type::analysis << loc;
+    d << ucmp::misc::Diagnostic::Severity::warn;
+    d << ucmp::misc::Diagnostic::Type::analysis << loc;
     d << msg;
 
-    ucc::misc::DiagnosticReporter::instance_get().add(d);
+    ucmp::misc::DiagnosticReporter::instance_get().add(d);
 }
 
 void UninitializedVariables::operator()(ast::FunctionDecl& ast)

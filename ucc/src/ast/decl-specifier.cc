@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-DeclSpecifier::DeclSpecifier(const ucc::misc::location& loc)
+DeclSpecifier::DeclSpecifier(const ucmp::misc::location& loc)
     : loc_(loc)
     , storage_class_(SCS_unspecified)
     , type_qualifier_(TQ_unspecified)
@@ -91,14 +91,14 @@ bool DeclSpecifier::storage_class_set(const StorageClassSpecifier& spec)
     if (storage_class_ != spec &&
         storage_class_ != SCS_unspecified)
     {
-        ucc::misc::Diagnostic d;
+        ucmp::misc::Diagnostic d;
 
-        d << ucc::misc::Diagnostic::Severity::err
-          << ucc::misc::Diagnostic::Type::parse << loc_
+        d << ucmp::misc::Diagnostic::Severity::err
+          << ucmp::misc::Diagnostic::Type::parse << loc_
           << "cannot combine with previous '"
           << storage_class_to_str(storage_class_) << "' declaration";
 
-        ucc::misc::DiagnosticReporter::instance_get().add(d);
+        ucmp::misc::DiagnosticReporter::instance_get().add(d);
 
         return false;
     }
@@ -150,26 +150,26 @@ bool DeclSpecifier::type_specifier_set(const TypeSpecifier& spec)
     /* Combination of signed and unsigned */
     if (spec & TS_unsigned && (type_specifier_ & TS_signed))
     {
-        ucc::misc::Diagnostic d;
+        ucmp::misc::Diagnostic d;
 
-        d << ucc::misc::Diagnostic::Severity::err
-          << ucc::misc::Diagnostic::Type::parse
+        d << ucmp::misc::Diagnostic::Severity::err
+          << ucmp::misc::Diagnostic::Type::parse
           << loc_ << "type cannot be signed and unsigned";
 
-        ucc::misc::DiagnosticReporter::instance_get().add(d);
+        ucmp::misc::DiagnosticReporter::instance_get().add(d);
 
         return false;
     }
 
     if (spec & TS_signed && (type_specifier_ & TS_unsigned))
     {
-        ucc::misc::Diagnostic d;
+        ucmp::misc::Diagnostic d;
 
-        d << ucc::misc::Diagnostic::Severity::err
-          << ucc::misc::Diagnostic::Type::parse
+        d << ucmp::misc::Diagnostic::Severity::err
+          << ucmp::misc::Diagnostic::Type::parse
           << loc_ << "type cannot be signed and unsigned";
 
-        ucc::misc::DiagnosticReporter::instance_get().add(d);
+        ucmp::misc::DiagnosticReporter::instance_get().add(d);
 
         return false;
     }
@@ -178,13 +178,13 @@ bool DeclSpecifier::type_specifier_set(const TypeSpecifier& spec)
     if ((type_specifier_ & TS_signed || type_specifier_ & TS_unsigned) &&
         (spec == TS_double || spec == TS_float))
     {
-        ucc::misc::Diagnostic d;
+        ucmp::misc::Diagnostic d;
 
-        d << ucc::misc::Diagnostic::Severity::err
-          << ucc::misc::Diagnostic::Type::parse
+        d << ucmp::misc::Diagnostic::Severity::err
+          << ucmp::misc::Diagnostic::Type::parse
           << loc_ << "float and double cannot be signed or unsigned";
 
-        ucc::misc::DiagnosticReporter::instance_get().add(d);
+        ucmp::misc::DiagnosticReporter::instance_get().add(d);
 
         return false;
     }
@@ -202,13 +202,13 @@ bool DeclSpecifier::type_specifier_set(const TypeSpecifier& spec)
     else if (spec != TS_signed && spec != TS_unsigned &&
         (type_specifier_ & ~(TS_signed + TS_unsigned)) != TS_unspecified)
     {
-        ucc::misc::Diagnostic d;
+        ucmp::misc::Diagnostic d;
 
-        d << ucc::misc::Diagnostic::Severity::err
-          << ucc::misc::Diagnostic::Type::parse
+        d << ucmp::misc::Diagnostic::Severity::err
+          << ucmp::misc::Diagnostic::Type::parse
           << loc_ << "wrong type combination";
 
-        ucc::misc::DiagnosticReporter::instance_get().add(d);
+        ucmp::misc::DiagnosticReporter::instance_get().add(d);
 
         return false;
     }
@@ -218,7 +218,7 @@ bool DeclSpecifier::type_specifier_set(const TypeSpecifier& spec)
     return true;
 }
 
-void DeclSpecifier::type_name_set(const ucc::misc::Symbol& s)
+void DeclSpecifier::type_name_set(const ucmp::misc::Symbol& s)
 {
     type_name_ = s;
 }

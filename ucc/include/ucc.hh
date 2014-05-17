@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <ast/all.hh>
 # include <ir/unit.hh>
+# include <ir/context.hh>
 
 namespace ucc
 {
@@ -40,9 +41,7 @@ namespace ucc
 
     namespace ir
     {
-        class Context;
-
-        extern Context global_context;
+        extern ucmp::ir::Context global_context;
     } // namespace ir
 } // namespace ucc
 

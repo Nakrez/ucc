@@ -33,7 +33,7 @@ namespace ucc
                 /// \brief  Constructor
                 /// \param  ty      The type node
                 /// \param  expr    The expression casted
-                CastExpr(const ucc::misc::location& loc,
+                CastExpr(const ucmp::misc::location& loc,
                          Ty* ty,
                          Expr* expr);
 

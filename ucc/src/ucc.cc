@@ -36,6 +36,6 @@ namespace ucc
 
     namespace ir
     {
-        Context global_context;
+        ucmp::ir::Context global_context;
     } // namespace ir
 } // namespace ucc

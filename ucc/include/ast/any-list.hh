@@ -32,7 +32,7 @@ namespace ucc
         class AnyList : public Ast
         {
             public:
-                AnyList(const ucc::misc::location& loc);
+                AnyList(const ucmp::misc::location& loc);
                 virtual ~AnyList();
 
                 const std::list<std::shared_ptr<T>>& list_get() const;

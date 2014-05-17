@@ -33,9 +33,9 @@ namespace ucc
             public:
                 /// \brief  Constructor
                 /// \param  expr    The expression casted
-                ImplicitCastExpr(const ucc::misc::location& loc, Expr* expr);
+                ImplicitCastExpr(const ucmp::misc::location& loc, Expr* expr);
 
-                ImplicitCastExpr(const ucc::misc::location& loc,
+                ImplicitCastExpr(const ucmp::misc::location& loc,
                                  const std::shared_ptr<Expr>& expr);
 
                 /// Destructor

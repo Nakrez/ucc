@@ -31,12 +31,12 @@ namespace ucc
         class VarExpr : public Expr
         {
             public:
-                VarExpr(const ucc::misc::location& loc,
-                        const ucc::misc::Symbol& sym);
+                VarExpr(const ucmp::misc::location& loc,
+                        const ucmp::misc::Symbol& sym);
                 virtual ~VarExpr();
 
-                const misc::Symbol& name_get() const;
-                misc::Symbol& name_get();
+                const ucmp::misc::Symbol& name_get() const;
+                ucmp::misc::Symbol& name_get();
 
                 const Decl* def_get() const;
                 Decl* def_get();
@@ -47,7 +47,7 @@ namespace ucc
                 virtual void accept(ConstVisitor& v) const;
 
             protected:
-                ucc::misc::Symbol name_;
+                ucmp::misc::Symbol name_;
                 Decl* def_;
         };
     } // namespace ast

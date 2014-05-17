@@ -21,8 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-Decl::Decl(const ucc::misc::location& loc,
-           const ucc::misc::Symbol& name)
+Decl::Decl(const ucmp::misc::location& loc,
+           const ucmp::misc::Symbol& name)
     : Ast(loc)
     , name_(name)
     , storage_(DeclSpecifier::StorageClassSpecifier::SCS_unspecified)
@@ -31,12 +31,12 @@ Decl::Decl(const ucc::misc::location& loc,
 Decl::~Decl()
 {}
 
-const ucc::misc::Symbol& Decl::name_get() const
+const ucmp::misc::Symbol& Decl::name_get() const
 {
     return name_;
 }
 
-ucc::misc::Symbol& Decl::name_get()
+ucmp::misc::Symbol& Decl::name_get()
 {
     return name_;
 }

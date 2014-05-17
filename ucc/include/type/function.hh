@@ -46,7 +46,7 @@ namespace ucc
                 /// \brief  Add a parameter to the function
                 /// \param  n   The name of the parameter
                 /// \param  t   The type of the paramerer
-                void param_add(const ucc::misc::Symbol& n, const Type* t)
+                void param_add(const ucmp::misc::Symbol& n, const Type* t)
                 {
                     args_.field_add(n, t);
                 }
@@ -110,7 +110,7 @@ namespace ucc
 
                 virtual std::string to_str() const override;
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override;
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override;
 
             private:
                 const Type* return_type_;

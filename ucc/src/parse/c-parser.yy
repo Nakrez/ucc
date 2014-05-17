@@ -35,7 +35,7 @@ typedef ucc::ast::DeclSpecifier::TypeQualifier TypeQualifier;
 typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 }
 
-%define api.location.type { ucc::misc::location };
+%define api.location.type { ucmp::misc::location };
 %locations
 %initial-action
 {
@@ -55,7 +55,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 {
     std::list<ucc::ast::Declarator*>* declarator_list;
     std::list<ucc::ast::VarDecl*>* vardecl_list;
-    ucc::misc::Symbol* symbol;
+    ucmp::misc::Symbol* symbol;
     int int_;
     long double float_;
     std::string* string_;
@@ -2031,11 +2031,11 @@ format_archetype
 
 %%
 
-void ucc::parse::Parser::error(ucc::misc::location const& l,
+void ucc::parse::Parser::error(ucmp::misc::location const& l,
                                std::string const& s)
 {
-    ucc::misc::Diagnostic d(ucc::misc::Diagnostic::Severity::err,
-                            ucc::misc::Diagnostic::Type::parse,
+    ucmp::misc::Diagnostic d(ucmp::misc::Diagnostic::Severity::err,
+                            ucmp::misc::Diagnostic::Type::parse,
                             s, l);
-    ucc::misc::DiagnosticReporter::instance_get().add(d);
+    ucmp::misc::DiagnosticReporter::instance_get().add(d);
 }

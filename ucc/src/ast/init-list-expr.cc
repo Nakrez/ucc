@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-InitListExpr::InitListExpr(const ucc::misc::location& loc,
+InitListExpr::InitListExpr(const ucmp::misc::location& loc,
                            ExprList* list)
     : Expr(loc)
     , list_(list)

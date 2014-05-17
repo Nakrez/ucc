@@ -31,16 +31,16 @@ void bind()
 
     if (!ucc::ast::the_ast)
     {
-        ucc::misc::Diagnostic d;
+        ucmp::misc::Diagnostic d;
 
-        d << ucc::misc::Diagnostic::Severity::critical
-          << ucc::misc::Diagnostic::Type::internal
+        d << ucmp::misc::Diagnostic::Severity::critical
+          << ucmp::misc::Diagnostic::Type::internal
           << "No ast retrieved by the parser";
 
-        ucc::misc::DiagnosticReporter::instance_get().add(d);
+        ucmp::misc::DiagnosticReporter::instance_get().add(d);
     }
 
     binder(*ucc::ast::the_ast);
 
-    ucc::misc::DiagnosticReporter::instance_get().throw_on_error();
+    ucmp::misc::DiagnosticReporter::instance_get().throw_on_error();
 }

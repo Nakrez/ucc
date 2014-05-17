@@ -28,7 +28,7 @@ namespace ucc
         class SubscriptExpr : public Expr
         {
             public:
-                SubscriptExpr(const ucc::misc::location& loc,
+                SubscriptExpr(const ucmp::misc::location& loc,
                               Expr* var,
                               Expr* expr);
                 virtual ~SubscriptExpr();

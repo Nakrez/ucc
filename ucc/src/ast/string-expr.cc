@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using namespace ucc;
 using namespace ast;
 
-StringExpr::StringExpr(const ucc::misc::location& loc, std::string* str)
+StringExpr::StringExpr(const ucmp::misc::location& loc, std::string* str)
     : Expr(loc)
     , str_(str)
 {}

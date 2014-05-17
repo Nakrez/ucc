@@ -29,7 +29,7 @@ namespace ucc
         class Expr : public Stmt, public TypeUser
         {
             public:
-                Expr(const ucc::misc::location& loc);
+                Expr(const ucmp::misc::location& loc);
                 virtual ~Expr();
 
                 virtual void accept(Visitor& v) = 0;

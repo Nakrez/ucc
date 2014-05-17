@@ -76,13 +76,13 @@ namespace ucc
                     return 8;
                 }
 
-                virtual ir::sType to_ir_type(ir::Context& c) const override
+                virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override
                 {
-                    ir::PtrType *p;
+                    ucmp::ir::PtrType *p;
 
-                    p = new ir::PtrType(pointed_type_->to_ir_type(c));
+                    p = new ucmp::ir::PtrType(pointed_type_->to_ir_type(c));
 
-                    return ir::sType(p);
+                    return ucmp::ir::sType(p);
                 }
 
             private:
