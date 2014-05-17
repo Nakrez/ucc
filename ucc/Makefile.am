@@ -74,18 +74,6 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/type/command.cc \
 			  src/analysis/uninitialized-variables.cc \
 			  src/analysis/command.cc \
-			  src/ir/unit.cc \
-			  src/ir/value.cc \
-			  src/ir/function.cc \
-			  src/ir/global-variable.cc \
-			  src/ir/basic-block.cc \
-			  src/ir/binary-inst.cc \
-			  src/ir/type.cc \
-			  src/ir/function-type.cc \
-			  src/ir/struct-type.cc \
-			  src/ir/array-type.cc \
-			  src/ir/ir-generator.cc \
-			  src/ir/context.cc \
 			  src/ir/command.cc \
 			  src/gen/generator.cc \
 			  src/gen/command.cc \
@@ -94,4 +82,4 @@ ucc_SOURCES = src/parse/c-parser.yy \
 			  src/ucc.cc
 
 ucc_LDADD = ../lib/command/libcommand.la \
-			../lib/misc/libmisc.la
+			${top_builddir}/libucmp.la
