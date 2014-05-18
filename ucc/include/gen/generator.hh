@@ -19,6 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_GEN_GENERATOR_HH
 # define UCC_GEN_GENERATOR_HH
 
+# include <cassert>
+
 # include <ast/default-visitor.hh>
 
 # include <ir/ir-generator.hh>
@@ -35,11 +37,21 @@ namespace ucc
                 Generator(ucmp::ir::Context& c);
                 virtual ~Generator();
 
+                ucmp::ir::Value* generate(const ast::Ast& ast)
+                {
+                    operator()(ast);
+
+                    assert(val_);
+
+                    return val_;
+                }
+
                 virtual void operator()(const ast::FunctionDecl& ast) override;
 
             protected:
                 ucmp::ir::IrGenerator gen_;
                 ucmp::ir::Context& c_;
+                ucmp::ir::Value* val_;
         };
     } // namespace gen
 } // namespace ucc

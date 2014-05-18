@@ -27,6 +27,7 @@ using namespace ir;
 Generator::Generator(ucmp::ir::Context& c)
     : gen_(c)
     , c_(c)
+    , val_(nullptr)
 {
     gen_.init();
 }
