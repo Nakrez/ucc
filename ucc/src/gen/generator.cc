@@ -19,6 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <gen/generator.hh>
 #include <type/function.hh>
 
+#include <ir/int-constant.hh>
+
 using namespace ucc;
 using namespace gen;
 using namespace ucmp;
@@ -53,4 +55,9 @@ void Generator::operator()(const ast::FunctionDecl& ast)
 
         gen_.end_function();
     }
+}
+
+void Generator::operator()(const ast::IntExpr& ast)
+{
+    val_ = new IntConstant(c_, ast.value_get());
 }

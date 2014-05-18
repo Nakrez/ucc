@@ -48,6 +48,8 @@ namespace ucc
 
                 virtual void operator()(const ast::FunctionDecl& ast) override;
 
+                virtual void operator()(const ast::IntExpr& ast) override;
+
             protected:
                 ucmp::ir::IrGenerator gen_;
                 ucmp::ir::Context& c_;
