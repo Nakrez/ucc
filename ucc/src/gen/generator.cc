@@ -21,6 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 using namespace ucc;
 using namespace gen;
+using namespace ucmp;
+using namespace ir;
 
 Generator::Generator(ucmp::ir::Context& c)
     : gen_(c)
@@ -43,6 +45,10 @@ void Generator::operator()(const ast::FunctionDecl& ast)
         ret = ft->return_type_get()->to_ir_type(c_);
 
         gen_.start_function(ast.name_get(), ret);
+
+        BasicBlock* bb = new BasicBlock(c_, gen_.declared_function_get(),
+                                        ast.name_get());
+        gen_.insert_pt_set(bb);
 
         gen_.end_function();
     }
