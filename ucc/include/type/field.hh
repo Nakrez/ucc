@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_TYPE_FIELD_HH
 # define UCC_TYPE_FIELD_HH
 
-# include <misc/symbol.hh>
+# include <ucmp/misc/symbol.hh>
 
 # include <type/type.hh>
 

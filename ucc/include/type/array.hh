@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <type/type.hh>
 
-# include <ir/array-type.hh>
+# include <ucmp/ir/array-type.hh>
 
 namespace ucc
 {

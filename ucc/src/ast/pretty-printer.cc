@@ -17,7 +17,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <ast/pretty-printer.hh>
-#include <misc/indent.hh>
+#include <ucmp/misc/indent.hh>
 
 using namespace ucc;
 using namespace ucmp;

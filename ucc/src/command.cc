@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <command/command.hh>
 
-#include <misc/diagnostic-reporter.hh>
+#include <ucmp/misc/diagnostic-reporter.hh>
 
 REGISTER_COMMAND(werror, "Werror", "Treat warnings as errors", werror,
                  "");

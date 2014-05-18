@@ -17,7 +17,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <type/function.hh>
-#include <ir/function-type.hh>
+#include <ucmp/ir/function-type.hh>
 
 using namespace ucc;
 using namespace type;

@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_AST_LABEL_STMT_HH
 # define UCC_AST_LABEL_STMT_HH
 
-# include <misc/symbol.hh>
+# include <ucmp/misc/symbol.hh>
 
 # include <ast/stmt.hh>
 

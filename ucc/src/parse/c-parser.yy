@@ -16,8 +16,8 @@
 %code requires
 {
 # include <string>
-# include <misc/diagnostic-reporter.hh>
-# include <misc/symbol.hh>
+# include <ucmp/misc/diagnostic-reporter.hh>
+# include <ucmp/misc/symbol.hh>
 # include <ast/fwd.hh>
 # include <ast/all.hh>
 
@@ -48,7 +48,7 @@ typedef ucc::ast::DeclSpecifier::TypeSpecifier TypeSpecifier;
 %code
 {
 # include <parse/driver.hh>
-# include <misc/location.hh>
+# include <ucmp/misc/location.hh>
 }
 
 %union

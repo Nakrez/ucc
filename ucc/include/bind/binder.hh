@@ -19,9 +19,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_BIND_BINDER_HH
 # define UCC_BIND_BINDER_HH
 
-# include <misc/diagnostic-reporter.hh>
-# include <misc/scope-map.hh>
-# include <misc/symbol.hh>
+# include <ucmp/misc/diagnostic-reporter.hh>
+# include <ucmp/misc/scope-map.hh>
+# include <ucmp/misc/symbol.hh>
 
 # include <ast/default-visitor.hh>
 # include <ast/decl.hh>

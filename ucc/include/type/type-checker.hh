@@ -19,8 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_TYPE_TYPE_CHECKER_HH
 # define UCC_TYPE_TYPE_CHECKER_HH
 
-# include <misc/error.hh>
-
 # include <ast/default-visitor.hh>
 
 namespace ucc

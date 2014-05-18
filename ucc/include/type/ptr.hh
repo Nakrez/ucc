@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <type/type.hh>
 # include <type/builtin-type.hh>
 
-# include <ir/ptr-type.hh>
+# include <ucmp/ir/ptr-type.hh>
 
 namespace ucc
 {

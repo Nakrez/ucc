@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <command/command.hh>
 
-#include <ir/context.hh>
+#include <ucmp/ir/context.hh>
 
 REGISTER_COMMAND(uir_print, "uir-print", "Print the intermediate "
                  "representation on the standard input", uir_print, "uir");

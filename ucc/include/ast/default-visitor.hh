@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <cassert>
 
-# include <misc/constness.hh>
+# include <ucmp/misc/constness.hh>
 
 # include <ast/visitor.hh>
 # include <ast/all.hh>

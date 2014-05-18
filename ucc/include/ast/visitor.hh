@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UCC_AST_VISITOR_HH
 # define UCC_AST_VISITOR_HH
 
-# include <misc/constness.hh>
+# include <ucmp/misc/constness.hh>
 
 # include <ast/fwd.hh>
 

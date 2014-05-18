@@ -2,7 +2,7 @@
 %{
 
 # include <parse/driver.hh>
-# include <misc/diagnostic.hh>
+# include <ucmp/misc/diagnostic.hh>
 
 typedef ucc::parse::Parser::token token;
 
