@@ -73,6 +73,9 @@ void Generator::operator()(const ast::OpExpr& ast)
         case ast::OpExpr::OP_PLUS:
             val_ = gen_.create_add(left, right);
             break;
+        case ast::OpExpr::OP_MINUS:
+            val_ = gen_.create_sub(left, right);
+            break;
         default:
             break;
     }
