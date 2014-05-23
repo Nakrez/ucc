@@ -79,6 +79,9 @@ void Generator::operator()(const ast::OpExpr& ast)
         case ast::OpExpr::OP_MUL:
             val_ = gen_.create_mul(left, right);
             break;
+        case ast::OpExpr::OP_DIV:
+            val_ = gen_.create_div(left, right);
+            break;
         default:
             break;
     }
