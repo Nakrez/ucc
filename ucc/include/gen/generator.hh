@@ -34,7 +34,7 @@ namespace ucc
             public:
                 using ast::DefaultConstVisitor::operator();
 
-                Generator(ucmp::ir::Context& c);
+                Generator(ucmp::ir::Unit* u);
                 virtual ~Generator();
 
                 ucmp::ir::Value* generate(const ast::Ast& ast)
@@ -51,7 +51,12 @@ namespace ucc
                 virtual void operator()(const ast::IntExpr& ast) override;
 
             protected:
+                ucmp::ir::FunctionType*
+                get_fun_type(const ast::FunctionDecl& ast);
+
+            protected:
                 ucmp::ir::IrGenerator gen_;
+                ucmp::ir::Unit* unit_;
                 ucmp::ir::Context& c_;
                 ucmp::ir::Value* val_;
         };

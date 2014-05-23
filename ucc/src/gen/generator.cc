@@ -26,34 +26,39 @@ using namespace gen;
 using namespace ucmp;
 using namespace ir;
 
-Generator::Generator(ucmp::ir::Context& c)
-    : gen_(c)
-    , c_(c)
+Generator::Generator(ucmp::ir::Unit* u)
+    : gen_(u->context_get())
+    , c_(u->context_get())
     , val_(nullptr)
 {
-    gen_.init();
 }
 
 Generator::~Generator()
 {}
 
+FunctionType* Generator::get_fun_type(const ast::FunctionDecl& ast)
+{
+    const type::Function* ast_ft;
+    sType ret_type;
+
+    ast_ft = dynamic_cast<const type::Function*> (ast.built_type_get());
+    ret_type = ast_ft->return_type_get()->to_ir_type(c_);
+
+    return new FunctionType(ret_type);
+}
+
 void Generator::operator()(const ast::FunctionDecl& ast)
 {
     if (ast.compound_get())
     {
-        const type::Function* ft;
-        ucmp::ir::sType ret;
+        FunctionType* ft = get_fun_type(ast);
 
-        ft = dynamic_cast<const type::Function*> (ast.built_type_get());
-        ret = ft->return_type_get()->to_ir_type(c_);
+        Function* f = new Function(ft, ast.name_get(), unit_);
 
-        gen_.start_function(ast.name_get(), ret);
-
-        BasicBlock* bb = new BasicBlock(c_, gen_.declared_function_get(),
-                                        ast.name_get());
+        BasicBlock* bb = new BasicBlock(c_, f);
         gen_.insert_pt_set(bb);
 
-        gen_.end_function();
+        ast.compound_get()->accept(*this);
     }
 }
 

@@ -30,7 +30,9 @@ REGISTER_COMMAND(gen, "ir-gen", "Generate Intermediate Representation "
 
 void gen_ir()
 {
-    ucc::gen::Generator gen(ucc::ir::global_context);
+    ucmp::ir::Unit* u = new ucmp::ir::Unit(ucc::ir::global_context);
+
+    ucc::gen::Generator gen(u);
 
     assert(ucc::ast::the_ast &&
            "Internal error: No ast retrieved by the parser");
