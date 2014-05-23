@@ -82,6 +82,9 @@ void Generator::operator()(const ast::OpExpr& ast)
         case ast::OpExpr::OP_DIV:
             val_ = gen_.create_div(left, right);
             break;
+        case ast::OpExpr::OP_MOD:
+            val_ = gen_.create_mod(left, right);
+            break;
         default:
             break;
     }
