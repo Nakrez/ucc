@@ -48,6 +48,7 @@ namespace ucc
 
                 virtual void operator()(const ast::FunctionDecl& ast) override;
 
+                virtual void operator()(const ast::OpExpr& ast) override;
                 virtual void operator()(const ast::IntExpr& ast) override;
 
             protected:

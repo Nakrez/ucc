@@ -28,6 +28,7 @@ using namespace ir;
 
 Generator::Generator(ucmp::ir::Unit* u)
     : gen_(u->context_get())
+    , unit_(u)
     , c_(u->context_get())
     , val_(nullptr)
 {
@@ -59,6 +60,21 @@ void Generator::operator()(const ast::FunctionDecl& ast)
         gen_.insert_pt_set(bb);
 
         ast.compound_get()->accept(*this);
+    }
+}
+
+void Generator::operator()(const ast::OpExpr& ast)
+{
+    Value* left = generate(*ast.lexpr_get());
+    Value* right = generate(*ast.rexpr_get());
+
+    switch (ast.op_get())
+    {
+        case ast::OpExpr::OP_PLUS:
+            val_ = gen_.create_add(left, right);
+            break;
+        default:
+            break;
     }
 }
 
