@@ -64,8 +64,9 @@ std::string UnaryExpr::op_to_str() const
         case POST_DECR:
             return "--";
     }
-}
 
+    return "";
+}
 
 const Expr* UnaryExpr::expr_get() const
 {

@@ -66,6 +66,8 @@ std::string AssignExpr::op_to_str() const
         case BOR_ASSIGN:
             return "|=";
     }
+
+    return "";
 }
 
 OpExpr::Op ast::assign_op_to_op_expr(AssignExpr::AssignOp op)

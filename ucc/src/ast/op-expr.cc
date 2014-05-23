@@ -105,6 +105,8 @@ std::string OpExpr::op_to_str() const
         case OP_COMA:
             return ",";
     }
+
+    return "";
 }
 
 void OpExpr::accept(Visitor& v)
@@ -160,4 +162,6 @@ std::string ast::op_to_str(OpExpr::Op op)
         case OpExpr::Op::OP_COMA:
             return ",";
     }
+
+    return "";
 }

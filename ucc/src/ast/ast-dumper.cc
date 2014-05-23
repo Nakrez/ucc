@@ -19,6 +19,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <type/function.hh>
 #include <ast/ast-dumper.hh>
 
+namespace ucc
+{
+    namespace ast
+    {
+        template <>
+        void AstDumper::dump_list(const std::list<VarDecl*>& list)
+        {
+            auto it = list.cbegin();
+            auto begin = list.cbegin();
+            auto end = list.cend();
+
+            for (; it != end; ++it)
+            {
+                if (it != begin)
+                    ostr_ << ucmp::misc::iendl;
+
+                (*it)->accept(*this);
+            }
+        }
+    } // namespace ast
+} // namespace ucc
+
 using namespace ucc;
 using namespace ucmp;
 using namespace ast;
@@ -31,21 +53,6 @@ AstDumper::AstDumper(std::ostream& ostr)
 AstDumper::~AstDumper()
 {}
 
-template <>
-void AstDumper::dump_list(const std::list<VarDecl*>& list)
-{
-    auto it = list.cbegin();
-    auto begin = list.cbegin();
-    auto end = list.cend();
-
-    for (; it != end; ++it)
-    {
-        if (it != begin)
-            ostr_ << misc::iendl;
-
-        (*it)->accept(*this);
-    }
-}
 
 void AstDumper::operator()(const AstList& ast)
 {
