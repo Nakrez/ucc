@@ -23,12 +23,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <command/command.hh>
 
 #include <ucmp/ir/context.hh>
+#include <ucmp/ir/ir-writer.hh>
 
 REGISTER_COMMAND(uir_print, "uir-print", "Print the intermediate "
                  "representation on the standard input", uir_print, "uir");
 
 void uir_print()
 {
+    ucmp::ir::IrWriter wr(std::cout);
+
     for (auto u : ucc::ir::global_context)
-        u->dump(std::cout);
+        wr.write_unit(u);
 }
