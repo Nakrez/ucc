@@ -23,21 +23,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # include <ast/default-visitor.hh>
 
+# include <ucmp/misc/scope-map.hh>
 # include <ucmp/ir/ir-generator.hh>
 
 namespace ucc
 {
     namespace gen
     {
-        class Generator : public ast::DefaultConstVisitor
+        class Generator : public ast::DefaultVisitor
         {
             public:
-                using ast::DefaultConstVisitor::operator();
+                using ast::DefaultVisitor::operator();
 
                 Generator(ucmp::ir::Unit* u);
                 virtual ~Generator();
 
-                ucmp::ir::Value* generate(const ast::Ast& ast)
+                ucmp::ir::Value* generate(ast::Ast& ast)
                 {
                     operator()(ast);
 
@@ -46,10 +47,11 @@ namespace ucc
                     return val_;
                 }
 
-                virtual void operator()(const ast::FunctionDecl& ast) override;
+                virtual void operator()(ast::VarDecl& ast) override;
+                virtual void operator()(ast::FunctionDecl& ast) override;
 
-                virtual void operator()(const ast::OpExpr& ast) override;
-                virtual void operator()(const ast::IntExpr& ast) override;
+                virtual void operator()(ast::OpExpr& ast) override;
+                virtual void operator()(ast::IntExpr& ast) override;
 
             protected:
                 ucmp::ir::FunctionType*
@@ -57,9 +59,12 @@ namespace ucc
 
             protected:
                 ucmp::ir::IrGenerator gen_;
+                ucmp::ir::IrGenerator stack_alloc_;
                 ucmp::ir::Unit* unit_;
                 ucmp::ir::Context& c_;
                 ucmp::ir::Value* val_;
+                ucmp::misc::ScopeMap<ucmp::misc::Symbol,
+                                     ucmp::ir::Value*> scope_;
         };
     } // namespace gen
 } // namespace ucc

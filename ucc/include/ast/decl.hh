@@ -39,6 +39,8 @@ namespace ucc
                 const ucmp::misc::Symbol& name_get() const;
                 ucmp::misc::Symbol& name_get();
 
+                void name_set(const ucmp::misc::Symbol& s) { name_ = s; }
+
                 bool is_static() const;
                 bool is_extern() const;
                 bool is_auto() const;

@@ -50,68 +50,35 @@ namespace ucc
                 virtual ~VarDecl();
 
                 /// Return the type of the variable
-                const Ty* ty_get() const
-                {
-                    return ty_;
-                }
+                const Ty* ty_get() const    { return ty_; }
 
                 /// Return the type of the variable
-                Ty* ty_get()
-                {
-                    return ty_;
-                }
+                Ty* ty_get()    { return ty_; }
 
                 /// Return the init value of the variable
-                const Expr* init_get() const
-                {
-                    return init_;
-                }
+                const Expr* init_get() const { return init_; }
 
                 /// Return the init value of the variable
-                Expr* init_get()
-                {
-                    return init_;
-                }
+                Expr* init_get()    { return init_; }
 
                 /// Get the previous declaration of the variable
-                const VarDecl* prev_get() const
-                {
-                    return prev_;
-                }
+                const VarDecl* prev_get() const { return prev_; }
 
                 /// Get the previous declaration of the variable
-                VarDecl* prev_get()
-                {
-                    return prev_;
-                }
+                VarDecl* prev_get() { return prev_; }
 
                 /// \brief  Set the previous declaration of the variable
                 /// \param  d   The previous declaration of the variable
-                void prev_set(VarDecl* d)
-                {
-                    prev_ = d;
-                }
+                void prev_set(VarDecl* d)   { prev_ = d; }
 
                 /// Return true if the variable is an elispis
-                bool is_elipsis() const
-                {
-                    return is_elipsis_;
-                }
+                bool is_elipsis() const { return is_elipsis_; }
 
-                bool is_initialized() const
-                {
-                    return initialized_;
-                }
+                bool is_initialized() const { return initialized_; }
 
-                void set_initialized(bool b = true)
-                {
-                    initialized_ = b;
-                }
+                void set_initialized(bool b = true) { initialized_ = b; }
 
-                virtual void accept(Visitor& v) override
-                {
-                    v(*this);
-                }
+                virtual void accept(Visitor& v) override    { v(*this); }
 
                 virtual void accept(ConstVisitor& v) const override
                 {

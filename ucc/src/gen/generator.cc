@@ -28,6 +28,7 @@ using namespace ir;
 
 Generator::Generator(ucmp::ir::Unit* u)
     : gen_(u->context_get())
+    , stack_alloc_(u->context_get())
     , unit_(u)
     , c_(u->context_get())
     , val_(nullptr)
@@ -48,7 +49,28 @@ FunctionType* Generator::get_fun_type(const ast::FunctionDecl& ast)
     return new FunctionType(ret_type);
 }
 
-void Generator::operator()(const ast::FunctionDecl& ast)
+void Generator::operator()(ast::VarDecl& ast)
+{
+    // stack_alloc_ generator is always meant to point on the right point of a
+    // basic block to insert a new stack allocation
+    Value* v = stack_alloc_.create_stack_alloc(ast.type_get()->to_ir_type(c_),
+                                               ast.name_get());
+
+    // Little tweak here to avoid name collision. VarExpr operator()
+    // should use the name of it declaration.
+    ast.name_set(v->name_get());
+
+    scope_.put(ast.name_get(), v);
+
+    if (ast.init_get())
+    {
+        Value* val = generate(*ast.init_get());
+
+        gen_.create_store(val, v);
+    }
+}
+
+void Generator::operator()(ast::FunctionDecl& ast)
 {
     if (ast.compound_get())
     {
@@ -58,12 +80,15 @@ void Generator::operator()(const ast::FunctionDecl& ast)
 
         BasicBlock* bb = new BasicBlock(c_, f);
         gen_.insert_pt_set(bb);
+        stack_alloc_.insert_pt_set(bb);
 
+        scope_.scope_begin();
         ast.compound_get()->accept(*this);
+        scope_.scope_end();
     }
 }
 
-void Generator::operator()(const ast::OpExpr& ast)
+void Generator::operator()(ast::OpExpr& ast)
 {
     Value* left = generate(*ast.lexpr_get());
     Value* right = generate(*ast.rexpr_get());
@@ -90,7 +115,7 @@ void Generator::operator()(const ast::OpExpr& ast)
     }
 }
 
-void Generator::operator()(const ast::IntExpr& ast)
+void Generator::operator()(ast::IntExpr& ast)
 {
     val_ = new IntConstant(c_, ast.value_get());
 }
