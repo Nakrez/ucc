@@ -32,6 +32,7 @@ Generator::Generator(ucmp::ir::Unit* u)
     , unit_(u)
     , c_(u->context_get())
     , val_(nullptr)
+    , allocas_(0)
 {
 }
 
@@ -53,8 +54,18 @@ void Generator::operator()(ast::VarDecl& ast)
 {
     // stack_alloc_ generator is always meant to point on the right point of a
     // basic block to insert a new stack allocation
+
+    // FIXME
+    // Sorry for the above code... It's...
+    stack_alloc_.insert_pt_get() = stack_alloc_.insert_block_get()->begin();
+
+    for (int i = 0; i < allocas_; ++i)
+        ++stack_alloc_.insert_pt_get();
+
     Value* v = stack_alloc_.create_stack_alloc(ast.type_get()->to_ir_type(c_),
                                                ast.name_get());
+
+    ++allocas_;
 
     // Little tweak here to avoid name collision. VarExpr operator()
     // should use the name of it declaration.
@@ -80,7 +91,7 @@ void Generator::operator()(ast::FunctionDecl& ast)
 
         BasicBlock* bb = new BasicBlock(c_, f);
         gen_.insert_pt_set(bb);
-        stack_alloc_.insert_pt_set(bb);
+        stack_alloc_.insert_pt_set(bb, bb->begin());
 
         scope_.scope_begin();
         ast.compound_get()->accept(*this);
@@ -118,4 +129,16 @@ void Generator::operator()(ast::OpExpr& ast)
 void Generator::operator()(ast::IntExpr& ast)
 {
     val_ = new IntConstant(c_, ast.value_get());
+}
+
+void Generator::operator()(ast::VarExpr& ast)
+{
+    ast::VarDecl* vd = dynamic_cast<ast::VarDecl*> (ast.def_get());
+
+    if (!vd)
+        return;
+
+    Value* mem = scope_.get(vd->name_get());
+
+    val_ = gen_.create_load(mem);
 }

@@ -52,6 +52,7 @@ namespace ucc
 
                 virtual void operator()(ast::OpExpr& ast) override;
                 virtual void operator()(ast::IntExpr& ast) override;
+                virtual void operator()(ast::VarExpr& ast) override;
 
             protected:
                 ucmp::ir::FunctionType*
@@ -65,6 +66,7 @@ namespace ucc
                 ucmp::ir::Value* val_;
                 ucmp::misc::ScopeMap<ucmp::misc::Symbol,
                                      ucmp::ir::Value*> scope_;
+                int allocas_;
         };
     } // namespace gen
 } // namespace ucc
