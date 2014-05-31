@@ -121,6 +121,24 @@ void Generator::operator()(ast::OpExpr& ast)
         case ast::OpExpr::OP_MOD:
             val_ = gen_.create_mod(left, right);
             break;
+        case ast::OpExpr::OP_GT:
+            val_ = gen_.create_gt(left, right);
+            break;
+        case ast::OpExpr::OP_GE:
+            val_ = gen_.create_ge(left, right);
+            break;
+        case ast::OpExpr::OP_LT:
+            val_ = gen_.create_lt(left, right);
+            break;
+        case ast::OpExpr::OP_LE:
+            val_ = gen_.create_le(left, right);
+            break;
+        case ast::OpExpr::OP_EQ:
+            val_ = gen_.create_eq(left, right);
+            break;
+        case ast::OpExpr::OP_COMA:
+            val_ = right;
+            break;
         default:
             break;
     }
