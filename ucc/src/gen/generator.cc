@@ -96,6 +96,11 @@ void Generator::operator()(ast::FunctionDecl& ast)
         scope_.scope_begin();
         ast.compound_get()->accept(*this);
         scope_.scope_end();
+
+        Instruction* i = f->f_back()->back();
+
+        if (i->itype_get() != Instruction::RET)
+            gen_.create_ret();
     }
 }
 
