@@ -33,6 +33,7 @@ Generator::Generator(ucmp::ir::Unit* u)
     , c_(u->context_get())
     , val_(nullptr)
     , allocas_(0)
+    , lvalue_(false)
 {
 }
 
@@ -57,10 +58,13 @@ void Generator::operator()(ast::VarDecl& ast)
 
     // FIXME
     // Sorry for the above code... It's...
-    stack_alloc_.insert_pt_get() = stack_alloc_.insert_block_get()->begin();
 
-    for (int i = 0; i < allocas_; ++i)
-        ++stack_alloc_.insert_pt_get();
+    auto it = stack_alloc_.insert_block_get()->begin();
+
+    for (int i = 0; i < allocas_; ++i, ++it)
+        ;
+
+    stack_alloc_.insert_pt_set(stack_alloc_.insert_block_get(), it);
 
     Value* v = stack_alloc_.create_stack_alloc(ast.type_get()->to_ir_type(c_),
                                                ast.name_get());
@@ -166,5 +170,27 @@ void Generator::operator()(ast::VarExpr& ast)
 
     Value* mem = scope_.get(vd->name_get());
 
+    if (lvalue_)
+    {
+        val_ = mem;
+        return;
+    }
+
     val_ = gen_.create_load(mem);
+}
+
+void Generator::operator()(ast::AssignExpr& ast)
+{
+    bool tmp = lvalue_;
+
+    lvalue_ = true;
+
+    Value* lv = generate(*ast.lvalue_get());
+
+    lvalue_ = tmp;
+
+    Value* rv = generate(*ast.rvalue_get());
+
+    gen_.create_store(rv, lv);
+    val_ = rv;
 }
