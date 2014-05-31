@@ -141,6 +141,9 @@ void Generator::operator()(ast::OpExpr& ast)
         case ast::OpExpr::OP_EQ:
             val_ = gen_.create_eq(left, right);
             break;
+        case ast::OpExpr::OP_DIFF:
+            val_ = gen_.create_ne(left, right);
+            break;
         case ast::OpExpr::OP_COMA:
             val_ = right;
             break;
