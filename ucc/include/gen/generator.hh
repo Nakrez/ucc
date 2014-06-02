@@ -47,8 +47,17 @@ namespace ucc
                     return val_;
                 }
 
+                bool is_end_block(ucmp::ir::Instruction* i)
+                {
+                    return i->itype_get() == ucmp::ir::Instruction::RET ||
+                           i->itype_get() == ucmp::ir::Instruction::CJUMP ||
+                           i->itype_get() == ucmp::ir::Instruction::JUMP;
+                }
+
                 virtual void operator()(ast::VarDecl& ast) override;
                 virtual void operator()(ast::FunctionDecl& ast) override;
+
+                virtual void operator()(ast::IfStmt& ast) override;
 
                 virtual void operator()(ast::OpExpr& ast) override;
                 virtual void operator()(ast::IntExpr& ast) override;
