@@ -108,12 +108,33 @@ void Generator::operator()(ast::FunctionDecl& ast)
     }
 }
 
+void Generator::operator()(ast::BreakStmt& ast)
+{
+    Function* f = gen_.insert_block_get()->parent_get();
+
+    gen_.create_jump(loops_[ast.def_get()].second);
+
+    gen_.insert_pt_set(new BasicBlock(c_, f));
+}
+
+void Generator::operator()(ast::ContinueStmt& ast)
+{
+    Function* f = gen_.insert_block_get()->parent_get();
+
+    gen_.create_jump(loops_[ast.def_get()].first);
+
+    gen_.insert_pt_set(new BasicBlock(c_, f));
+}
+
 void Generator::operator()(ast::WhileStmt& ast)
 {
     Function* f = gen_.insert_block_get()->parent_get();
     BasicBlock* cond = new BasicBlock(c_, f);
     BasicBlock* body = new BasicBlock(c_);
     BasicBlock* end = new BasicBlock(c_);
+
+    // Add loops begin and end to the loop map
+    loops_[&ast] = std::make_pair(cond, end);
 
     gen_.create_jump(cond);
 

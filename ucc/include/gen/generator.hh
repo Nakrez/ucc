@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # define UCC_GEN_GENERATOR_HH
 
 # include <cassert>
+# include <map>
 
 # include <ast/default-visitor.hh>
 
@@ -58,6 +59,8 @@ namespace ucc
                 virtual void operator()(ast::FunctionDecl& ast) override;
 
                 virtual void operator()(ast::WhileStmt& ast) override;
+                virtual void operator()(ast::BreakStmt& ast) override;
+                virtual void operator()(ast::ContinueStmt& ast) override;
                 virtual void operator()(ast::IfStmt& ast) override;
 
                 virtual void operator()(ast::OpExpr& ast) override;
@@ -77,6 +80,11 @@ namespace ucc
                 ucmp::ir::Value* val_;
                 ucmp::misc::ScopeMap<ucmp::misc::Symbol,
                                      ucmp::ir::Value*> scope_;
+
+                /// Contains the entry and the end label of each loops.
+                /// It is used for break and continue statement.
+                std::map<ast::Stmt*, std::pair<ucmp::ir::BasicBlock*,
+                                               ucmp::ir::BasicBlock*>> loops_;
                 int allocas_;
                 bool lvalue_;
         };

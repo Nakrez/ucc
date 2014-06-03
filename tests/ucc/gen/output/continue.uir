@@ -1,0 +1,44 @@
+function i32 main()
+{
+    l0:
+        a = stackalloc i32
+        store 0, i32* a
+        jump l1
+    l1:
+        t2 = load i32* a
+        t3 = cmp lt i32 t2, 10
+        cjump i1 t3, l4, l22
+    l4:
+        t5 = load i32* a
+        t6 = cmp eq i32 t5, 5
+        cjump i1 t6, l7, l8
+    l7:
+        store 6, i32* a
+        jump l19
+    l8:
+        t9 = load i32* a
+        t10 = cmp eq i32 t9, 7
+        cjump i1 t10, l11, l12
+    l11:
+        store 8, i32* a
+        jump l18
+    l12:
+        t13 = load i32* a
+        t14 = cmp eq i32 t13, 9
+        cjump i1 t14, l15, l17
+    l15:
+        jump l1
+    l16:
+        jump l17
+    l17:
+        jump l18
+    l18:
+        jump l19
+    l19:
+        t20 = load i32* a
+        t21 = add i32 t20, 1
+        store i32 t21, i32* a
+        jump l1
+    l22:
+        ret
+}
