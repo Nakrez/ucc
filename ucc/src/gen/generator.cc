@@ -108,6 +108,34 @@ void Generator::operator()(ast::FunctionDecl& ast)
     }
 }
 
+void Generator::operator()(ast::WhileStmt& ast)
+{
+    Function* f = gen_.insert_block_get()->parent_get();
+    BasicBlock* cond = new BasicBlock(c_, f);
+    BasicBlock* body = new BasicBlock(c_);
+    BasicBlock* end = new BasicBlock(c_);
+
+    gen_.create_jump(cond);
+
+    gen_.insert_pt_set(cond);
+
+    Value* v = generate(*ast.cond_get());
+
+    gen_.create_cjump(v, body, end);
+
+    gen_.insert_pt_set(body);
+    body->parent_set(f);
+    f->insert_bb(body);
+
+    operator()(*ast.body_get());
+
+    gen_.create_jump(cond);
+
+    gen_.insert_pt_set(end);
+    end->parent_set(f);
+    f->insert_bb(end);
+}
+
 void Generator::operator()(ast::IfStmt& ast)
 {
     Value* cond = generate(*ast.cond_get());
