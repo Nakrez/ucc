@@ -1,0 +1,12 @@
+/Makefile
+/aclocal.m4
+/argp-test
+/autom4te.cache/
+/build-aux/
+/config.h
+/config.h.in
+/config.log
+/config.status
+/configure
+/libtool
+/stamp-h1
