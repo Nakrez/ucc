@@ -1,0 +1,5 @@
+function i32 main()
+{
+    l0:
+        ret 0
+}

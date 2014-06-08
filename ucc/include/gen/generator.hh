@@ -58,6 +58,7 @@ namespace ucc
                 virtual void operator()(ast::VarDecl& ast) override;
                 virtual void operator()(ast::FunctionDecl& ast) override;
 
+                virtual void operator()(ast::ReturnStmt& ast) override;
                 virtual void operator()(ast::WhileStmt& ast) override;
                 virtual void operator()(ast::DoWhileStmt& ast) override;
                 virtual void operator()(ast::BreakStmt& ast) override;

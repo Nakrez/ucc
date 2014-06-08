@@ -1,0 +1,13 @@
+function void f()
+{
+    l0:
+        ret
+}
+function i32 main()
+{
+    l0:
+        i = stackalloc i32
+        store 0, i32* i
+        t1 = load i32* i
+        ret i32 t1
+}

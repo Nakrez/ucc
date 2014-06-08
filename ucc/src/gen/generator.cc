@@ -126,6 +126,17 @@ void Generator::operator()(ast::ContinueStmt& ast)
     gen_.insert_pt_set(new BasicBlock(c_, f));
 }
 
+void Generator::operator()(ast::ReturnStmt& ast)
+{
+    if (ast.expr_get())
+    {
+        Value *v = generate(*ast.expr_get());
+        gen_.create_ret(v);
+    }
+    else
+        gen_.create_ret();
+}
+
 void Generator::operator()(ast::WhileStmt& ast)
 {
     Function* f = gen_.insert_block_get()->parent_get();
