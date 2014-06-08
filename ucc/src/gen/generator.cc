@@ -165,7 +165,7 @@ void Generator::operator()(ast::DoWhileStmt& ast)
     BasicBlock *end = new BasicBlock(c_);
 
     /* Set loops_ (usefull for break/continue) */
-    loops_[&ast] = std::make_pair(body, end);
+    loops_[&ast] = std::make_pair(cond, end);
 
     /* Generate body code */
     gen_.insert_pt_set(body);
@@ -226,6 +226,7 @@ void Generator::operator()(ast::ForStmt& ast)
     BasicBlock *cond;
     BasicBlock *body = new BasicBlock(c_);
     BasicBlock *end = new BasicBlock(c_);
+    BasicBlock *inc = new BasicBlock(c_);
 
     /* Generate initial block */
     if (ast.init_get())
@@ -252,13 +253,20 @@ void Generator::operator()(ast::ForStmt& ast)
         gen_.create_jump(body);
 
     /* Set loops_ (usefull for break/continue) */
-    loops_[&ast] = std::make_pair(cond, end);
+    loops_[&ast] = std::make_pair(inc, end);
 
     gen_.insert_pt_set(body);
     body->parent_set(f);
     f->insert_bb(body);
 
-    operator()(*ast.body_get());
+    if (ast.body_get())
+        operator()(*ast.body_get());
+
+    gen_.create_jump(inc);
+
+    gen_.insert_pt_set(inc);
+    inc->parent_set(f);
+    f->insert_bb(inc);
 
     if (ast.inc_get())
         operator()(*ast.inc_get());
