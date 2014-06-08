@@ -513,7 +513,7 @@ void TypeChecker::operator()(ast::ForStmt& ast)
 {
     ucc::ast::DefaultVisitor::operator()(ast);
 
-    if (!is_scalar(ast.cond_get()->type_get()))
+    if (ast.cond_get() && !is_scalar(ast.cond_get()->type_get()))
         error("used '" + ast.cond_get()->type_get()->to_str() + "' type where "
               "scalar is required", ast.location_get());
 }
