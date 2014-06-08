@@ -1,0 +1,13 @@
+function i32 main()
+{
+    l0:
+        jump l1
+    l1:
+        jump l2
+    l2:
+        jump l3
+    l3:
+        jump l2
+    l4:
+        ret
+}

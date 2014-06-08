@@ -8,15 +8,17 @@ function i32 main()
     l1:
         t2 = load i32* i
         t3 = cmp lt i32 t2, 10
-        cjump i1 t3, l4, l9
+        cjump i1 t3, l4, l10
     l4:
         t5 = load i32* a
         t6 = add i32 t5, 1
         store i32 t6, i32* a
-        t7 = load i32* i
-        t8 = add i32 t7, 1
-        store i32 t8, i32* i
+        jump l7
+    l7:
+        t8 = load i32* i
+        t9 = add i32 t8, 1
+        store i32 t9, i32* i
         jump l1
-    l9:
+    l10:
         ret
 }

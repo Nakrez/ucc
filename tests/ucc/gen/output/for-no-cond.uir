@@ -14,10 +14,12 @@ function i32 main()
         t4 = load i32* a
         t5 = add i32 t4, 1
         store i32 t5, i32* a
-        t6 = load i32* i
-        t7 = add i32 t6, 1
-        store i32 t7, i32* i
+        jump l6
+    l6:
+        t7 = load i32* i
+        t8 = add i32 t7, 1
+        store i32 t8, i32* i
         jump l3
-    l8:
+    l9:
         ret
 }

@@ -1,9 +1,8 @@
 function i32 main()
 {
     l0:
-        a = stackalloc i32
         i = stackalloc i32
-        store 0, i32* a
+        store 0, i32* i
         jump l1
     l1:
         store 0, i32* i
@@ -13,11 +12,11 @@ function i32 main()
         t4 = cmp lt i32 t3, 10
         cjump i1 t4, l5, l9
     l5:
-        t6 = load i32* a
-        t7 = add i32 t6, 1
-        store i32 t7, i32* a
-        jump l8
-    l8:
+        jump l6
+    l6:
+        t7 = load i32* i
+        t8 = add i32 t7, 1
+        store i32 t8, i32* i
         jump l2
     l9:
         ret
