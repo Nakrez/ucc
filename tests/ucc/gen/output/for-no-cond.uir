@@ -1,0 +1,23 @@
+function i32 main()
+{
+    l0:
+        a = stackalloc i32
+        i = stackalloc i32
+        store 0, i32* a
+        jump l1
+    l1:
+        store 0, i32* i
+        jump l2
+    l2:
+        jump l3
+    l3:
+        t4 = load i32* a
+        t5 = add i32 t4, 1
+        store i32 t5, i32* a
+        t6 = load i32* i
+        t7 = add i32 t6, 1
+        store i32 t7, i32* i
+        jump l3
+    l8:
+        ret
+}

@@ -192,6 +192,59 @@ void Generator::operator()(ast::IfStmt& ast)
     f->insert_bb(join_);
 }
 
+void Generator::operator()(ast::ForStmt& ast)
+{
+    Function* f = gen_.insert_block_get()->parent_get();
+    BasicBlock *cond;
+    BasicBlock *body = new BasicBlock(c_);
+    BasicBlock *end = new BasicBlock(c_);
+
+    /* Generate initial block */
+    if (ast.init_get())
+    {
+        BasicBlock *init = new BasicBlock(c_, f);
+        gen_.create_jump(init);
+        gen_.insert_pt_set(init);
+
+        operator()(*ast.init_get());
+    }
+
+    /* Add jump to cond and set it as insert point */
+    cond = new BasicBlock(c_, f);
+    gen_.create_jump(cond);
+    gen_.insert_pt_set(cond);
+
+    /* Generate condition */
+    if (ast.cond_get())
+    {
+        Value *c = generate(*ast.cond_get());
+        gen_.create_cjump(c, body, end);
+    }
+    else
+        gen_.create_jump(body);
+
+    /* Set loops_ (usefull for break/continue) */
+    loops_[&ast] = std::make_pair(cond, end);
+
+    gen_.insert_pt_set(body);
+    body->parent_set(f);
+    f->insert_bb(body);
+
+    operator()(*ast.body_get());
+
+    if (ast.inc_get())
+        operator()(*ast.inc_get());
+
+    if (ast.cond_get())
+        gen_.create_jump(cond);
+    else
+        gen_.create_jump(body);
+
+    gen_.insert_pt_set(end);
+    end->parent_set(f);
+    f->insert_bb(end);
+}
+
 void Generator::operator()(ast::OpExpr& ast)
 {
     Value* left = generate(*ast.lexpr_get());
