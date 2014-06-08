@@ -157,6 +157,34 @@ void Generator::operator()(ast::WhileStmt& ast)
     f->insert_bb(end);
 }
 
+void Generator::operator()(ast::DoWhileStmt& ast)
+{
+    Function* f = gen_.insert_block_get()->parent_get();
+    BasicBlock *body = new BasicBlock(c_, f);
+    BasicBlock *cond= new BasicBlock(c_);
+    BasicBlock *end = new BasicBlock(c_);
+
+    /* Set loops_ (usefull for break/continue) */
+    loops_[&ast] = std::make_pair(body, end);
+
+    /* Generate body code */
+    gen_.insert_pt_set(body);
+    operator()(*ast.body_get());
+    gen_.create_jump(cond);
+
+    /* Generate condition block */
+    gen_.insert_pt_set(cond);
+    cond->parent_set(f);
+    f->insert_bb(cond);
+    Value *c = generate(*ast.cond_get());
+    gen_.create_cjump(c, body, end);
+
+    /* Start end block */
+    gen_.insert_pt_set(end);
+    end->parent_set(f);
+    f->insert_bb(end);
+}
+
 void Generator::operator()(ast::IfStmt& ast)
 {
     Value* cond = generate(*ast.cond_get());
