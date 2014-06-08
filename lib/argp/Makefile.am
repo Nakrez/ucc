@@ -21,7 +21,6 @@
 ACLOCAL_AMFLAGS = -I build-aux
 
 noinst_LTLIBRARIES = libargp.la
-noinst_PROGRAMS = argp-test
 noinst_HEADERS = argp.h argp-fmtstream.h argp-namefrob.h
 
 EXTRA_DIST = mempcpy.c strchrnul.c strndup.c Versions
