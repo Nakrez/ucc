@@ -312,7 +312,6 @@ void Generator::operator()(ast::UnaryExpr& ast)
                 gen_.create_store(val_, l->operand_get(0));
             }
             break;
-
         case ast::UnaryExpr::PRE_DECR:
             {
                 Load* l = dynamic_cast<Load*> (v);
@@ -321,6 +320,30 @@ void Generator::operator()(ast::UnaryExpr& ast)
 
                 val_ = gen_.create_sub(v, new IntConstant(c_, 1));
                 gen_.create_store(val_, l->operand_get(0));
+            }
+            break;
+        case ast::UnaryExpr::POST_INCR:
+            {
+                Load* l = dynamic_cast<Load*> (v);
+
+                assert(l);
+
+                Value* ret = gen_.create_add(v, new IntConstant(c_, 1));
+                gen_.create_store(ret, l->operand_get(0));
+
+                val_ = v;
+            }
+            break;
+        case ast::UnaryExpr::POST_DECR:
+            {
+                Load* l = dynamic_cast<Load*> (v);
+
+                assert(l);
+
+                Value* ret = gen_.create_sub(v, new IntConstant(c_, 1));
+                gen_.create_store(ret, l->operand_get(0));
+
+                val_ = v;
             }
             break;
         /* Plus operator : nothing to do */
