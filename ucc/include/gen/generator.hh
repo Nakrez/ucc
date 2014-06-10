@@ -67,6 +67,7 @@ namespace ucc
                 virtual void operator()(ast::ForStmt& ast) override;
 
                 virtual void operator()(ast::OpExpr& ast) override;
+                virtual void operator()(ast::UnaryExpr& ast) override;
                 virtual void operator()(ast::IntExpr& ast) override;
                 virtual void operator()(ast::VarExpr& ast) override;
                 virtual void operator()(ast::AssignExpr& ast) override;

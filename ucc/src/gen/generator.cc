@@ -292,6 +292,21 @@ void Generator::operator()(ast::ForStmt& ast)
     f->insert_bb(end);
 }
 
+void Generator::operator()(ast::UnaryExpr& ast)
+{
+    Value *v = generate(*ast.expr_get());
+
+    switch (ast.op_get())
+    {
+        case ast::UnaryExpr::MINUS:
+            val_ = gen_.create_sub(new IntConstant(c_, 0), v);
+            break;
+        /* Plus operator : nothing to do */
+        default:
+            break;
+    }
+}
+
 void Generator::operator()(ast::OpExpr& ast)
 {
     Value* left = generate(*ast.lexpr_get());
