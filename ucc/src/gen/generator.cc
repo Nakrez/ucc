@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <type/function.hh>
 
 #include <ucmp/ir/int-constant.hh>
+#include <ucmp/ir/load.hh>
 
 using namespace ucc;
 using namespace gen;
@@ -300,6 +301,27 @@ void Generator::operator()(ast::UnaryExpr& ast)
     {
         case ast::UnaryExpr::MINUS:
             val_ = gen_.create_sub(new IntConstant(c_, 0), v);
+            break;
+        case ast::UnaryExpr::PRE_INCR:
+            {
+                Load* l = dynamic_cast<Load*> (v);
+
+                assert(l);
+
+                val_ = gen_.create_add(v, new IntConstant(c_, 1));
+                gen_.create_store(val_, l->operand_get(0));
+            }
+            break;
+
+        case ast::UnaryExpr::PRE_DECR:
+            {
+                Load* l = dynamic_cast<Load*> (v);
+
+                assert(l);
+
+                val_ = gen_.create_sub(v, new IntConstant(c_, 1));
+                gen_.create_store(val_, l->operand_get(0));
+            }
             break;
         /* Plus operator : nothing to do */
         default:
