@@ -98,6 +98,11 @@ void Generator::operator()(ast::FunctionDecl& ast)
         gen_.insert_pt_set(bb);
         stack_alloc_.insert_pt_set(bb, bb->begin());
 
+        for (auto arg : ast.param_get())
+        {
+            f->arg_add(arg->type_get()->to_ir_type(c_), arg->name_get());
+        }
+
         scope_.scope_begin();
         ast.compound_get()->accept(*this);
         scope_.scope_end();
