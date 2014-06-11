@@ -362,6 +362,11 @@ void Generator::operator()(ast::UnaryExpr& ast)
         case ast::UnaryExpr::TILDE:
             val_ = gen_.create_xor(v, new IntConstant(c_, -1));
             break;
+        case ast::UnaryExpr::BANG:
+            if (v->type_get() != c_.i1_ty_get())
+                v = gen_.create_ne(v, new IntConstant(c_, 0));
+            gen_.create_xor(v, new IntConstant(c_, 1));
+            break;
         /* Plus operator : nothing to do */
         default:
             break;

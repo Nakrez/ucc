@@ -1,0 +1,14 @@
+function i32 main()
+{
+    l0:
+        a = stackalloc i32
+        store 0, i32* a
+        t1 = load i32* a
+        t2 = cmp gt i32 t1, 0
+        t3 = xor i1 t2, 1
+        store i1 t2, i32* a
+        t4 = load i32* a
+        t5 = cmp ne i32 t4, 0
+        t6 = xor i1 t5, 1
+        ret i32 t4
+}
