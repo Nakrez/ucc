@@ -387,6 +387,9 @@ void Generator::operator()(ast::OpExpr& ast)
         case ast::OpExpr::OP_MOD:
             val_ = gen_.create_mod(left, right);
             break;
+        case ast::OpExpr::OP_XOR:
+            val_ = gen_.create_xor(left, right);
+            break;
         case ast::OpExpr::OP_GT:
             val_ = gen_.create_gt(left, right);
             break;
