@@ -45,11 +45,17 @@ FunctionType* Generator::get_fun_type(const ast::FunctionDecl& ast)
 {
     const type::Function* ast_ft;
     sType ret_type;
+    FunctionType* ft;
 
     ast_ft = dynamic_cast<const type::Function*> (ast.built_type_get());
     ret_type = ast_ft->return_type_get()->to_ir_type(c_);
 
-    return new FunctionType(ret_type);
+    ft = new FunctionType(ret_type);
+
+    for (auto arg : ast.param_get())
+        ft->arg_add(arg->type_get()->to_ir_type(c_));
+
+    return ft;
 }
 
 void Generator::operator()(ast::VarDecl& ast)
@@ -97,11 +103,6 @@ void Generator::operator()(ast::FunctionDecl& ast)
         BasicBlock* bb = new BasicBlock(c_, f);
         gen_.insert_pt_set(bb);
         stack_alloc_.insert_pt_set(bb, bb->begin());
-
-        for (auto arg : ast.param_get())
-        {
-            f->arg_add(arg->type_get()->to_ir_type(c_), arg->name_get());
-        }
 
         scope_.scope_begin();
         ast.compound_get()->accept(*this);
