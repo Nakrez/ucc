@@ -346,6 +346,19 @@ void Generator::operator()(ast::UnaryExpr& ast)
                 val_ = v;
             }
             break;
+        case ast::UnaryExpr::BAND:
+            {
+                Load* l = dynamic_cast<Load*> (v);
+
+                assert(l);
+
+                val_ = l->operand_get(0);
+                gen_.remove(l);
+            }
+            break;
+        case ast::UnaryExpr::DEREF:
+            val_ = gen_.create_load(v);
+            break;
         /* Plus operator : nothing to do */
         default:
             break;
