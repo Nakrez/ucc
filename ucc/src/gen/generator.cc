@@ -359,6 +359,9 @@ void Generator::operator()(ast::UnaryExpr& ast)
         case ast::UnaryExpr::DEREF:
             val_ = gen_.create_load(v);
             break;
+        case ast::UnaryExpr::TILDE:
+            val_ = gen_.create_xor(v, new IntConstant(c_, -1));
+            break;
         /* Plus operator : nothing to do */
         default:
             break;

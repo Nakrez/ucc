@@ -1,0 +1,9 @@
+function i32 main()
+{
+    l0:
+        a = stackalloc i32
+        store 0, i32* a
+        t1 = load i32* a
+        t2 = xor i32 t1, -1
+        ret i32 t2
+}
