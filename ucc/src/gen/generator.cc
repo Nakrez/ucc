@@ -116,6 +116,8 @@ void Generator::operator()(ast::FunctionDecl& ast)
         gen_.insert_pt_set(bb);
         stack_alloc_.insert_pt_set(bb, bb->begin());
 
+        scope_.put(ast.name_get(), f);
+
         scope_.scope_begin();
 
         if (ast.param_get().size() &&
@@ -476,7 +478,14 @@ void Generator::operator()(ast::VarExpr& ast)
     ast::VarDecl* vd = dynamic_cast<ast::VarDecl*> (ast.def_get());
 
     if (!vd)
+    {
+        Value* v = scope_.get(ast.name_get());
+
+        assert(dynamic_cast<Function*> (v));
+
+        val_ = v;
         return;
+    }
 
     Value* mem = scope_.get(vd->name_get());
 
@@ -487,6 +496,38 @@ void Generator::operator()(ast::VarExpr& ast)
     }
 
     val_ = gen_.create_load(mem);
+}
+
+void Generator::operator()(ast::CallExpr& ast)
+{
+    Function* f = dynamic_cast<Function*> (generate(*ast.var_get()));
+
+    if (ast.param_get())
+    {
+        std::vector<Value*> args;
+        Value* v;
+
+        assert(f);
+
+        for (auto ast_arg : ast.param_get()->list_get())
+        {
+            v = generate(*ast_arg);
+
+            args.push_back(v);
+        }
+
+        if (f->return_type_get() == c_.void_ty_get())
+            val_ = gen_.create_call(f, args);
+        else
+            val_ = gen_.create_call(f, args, "");
+
+        return;
+    }
+
+    if (f->return_type_get() == c_.void_ty_get())
+        gen_.create_call(f);
+    else
+        gen_.create_call(f, "");
 }
 
 void Generator::operator()(ast::AssignExpr& ast)

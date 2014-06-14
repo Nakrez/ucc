@@ -1,0 +1,11 @@
+function void bar()
+{
+    l0:
+        ret
+}
+function i32 foo()
+{
+    l0:
+        call bar void ()
+        ret 0
+}

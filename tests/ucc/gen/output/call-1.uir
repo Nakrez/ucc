@@ -1,0 +1,13 @@
+function void bar(i32 a)
+{
+    l1:
+        t2 = stackalloc i32
+        store i32 a, i32* t2
+        ret
+}
+function i32 foo()
+{
+    l0:
+        call bar void (3)
+        ret 0
+}
