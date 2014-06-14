@@ -1,0 +1,14 @@
+function i32 true_or_false(i32 a)
+{
+    l1:
+        t2 = stackalloc i32
+        store i32 a, i32* t2
+        t3 = load i32* t2
+        cjump i32 t3, l4, l5
+    l4:
+        ret 1
+    l5:
+        ret 0
+    l6:
+        ret
+}

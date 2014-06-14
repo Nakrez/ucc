@@ -49,13 +49,6 @@ namespace ucc
                     return val_;
                 }
 
-                bool is_end_block(ucmp::ir::Instruction* i)
-                {
-                    return i->itype_get() == ucmp::ir::Instruction::RET ||
-                           i->itype_get() == ucmp::ir::Instruction::CJUMP ||
-                           i->itype_get() == ucmp::ir::Instruction::JUMP;
-                }
-
                 virtual void operator()(ast::VarDecl& ast) override;
                 virtual void operator()(ast::FunctionDecl& ast) override;
 
@@ -74,6 +67,13 @@ namespace ucc
                 virtual void operator()(ast::AssignExpr& ast) override;
 
             protected:
+                bool is_end_block(ucmp::ir::Instruction* i)
+                {
+                    return i->itype_get() == ucmp::ir::Instruction::RET ||
+                           i->itype_get() == ucmp::ir::Instruction::CJUMP ||
+                           i->itype_get() == ucmp::ir::Instruction::JUMP;
+                }
+
                 ucmp::ir::FunctionType*
                 get_fun_type(const ast::FunctionDecl& ast);
 

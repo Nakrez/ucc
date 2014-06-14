@@ -255,7 +255,8 @@ void Generator::operator()(ast::IfStmt& ast)
     gen_.insert_pt_set(if_);
     operator()(*ast.if_body_get());
 
-    gen_.create_jump(join_);
+    if (!f->f_back()->size() || !is_end_block(f->f_back()->back()))
+        gen_.create_jump(join_);
 
     if (ast.else_body_get())
     {
@@ -263,7 +264,9 @@ void Generator::operator()(ast::IfStmt& ast)
         else_->parent_set(f);
         f->insert_bb(else_);
         operator()(*ast.else_body_get());
-        gen_.create_jump(join_);
+
+        if (!f->f_back()->size() || !is_end_block(f->f_back()->back()))
+            gen_.create_jump(join_);
     }
 
     gen_.insert_pt_set(join_);
