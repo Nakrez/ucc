@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # include <map>
 
 # include <ast/default-visitor.hh>
+# include <type/function.hh>
 
 # include <ucmp/misc/scope-map.hh>
 # include <ucmp/ir/ir-generator.hh>
@@ -75,6 +76,9 @@ namespace ucc
             protected:
                 ucmp::ir::FunctionType*
                 get_fun_type(const ast::FunctionDecl& ast);
+
+                ucmp::ir::Value* create_stack_alloc(ucmp::ir::sType t,
+                                            const ucmp::misc::Symbol& s = "");
 
             protected:
                 ucmp::ir::IrGenerator gen_;

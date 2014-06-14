@@ -52,20 +52,22 @@ FunctionType* Generator::get_fun_type(const ast::FunctionDecl& ast)
 
     ft = new FunctionType(ret_type);
 
-    for (auto arg : ast.param_get())
-        ft->arg_add(arg->type_get()->to_ir_type(c_));
+    if (ast_ft->size_get() && !ast_ft->no_param())
+    {
+        for (auto arg : ast.param_get())
+            ft->arg_add(arg->type_get()->to_ir_type(c_));
+    }
 
     return ft;
 }
 
-void Generator::operator()(ast::VarDecl& ast)
+Value* Generator::create_stack_alloc(sType t, const misc::Symbol& s)
 {
     // stack_alloc_ generator is always meant to point on the right point of a
     // basic block to insert a new stack allocation
 
     // FIXME
     // Sorry for the above code... It's...
-
     auto it = stack_alloc_.insert_block_get()->begin();
 
     for (int i = 0; i < allocas_; ++i, ++it)
@@ -73,10 +75,18 @@ void Generator::operator()(ast::VarDecl& ast)
 
     stack_alloc_.insert_pt_set(stack_alloc_.insert_block_get(), it);
 
-    Value* v = stack_alloc_.create_stack_alloc(ast.type_get()->to_ir_type(c_),
-                                               ast.name_get());
+    Value* v = stack_alloc_.create_stack_alloc(t, s);
 
     ++allocas_;
+
+    return v;
+}
+
+void Generator::operator()(ast::VarDecl& ast)
+{
+    Value *v;
+
+    v = create_stack_alloc(ast.type_get()->to_ir_type(c_), ast.name_get());
 
     // Little tweak here to avoid name collision. VarExpr operator()
     // should use the name of it declaration.
@@ -96,6 +106,8 @@ void Generator::operator()(ast::FunctionDecl& ast)
 {
     if (ast.compound_get())
     {
+        allocas_ = 0;
+
         FunctionType* ft = get_fun_type(ast);
 
         Function* f = new Function(ft, ast.name_get(), unit_);
@@ -105,6 +117,27 @@ void Generator::operator()(ast::FunctionDecl& ast)
         stack_alloc_.insert_pt_set(bb, bb->begin());
 
         scope_.scope_begin();
+
+        if (ast.param_get().size() &&
+            (*ast.param_get().begin())->type_get() != &type::Void::instance_get())
+        {
+            // Name correctly every parameter and put them on the stack
+            auto ir_param = f->a_begin();
+            Value* v;
+
+            for (auto ast_param : ast.param_get())
+            {
+                (*ir_param)->name_set(ast_param->name_get());
+
+                v = create_stack_alloc((*ir_param)->type_get());
+
+                scope_.put(ast_param->name_get(), v);
+
+                gen_.create_store(*ir_param, v);
+                ++ir_param;
+            }
+        }
+
         ast.compound_get()->accept(*this);
         scope_.scope_end();
 

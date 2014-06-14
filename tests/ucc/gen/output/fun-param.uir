@@ -1,0 +1,12 @@
+function i32 f(i32 a, i32 b)
+{
+    l2:
+        t3 = stackalloc i32
+        t4 = stackalloc i32
+        store i32 a, i32* t3
+        store i32 b, i32* t4
+        t5 = load i32* t3
+        t6 = load i32* t4
+        t7 = add i32 t5, i32 t6
+        ret i32 t7
+}
