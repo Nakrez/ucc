@@ -68,6 +68,8 @@ namespace ucc
 
                 virtual void operator()(ucc::ast::CompoundStmt& ast);
                 virtual void operator()(ucc::ast::DoWhileStmt& ast);
+                virtual void operator()(ucc::ast::LabelStmt& ast);
+                virtual void operator()(ucc::ast::GotoStmt& ast);
                 virtual void operator()(ucc::ast::WhileStmt& ast);
                 virtual void operator()(ucc::ast::ForStmt& ast);
                 virtual void operator()(ucc::ast::SwitchStmt& ast);
@@ -82,6 +84,8 @@ namespace ucc
                 ucmp::misc::ScopeMap<ucmp::misc::Symbol, ucc::ast::Decl*> scope_;
                 ucmp::misc::ScopeMap<ucmp::misc::Symbol,
                                     ucc::ast::Decl*> record_enum_;
+                std::map<ucmp::misc::Symbol, ucc::ast::LabelStmt*> labels_;
+                std::list<ucc::ast::GotoStmt*> gotos_;
                 std::list<ucc::ast::Stmt*> loop_switch_;
         };
     } // namespace bind

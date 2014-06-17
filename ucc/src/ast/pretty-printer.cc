@@ -490,7 +490,12 @@ void PrettyPrinter::operator()(const DoWhileStmt& ast)
 
 void PrettyPrinter::operator()(const LabelStmt& ast)
 {
-    ostr_ << ast.name_get() << ":" << misc::iendl;
+    ostr_ << ast.name_get();
+
+    if (with_bindings_)
+        ostr_ << " /* " << &ast << " */ ";
+
+    ostr_ << ":" << misc::iendl;
 
     if (ast.stmt_get())
         ast.stmt_get()->accept(*this);
@@ -499,6 +504,9 @@ void PrettyPrinter::operator()(const LabelStmt& ast)
 void PrettyPrinter::operator()(const GotoStmt& ast)
 {
     ostr_ << "goto " << ast.name_get();
+
+    if (with_bindings_)
+        ostr_ << " /* " << ast.def_get() << " */";
 }
 
 void PrettyPrinter::operator()(const BreakStmt& ast)

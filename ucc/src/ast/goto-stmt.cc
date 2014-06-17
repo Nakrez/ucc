@@ -25,27 +25,5 @@ GotoStmt::GotoStmt(const ucmp::misc::location& loc,
                    const ucmp::misc::Symbol& name)
     : Stmt(loc)
     , name_(name)
+    , def_(nullptr)
 {}
-
-GotoStmt::~GotoStmt()
-{}
-
-const ucmp::misc::Symbol& GotoStmt::name_get() const
-{
-    return name_;
-}
-
-ucmp::misc::Symbol& GotoStmt::name_get()
-{
-    return name_;
-}
-
-void GotoStmt::accept(Visitor& v)
-{
-    v(*this);
-}
-
-void GotoStmt::accept(ConstVisitor& v) const
-{
-    v(*this);
-}

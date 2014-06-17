@@ -32,16 +32,22 @@ namespace ucc
             public:
                 GotoStmt(const ucmp::misc::location& loc,
                          const ucmp::misc::Symbol& name);
-                virtual ~GotoStmt();
+                virtual ~GotoStmt() = default;
 
-                const ucmp::misc::Symbol& name_get() const;
-                ucmp::misc::Symbol& name_get();
+                const ucmp::misc::Symbol& name_get() const { return name_; }
+                ucmp::misc::Symbol& name_get() { return name_; }
 
-                virtual void accept(Visitor& v);
-                virtual void accept(ConstVisitor& v) const;
+                const LabelStmt* def_get() const { return def_; }
+                LabelStmt* def_get() { return def_; }
+
+                void def_set(LabelStmt* l) { def_ = l; }
+
+                virtual void accept(Visitor& v) { v(*this); }
+                virtual void accept(ConstVisitor& v) const { v(*this); }
 
             protected:
                 ucmp::misc::Symbol name_;
+                LabelStmt* def_;
         };
     } // namespace ast
 } // namespace ucc

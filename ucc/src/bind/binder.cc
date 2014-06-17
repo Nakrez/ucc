@@ -104,7 +104,27 @@ void Binder::operator()(ucc::ast::FunctionDecl& ast)
         param->accept(*this);
 
     if (ast.compound_get() && ast.compound_get()->compound_get())
+    {
+        // Clear labels and gotos from previously visited functions
+        labels_.clear();
+        gotos_.clear();
+
         ast.compound_get()->compound_get()->accept(*this);
+
+        ast::LabelStmt* label;
+
+        // Compute gotos
+        for (auto gt : gotos_)
+        {
+            label = labels_[gt->name_get()];
+
+            if (!label)
+                error(*gt, "use of undeclared label '" +
+                           gt->name_get().data_get() + "'");
+            else
+                gt->def_set(label);
+        }
+    }
 
     scope_end();
 }
@@ -314,6 +334,24 @@ void Binder::operator()(ucc::ast::DoWhileStmt& ast)
         ast.body_get()->accept(*this);
 
     loop_switch_.pop_back();
+}
+
+void Binder::operator()(ucc::ast::LabelStmt& ast)
+{
+    if (labels_[ast.name_get()])
+        error(ast, "Redefinition of label '" + ast.name_get().data_get() +
+                   "'");
+    else
+        labels_[ast.name_get()] = &ast;
+
+    ast.stmt_get()->accept(*this);
+}
+
+void Binder::operator()(ucc::ast::GotoStmt& ast)
+{
+    // Gotos are not computed here because some can refer to labels that are
+    // after it
+    gotos_.push_back(&ast);
 }
 
 void Binder::operator()(ucc::ast::WhileStmt& ast)
