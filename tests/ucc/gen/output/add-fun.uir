@@ -1,0 +1,18 @@
+function i32 g()
+{
+    l0:
+        ret 2
+}
+function i32 f()
+{
+    l0:
+        ret 1
+}
+function i32 main()
+{
+    l0:
+        t1 = call f i32 ()
+        t2 = call g i32 ()
+        t3 = add i32 t1, i32 t2
+        ret i32 t3
+}

@@ -337,6 +337,170 @@ void Generator::operator()(ast::ForStmt& ast)
     f->insert_bb(end);
 }
 
+void Generator::operator()(ast::IntExpr& ast)
+{
+    val_ = new IntConstant(c_, ast.value_get());
+}
+
+void Generator::operator()(ast::VarExpr& ast)
+{
+    ast::VarDecl* vd = dynamic_cast<ast::VarDecl*> (ast.def_get());
+
+    if (!vd)
+    {
+        Value* v = scope_.get(ast.name_get());
+
+        assert(dynamic_cast<Function*> (v));
+
+        val_ = v;
+        return;
+    }
+
+    Value* mem = scope_.get(vd->name_get());
+
+    if (lvalue_)
+    {
+        val_ = mem;
+        return;
+    }
+
+    val_ = gen_.create_load(mem);
+}
+
+void Generator::operator()(ast::CallExpr& ast)
+{
+    Function* f = dynamic_cast<Function*> (generate(*ast.var_get()));
+
+    if (ast.param_get())
+    {
+        std::vector<Value*> args;
+        Value* v;
+
+        assert(f);
+
+        for (auto ast_arg : ast.param_get()->list_get())
+        {
+            v = generate(*ast_arg);
+
+            args.push_back(v);
+        }
+
+        if (f->return_type_get() == c_.void_ty_get())
+            val_ = gen_.create_call(f, args);
+        else
+            val_ = gen_.create_call(f, args, "");
+
+        return;
+    }
+
+    if (f->return_type_get() == c_.void_ty_get())
+        val_ = gen_.create_call(f);
+    else
+        val_ = gen_.create_call(f, "");
+}
+
+void Generator::operator()(ast::AssignExpr& ast)
+{
+    bool tmp = lvalue_;
+
+    lvalue_ = true;
+
+    Value* lv = generate(*ast.lvalue_get());
+
+    lvalue_ = tmp;
+
+    Value* rv = generate(*ast.rvalue_get());
+
+    gen_.create_store(rv, lv);
+    val_ = rv;
+}
+
+void Generator::operator()(ast::ConditionalExpr& ast)
+{
+    Value* v = generate(*ast.cond_get());
+    Function* f = gen_.insert_block_get()->parent_get();
+    BasicBlock* true_bb = new BasicBlock(c_, f);
+    BasicBlock* false_bb = new BasicBlock(c_);
+    BasicBlock* join = new BasicBlock(c_);
+
+    gen_.create_cjump(v, true_bb, false_bb);
+
+    // Get true expression value;
+    gen_.insert_pt_set(true_bb);
+    Value* tv = generate(*ast.true_expr_get());
+    gen_.create_jump(join);
+
+    // Get false expression value;
+    gen_.insert_pt_set(false_bb);
+    false_bb->parent_set(f);
+    f->insert_bb(false_bb);
+    Value* fv = generate(*ast.false_expr_get());
+    gen_.create_jump(join);
+
+    // Use phi node to reunite values
+    gen_.insert_pt_set(join);
+    join->parent_set(f);
+    f->insert_bb(join);
+
+    PhiNode* pn = gen_.create_phi(tv->type_get());
+
+    pn->incoming_add(true_bb, tv);
+    pn->incoming_add(false_bb, fv);
+
+    val_ = pn;
+}
+
+void Generator::operator()(ast::OpExpr& ast)
+{
+    Value* left = generate(*ast.lexpr_get());
+    Value* right = generate(*ast.rexpr_get());
+
+    switch (ast.op_get())
+    {
+        case ast::OpExpr::OP_PLUS:
+            val_ = gen_.create_add(left, right);
+            break;
+        case ast::OpExpr::OP_MINUS:
+            val_ = gen_.create_sub(left, right);
+            break;
+        case ast::OpExpr::OP_MUL:
+            val_ = gen_.create_mul(left, right);
+            break;
+        case ast::OpExpr::OP_DIV:
+            val_ = gen_.create_div(left, right);
+            break;
+        case ast::OpExpr::OP_MOD:
+            val_ = gen_.create_mod(left, right);
+            break;
+        case ast::OpExpr::OP_XOR:
+            val_ = gen_.create_xor(left, right);
+            break;
+        case ast::OpExpr::OP_GT:
+            val_ = gen_.create_gt(left, right);
+            break;
+        case ast::OpExpr::OP_GE:
+            val_ = gen_.create_ge(left, right);
+            break;
+        case ast::OpExpr::OP_LT:
+            val_ = gen_.create_lt(left, right);
+            break;
+        case ast::OpExpr::OP_LE:
+            val_ = gen_.create_le(left, right);
+            break;
+        case ast::OpExpr::OP_EQ:
+            val_ = gen_.create_eq(left, right);
+            break;
+        case ast::OpExpr::OP_DIFF:
+            val_ = gen_.create_ne(left, right);
+            break;
+        case ast::OpExpr::OP_COMA:
+            val_ = right;
+            break;
+        default:
+            break;
+    }
+}
+
 void Generator::operator()(ast::UnaryExpr& ast)
 {
     Value *v = generate(*ast.expr_get());
@@ -415,133 +579,4 @@ void Generator::operator()(ast::UnaryExpr& ast)
         default:
             break;
     }
-}
-
-void Generator::operator()(ast::OpExpr& ast)
-{
-    Value* left = generate(*ast.lexpr_get());
-    Value* right = generate(*ast.rexpr_get());
-
-    switch (ast.op_get())
-    {
-        case ast::OpExpr::OP_PLUS:
-            val_ = gen_.create_add(left, right);
-            break;
-        case ast::OpExpr::OP_MINUS:
-            val_ = gen_.create_sub(left, right);
-            break;
-        case ast::OpExpr::OP_MUL:
-            val_ = gen_.create_mul(left, right);
-            break;
-        case ast::OpExpr::OP_DIV:
-            val_ = gen_.create_div(left, right);
-            break;
-        case ast::OpExpr::OP_MOD:
-            val_ = gen_.create_mod(left, right);
-            break;
-        case ast::OpExpr::OP_XOR:
-            val_ = gen_.create_xor(left, right);
-            break;
-        case ast::OpExpr::OP_GT:
-            val_ = gen_.create_gt(left, right);
-            break;
-        case ast::OpExpr::OP_GE:
-            val_ = gen_.create_ge(left, right);
-            break;
-        case ast::OpExpr::OP_LT:
-            val_ = gen_.create_lt(left, right);
-            break;
-        case ast::OpExpr::OP_LE:
-            val_ = gen_.create_le(left, right);
-            break;
-        case ast::OpExpr::OP_EQ:
-            val_ = gen_.create_eq(left, right);
-            break;
-        case ast::OpExpr::OP_DIFF:
-            val_ = gen_.create_ne(left, right);
-            break;
-        case ast::OpExpr::OP_COMA:
-            val_ = right;
-            break;
-        default:
-            break;
-    }
-}
-
-void Generator::operator()(ast::IntExpr& ast)
-{
-    val_ = new IntConstant(c_, ast.value_get());
-}
-
-void Generator::operator()(ast::VarExpr& ast)
-{
-    ast::VarDecl* vd = dynamic_cast<ast::VarDecl*> (ast.def_get());
-
-    if (!vd)
-    {
-        Value* v = scope_.get(ast.name_get());
-
-        assert(dynamic_cast<Function*> (v));
-
-        val_ = v;
-        return;
-    }
-
-    Value* mem = scope_.get(vd->name_get());
-
-    if (lvalue_)
-    {
-        val_ = mem;
-        return;
-    }
-
-    val_ = gen_.create_load(mem);
-}
-
-void Generator::operator()(ast::CallExpr& ast)
-{
-    Function* f = dynamic_cast<Function*> (generate(*ast.var_get()));
-
-    if (ast.param_get())
-    {
-        std::vector<Value*> args;
-        Value* v;
-
-        assert(f);
-
-        for (auto ast_arg : ast.param_get()->list_get())
-        {
-            v = generate(*ast_arg);
-
-            args.push_back(v);
-        }
-
-        if (f->return_type_get() == c_.void_ty_get())
-            val_ = gen_.create_call(f, args);
-        else
-            val_ = gen_.create_call(f, args, "");
-
-        return;
-    }
-
-    if (f->return_type_get() == c_.void_ty_get())
-        gen_.create_call(f);
-    else
-        gen_.create_call(f, "");
-}
-
-void Generator::operator()(ast::AssignExpr& ast)
-{
-    bool tmp = lvalue_;
-
-    lvalue_ = true;
-
-    Value* lv = generate(*ast.lvalue_get());
-
-    lvalue_ = tmp;
-
-    Value* rv = generate(*ast.rvalue_get());
-
-    gen_.create_store(rv, lv);
-    val_ = rv;
 }

@@ -60,12 +60,13 @@ namespace ucc
                 virtual void operator()(ast::IfStmt& ast) override;
                 virtual void operator()(ast::ForStmt& ast) override;
 
-                virtual void operator()(ast::OpExpr& ast) override;
-                virtual void operator()(ast::UnaryExpr& ast) override;
                 virtual void operator()(ast::IntExpr& ast) override;
                 virtual void operator()(ast::VarExpr& ast) override;
                 virtual void operator()(ast::CallExpr& ast) override;
                 virtual void operator()(ast::AssignExpr& ast) override;
+                virtual void operator()(ast::ConditionalExpr& ast) override;
+                virtual void operator()(ast::OpExpr& ast) override;
+                virtual void operator()(ast::UnaryExpr& ast) override;
 
             protected:
                 bool is_end_block(ucmp::ir::Instruction* i)
