@@ -1,0 +1,15 @@
+function i32 f()
+{
+    l0:
+        ret 0
+}
+function i32 main()
+{
+    l0:
+        jump l1
+    l1:
+        t2 = call f i32 ()
+        jump l1
+    l3:
+        ret 0
+}

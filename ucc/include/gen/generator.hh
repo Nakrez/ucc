@@ -55,18 +55,32 @@ namespace ucc
                 virtual void operator()(ast::ReturnStmt& ast) override;
                 virtual void operator()(ast::WhileStmt& ast) override;
                 virtual void operator()(ast::DoWhileStmt& ast) override;
+                virtual void operator()(ast::LabelStmt& ast) override;
+                virtual void operator()(ast::GotoStmt& ast) override;
                 virtual void operator()(ast::BreakStmt& ast) override;
                 virtual void operator()(ast::ContinueStmt& ast) override;
                 virtual void operator()(ast::IfStmt& ast) override;
+                //virtual void operator()(ast::SwitchStmt& ast) override;
+                //virtual void operator()(ast::CaseStmt& ast) override;
+                //virtual void operator()(ast::DefaultStmt& ast) override;
                 virtual void operator()(ast::ForStmt& ast) override;
 
                 virtual void operator()(ast::IntExpr& ast) override;
+                //virtual void operator()(ast::FloatExpr& ast) override;
+                //virtual void operator()(ast::StringExpr& ast) override;
                 virtual void operator()(ast::VarExpr& ast) override;
+                //virtual void operator()(ast::SubscriptExpr& ast) override;
                 virtual void operator()(ast::CallExpr& ast) override;
                 virtual void operator()(ast::AssignExpr& ast) override;
                 virtual void operator()(ast::ConditionalExpr& ast) override;
                 virtual void operator()(ast::OpExpr& ast) override;
                 virtual void operator()(ast::UnaryExpr& ast) override;
+                //virtual void operator()(ast::MemberExpr& ast) override;
+                //virtual void operator()(ast::EnumExpr& ast) override;
+                //virtual void operator()(ast::CastExpr& ast) override;
+                //virtual void operator()(ast::ImplicitCastExpr& ast) override;
+                //virtual void operator()(ast::SizeofExpr& ast) override;
+                //virtual void operator()(ast::InitListExpr& ast) override;
 
             protected:
                 bool is_end_block(ucmp::ir::Instruction* i)
@@ -95,6 +109,8 @@ namespace ucc
                 /// It is used for break and continue statement.
                 std::map<ast::Stmt*, std::pair<ucmp::ir::BasicBlock*,
                                                ucmp::ir::BasicBlock*>> loops_;
+                std::map<ucc::ast::LabelStmt*, ucmp::ir::BasicBlock*> labels_;
+
                 int allocas_;
                 bool lvalue_;
         };

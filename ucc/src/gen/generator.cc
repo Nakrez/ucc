@@ -238,6 +238,42 @@ void Generator::operator()(ast::DoWhileStmt& ast)
     f->insert_bb(end);
 }
 
+void Generator::operator()(ast::LabelStmt& ast)
+{
+    BasicBlock* bb = gen_.insert_block_get();
+    Function* f = bb->parent_get();
+
+    if (!bb || !(bb = labels_[&ast]))
+        bb = new BasicBlock(c_);
+
+    if (!f->f_back()->size() || !is_end_block(f->f_back()->back()))
+        gen_.create_jump(bb);
+
+    gen_.insert_pt_set(bb);
+    bb->parent_set(f);
+    f->insert_bb(bb);
+
+    labels_[&ast] = bb;
+    ast.stmt_get()->accept(*this);
+}
+
+void Generator::operator()(ast::GotoStmt& ast)
+{
+    BasicBlock* current = gen_.insert_block_get();
+    Function* f = current->parent_get();
+
+    if (!f->f_back()->size() || !is_end_block(f->f_back()->back()))
+    {
+        // If this goto jumps to a forward label just create the basic block
+        if (!labels_[ast.def_get()])
+            labels_[ast.def_get()] = new BasicBlock(c_);
+
+        gen_.create_jump(labels_[ast.def_get()]);
+        BasicBlock* bb = new BasicBlock(c_, f);
+        gen_.insert_pt_set(bb);
+    }
+}
+
 void Generator::operator()(ast::IfStmt& ast)
 {
     Value* cond = generate(*ast.cond_get());
