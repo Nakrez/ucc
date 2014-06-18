@@ -882,6 +882,15 @@ void TypeChecker::operator()(ast::CastExpr& ast)
 {
     ucc::ast::DefaultVisitor::operator()(ast);
 
+    if (!is_scalar(ast.ty_get()->type_get()))
+        error("used type '" + ast.ty_get()->type_get()->to_str() +
+              "' where arithmetic or pointer type is required",
+              ast.ty_get()->location_get());
+    else if (!is_scalar(ast.expr_get()->type_get()))
+        error("used type '" + ast.expr_get()->type_get()->to_str() +
+              "' where arithmetic or pointer type is required",
+              ast.expr_get()->location_get());
+
     const Type* t = node_type(*ast.ty_get());
 
     ast.type_set(t);
