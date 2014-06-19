@@ -1,0 +1,9 @@
+function i32 main()
+{
+    l0:
+        a = stackalloc i64
+        store 0, i64* a
+        t1 = load i64* a
+        t2 = demot i64 t1 to i32
+        ret i32 t2
+}

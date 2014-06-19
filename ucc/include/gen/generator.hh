@@ -77,8 +77,8 @@ namespace ucc
                 virtual void operator()(ast::UnaryExpr& ast) override;
                 //virtual void operator()(ast::MemberExpr& ast) override;
                 //virtual void operator()(ast::EnumExpr& ast) override;
-                //virtual void operator()(ast::CastExpr& ast) override;
-                //virtual void operator()(ast::ImplicitCastExpr& ast) override;
+                virtual void operator()(ast::CastExpr& ast) override;
+                virtual void operator()(ast::ImplicitCastExpr& ast) override;
                 //virtual void operator()(ast::SizeofExpr& ast) override;
                 //virtual void operator()(ast::InitListExpr& ast) override;
 
@@ -95,6 +95,9 @@ namespace ucc
 
                 ucmp::ir::Value* create_stack_alloc(ucmp::ir::sType t,
                                             const ucmp::misc::Symbol& s = "");
+
+                void generate_cast(const type::Type* t1, const type::Type* t2,
+                                   ucmp::ir::Value* v);
 
             protected:
                 ucmp::ir::IrGenerator gen_;

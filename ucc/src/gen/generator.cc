@@ -82,6 +82,26 @@ Value* Generator::create_stack_alloc(sType t, const misc::Symbol& s)
     return v;
 }
 
+void Generator::generate_cast(const type::Type* exprt, const type::Type* castt,
+                              Value *v)
+{
+    if (*exprt == *castt)
+    {
+        val_ = v;
+        return;
+    }
+
+    int exprt_size = exprt->size();
+    int castt_size = castt->size();
+
+    if (exprt_size > castt_size)
+        val_ = gen_.create_demot(castt->to_ir_type(c_), v);
+    else if (exprt_size < castt_size)
+        val_ = gen_.create_promot(castt->to_ir_type(c_), v);
+    else
+        val_ = gen_.create_cast(castt->to_ir_type(c_), v);
+}
+
 void Generator::operator()(ast::VarDecl& ast)
 {
     Value *v;
@@ -615,4 +635,18 @@ void Generator::operator()(ast::UnaryExpr& ast)
         default:
             break;
     }
+}
+
+void Generator::operator()(ast::CastExpr& ast)
+{
+    Value* v = generate(*ast.expr_get());
+
+    generate_cast(ast.expr_get()->type_get(), ast.ty_get()->type_get(), v);
+}
+
+void Generator::operator()(ast::ImplicitCastExpr& ast)
+{
+    Value* v = generate(*ast.expr_get());
+
+    generate_cast(ast.expr_get()->type_get(), ast.type_get(), v);
 }
