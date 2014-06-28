@@ -12,7 +12,14 @@ AST from input files.
 * Compilation
 
 To compile UCC you only need to have a C++ 11 compliant compiler.
-You just have to do these 3 commands to build it:
+
+In order to compile UCC you need to clone libucmp repository:
+
+git clone git@github.com:Nakrez/libucmp.git
+git checkout devel
+
+Then you must clone ucc in the 'tools' repository
+Finally just do the 3 following commands:
 
 ./bootstrap
 ./configure

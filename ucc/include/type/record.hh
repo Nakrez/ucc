@@ -45,6 +45,9 @@ namespace ucc
                 /// Destructor
                 virtual ~Record() = default;
 
+                bool is_struct() const { return is_struct_; }
+                bool is_enum() const { return !is_struct_; }
+
                 /// \brief  Add a new Field to the Record.
                 /// \param  f   The field you want to add to the Record.
                 void field_add(const Field& f)

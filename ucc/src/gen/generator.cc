@@ -17,7 +17,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <gen/generator.hh>
+
 #include <type/function.hh>
+#include <type/ptr.hh>
+#include <type/record.hh>
 
 #include <ucmp/ir/int-constant.hh>
 #include <ucmp/ir/load.hh>
@@ -634,6 +637,33 @@ void Generator::operator()(ast::UnaryExpr& ast)
         /* Plus operator : nothing to do */
         default:
             break;
+    }
+}
+
+void Generator::operator()(ast::MemberExpr& ast)
+{
+    Value* v = generate(*ast.lexpr_get());
+    const type::Type* t = ast.lexpr_get()->type_get();
+    const type::Record* rtype;
+
+    if (ast.is_arrow())
+    {
+        v = gen_.create_load(v);
+
+        const type::Ptr *pt = dynamic_cast<const type::Ptr*> (t);
+
+        t = pt->pointed_type_get();
+    }
+
+    rtype = dynamic_cast<const type::Record*> (t);
+
+    if (rtype->is_struct())
+    {
+
+    }
+    else
+    {
+
     }
 }
 
