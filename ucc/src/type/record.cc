@@ -46,10 +46,10 @@ ucmp::ir::sType Record::to_ir_type(ucmp::ir::Context& c) const
     if (c.struct_exists(name_))
         return c.struct_get(name_);
 
-    ucmp::ir::StructType* s = new ucmp::ir::StructType(c, name_);
+    ucmp::ir::StructType* s = new ucmp::ir::StructType(c, name_, is_struct_);
 
     for (auto f : fields_)
         s->add_member(f.type_get()->to_ir_type(c));
 
-    return ucmp::ir::sType(s);
+    return c.struct_get(name_);
 }
