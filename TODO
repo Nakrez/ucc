@@ -21,22 +21,7 @@
 - Add volatile consideration for -Wuninitialized
 - Add -Wunused-*
 
--- IR CONVERTER --
+-- GEN --
 
-- Design IR
-
--- OPTIMISATION --
-
-- ...
-
--- BACKEND --
-
-- Add Target x86 32bits
-- Add Target x86 64bits
-- Add Target arm
-- ...
-
--- OTHER --
-
-- Correct locations starting at 0
-- Add support of #line locations
+- Fix some generation of casts (especially pointers to integers are no
+  consistent)

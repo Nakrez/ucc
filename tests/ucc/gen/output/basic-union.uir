@@ -1,0 +1,12 @@
+union.a = { i32, i64 }
+function i32 main()
+{
+    l0:
+        b = stackalloc union.a
+        t1 = cast union.a* b to i64*
+        t2 = promot 10 to i64
+        store i64 t2, i64* t1
+        t3 = cast union.a* b to i32*
+        t4 = load i32* t3
+        ret i32 t4
+}

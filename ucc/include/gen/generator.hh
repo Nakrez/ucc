@@ -116,6 +116,7 @@ namespace ucc
 
                 int allocas_;
                 bool lvalue_;
+                bool no_load_;
         };
     } // namespace gen
 } // namespace ucc

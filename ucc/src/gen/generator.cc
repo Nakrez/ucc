@@ -38,6 +38,7 @@ Generator::Generator(ucmp::ir::Unit* u)
     , val_(nullptr)
     , allocas_(0)
     , lvalue_(false)
+    , no_load_(false)
 {
 }
 
@@ -417,7 +418,7 @@ void Generator::operator()(ast::VarExpr& ast)
 
     Value* mem = scope_.get(vd->name_get());
 
-    if (lvalue_)
+    if (lvalue_ || no_load_)
     {
         val_ = mem;
         return;
@@ -642,9 +643,16 @@ void Generator::operator()(ast::UnaryExpr& ast)
 
 void Generator::operator()(ast::MemberExpr& ast)
 {
-    Value* v = generate(*ast.lexpr_get());
-    const type::Type* t = ast.lexpr_get()->type_get();
+    bool tmp = no_load_;
+    Value* v;
+    const type::Type* t;
     const type::Record* rtype;
+
+    no_load_ = true;
+    v = generate(*ast.lexpr_get());
+    no_load_ = tmp;
+
+    t = ast.lexpr_get()->type_get();
 
     if (ast.is_arrow())
     {
@@ -663,7 +671,12 @@ void Generator::operator()(ast::MemberExpr& ast)
     }
     else
     {
+        PtrType *t = new PtrType(ast.type_get()->to_ir_type(c_));
 
+        val_ = gen_.create_cast(sType(t), v);
+
+        if (!lvalue_ && !no_load_)
+            val_ = gen_.create_load(val_);
     }
 }
 
