@@ -71,6 +71,7 @@ namespace ucc
                 virtual void operator()(const ContinueStmt& ast) override;
 
                 virtual void operator()(const IntExpr& ast) override;
+                virtual void operator()(const StringExpr& ast) override;
                 virtual void operator()(const VarExpr& ast) override;
                 virtual void operator()(const SubscriptExpr& ast) override;
                 virtual void operator()(const AssignExpr& ast) override;

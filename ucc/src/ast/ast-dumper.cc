@@ -201,6 +201,13 @@ void AstDumper::operator()(const IntExpr& ast)
           << color::green << " '" << *ast.type_get() << "'" << color::def;
 }
 
+void AstDumper::operator()(const StringExpr& ast)
+{
+    ostr_ << color::blue << "StringExpr " << color::white
+          << *ast.str_get() << color::green << " '" << *ast.type_get() << "'"
+          << color::def;
+}
+
 void AstDumper::operator()(const VarExpr& ast)
 {
     ostr_ << color::blue << "VarExpr " << color::white << ast.name_get()
