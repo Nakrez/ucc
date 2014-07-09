@@ -554,6 +554,20 @@ void TypeChecker::operator()(ast::SubscriptExpr& ast)
     const Type* subscript_type = node_type(*ast.expr_get());
     const Type* t = node_type(*ast.var_get());
 
+    if (dynamic_cast<const Integer*> (&t->actual_type()) &&
+        (dynamic_cast<const Ptr*> (subscript_type) ||
+         dynamic_cast<const Array*> (subscript_type)))
+    {
+        ast::Expr* tmp = ast.expr_get();
+        const Type* tmp2 = subscript_type;
+
+        ast.expr_set(ast.var_get());
+        ast.var_set(tmp);
+
+        subscript_type = t;
+        t = tmp2;
+    }
+
     if (!dynamic_cast<const Integer*> (subscript_type))
         error("array subscript is no an integer", ast.location_get());
 

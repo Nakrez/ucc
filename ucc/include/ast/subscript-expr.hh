@@ -33,14 +33,17 @@ namespace ucc
                               Expr* expr);
                 virtual ~SubscriptExpr();
 
-                const Expr* var_get() const;
-                Expr* var_get();
+                const Expr* var_get() const { return var_; }
+                Expr* var_get() { return var_; }
 
-                const Expr* expr_get() const;
-                Expr* expr_get();
+                const Expr* expr_get() const { return expr_; }
+                Expr* expr_get() { return expr_; }
 
-                virtual void accept(Visitor& v);
-                virtual void accept(ConstVisitor& v) const;
+                void var_set(Expr* e) { var_ = e; }
+                void expr_set(Expr* e) { expr_ = e; }
+
+                virtual void accept(Visitor& v) { v(*this); }
+                virtual void accept(ConstVisitor& v) const { v(*this); }
 
             protected:
                 Expr* var_;
