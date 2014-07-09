@@ -207,6 +207,20 @@ void AstDumper::operator()(const VarExpr& ast)
           << color::green << " '" << *ast.type_get() << "'" << color::def;
 }
 
+void AstDumper::operator()(const SubscriptExpr& ast)
+{
+    ostr_ << color::blue << "SubscriptExpr " << color::green
+          << "'" << *ast.type_get() << "'" << color::def << misc::incendl;
+
+    ast.var_get()->accept(*this);
+
+    ostr_ << misc::iendl;
+
+    ast.expr_get()->accept(*this);
+
+    ostr_ << misc::decindent;
+}
+
 void AstDumper::operator()(const AssignExpr& ast)
 {
     ostr_ << color::blue << "AssignExpr " << color::def

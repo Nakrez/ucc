@@ -54,31 +54,32 @@ namespace ucc
                     }
                 }
 
-                virtual void operator()(const AstList& ast);
-                virtual void operator()(const DeclList& ast);
-                virtual void operator()(const ExprList& ast);
-                virtual void operator()(const FieldList& ast);
-                virtual void operator()(const EnumExprList& ast);
+                virtual void operator()(const AstList& ast) override;
+                virtual void operator()(const DeclList& ast) override;
+                virtual void operator()(const ExprList& ast) override;
+                virtual void operator()(const FieldList& ast) override;
+                virtual void operator()(const EnumExprList& ast) override;
 
-                virtual void operator()(const VarDecl& ast);
-                virtual void operator()(const FunctionDecl& ast);
-                virtual void operator()(const TypeDecl& ast);
+                virtual void operator()(const VarDecl& ast) override;
+                virtual void operator()(const FunctionDecl& ast) override;
+                virtual void operator()(const TypeDecl& ast) override;
 
-                virtual void operator()(const CompoundStmt& ast);
-                virtual void operator()(const ReturnStmt& ast);
-                virtual void operator()(const WhileStmt& ast);
-                virtual void operator()(const BreakStmt& ast);
-                virtual void operator()(const ContinueStmt& ast);
+                virtual void operator()(const CompoundStmt& ast) override;
+                virtual void operator()(const ReturnStmt& ast) override;
+                virtual void operator()(const WhileStmt& ast) override;
+                virtual void operator()(const BreakStmt& ast) override;
+                virtual void operator()(const ContinueStmt& ast) override;
 
-                virtual void operator()(const IntExpr& ast);
-                virtual void operator()(const VarExpr& ast);
-                virtual void operator()(const AssignExpr& ast);
-                virtual void operator()(const CallExpr& ast);
-                virtual void operator()(const ConditionalExpr& ast);
-                virtual void operator()(const OpExpr& ast);
-                virtual void operator()(const UnaryExpr& ast);
-                virtual void operator()(const CastExpr& ast);
-                virtual void operator()(const ImplicitCastExpr& ast);
+                virtual void operator()(const IntExpr& ast) override;
+                virtual void operator()(const VarExpr& ast) override;
+                virtual void operator()(const SubscriptExpr& ast) override;
+                virtual void operator()(const AssignExpr& ast) override;
+                virtual void operator()(const CallExpr& ast) override;
+                virtual void operator()(const ConditionalExpr& ast) override;
+                virtual void operator()(const OpExpr& ast) override;
+                virtual void operator()(const UnaryExpr& ast) override;
+                virtual void operator()(const CastExpr& ast) override;
+                virtual void operator()(const ImplicitCastExpr& ast) override;
 
             protected:
                 std::ostream& ostr_;
