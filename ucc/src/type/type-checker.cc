@@ -569,7 +569,7 @@ void TypeChecker::operator()(ast::SubscriptExpr& ast)
     }
 
     if (!dynamic_cast<const Integer*> (subscript_type))
-        error("array subscript is no an integer", ast.location_get());
+        error("array subscript is not an integer", ast.location_get());
 
     const Ptr* p = dynamic_cast<const Ptr*> (&t->actual_type());
     const Array* a = dynamic_cast<const Array*> (&t->actual_type());
