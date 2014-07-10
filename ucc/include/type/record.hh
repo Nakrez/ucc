@@ -83,7 +83,9 @@ namespace ucc
                 ///                 Type.
                 /// \return The type of the Field, or @a nullptr if the Field
                 ///         does not exist.
-                const Type* field_type_get(const ucmp::misc::Symbol name) const;
+                const Type* field_type_get(const ucmp::misc::Symbol& name) const;
+
+                int field_index_get(const ucmp::misc::Symbol& name) const;
 
                 virtual Type::TypeCompatibility
                 compatible_on_assign(const Type&) const override;
