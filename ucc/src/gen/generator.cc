@@ -399,7 +399,7 @@ void Generator::operator()(ast::ForStmt& ast)
 
 void Generator::operator()(ast::IntExpr& ast)
 {
-    val_ = new IntConstant(c_, ast.value_get());
+    val_ = c_.iconstant_get(ast.value_get());
 }
 
 void Generator::operator()(ast::VarExpr& ast)
@@ -568,7 +568,7 @@ void Generator::operator()(ast::UnaryExpr& ast)
     switch (ast.op_get())
     {
         case ast::UnaryExpr::MINUS:
-            val_ = gen_.create_sub(new IntConstant(c_, 0), v);
+            val_ = gen_.create_sub(c_.iconstant_get(0), v);
             break;
         case ast::UnaryExpr::PRE_INCR:
             {
@@ -576,7 +576,7 @@ void Generator::operator()(ast::UnaryExpr& ast)
 
                 assert(l);
 
-                val_ = gen_.create_add(v, new IntConstant(c_, 1));
+                val_ = gen_.create_add(v, c_.iconstant_get(1));
                 gen_.create_store(val_, l->operand_get(0));
             }
             break;
@@ -586,7 +586,7 @@ void Generator::operator()(ast::UnaryExpr& ast)
 
                 assert(l);
 
-                val_ = gen_.create_sub(v, new IntConstant(c_, 1));
+                val_ = gen_.create_sub(v, c_.iconstant_get(1));
                 gen_.create_store(val_, l->operand_get(0));
             }
             break;
@@ -596,7 +596,7 @@ void Generator::operator()(ast::UnaryExpr& ast)
 
                 assert(l);
 
-                Value* ret = gen_.create_add(v, new IntConstant(c_, 1));
+                Value* ret = gen_.create_add(v, c_.iconstant_get(1));
                 gen_.create_store(ret, l->operand_get(0));
 
                 val_ = v;
@@ -608,7 +608,7 @@ void Generator::operator()(ast::UnaryExpr& ast)
 
                 assert(l);
 
-                Value* ret = gen_.create_sub(v, new IntConstant(c_, 1));
+                Value* ret = gen_.create_sub(v, c_.iconstant_get(1));
                 gen_.create_store(ret, l->operand_get(0));
 
                 val_ = v;
@@ -628,12 +628,12 @@ void Generator::operator()(ast::UnaryExpr& ast)
             val_ = gen_.create_load(v);
             break;
         case ast::UnaryExpr::TILDE:
-            val_ = gen_.create_xor(v, new IntConstant(c_, -1));
+            val_ = gen_.create_xor(v, c_.iconstant_get(-1));
             break;
         case ast::UnaryExpr::BANG:
             if (v->type_get() != c_.i1_ty_get())
-                v = gen_.create_ne(v, new IntConstant(c_, 0));
-            gen_.create_xor(v, new IntConstant(c_, 1));
+                v = gen_.create_ne(v, c_.iconstant_get(0));
+            gen_.create_xor(v, c_.iconstant_get(1));
             break;
         /* Plus operator : nothing to do */
         default:
