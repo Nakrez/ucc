@@ -667,17 +667,22 @@ void Generator::operator()(ast::MemberExpr& ast)
 
     if (rtype->is_struct())
     {
+        const type::Type* t_member = rtype->field_type_get(ast.name_get());
+        int i_member = rtype->field_index_get(ast.name_get());
+        PtrType* t = new PtrType(t_member->to_ir_type(c_));
 
+        val_ = gen_.create_data_ptr(sType(t), v, i_member);
     }
     else
     {
         PtrType *t = new PtrType(ast.type_get()->to_ir_type(c_));
 
         val_ = gen_.create_cast(sType(t), v);
-
-        if (!lvalue_ && !no_load_)
-            val_ = gen_.create_load(val_);
     }
+
+    // We need to load the value if we need it
+    if (!lvalue_ && !no_load_)
+        val_ = gen_.create_load(val_);
 }
 
 void Generator::operator()(ast::CastExpr& ast)

@@ -1,0 +1,18 @@
+struct.a = { i32, i8 }
+function i32 main()
+{
+    l0:
+        b = stackalloc struct.a
+        t1 = dataptr struct.a* b, 0
+        store 0, i32* t1
+        t2 = dataptr struct.a* b, 1
+        t3 = demot 0 to i8
+        store i8 t3, i8* t2
+        t4 = dataptr struct.a* b, 1
+        t5 = load i8* t4
+        t6 = promot i8 t5 to i32
+        t7 = dataptr struct.a* b, 0
+        t8 = load i32* t7
+        t9 = add i32 t6, i32 t8
+        ret i32 t9
+}
