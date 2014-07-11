@@ -25,6 +25,12 @@ using namespace type;
 
 Array::Array(const Type* inner_type)
     : inner_type_(inner_type)
+    , size_(0)
+{}
+
+Array::Array(const Type* inner_type, unsigned size)
+    : inner_type_(inner_type)
+    , size_(size)
 {}
 
 Type::TypeCompatibility

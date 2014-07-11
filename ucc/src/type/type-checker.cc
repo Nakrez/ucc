@@ -410,13 +410,23 @@ void TypeChecker::operator()(ast::NamedTy& ast)
 void TypeChecker::operator()(ast::ArrayTy& ast)
 {
     const Type* t = node_type(*ast.sub_ty_get());
-    Array *a = new Array(t);
+    unsigned size = 0;
+
+    if (ast.size_get())
+    {
+        ast.size_get()->accept(*this);
+
+        if (ast::IntExpr* ie = dynamic_cast<ast::IntExpr*> (ast.size_get()))
+            size = ie->value_get();
+        else
+            error("ISO C90 forbids variable length array", ast.location_get());
+    }
+
+    Array *a = new Array(t, size);
 
     ast.built_type_set(a);
     ast.type_set(a);
 
-    if (ast.size_get())
-        ast.size_get()->accept(*this);
 }
 
 void TypeChecker::operator()(ast::FunctionTy& ast)

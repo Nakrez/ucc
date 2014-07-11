@@ -36,6 +36,8 @@ namespace ucc
                 /// \param  inner_type  The type pointed by the array
                 Array(const Type* inner_type);
 
+                Array(const Type* inner_type, unsigned size);
+
                 /// Destructor
                 virtual ~Array() = default;
 
@@ -66,15 +68,14 @@ namespace ucc
                 {
                     ucmp::ir::ArrayType *t;
 
-                    t = new ucmp::ir::ArrayType(inner_type_->to_ir_type(c), 2);
-
-                    assert(false);
+                    t = new ucmp::ir::ArrayType(inner_type_->to_ir_type(c), size_);
 
                     return ucmp::ir::sType(t);
                 }
 
             private:
                 const Type* inner_type_;
+                unsigned size_;
         };
     } // namespace type
 } // namespace ucc
