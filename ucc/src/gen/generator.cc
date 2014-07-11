@@ -491,7 +491,32 @@ void Generator::operator()(ast::AssignExpr& ast)
 
     Value* rv = generate(*ast.rvalue_get());
 
-    gen_.create_store(rv, lv);
+    val_ = gen_.create_load(lv);
+
+    switch (ast.op_get())
+    {
+        case ast::AssignExpr::MUL_ASSIGN:
+            val_ = gen_.create_mul(val_, rv);
+            break;
+        case ast::AssignExpr::DIV_ASSIGN:
+            val_ = gen_.create_div(val_, rv);
+            break;
+        case ast::AssignExpr::MOD_ASSIGN:
+            val_ = gen_.create_mod(val_, rv);
+            break;
+        case ast::AssignExpr::PLUS_ASSIGN:
+            val_ = gen_.create_add(val_, rv);
+            break;
+        case ast::AssignExpr::MINUS_ASSIGN:
+            val_ = gen_.create_sub(val_, rv);
+            break;
+        default:
+            val_ = rv;
+            break;
+    }
+
+
+    gen_.create_store(val_, lv);
     val_ = rv;
 }
 
