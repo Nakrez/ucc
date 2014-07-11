@@ -61,7 +61,7 @@ namespace ucc
 
                 virtual int size() const override
                 {
-                    return 8;
+                    return size_ * inner_type_->size();
                 }
 
                 virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override

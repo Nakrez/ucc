@@ -79,7 +79,7 @@ namespace ucc
                 //virtual void operator()(ast::EnumExpr& ast) override;
                 virtual void operator()(ast::CastExpr& ast) override;
                 virtual void operator()(ast::ImplicitCastExpr& ast) override;
-                //virtual void operator()(ast::SizeofExpr& ast) override;
+                virtual void operator()(ast::SizeofExpr& ast) override;
                 //virtual void operator()(ast::InitListExpr& ast) override;
 
             protected:

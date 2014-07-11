@@ -68,3 +68,24 @@ ucmp::ir::sType Record::to_ir_type(ucmp::ir::Context& c) const
 
     return c.struct_get(name_);
 }
+
+int Record::size() const
+{
+    int size = 0;
+
+    if (is_struct_)
+    {
+        for (auto f : fields_)
+            size += f.type_get()->size();
+    }
+    else
+    {
+        for (auto f : fields_)
+        {
+            if (size < f.type_get()->size())
+                size = f.type_get()->size();
+        }
+    }
+
+    return size;
+}

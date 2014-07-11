@@ -718,3 +718,11 @@ void Generator::operator()(ast::ImplicitCastExpr& ast)
 
     generate_cast(ast.expr_get()->type_get(), ast.type_get(), v);
 }
+
+void Generator::operator()(ast::SizeofExpr& ast)
+{
+    if (ast.expr_get())
+        val_ = c_.iconstant_get(ast.expr_get()->type_get()->size());
+    else
+        val_ = c_.iconstant_get(ast.ty_get()->type_get()->size());
+}

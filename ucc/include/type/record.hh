@@ -111,6 +111,8 @@ namespace ucc
 
                 virtual ucmp::ir::sType to_ir_type(ucmp::ir::Context& c) const override;
 
+                virtual int size() const override;
+
             private:
                 ucmp::misc::Symbol name_;
                 bool is_struct_;
