@@ -1,0 +1,16 @@
+struct.a = { i32, i8 }
+struct.b = { struct.a, i32 }
+function i32 main()
+{
+    l0:
+        a = stackalloc struct.b*
+        t1 = load struct.b** a
+        t2 = dataptr struct.b* t1, 0
+        t3 = dataptr struct.a* t2, 0
+        store 0, i32* t3
+        t4 = load struct.b** a
+        t5 = dataptr struct.b* t4, 0
+        t6 = dataptr struct.a* t5, 0
+        t7 = load i32* t6
+        ret i32 t7
+}

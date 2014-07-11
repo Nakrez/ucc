@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <type/function.hh>
 #include <type/ptr.hh>
 #include <type/record.hh>
+#include <type/array.hh>
 
 #include <ucmp/ir/int-constant.hh>
 #include <ucmp/ir/load.hh>
@@ -425,6 +426,25 @@ void Generator::operator()(ast::VarExpr& ast)
     }
 
     val_ = gen_.create_load(mem);
+}
+
+void Generator::operator()(ast::SubscriptExpr& ast)
+{
+    const type::Type* t_inner = ast.type_get();
+    bool tmp = no_load_;
+
+    no_load_ = true;
+    Value* var = generate(*ast.var_get());
+    no_load_ = tmp;
+
+    Value* expr = generate(*ast.expr_get());
+
+    PtrType* t = new PtrType(t_inner->to_ir_type(c_));
+
+    val_ = gen_.create_data_ptr(sType(t), var, expr);
+
+    if (!lvalue_ && !no_load_)
+        val_ = gen_.create_load(val_);
 }
 
 void Generator::operator()(ast::CallExpr& ast)

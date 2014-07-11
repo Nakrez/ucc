@@ -1,0 +1,10 @@
+function i32 main()
+{
+    l0:
+        a = stackalloc [10 x i32]
+        t1 = dataptr [10 x i32]* a, 2
+        store 3, i32* t1
+        t2 = dataptr [10 x i32]* a, 1
+        t3 = load i32* t2
+        ret i32 t3
+}

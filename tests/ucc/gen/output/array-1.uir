@@ -1,0 +1,13 @@
+struct.test = { i32, i32 }
+function i32 main()
+{
+    l0:
+        a = stackalloc [2 x struct.test]
+        t1 = dataptr [2 x struct.test]* a, 1
+        t2 = dataptr struct.test* t1, 0
+        store 3, i32* t2
+        t3 = dataptr [2 x struct.test]* a, 0
+        t4 = dataptr struct.test* t3, 1
+        t5 = load i32* t4
+        ret i32 t5
+}
