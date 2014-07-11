@@ -491,30 +491,58 @@ void Generator::operator()(ast::AssignExpr& ast)
 
     Value* rv = generate(*ast.rvalue_get());
 
-    val_ = gen_.create_load(lv);
-
     switch (ast.op_get())
     {
         case ast::AssignExpr::MUL_ASSIGN:
+            val_ = gen_.create_load(lv);
             val_ = gen_.create_mul(val_, rv);
             break;
         case ast::AssignExpr::DIV_ASSIGN:
+            val_ = gen_.create_load(lv);
             val_ = gen_.create_div(val_, rv);
             break;
         case ast::AssignExpr::MOD_ASSIGN:
+            val_ = gen_.create_load(lv);
             val_ = gen_.create_mod(val_, rv);
             break;
         case ast::AssignExpr::PLUS_ASSIGN:
+            val_ = gen_.create_load(lv);
             val_ = gen_.create_add(val_, rv);
             break;
         case ast::AssignExpr::MINUS_ASSIGN:
+            val_ = gen_.create_load(lv);
             val_ = gen_.create_sub(val_, rv);
+            break;
+        case ast::AssignExpr::LSHIFT_ASSIGN:
+            val_ = gen_.create_load(lv);
+            if (dynamic_cast<const type::SignedInteger*> (ast.lvalue_get()->type_get()))
+                val_ = gen_.create_alsh(val_, rv);
+            else
+                val_ = gen_.create_lsh(val_, rv);
+            break;
+        case ast::AssignExpr::RSHIFT_ASSIGN:
+            val_ = gen_.create_load(lv);
+            if (dynamic_cast<const type::SignedInteger*> (ast.lvalue_get()->type_get()))
+                val_ = gen_.create_arsh(val_, rv);
+            else
+                val_ = gen_.create_rsh(val_, rv);
+            break;
+        case ast::AssignExpr::BAND_ASSIGN:
+            val_ = gen_.create_load(lv);
+            val_ = gen_.create_and(val_, rv);
+            break;
+        case ast::AssignExpr::BXOR_ASSIGN:
+            val_ = gen_.create_load(lv);
+            val_ = gen_.create_xor(val_, rv);
+            break;
+        case ast::AssignExpr::BOR_ASSIGN:
+            val_ = gen_.create_load(lv);
+            val_ = gen_.create_or(val_, rv);
             break;
         default:
             val_ = rv;
             break;
     }
-
 
     gen_.create_store(val_, lv);
     val_ = rv;
@@ -597,6 +625,24 @@ void Generator::operator()(ast::OpExpr& ast)
             break;
         case ast::OpExpr::OP_DIFF:
             val_ = gen_.create_ne(left, right);
+            break;
+        case ast::OpExpr::OP_LSHIFT:
+            if (dynamic_cast<const type::SignedInteger*> (ast.lexpr_get()->type_get()))
+                val_ = gen_.create_alsh(left, right);
+            else
+                val_ = gen_.create_lsh(left, right);
+            break;
+        case ast::OpExpr::OP_RSHIFT:
+            if (dynamic_cast<const type::SignedInteger*> (ast.lexpr_get()->type_get()))
+                val_ = gen_.create_arsh(left, right);
+            else
+                val_ = gen_.create_rsh(left, right);
+            break;
+        case ast::OpExpr::OP_BAND:
+            val_ = gen_.create_and(left, right);
+            break;
+        case ast::OpExpr::OP_BOR:
+            val_ = gen_.create_or(left, right);
             break;
         case ast::OpExpr::OP_COMA:
             val_ = right;
